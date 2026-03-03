@@ -1,0 +1,26 @@
+{
+  "name": "@rockaden/plugin",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "build": "wp-scripts build",
+    "dev": "wp-scripts start",
+    "typecheck": "tsc --noEmit",
+    "lint:js": "wp-scripts lint-js"
+  },
+  "devDependencies": {
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "@wordpress/browserslist-config": "^6.0.0",
+    "@wordpress/scripts": "^30.0.0",
+    "typescript": "^5.7.0"
+  },
+  "dependencies": {
+    "@wordpress/api-fetch": "^7.0.0",
+    "@wordpress/blocks": "^13.0.0",
+    "@wordpress/components": "^29.0.0",
+    "@wordpress/element": "^6.0.0",
+    "@wordpress/i18n": "^5.0.0",
+    "flatpickr": "^4.6.13"
+  }
+}

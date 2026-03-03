@@ -1,0 +1,30 @@
+{
+    "name": "rockaden/chess",
+    "type": "wordpress-plugin",
+    "authors": [
+        {
+            "name": "msvens",
+            "email": "msvens@gmail.com"
+        }
+    ],
+    "require-dev": {
+        "phpstan/phpstan": "*",
+        "phpstan/extension-installer": "*",
+        "szepeviktor/phpstan-wordpress": "*",
+        "squizlabs/php_codesniffer": "*",
+        "wp-coding-standards/wpcs": "*",
+        "phpcompatibility/phpcompatibility-wp": "*",
+        "dealerdirect/phpcodesniffer-composer-installer": "*"
+    },
+    "scripts": {
+        "phpstan": "phpstan analyse --memory-limit=512M",
+        "phpcs": "phpcs",
+        "lint:php": ["@phpstan", "@phpcs"]
+    },
+    "config": {
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true,
+            "phpstan/extension-installer": true
+        }
+    }
+}

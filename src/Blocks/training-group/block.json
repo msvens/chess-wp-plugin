@@ -1,0 +1,22 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "rockaden/training-group",
+  "version": "0.1.0",
+  "title": "Training Group",
+  "category": "widgets",
+  "icon": "groups",
+  "description": "Displays a training group with participants and sessions.",
+  "textdomain": "rockaden-chess",
+  "attributes": {
+    "groupId": {
+      "type": "number",
+      "default": 0
+    }
+  },
+  "supports": {
+    "html": false,
+    "align": ["wide", "full"]
+  },
+  "editorScript": "file:../../../build/blocks/training-group/index.js"
+}

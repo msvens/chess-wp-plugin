@@ -1,0 +1,18 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "rockaden/calendar",
+  "version": "0.1.0",
+  "title": "Calendar",
+  "category": "widgets",
+  "icon": "calendar-alt",
+  "description": "Displays the SK Rockaden event calendar.",
+  "textdomain": "rockaden-chess",
+  "supports": {
+    "html": false,
+    "align": ["wide", "full"]
+  },
+  "editorScript": "file:../../../build/blocks/calendar/index.js",
+  "viewScript": "file:../../../build/blocks/calendar/view.js",
+  "render": "file:./render.php"
+}

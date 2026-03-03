@@ -1,0 +1,22 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "rockaden/standings",
+  "version": "0.1.0",
+  "title": "Tournament Standings",
+  "category": "widgets",
+  "icon": "editor-ol",
+  "description": "Displays tournament standings for a training group.",
+  "textdomain": "rockaden-chess",
+  "attributes": {
+    "groupId": {
+      "type": "number",
+      "default": 0
+    }
+  },
+  "supports": {
+    "html": false,
+    "align": ["wide"]
+  },
+  "editorScript": "file:../../../build/blocks/standings/index.js"
+}

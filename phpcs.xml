@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<ruleset name="Rockaden Chess">
+    <description>WordPress coding standards for Rockaden Chess plugin</description>
+
+    <file>rockaden-chess.php</file>
+    <file>src/</file>
+
+    <!-- WordPress coding standards -->
+    <rule ref="WordPress">
+        <!-- Allow short array syntax [] instead of array() -->
+        <exclude name="Universal.Arrays.DisallowShortArraySyntax"/>
+        <!-- We use PSR-4 autoloading, not WP file naming -->
+        <exclude name="WordPress.Files.FileName"/>
+        <!-- Allow short ternary -->
+        <exclude name="Universal.Operators.DisallowShortTernary"/>
+    </rule>
+
+    <!-- PHP compatibility -->
+    <config name="testVersion" value="8.1-"/>
+    <rule ref="PHPCompatibilityWP"/>
+
+    <!-- Minimum WP version for deprecated function checks -->
+    <config name="minimum_wp_version" value="6.4"/>
+
+    <!-- Text domain for i18n -->
+    <rule ref="WordPress.WP.I18n">
+        <properties>
+            <property name="text_domain" type="array">
+                <element value="rockaden-chess"/>
+            </property>
+        </properties>
+    </rule>
+</ruleset>
