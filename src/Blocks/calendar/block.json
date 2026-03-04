@@ -8,11 +8,18 @@
   "icon": "calendar-alt",
   "description": "Displays the SK Rockaden event calendar.",
   "textdomain": "rockaden-chess",
+  "attributes": {
+    "align": {
+      "type": "string",
+      "default": "wide"
+    }
+  },
   "supports": {
     "html": false,
     "align": ["wide", "full"]
   },
   "editorScript": "file:../../../build/blocks/calendar/index.js",
   "viewScript": "file:../../../build/blocks/calendar/view.js",
+  "viewStyle": "file:../../../build/blocks/calendar/view.css",
   "render": "file:./render.php"
 }
