@@ -88,6 +88,31 @@ export interface Translations {
 		weekly: string;
 		biweekly: string;
 	};
+	ranking: {
+		title: string;
+		ratingPeriod: string;
+		eloType: string;
+		memberType: string;
+		standard: string;
+		rapid: string;
+		blitz: string;
+		all: string;
+		women: string;
+		juniors: string;
+		cadets: string;
+		veterans: string;
+		minors: string;
+		kids: string;
+		rank: string;
+		titleCol: string;
+		firstName: string;
+		lastName: string;
+		rating: string;
+		showing: string;
+		players: string;
+		noPlayers: string;
+		of: string;
+	};
 	common: {
 		loading: string;
 		save: string;
@@ -188,6 +213,31 @@ const translations: Record< Language, Translations > = {
 			weekly: 'Weekly',
 			biweekly: 'Biweekly',
 		},
+		ranking: {
+			title: 'Ranking List',
+			ratingPeriod: 'Rating Period',
+			eloType: 'ELO Type',
+			memberType: 'Member Type',
+			standard: 'Standard',
+			rapid: 'Rapid',
+			blitz: 'Blitz',
+			all: 'All',
+			women: 'Women',
+			juniors: 'Juniors',
+			cadets: 'Cadets',
+			veterans: 'Veterans',
+			minors: 'Minors',
+			kids: 'Kids',
+			rank: '#',
+			titleCol: 'Title',
+			firstName: 'First Name',
+			lastName: 'Last Name',
+			rating: 'Rating',
+			showing: 'Showing',
+			players: 'players',
+			noPlayers: 'No players found.',
+			of: 'of',
+		},
 		common: {
 			loading: 'Loading...',
 			save: 'Save',
@@ -285,6 +335,31 @@ const translations: Record< Language, Translations > = {
 			recurring: 'Återkommande',
 			weekly: 'Varje vecka',
 			biweekly: 'Varannan vecka',
+		},
+		ranking: {
+			title: 'Rankinglista',
+			ratingPeriod: 'Rankingperiod',
+			eloType: 'Elo-typ',
+			memberType: 'Medlemstyp',
+			standard: 'Standard',
+			rapid: 'Rapid',
+			blitz: 'Blixt',
+			all: 'Alla',
+			women: 'Kvinnor',
+			juniors: 'Juniorer',
+			cadets: 'Kadetter',
+			veterans: 'Veteraner',
+			minors: 'Minorer',
+			kids: 'Barn',
+			rank: '#',
+			titleCol: 'Titel',
+			firstName: 'Förnamn',
+			lastName: 'Efternamn',
+			rating: 'Rating',
+			showing: 'Visar',
+			players: 'spelare',
+			noPlayers: 'Inga spelare hittades.',
+			of: 'av',
 		},
 		common: {
 			loading: 'Laddar...',

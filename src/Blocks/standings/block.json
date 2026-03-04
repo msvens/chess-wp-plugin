@@ -18,5 +18,8 @@
     "html": false,
     "align": ["wide"]
   },
-  "editorScript": "file:../../../build/blocks/standings/index.js"
+  "editorScript": "file:../../../build/blocks/standings/index.js",
+  "viewScript": "file:../../../build/blocks/standings/view.js",
+  "viewStyle": "file:../../../build/blocks/standings/view.css",
+  "render": "file:./render.php"
 }

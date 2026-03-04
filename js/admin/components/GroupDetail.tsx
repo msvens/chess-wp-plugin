@@ -10,6 +10,7 @@ import {
 import type { Translations } from '../../shared';
 import { useTrainingGroup } from '../hooks/useTrainingGroup';
 import { useSsfRatings } from '../hooks/useSsfRatings';
+import { updateGroup } from '../api';
 import { ParticipantList } from './ParticipantList';
 import { AddParticipantModal } from './AddParticipantModal';
 import { SessionList } from './SessionList';
@@ -40,6 +41,18 @@ export function GroupDetail( {
 		loading: ratingsLoading,
 	} = useSsfRatings( clubId );
 	const [ showAddModal, setShowAddModal ] = useState( false );
+	const [ updatingStatus, setUpdatingStatus ] = useState( false );
+
+	const toggleStatus = () => {
+		if ( ! group ) {
+			return;
+		}
+		const newStatus = group.status === 'active' ? 'draft' : 'active';
+		setUpdatingStatus( true );
+		updateGroup( groupId, { status: newStatus } )
+			.then( () => refetch() )
+			.finally( () => setUpdatingStatus( false ) );
+	};
 
 	if ( loading ) {
 		return <Spinner />;
@@ -103,7 +116,28 @@ export function GroupDetail( {
 				&larr; { t.training.backToList }
 			</Button>
 
-			<Heading level={ 2 }>{ group.title }</Heading>
+			<div
+				style={ {
+					display: 'flex',
+					alignItems: 'center',
+					gap: 12,
+					marginBottom: 4,
+				} }
+			>
+				<Heading level={ 2 } style={ { margin: 0 } }>
+					{ group.title }
+				</Heading>
+				<Button
+					variant={
+						group.status === 'active' ? 'primary' : 'secondary'
+					}
+					size="compact"
+					isBusy={ updatingStatus }
+					onClick={ toggleStatus }
+				>
+					{ group.status === 'active' ? t.training.active : 'Draft' }
+				</Button>
+			</div>
 			{ group.semester && (
 				<Text style={ { display: 'block', marginBottom: 4 } }>
 					{ t.training.semester }: { group.semester }

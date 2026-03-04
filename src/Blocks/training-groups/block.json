@@ -1,0 +1,19 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "rockaden/training-groups",
+  "version": "0.1.0",
+  "title": "Training Groups",
+  "category": "widgets",
+  "icon": "groups",
+  "description": "Displays an overview grid of all active training groups.",
+  "textdomain": "rockaden-chess",
+  "supports": {
+    "html": false,
+    "align": ["wide", "full"]
+  },
+  "editorScript": "file:../../../build/blocks/training-groups/index.js",
+  "viewScript": "file:../../../build/blocks/training-groups/view.js",
+  "viewStyle": "file:../../../build/blocks/training-groups/view.css",
+  "render": "file:./render.php"
+}

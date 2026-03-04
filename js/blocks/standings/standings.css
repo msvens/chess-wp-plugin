@@ -1,0 +1,82 @@
+/* =========================================================
+   Standalone Standings — standings.css
+   BEM naming: rc-st-*
+   ========================================================= */
+
+.rc-st {
+	--rc-st-border: #e5e7eb;
+	--rc-st-surface-alt: #f9fafb;
+	--rc-st-text-muted: #6b7280;
+
+	font-family: var(--wp--preset--font-family--geist, sans-serif);
+	color: var(--wp--preset--color--on-surface);
+	max-width: 100%;
+}
+
+html.dark .rc-st {
+	--rc-st-border: #374151;
+	--rc-st-surface-alt: #263244;
+	--rc-st-text-muted: #9ca3af;
+}
+
+.rc-st__loading {
+	text-align: center;
+	padding: 2rem;
+	color: var(--rc-st-text-muted);
+}
+
+.rc-st__title {
+	margin: 0 0 1rem;
+	font-size: 1.25rem;
+	font-weight: 300;
+	letter-spacing: 0.025em;
+}
+
+.rc-st__table {
+	width: 100%;
+	border-collapse: collapse;
+	font-size: 0.875rem;
+}
+
+.rc-st__table th,
+.rc-st__table td {
+	padding: 0.5rem 0.75rem;
+	text-align: left;
+	border-bottom: 1px solid var(--rc-st-border);
+}
+
+.rc-st__table th {
+	font-weight: 500;
+	color: var(--rc-st-text-muted);
+	font-size: 0.75rem;
+	text-transform: uppercase;
+	letter-spacing: 0.05em;
+}
+
+.rc-st__table tbody tr:hover {
+	background: var(--rc-st-surface-alt);
+}
+
+/* Compact numeric columns */
+.rc-st__table th:not(:nth-child(2)),
+.rc-st__table td:not(:nth-child(2)) {
+	text-align: center;
+	width: 3rem;
+}
+
+.rc-st__rating {
+	font-variant-numeric: tabular-nums;
+	color: var(--rc-st-text-muted);
+}
+
+.rc-st__points {
+	font-weight: 600;
+	font-variant-numeric: tabular-nums;
+}
+
+@media (max-width: 640px) {
+	.rc-st__table {
+		display: block;
+		overflow-x: auto;
+	}
+}

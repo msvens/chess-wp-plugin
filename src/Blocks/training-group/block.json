@@ -18,5 +18,8 @@
     "html": false,
     "align": ["wide", "full"]
   },
-  "editorScript": "file:../../../build/blocks/training-group/index.js"
+  "editorScript": "file:../../../build/blocks/training-group/index.js",
+  "viewScript": "file:../../../build/blocks/training-group/view.js",
+  "viewStyle": "file:../../../build/blocks/training-group/view.css",
+  "render": "file:./render.php"
 }

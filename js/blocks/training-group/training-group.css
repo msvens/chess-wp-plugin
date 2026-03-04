@@ -1,0 +1,254 @@
+/* =========================================================
+   Training Group Detail — training-group.css
+   BEM naming: rc-td-*
+   ========================================================= */
+
+.rc-td {
+	--rc-td-border: #e5e7eb;
+	--rc-td-surface: #fff;
+	--rc-td-surface-alt: #f9fafb;
+	--rc-td-text-muted: #6b7280;
+	--rc-td-accent: #2563eb;
+	--rc-td-accent-bg: #dbeafe;
+	--rc-td-tab-active: #2563eb;
+	--rc-td-tab-inactive: #6b7280;
+
+	font-family: var(--wp--preset--font-family--geist, sans-serif);
+	color: var(--wp--preset--color--on-surface);
+	max-width: 100%;
+}
+
+html.dark .rc-td {
+	--rc-td-border: #374151;
+	--rc-td-surface: #1f2937;
+	--rc-td-surface-alt: #263244;
+	--rc-td-text-muted: #9ca3af;
+	--rc-td-accent: #60a5fa;
+	--rc-td-accent-bg: rgba(37, 99, 235, 0.2);
+	--rc-td-tab-active: #60a5fa;
+	--rc-td-tab-inactive: #9ca3af;
+}
+
+/* --- Loading / empty --- */
+.rc-td__loading,
+.rc-td__empty {
+	text-align: center;
+	padding: 2rem;
+	color: var(--rc-td-text-muted);
+}
+
+/* --- Title --- */
+.rc-td__title {
+	margin: 0 0 0.5rem;
+	font-size: 1.5rem;
+	font-weight: 300;
+	letter-spacing: 0.025em;
+}
+
+.rc-td__description {
+	margin: 0 0 1.5rem;
+	color: var(--rc-td-text-muted);
+	line-height: 1.5;
+}
+
+/* --- Tabs --- */
+.rc-td__tabs {
+	display: flex;
+	gap: 0;
+	border-bottom: 2px solid var(--rc-td-border);
+	margin-bottom: 1.5rem;
+}
+
+.rc-td__tab {
+	padding: 0.625rem 1.25rem;
+	background: none;
+	border: none;
+	border-bottom: 2px solid transparent;
+	margin-bottom: -2px;
+	font-size: 0.875rem;
+	font-weight: 500;
+	color: var(--rc-td-tab-inactive);
+	cursor: pointer;
+	transition: color 0.15s, border-color 0.15s;
+	font-family: inherit;
+	letter-spacing: 0.025em;
+	text-transform: uppercase;
+}
+
+.rc-td__tab:hover {
+	color: var(--rc-td-tab-active);
+}
+
+.rc-td__tab--active {
+	color: var(--rc-td-tab-active);
+	border-bottom-color: var(--rc-td-tab-active);
+}
+
+/* --- Panel container --- */
+.rc-td__panel {
+	min-height: 200px;
+}
+
+/* --- Tables --- */
+.rc-td__table {
+	width: 100%;
+	border-collapse: collapse;
+	font-size: 0.875rem;
+}
+
+.rc-td__table th,
+.rc-td__table td {
+	padding: 0.5rem 0.75rem;
+	text-align: left;
+	border-bottom: 1px solid var(--rc-td-border);
+}
+
+.rc-td__table th {
+	font-weight: 500;
+	color: var(--rc-td-text-muted);
+	font-size: 0.75rem;
+	text-transform: uppercase;
+	letter-spacing: 0.05em;
+}
+
+.rc-td__table tbody tr:hover {
+	background: var(--rc-td-surface-alt);
+}
+
+.rc-td__rating {
+	font-variant-numeric: tabular-nums;
+	color: var(--rc-td-text-muted);
+}
+
+.rc-td__points {
+	font-weight: 600;
+	font-variant-numeric: tabular-nums;
+}
+
+.rc-td__result {
+	font-variant-numeric: tabular-nums;
+}
+
+/* --- Standings table — compact columns --- */
+.rc-td__table--standings th:not(:nth-child(2)),
+.rc-td__table--standings td:not(:nth-child(2)) {
+	text-align: center;
+	width: 3rem;
+}
+
+/* --- Session list --- */
+.rc-td__session-list {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+.rc-td__session-link {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	width: 100%;
+	padding: 0.75rem;
+	background: none;
+	border: none;
+	border-bottom: 1px solid var(--rc-td-border);
+	cursor: pointer;
+	font-family: inherit;
+	font-size: 0.875rem;
+	color: inherit;
+	text-align: left;
+	transition: background-color 0.15s;
+}
+
+.rc-td__session-link:hover {
+	background: var(--rc-td-surface-alt);
+}
+
+.rc-td__session-date {
+	font-weight: 500;
+}
+
+.rc-td__session-meta {
+	color: var(--rc-td-text-muted);
+	font-size: 0.8125rem;
+}
+
+/* --- Session detail --- */
+.rc-td__back {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.25rem;
+	padding: 0.375rem 0;
+	margin-bottom: 1rem;
+	background: none;
+	border: none;
+	font-family: inherit;
+	font-size: 0.875rem;
+	color: var(--rc-td-accent);
+	cursor: pointer;
+}
+
+.rc-td__back:hover {
+	text-decoration: underline;
+}
+
+.rc-td__session-title {
+	margin: 0 0 1.25rem;
+	font-size: 1.125rem;
+	font-weight: 500;
+	text-transform: capitalize;
+}
+
+/* --- Section --- */
+.rc-td__section {
+	margin-bottom: 1.5rem;
+}
+
+.rc-td__section-title {
+	margin: 0 0 0.75rem;
+	font-size: 0.8125rem;
+	font-weight: 600;
+	text-transform: uppercase;
+	letter-spacing: 0.05em;
+	color: var(--rc-td-text-muted);
+}
+
+.rc-td__attendance-list {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.5rem;
+}
+
+.rc-td__attendance-list li {
+	padding: 0.25rem 0.75rem;
+	background: var(--rc-td-accent-bg);
+	color: var(--rc-td-accent);
+	border-radius: 9999px;
+	font-size: 0.8125rem;
+	font-weight: 500;
+}
+
+.rc-td__notes {
+	margin: 0;
+	padding: 0.75rem 1rem;
+	background: var(--rc-td-surface-alt);
+	border-radius: 0.375rem;
+	line-height: 1.6;
+	font-size: 0.875rem;
+	white-space: pre-wrap;
+}
+
+/* --- Responsive: horizontal scroll for tables on mobile --- */
+@media (max-width: 640px) {
+	.rc-td__table {
+		display: block;
+		overflow-x: auto;
+	}
+
+	.rc-td__tabs {
+		overflow-x: auto;
+	}
+}

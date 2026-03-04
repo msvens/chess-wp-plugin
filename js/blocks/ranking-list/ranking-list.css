@@ -1,0 +1,205 @@
+/* =========================================================
+   Ranking List — ranking-list.css
+   BEM naming: rc-rl-*
+   ========================================================= */
+
+.rc-rl {
+	--rc-rl-border: #e5e7eb;
+	--rc-rl-surface-alt: #f9fafb;
+	--rc-rl-text-muted: #6b7280;
+	--rc-rl-accent: #2563eb;
+	--rc-rl-accent-text: #fff;
+	--rc-rl-select-bg: #fff;
+	--rc-rl-select-border: #d1d5db;
+	--rc-rl-select-text: inherit;
+
+	font-family: var(--wp--preset--font-family--geist, sans-serif);
+	color: var(--wp--preset--color--on-surface);
+	max-width: 100%;
+}
+
+html.dark .rc-rl {
+	--rc-rl-border: #374151;
+	--rc-rl-surface-alt: #263244;
+	--rc-rl-text-muted: #9ca3af;
+	--rc-rl-accent: #3b82f6;
+	--rc-rl-select-bg: #1e293b;
+	--rc-rl-select-border: #475569;
+	--rc-rl-select-text: #e2e8f0;
+}
+
+/* Title */
+.rc-rl__title {
+	margin: 0 0 1rem;
+	font-size: 1.25rem;
+	font-weight: 300;
+	letter-spacing: 0.025em;
+}
+
+/* Loading / Empty */
+.rc-rl__loading,
+.rc-rl__empty {
+	text-align: center;
+	padding: 2rem;
+	color: var(--rc-rl-text-muted);
+}
+
+/* ---- Filters ---- */
+.rc-rl__filters {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	gap: 1rem;
+	margin-bottom: 1.5rem;
+}
+
+.rc-rl__filter {
+	display: flex;
+	flex-direction: column;
+	gap: 0.25rem;
+}
+
+.rc-rl__filter-label {
+	font-size: 0.75rem;
+	font-weight: 500;
+	text-transform: uppercase;
+	letter-spacing: 0.05em;
+	color: var(--rc-rl-text-muted);
+}
+
+.rc-rl__select {
+	appearance: none;
+	background: var(--rc-rl-select-bg);
+	color: var(--rc-rl-select-text);
+	border: 1px solid var(--rc-rl-select-border);
+	border-radius: 0.375rem;
+	padding: 0.5rem 2rem 0.5rem 0.75rem;
+	font-size: 0.875rem;
+	font-family: inherit;
+	cursor: pointer;
+	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%236b7280' viewBox='0 0 16 16'%3E%3Cpath d='M8 11.5l-5-5h10l-5 5z'/%3E%3C/svg%3E");
+	background-repeat: no-repeat;
+	background-position: right 0.5rem center;
+}
+
+.rc-rl__select:focus {
+	outline: 2px solid var(--rc-rl-accent);
+	outline-offset: -1px;
+}
+
+/* ---- Table ---- */
+.rc-rl__table-wrap {
+	overflow-x: auto;
+}
+
+.rc-rl__table {
+	width: 100%;
+	border-collapse: collapse;
+	font-size: 0.875rem;
+}
+
+.rc-rl__table th,
+.rc-rl__table td {
+	padding: 0.5rem 0.75rem;
+	text-align: left;
+	border-bottom: 1px solid var(--rc-rl-border);
+}
+
+.rc-rl__table th {
+	font-weight: 500;
+	color: var(--rc-rl-text-muted);
+	font-size: 0.75rem;
+	text-transform: uppercase;
+	letter-spacing: 0.05em;
+}
+
+.rc-rl__table tbody tr:hover {
+	background: var(--rc-rl-surface-alt);
+}
+
+/* Rank column */
+.rc-rl__table th:first-child,
+.rc-rl__table td:first-child {
+	text-align: center;
+	width: 3rem;
+}
+
+/* Title column */
+.rc-rl__table th:nth-child(2),
+.rc-rl__table td:nth-child(2) {
+	text-align: center;
+	width: 4rem;
+}
+
+/* Rating column */
+.rc-rl__table th:last-child,
+.rc-rl__table td:last-child {
+	text-align: right;
+	width: 5rem;
+}
+
+.rc-rl__rating {
+	font-weight: 600;
+	font-variant-numeric: tabular-nums;
+}
+
+/* ---- Pagination ---- */
+.rc-rl__pagination {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 0.75rem;
+	margin-top: 1.5rem;
+}
+
+.rc-rl__pagination-summary {
+	font-size: 0.8125rem;
+	color: var(--rc-rl-text-muted);
+}
+
+.rc-rl__pagination-buttons {
+	display: flex;
+	gap: 0.25rem;
+}
+
+.rc-rl__page-btn {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	min-width: 2rem;
+	height: 2rem;
+	padding: 0 0.5rem;
+	border: 1px solid var(--rc-rl-border);
+	border-radius: 0.375rem;
+	background: transparent;
+	color: inherit;
+	font-size: 0.8125rem;
+	font-family: inherit;
+	cursor: pointer;
+	transition: background 0.15s, border-color 0.15s;
+}
+
+.rc-rl__page-btn:hover:not(:disabled) {
+	background: var(--rc-rl-surface-alt);
+}
+
+.rc-rl__page-btn:disabled {
+	opacity: 0.4;
+	cursor: default;
+}
+
+.rc-rl__page-btn--active {
+	background: var(--rc-rl-accent);
+	color: var(--rc-rl-accent-text);
+	border-color: var(--rc-rl-accent);
+}
+
+.rc-rl__page-btn--active:hover {
+	background: var(--rc-rl-accent);
+}
+
+/* ---- Responsive ---- */
+@media (max-width: 640px) {
+	.rc-rl__filters {
+		grid-template-columns: 1fr;
+	}
+}

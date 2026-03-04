@@ -1,0 +1,139 @@
+/* =========================================================
+   Training Groups Overview — training-groups.css
+   BEM naming: rc-tg-*
+   ========================================================= */
+
+.rc-tg {
+	--rc-tg-border: #e5e7eb;
+	--rc-tg-card-bg: #fff;
+	--rc-tg-card-hover: #f9fafb;
+	--rc-tg-badge-semester-bg: #dbeafe;
+	--rc-tg-badge-semester-text: #1e40af;
+	--rc-tg-badge-tournament-bg: #fee2e2;
+	--rc-tg-badge-tournament-text: #991b1b;
+	--rc-tg-meta-text: #6b7280;
+
+	font-family: var(--wp--preset--font-family--geist, sans-serif);
+	color: var(--wp--preset--color--on-surface);
+	max-width: 100%;
+}
+
+html.dark .rc-tg {
+	--rc-tg-border: #374151;
+	--rc-tg-card-bg: #1f2937;
+	--rc-tg-card-hover: #263244;
+	--rc-tg-badge-semester-bg: rgba(37, 99, 235, 0.2);
+	--rc-tg-badge-semester-text: #93c5fd;
+	--rc-tg-badge-tournament-bg: rgba(220, 38, 38, 0.2);
+	--rc-tg-badge-tournament-text: #fca5a5;
+	--rc-tg-meta-text: #9ca3af;
+}
+
+/* --- Loading / empty --- */
+.rc-tg__loading,
+.rc-tg__empty {
+	text-align: center;
+	padding: 2rem;
+	color: var(--rc-tg-meta-text);
+}
+
+/* --- Card grid --- */
+.rc-tg__grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+	gap: 1.25rem;
+}
+
+/* --- Card --- */
+.rc-tg__card {
+	display: flex;
+	flex-direction: column;
+	padding: 1.25rem;
+	background: var(--rc-tg-card-bg);
+	border: 1px solid var(--rc-tg-border);
+	border-radius: 0.5rem;
+	text-decoration: none;
+	color: inherit;
+	transition: background-color 0.15s, box-shadow 0.15s;
+}
+
+.rc-tg__card:hover {
+	background: var(--rc-tg-card-hover);
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+html.dark .rc-tg__card:hover {
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* --- Card header (badges) --- */
+.rc-tg__card-header {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.5rem;
+	margin-bottom: 0.75rem;
+}
+
+/* --- Badge --- */
+.rc-tg__badge {
+	display: inline-block;
+	padding: 0.125rem 0.5rem;
+	font-size: 0.75rem;
+	font-weight: 500;
+	line-height: 1.5;
+	border-radius: 9999px;
+	letter-spacing: 0.025em;
+	text-transform: uppercase;
+}
+
+.rc-tg__badge--semester {
+	background: var(--rc-tg-badge-semester-bg);
+	color: var(--rc-tg-badge-semester-text);
+}
+
+.rc-tg__badge--tournament {
+	background: var(--rc-tg-badge-tournament-bg);
+	color: var(--rc-tg-badge-tournament-text);
+}
+
+/* --- Card content --- */
+.rc-tg__card-title {
+	margin: 0 0 0.5rem;
+	font-size: 1.125rem;
+	font-weight: 500;
+	line-height: 1.3;
+}
+
+.rc-tg__card-desc {
+	margin: 0 0 0.75rem;
+	font-size: 0.875rem;
+	color: var(--rc-tg-meta-text);
+	line-height: 1.5;
+	/* Truncate long descriptions */
+	display: -webkit-box;
+	-webkit-line-clamp: 2;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+}
+
+/* --- Card footer --- */
+.rc-tg__card-footer {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-top: auto;
+	padding-top: 0.75rem;
+	border-top: 1px solid var(--rc-tg-border);
+}
+
+.rc-tg__card-meta {
+	font-size: 0.8125rem;
+	color: var(--rc-tg-meta-text);
+}
+
+/* --- Responsive --- */
+@media (max-width: 640px) {
+	.rc-tg__grid {
+		grid-template-columns: 1fr;
+	}
+}

@@ -21,17 +21,19 @@ class TrainingGroup {
 		register_post_type(
 			self::POST_TYPE,
 			[
-				'labels'       => [
+				'labels'             => [
 					'name'          => __( 'Training Groups', 'rockaden-chess' ),
 					'singular_name' => __( 'Training Group', 'rockaden-chess' ),
 					'add_new_item'  => __( 'Add New Training Group', 'rockaden-chess' ),
 					'edit_item'     => __( 'Edit Training Group', 'rockaden-chess' ),
 				],
-				'public'       => false,
-				'show_ui'      => false, // Managed via React admin page.
-				'show_in_rest' => true,
-				'supports'     => [ 'title', 'editor', 'author' ],
-				'has_archive'  => false,
+				'public'             => true,
+				'publicly_queryable' => true,
+				'show_ui'            => false, // Managed via React admin page.
+				'show_in_rest'       => true,
+				'supports'           => [ 'title', 'editor', 'author' ],
+				'has_archive'        => true,
+				'rewrite'            => [ 'slug' => 'training-groups' ],
 			]
 		);
 

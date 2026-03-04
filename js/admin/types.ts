@@ -9,6 +9,7 @@ export interface Participant {
 
 export interface TrainingGroup {
 	id: number;
+	slug: string;
 	title: string;
 	description: string;
 	status: string;

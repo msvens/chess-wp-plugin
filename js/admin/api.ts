@@ -30,7 +30,7 @@ export function createGroup( data: CreateGroupData ): Promise< TrainingGroup > {
 
 export function updateGroup(
 	id: number,
-	data: Partial< CreateGroupData >
+	data: Partial< CreateGroupData > & { status?: string }
 ): Promise< TrainingGroup > {
 	return apiFetch( {
 		path: `${ BASE }/training-groups/${ id }`,

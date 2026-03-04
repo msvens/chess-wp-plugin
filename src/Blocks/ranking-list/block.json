@@ -1,0 +1,19 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "rockaden/ranking-list",
+  "version": "0.1.0",
+  "title": "Ranking List",
+  "category": "widgets",
+  "icon": "awards",
+  "description": "Displays SSF club member ratings with filters for period, ELO type, and member category.",
+  "textdomain": "rockaden-chess",
+  "supports": {
+    "html": false,
+    "align": ["wide"]
+  },
+  "editorScript": "file:../../../build/blocks/ranking-list/index.js",
+  "viewScript": "file:../../../build/blocks/ranking-list/view.js",
+  "viewStyle": "file:../../../build/blocks/ranking-list/view.css",
+  "render": "file:./render.php"
+}

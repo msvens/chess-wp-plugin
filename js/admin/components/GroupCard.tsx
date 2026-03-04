@@ -59,8 +59,24 @@ export function GroupCard( { group, t, onClick, onDeleted }: GroupCardProps ) {
 				</div>
 			</CardHeader>
 			<CardBody>
+				<Text
+					style={ {
+						display: 'inline-block',
+						padding: '1px 8px',
+						borderRadius: 9999,
+						fontSize: 11,
+						fontWeight: 500,
+						marginBottom: 4,
+						background:
+							group.status === 'active' ? '#dbeafe' : '#f3f4f6',
+						color:
+							group.status === 'active' ? '#1e40af' : '#6b7280',
+					} }
+				>
+					{ group.status === 'active' ? t.training.active : 'Draft' }
+				</Text>
 				{ group.semester && (
-					<Text>
+					<Text style={ { display: 'block' } }>
 						{ t.training.semester }: { group.semester }
 					</Text>
 				) }

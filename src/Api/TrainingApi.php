@@ -260,6 +260,13 @@ class TrainingApi {
 		if ( isset( $body['eventId'] ) ) {
 			update_post_meta( $post->ID, 'rc_event_id', (int) $body['eventId'] );
 		}
+		if ( isset( $body['status'] ) ) {
+			$allowed = [ 'draft', 'active', 'archived' ];
+			$status  = sanitize_text_field( $body['status'] );
+			if ( in_array( $status, $allowed, true ) ) {
+				update_post_meta( $post->ID, 'rc_status', $status );
+			}
+		}
 
 		return new WP_REST_Response( self::format_group( get_post( $post->ID ) ) );
 	}
@@ -521,6 +528,7 @@ class TrainingApi {
 	private static function format_group( \WP_Post $post ): array {
 		return [
 			'id'            => $post->ID,
+			'slug'          => $post->post_name,
 			'title'         => $post->post_title,
 			'description'   => $post->post_content,
 			'status'        => get_post_meta( $post->ID, 'rc_status', true ) ?: 'draft',
