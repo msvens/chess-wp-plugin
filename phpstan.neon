@@ -7,3 +7,11 @@ parameters:
         - src/
     scanDirectories:
         - vendor/php-stubs/wordpress-stubs/
+    reportUnmatchedIgnoredErrors: false
+    ignoreErrors:
+        # wp-scripts generates .asset.php files during JS build; not available in PHP-only CI
+        -
+            identifier: require.fileNotFound
+            paths:
+                - src/Admin/TrainingAdmin.php
+                - src/Admin/EventMetaBoxes.php

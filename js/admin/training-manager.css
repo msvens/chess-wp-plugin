@@ -1,0 +1,6 @@
+/* Override WP admin responsive rule that bumps select font-size to 16px at 782px */
+@media screen and (max-width: 782px) {
+	#rockaden-training-root select {
+		font-size: 14px;
+	}
+}

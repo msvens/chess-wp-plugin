@@ -31,6 +31,9 @@ export function CreateGroupModal( {
 	const [ timeControl, setTimeControl ] = useState<
 		'classical' | 'rapid' | 'blitz'
 	>( 'classical' );
+	const [ trainers, setTrainers ] = useState( '' );
+	const [ contact, setContact ] = useState( '' );
+	const [ tournamentLink, setTournamentLink ] = useState( '' );
 	const [ saving, setSaving ] = useState( false );
 	const [ error, setError ] = useState< string | null >( null );
 
@@ -92,6 +95,9 @@ export function CreateGroupModal( {
 				hasTournament,
 				timeControl: hasTournament ? timeControl : undefined,
 				eventId,
+				trainers: trainers.trim() || undefined,
+				contact: contact.trim() || undefined,
+				tournamentLink: tournamentLink.trim() || undefined,
 			} );
 			onCreated();
 			onClose();
@@ -132,6 +138,22 @@ export function CreateGroupModal( {
 				label={ t.training.description }
 				value={ description }
 				onChange={ setDescription }
+			/>
+			<TextControl
+				label={ t.training.trainers }
+				value={ trainers }
+				onChange={ setTrainers }
+			/>
+			<TextControl
+				label={ t.training.contact }
+				value={ contact }
+				onChange={ setContact }
+			/>
+			<TextControl
+				label={ t.training.tournamentLink }
+				value={ tournamentLink }
+				onChange={ setTournamentLink }
+				type="url"
 			/>
 			<TextControl
 				label={ t.training.semester }
@@ -284,7 +306,6 @@ export function CreateGroupModal( {
 									if ( date ) {
 										setEventStart( date );
 									}
-									setShowStartPicker( false );
 								} }
 								is12Hour={ false }
 							/>
@@ -296,7 +317,6 @@ export function CreateGroupModal( {
 									if ( date ) {
 										setEventEnd( date );
 									}
-									setShowEndPicker( false );
 								} }
 								is12Hour={ false }
 							/>

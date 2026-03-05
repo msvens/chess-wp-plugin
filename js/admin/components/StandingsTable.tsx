@@ -1,12 +1,12 @@
 import { useMemo } from '@wordpress/element';
-import type { Translations } from '../../shared';
+import type { Translations, GameResult } from '../../shared';
 import { computeStandings } from '../../shared';
-import type { Participant, TrainingSession, SsfRatingInfo } from '../types';
+import type { Participant, StoredRound, SsfRatingInfo } from '../types';
 import { ratingForTimeControl, ratingLabel } from './ratingUtils';
 
 interface StandingsTableProps {
 	participants: Participant[];
-	sessions: TrainingSession[];
+	rounds: StoredRound[];
 	ratings: Map< number, SsfRatingInfo >;
 	timeControl: string;
 	t: Translations;
@@ -14,7 +14,7 @@ interface StandingsTableProps {
 
 export function StandingsTable( {
 	participants,
-	sessions,
+	rounds,
 	ratings,
 	timeControl,
 	t,
@@ -32,10 +32,20 @@ export function StandingsTable( {
 		return m;
 	}, [ participants ] );
 
-	const allGames = useMemo(
-		() => sessions.flatMap( ( s ) => s.games ),
-		[ sessions ]
-	);
+	const allGames = useMemo( () => {
+		const games: GameResult[] = rounds.flatMap( ( r ) => r.pairings );
+		// Inject synthetic bye results
+		for ( const r of rounds ) {
+			if ( r.bye ) {
+				games.push( {
+					whiteId: r.bye,
+					blackId: '__BYE__',
+					result: 'bye-white',
+				} );
+			}
+		}
+		return games;
+	}, [ rounds ] );
 
 	const standings = useMemo(
 		() =>

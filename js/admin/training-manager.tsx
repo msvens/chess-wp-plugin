@@ -1,3 +1,4 @@
+import './training-manager.css';
 import { createRoot } from '@wordpress/element';
 import type { Language } from '../shared';
 import type { AppConfig } from './types';

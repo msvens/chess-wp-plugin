@@ -7,6 +7,18 @@ export interface Participant {
 	active: boolean;
 }
 
+export interface StoredPairing {
+	whiteId: string;
+	blackId: string;
+	result: '1-0' | '0.5-0.5' | '0-1' | null;
+}
+
+export interface StoredRound {
+	round: number;
+	pairings: StoredPairing[];
+	bye?: string;
+}
+
 export interface TrainingGroup {
 	id: number;
 	slug: string;
@@ -18,6 +30,10 @@ export interface TrainingGroup {
 	timeControl: string;
 	eventId: number;
 	participants: Participant[];
+	trainers: string;
+	contact: string;
+	tournamentLink: string;
+	rounds: StoredRound[];
 	createdBy: number;
 }
 
@@ -96,6 +112,9 @@ export interface CreateGroupData {
 	hasTournament?: boolean;
 	timeControl?: string;
 	eventId?: number;
+	trainers?: string;
+	contact?: string;
+	tournamentLink?: string;
 }
 
 // Navigation state
