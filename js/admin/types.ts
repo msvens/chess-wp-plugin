@@ -37,20 +37,12 @@ export interface TrainingGroup {
 	createdBy: number;
 }
 
-export interface Game {
-	round: number;
-	whiteId: string;
-	blackId: string;
-	result: '1-0' | '0.5-0.5' | '0-1' | 'bye-white' | 'bye-black' | null;
-}
-
 export interface TrainingSession {
 	id: number;
 	groupId: number;
 	sessionDate: string;
 	notes: string;
 	attendance: string[];
-	games: Game[];
 }
 
 export interface SsfRatingInfo {

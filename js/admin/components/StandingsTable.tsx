@@ -1,5 +1,5 @@
 import { useMemo } from '@wordpress/element';
-import type { Translations, GameResult } from '../../shared';
+import type { Translations } from '../../shared';
 import { computeStandings } from '../../shared';
 import type { Participant, StoredRound, SsfRatingInfo } from '../types';
 import { ratingForTimeControl, ratingLabel } from './ratingUtils';
@@ -32,20 +32,10 @@ export function StandingsTable( {
 		return m;
 	}, [ participants ] );
 
-	const allGames = useMemo( () => {
-		const games: GameResult[] = rounds.flatMap( ( r ) => r.pairings );
-		// Inject synthetic bye results
-		for ( const r of rounds ) {
-			if ( r.bye ) {
-				games.push( {
-					whiteId: r.bye,
-					blackId: '__BYE__',
-					result: 'bye-white',
-				} );
-			}
-		}
-		return games;
-	}, [ rounds ] );
+	const allGames = useMemo(
+		() => rounds.flatMap( ( r ) => r.pairings ),
+		[ rounds ]
+	);
 
 	const standings = useMemo(
 		() =>

@@ -131,13 +131,16 @@ export function RoundsPanel( {
 				</Heading>
 				{ activeParticipants.length >= 2 && (
 					<Button
-						variant="secondary"
+						variant={ hasRounds ? 'tertiary' : 'secondary' }
+						isDestructive={ hasRounds }
 						onClick={ handleGenerate }
 						isBusy={ saving }
 						disabled={ saving }
 						size="compact"
 					>
-						{ t.training.generateRounds }
+						{ hasRounds
+							? t.training.regenerateRounds
+							: t.training.generateRounds }
 					</Button>
 				) }
 			</div>

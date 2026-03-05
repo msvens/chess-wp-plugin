@@ -47,37 +47,6 @@ export default function SessionDetail( {
 				</div>
 			) }
 
-			{ /* Pairings / Games */ }
-			{ session.games.length > 0 && (
-				<div className="rc-td__section">
-					<h4 className="rc-td__section-title">{ t.pairings }</h4>
-					<table className="rc-td__table">
-						<thead>
-							<tr>
-								<th>{ t.round }</th>
-								<th>{ t.pairings }</th>
-								<th>{ t.result }</th>
-							</tr>
-						</thead>
-						<tbody>
-							{ session.games.map( ( game, idx ) => (
-								<tr key={ idx }>
-									<td>{ game.round }</td>
-									<td>
-										{ getName( game.whiteId ) }
-										{ ' vs ' }
-										{ getName( game.blackId ) }
-									</td>
-									<td className="rc-td__result">
-										{ game.result || t.notPlayed }
-									</td>
-								</tr>
-							) ) }
-						</tbody>
-					</table>
-				</div>
-			) }
-
 			{ /* Notes */ }
 			{ session.notes && (
 				<div className="rc-td__section">

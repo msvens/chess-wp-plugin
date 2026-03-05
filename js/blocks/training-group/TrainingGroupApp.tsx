@@ -134,7 +134,7 @@ export default function TrainingGroupApp( { groupId, clubId, locale }: Props ) {
 			{ activeTab === 'standings' && (
 				<StandingsTab
 					participants={ group.participants }
-					sessions={ sessions }
+					rounds={ group.rounds }
 					ratings={ ratings }
 					t={ t.training }
 				/>

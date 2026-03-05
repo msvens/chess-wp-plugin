@@ -3,7 +3,6 @@ import type {
 	TrainingGroup,
 	TrainingSession,
 	SsfPlayer,
-	Game,
 	CreateGroupData,
 	StoredRound,
 	EventData,
@@ -119,18 +118,6 @@ export function saveAttendance(
 		path: `${ BASE }/training-sessions/${ sessionId }/attendance`,
 		method: 'PUT',
 		data: { attendance },
-	} );
-}
-
-export function saveGameResult(
-	sessionId: number,
-	idx: number,
-	game: Game
-): Promise< TrainingSession > {
-	return apiFetch( {
-		path: `${ BASE }/training-sessions/${ sessionId }/games/${ idx }`,
-		method: 'PUT',
-		data: game,
 	} );
 }
 

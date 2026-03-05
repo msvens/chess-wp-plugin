@@ -72,7 +72,6 @@ export function ScheduleTimeline( {
 							{ t.training.schedule }
 						</th>
 						<th>{ t.training.attendance }</th>
-						<th>{ t.training.pairings }</th>
 						<th></th>
 					</tr>
 				</thead>
@@ -114,9 +113,6 @@ export function ScheduleTimeline( {
 									{ session
 										? session.attendance.length
 										: '—' }
-								</td>
-								<td>
-									{ session ? session.games.length : '—' }
 								</td>
 								<td>
 									{ ! session && (

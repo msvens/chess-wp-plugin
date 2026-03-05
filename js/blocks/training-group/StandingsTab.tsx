@@ -1,22 +1,18 @@
-import type {
-	Participant,
-	TrainingSession,
-	SsfPlayer,
-} from '../../admin/types';
+import type { Participant, StoredRound, SsfPlayer } from '../../admin/types';
 import type { GameResult } from '../../shared/roundRobin';
 import { computeStandings } from '../../shared/roundRobin';
 import type { Translations } from '../../shared/translations';
 
 interface Props {
 	participants: Participant[];
-	sessions: TrainingSession[];
+	rounds: StoredRound[];
 	ratings: Map< number, SsfPlayer >;
 	t: Translations[ 'training' ];
 }
 
 export default function StandingsTab( {
 	participants,
-	sessions,
+	rounds,
 	ratings,
 	t,
 }: Props ) {
@@ -24,15 +20,8 @@ export default function StandingsTab( {
 	const participantIds = active.map( ( p ) => p.id );
 	const participantMap = new Map( active.map( ( p ) => [ p.id, p ] ) );
 
-	// Collect all games from all sessions.
-	const allGames: GameResult[] = sessions.flatMap( ( s ) =>
-		s.games.map( ( g ) => ( {
-			whiteId: g.whiteId,
-			blackId: g.blackId,
-			result: g.result,
-		} ) )
-	);
-
+	// Collect all games from rounds + synthetic bye results.
+	const allGames: GameResult[] = rounds.flatMap( ( r ) => r.pairings );
 	const standings = computeStandings( participantIds, allGames );
 
 	if ( standings.length === 0 ) {

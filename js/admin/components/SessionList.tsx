@@ -71,7 +71,6 @@ export function SessionList( {
 								{ t.training.sessions }
 							</th>
 							<th>{ t.training.attendance }</th>
-							<th>{ t.training.pairings }</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -84,7 +83,6 @@ export function SessionList( {
 								<td>{ idx + 1 }</td>
 								<td>{ session.sessionDate }</td>
 								<td>{ session.attendance.length }</td>
-								<td>{ session.games.length }</td>
 							</tr>
 						) ) }
 					</tbody>

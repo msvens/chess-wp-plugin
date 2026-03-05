@@ -1,10 +1,6 @@
 import { useState, useEffect } from '@wordpress/element';
 import apiFetch from '@wordpress/api-fetch';
-import type {
-	TrainingGroup,
-	TrainingSession,
-	SsfPlayer,
-} from '../../admin/types';
+import type { TrainingGroup, SsfPlayer } from '../../admin/types';
 import type { Language } from '../../shared/types';
 import type { GameResult } from '../../shared/roundRobin';
 import { computeStandings } from '../../shared/roundRobin';
@@ -24,7 +20,6 @@ export default function StandingsApp( { groupId, clubId, locale }: Props ) {
 	const lang = toLanguage( locale );
 	const t = getTranslation( lang );
 	const [ group, setGroup ] = useState< TrainingGroup | null >( null );
-	const [ sessions, setSessions ] = useState< TrainingSession[] >( [] );
 	const [ ratings, setRatings ] = useState< Map< number, SsfPlayer > >(
 		new Map()
 	);
@@ -36,26 +31,12 @@ export default function StandingsApp( { groupId, clubId, locale }: Props ) {
 			return;
 		}
 
-		const fetchData = async () => {
-			try {
-				const [ groupData, sessionData ] = await Promise.all( [
-					apiFetch< TrainingGroup >( {
-						path: `/rockaden/v1/training-groups/${ groupId }`,
-					} ),
-					apiFetch< TrainingSession[] >( {
-						path: `/rockaden/v1/training-groups/${ groupId }/sessions`,
-					} ),
-				] );
-				setGroup( groupData );
-				setSessions( sessionData );
-			} catch {
-				// Silently fail.
-			} finally {
-				setLoading( false );
-			}
-		};
-
-		fetchData();
+		apiFetch< TrainingGroup >( {
+			path: `/rockaden/v1/training-groups/${ groupId }`,
+		} )
+			.then( ( data ) => setGroup( data ) )
+			.catch( () => {} )
+			.finally( () => setLoading( false ) );
 	}, [ groupId ] );
 
 	useEffect( () => {
@@ -88,14 +69,7 @@ export default function StandingsApp( { groupId, clubId, locale }: Props ) {
 	const participantIds = active.map( ( p ) => p.id );
 	const participantMap = new Map( active.map( ( p ) => [ p.id, p ] ) );
 
-	const allGames: GameResult[] = sessions.flatMap( ( s ) =>
-		s.games.map( ( g ) => ( {
-			whiteId: g.whiteId,
-			blackId: g.blackId,
-			result: g.result,
-		} ) )
-	);
-
+	const allGames: GameResult[] = group.rounds.flatMap( ( r ) => r.pairings );
 	const standings = computeStandings( participantIds, allGames );
 
 	if ( standings.length === 0 ) {

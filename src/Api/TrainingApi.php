@@ -135,16 +135,6 @@ class TrainingApi {
 
 		register_rest_route(
 			self::NAMESPACE,
-			'/training-sessions/(?P<id>\d+)/games/(?P<idx>\d+)',
-			[
-				'methods'             => 'PUT',
-				'callback'            => [ self::class, 'save_game_result' ],
-				'permission_callback' => [ self::class, 'can_edit' ],
-			]
-		);
-
-		register_rest_route(
-			self::NAMESPACE,
 			'/training-sessions/(?P<id>\d+)/notes',
 			[
 				'methods'             => 'PUT',
@@ -560,39 +550,6 @@ class TrainingApi {
 	}
 
 	/**
-	 * Save a game result for a session.
-	 *
-	 * @param WP_REST_Request $request The incoming request.
-	 * @return WP_REST_Response|WP_Error
-	 */
-	public static function save_game_result( WP_REST_Request $request ): WP_REST_Response|WP_Error {
-		$url_params = $request->get_url_params();
-		$post       = get_post( (int) $url_params['id'] );
-		if ( ! $post || TrainingSession::POST_TYPE !== $post->post_type ) {
-			return new WP_Error( 'not_found', 'Session not found', [ 'status' => 404 ] );
-		}
-
-		$idx   = (int) $url_params['idx'];
-		$body  = $request->get_json_params();
-		$games = json_decode( get_post_meta( $post->ID, 'rc_games', true ) ?: '[]', true );
-
-		if ( $idx >= 0 && $idx < count( $games ) ) {
-			$games[ $idx ]['result'] = $body['result'] ?? null;
-		} else {
-			$games[] = [
-				'round'   => $body['round'] ?? 0,
-				'whiteId' => $body['whiteId'] ?? '',
-				'blackId' => $body['blackId'] ?? '',
-				'result'  => $body['result'] ?? null,
-			];
-		}
-
-		update_post_meta( $post->ID, 'rc_games', wp_slash( wp_json_encode( $games ) ) );
-
-		return new WP_REST_Response( self::format_session( get_post( $post->ID ) ) );
-	}
-
-	/**
 	 * Save notes for a session.
 	 *
 	 * @param WP_REST_Request $request The incoming request.
@@ -650,7 +607,6 @@ class TrainingApi {
 			'sessionDate' => get_post_meta( $post->ID, 'rc_session_date', true ) ?: '',
 			'notes'       => get_post_meta( $post->ID, 'rc_notes', true ) ?: '',
 			'attendance'  => json_decode( get_post_meta( $post->ID, 'rc_attendance', true ) ?: '[]', true ),
-			'games'       => json_decode( get_post_meta( $post->ID, 'rc_games', true ) ?: '[]', true ),
 		];
 	}
 }

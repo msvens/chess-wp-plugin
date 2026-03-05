@@ -6,7 +6,6 @@ import {
 	buildGrid,
 	groupEventsByDay,
 	categoryOrder,
-	categoryClassMap,
 	toLanguage,
 } from './utils';
 import CalendarHeader from './CalendarHeader';
@@ -26,6 +25,8 @@ export default function CalendarApp( { locale }: CalendarAppProps ) {
 	const [ currentMonth, setCurrentMonth ] = useState( now.getMonth() );
 	const [ selectedDay, setSelectedDay ] = useState< number | null >( null );
 	const [ events, setEvents ] = useState< CalendarEvent[] >( [] );
+	const [ filterCategory, setFilterCategory ] =
+		useState< EventCategory | null >( null );
 	const [ loading, setLoading ] = useState( true );
 	const [ error, setError ] = useState< string | null >( null );
 
@@ -51,14 +52,22 @@ export default function CalendarApp( { locale }: CalendarAppProps ) {
 			} );
 	}, [ currentYear, currentMonth ] );
 
+	const filteredEvents = useMemo(
+		() =>
+			filterCategory
+				? events.filter( ( e ) => e.category === filterCategory )
+				: events,
+		[ events, filterCategory ]
+	);
+
 	const grid = useMemo(
 		() => buildGrid( currentYear, currentMonth ),
 		[ currentYear, currentMonth ]
 	);
 
 	const grouped = useMemo(
-		() => groupEventsByDay( events, currentYear, currentMonth ),
-		[ events, currentYear, currentMonth ]
+		() => groupEventsByDay( filteredEvents, currentYear, currentMonth ),
+		[ filteredEvents, currentYear, currentMonth ]
 	);
 
 	const selectedEvents = selectedDay ? grouped[ selectedDay ] || [] : [];
@@ -99,23 +108,16 @@ export default function CalendarApp( { locale }: CalendarAppProps ) {
 
 	return (
 		<div className="rc-cal">
-			{ /* Category legend */ }
-			<div className="rc-cal__legend">
-				{ categoryOrder.map( ( cat: EventCategory ) => (
-					<span key={ cat } className="rc-cal__legend-item">
-						<span
-							className={ `rc-cal__legend-dot rc-cal__legend-dot--${ categoryClassMap[ cat ] }` }
-						/>
-						{ t.calendar.eventCategories[ cat ] }
-					</span>
-				) ) }
-			</div>
-
 			<CalendarHeader
 				year={ currentYear }
 				month={ currentMonth }
 				locale={ locale }
 				todayLabel={ t.calendar.today }
+				categories={ categoryOrder }
+				categoryLabels={ t.calendar.eventCategories }
+				allLabel={ t.calendar.allCategories }
+				filterCategory={ filterCategory }
+				onFilterChange={ setFilterCategory }
 				onPrev={ goToPrev }
 				onNext={ goToNext }
 				onToday={ goToToday }
@@ -132,7 +134,7 @@ export default function CalendarApp( { locale }: CalendarAppProps ) {
 					grid={ grid }
 					year={ currentYear }
 					month={ currentMonth }
-					events={ events }
+					events={ filteredEvents }
 					selectedDay={ selectedDay }
 					locale={ locale }
 					t={ t.calendar }

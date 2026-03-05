@@ -62,6 +62,7 @@ export interface Translations {
 		contact: string;
 		tournamentLink: string;
 		generateRounds: string;
+		regenerateRounds: string;
 		regenerateWarning: string;
 		board: string;
 		white: string;
@@ -93,6 +94,7 @@ export interface Translations {
 			skolschack: string;
 			other: string;
 		};
+		allCategories: string;
 		recurring: string;
 		weekly: string;
 		biweekly: string;
@@ -196,6 +198,7 @@ const translations: Record< Language, Translations > = {
 			contact: 'Contact',
 			tournamentLink: 'Tournament (schack.se)',
 			generateRounds: 'Generate Rounds',
+			regenerateRounds: 'Regenerate Rounds',
 			regenerateWarning:
 				'Regenerating rounds will erase existing results. Continue?',
 			board: 'Board',
@@ -228,6 +231,7 @@ const translations: Record< Language, Translations > = {
 				skolschack: 'School Chess',
 				other: 'Other',
 			},
+			allCategories: 'All',
 			recurring: 'Recurring',
 			weekly: 'Weekly',
 			biweekly: 'Biweekly',
@@ -329,6 +333,7 @@ const translations: Record< Language, Translations > = {
 			contact: 'Kontakt',
 			tournamentLink: 'Turnering (schack.se)',
 			generateRounds: 'Generera ronder',
+			regenerateRounds: 'Generera om ronder',
 			regenerateWarning:
 				'Att generera om ronder raderar befintliga resultat. Fortsätta?',
 			board: 'Bord',
@@ -361,6 +366,7 @@ const translations: Record< Language, Translations > = {
 				skolschack: 'Skolschack',
 				other: 'Övrigt',
 			},
+			allCategories: 'Alla',
 			recurring: 'Återkommande',
 			weekly: 'Varje vecka',
 			biweekly: 'Varannan vecka',

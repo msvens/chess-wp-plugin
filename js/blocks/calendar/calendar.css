@@ -86,44 +86,112 @@ html.dark .rc-cal {
 	color: var(--wp--preset--color--error);
 }
 
-/* --- Legend --- */
-.rc-cal__legend {
+/* --- Header (month nav + filter) --- */
+.rc-cal__header {
 	display: flex;
-	flex-wrap: wrap;
-	gap: 0.75rem;
+	align-items: center;
+	justify-content: space-between;
 	margin-bottom: 1rem;
 }
 
-.rc-cal__legend-item {
-	display: flex;
-	align-items: center;
-	gap: 0.375rem;
-	font-size: 0.8125rem;
-	color: var(--wp--preset--color--on-surface-muted);
+.rc-cal__header-left,
+.rc-cal__header-right {
+	min-width: 8.5rem;
 }
 
-.rc-cal__legend-dot {
+.rc-cal__header-right {
+	text-align: right;
+}
+
+/* --- Category filter dropdown --- */
+.rc-cal__filter {
+	position: relative;
+}
+
+.rc-cal__filter-btn {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	width: 100%;
+	gap: 0.375rem;
+	font-family: inherit;
+	font-size: 0.8125rem;
+	font-weight: 500;
+	min-width: 8.5rem;
+	padding: 0.25rem 0.5rem;
+	border: 1px solid var(--wp--preset--color--border);
+	border-radius: 0.25rem;
+	background: transparent;
+	color: var(--wp--preset--color--on-surface-muted);
+	cursor: pointer;
+	transition: color 0.15s, background-color 0.15s, border-color 0.15s;
+}
+
+.rc-cal__filter-btn:hover {
+	color: var(--wp--preset--color--on-surface);
+	background-color: var(--wp--preset--color--surface-dim);
+	border-color: var(--wp--preset--color--on-surface-muted);
+}
+
+.rc-cal__filter-chevron {
+	width: 0.75rem;
+	height: 0.75rem;
+	flex-shrink: 0;
+}
+
+.rc-cal__filter-dot {
 	width: 0.5rem;
 	height: 0.5rem;
 	border-radius: 50%;
 	flex-shrink: 0;
 }
 
-/* Legend dot colors */
-.rc-cal__legend-dot--training { background: var(--rc-cat-training-dot); }
-.rc-cal__legend-dot--tournament { background: var(--rc-cat-tournament-dot); }
-.rc-cal__legend-dot--junior { background: var(--rc-cat-junior-dot); }
-.rc-cal__legend-dot--allsvenskan { background: var(--rc-cat-allsvenskan-dot); }
-.rc-cal__legend-dot--skolschack { background: var(--rc-cat-skolschack-dot); }
-.rc-cal__legend-dot--other { background: var(--rc-cat-other-dot); }
+.rc-cal__filter-dot--training { background: var(--rc-cat-training-dot); }
+.rc-cal__filter-dot--tournament { background: var(--rc-cat-tournament-dot); }
+.rc-cal__filter-dot--junior { background: var(--rc-cat-junior-dot); }
+.rc-cal__filter-dot--allsvenskan { background: var(--rc-cat-allsvenskan-dot); }
+.rc-cal__filter-dot--skolschack { background: var(--rc-cat-skolschack-dot); }
+.rc-cal__filter-dot--other { background: var(--rc-cat-other-dot); }
 
-/* --- Header (month nav) --- */
-.rc-cal__header {
+.rc-cal__filter-menu {
+	position: absolute;
+	top: calc(100% + 4px);
+	left: 0;
+	z-index: 10;
+	min-width: 10rem;
+	list-style: none;
+	margin: 0;
+	padding: 0.25rem 0;
+	border: 1px solid var(--wp--preset--color--border);
+	border-radius: 0.25rem;
+	background: var(--wp--preset--color--surface);
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.rc-cal__filter-option {
 	display: flex;
 	align-items: center;
-	justify-content: center;
-	margin-bottom: 1rem;
-	position: relative;
+	gap: 0.375rem;
+	width: 100%;
+	padding: 0.375rem 0.75rem;
+	border: none;
+	background: transparent;
+	font-family: inherit;
+	font-size: 0.8125rem;
+	color: var(--wp--preset--color--on-surface-muted);
+	cursor: pointer;
+	text-align: left;
+	transition: background-color 0.1s;
+}
+
+.rc-cal__filter-option:hover {
+	background-color: var(--wp--preset--color--surface-dim);
+	color: var(--wp--preset--color--on-surface);
+}
+
+.rc-cal__filter-option--active {
+	color: var(--wp--preset--color--on-surface);
+	font-weight: 600;
 }
 
 .rc-cal__header-nav {
@@ -169,8 +237,6 @@ html.dark .rc-cal {
 }
 
 .rc-cal__today-btn {
-	position: absolute;
-	right: 0;
 	font-family: inherit;
 	font-size: 0.8125rem;
 	font-weight: 500;

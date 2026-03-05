@@ -1,4 +1,4 @@
-import { useState, useEffect } from '@wordpress/element';
+import { useState, useEffect, useCallback } from '@wordpress/element';
 import {
 	Button,
 	Spinner,
@@ -7,10 +7,9 @@ import {
 	__experimentalHeading as Heading,
 } from '@wordpress/components';
 import type { Translations } from '../../shared';
-import type { TrainingGroup, TrainingSession, Game } from '../types';
-import { fetchGroup, fetchSessions, saveNotes } from '../api';
+import type { TrainingGroup, TrainingSession } from '../types';
+import { fetchGroup, fetchSessions, saveAttendance, saveNotes } from '../api';
 import { AttendanceForm } from './AttendanceForm';
-import { PairingsPanel } from './PairingsPanel';
 
 interface SessionDetailProps {
 	groupId: number;
@@ -27,11 +26,11 @@ export function SessionDetail( {
 }: SessionDetailProps ) {
 	const [ group, setGroup ] = useState< TrainingGroup | null >( null );
 	const [ session, setSession ] = useState< TrainingSession | null >( null );
-	const [ sessions, setSessions ] = useState< TrainingSession[] >( [] );
 	const [ loading, setLoading ] = useState( true );
 	const [ error, setError ] = useState< string | null >( null );
 	const [ notes, setNotes ] = useState( '' );
-	const [ savingNotes, setSavingNotes ] = useState( false );
+	const [ attendance, setAttendance ] = useState< string[] >( [] );
+	const [ saving, setSaving ] = useState( false );
 
 	useEffect( () => {
 		let cancelled = false;
@@ -44,11 +43,11 @@ export function SessionDetail( {
 					return;
 				}
 				setGroup( g );
-				setSessions( ss );
 				const found =
 					ss.find( ( item ) => item.id === sessionId ) || null;
 				setSession( found );
 				setNotes( found?.notes || '' );
+				setAttendance( found?.attendance || [] );
 			} )
 			.catch( ( err: any ) => {
 				if ( ! cancelled ) {
@@ -66,10 +65,39 @@ export function SessionDetail( {
 		};
 	}, [ groupId, sessionId ] );
 
+	const handleAttendanceChange = useCallback(
+		( updated: string[] ) => setAttendance( updated ),
+		[]
+	);
+
+	async function handleSave() {
+		setSaving( true );
+		setError( null );
+		try {
+			const [ updatedAttendance, updatedNotes ] = await Promise.all( [
+				saveAttendance( sessionId, attendance ),
+				saveNotes( sessionId, notes ),
+			] );
+			setSession( ( prev ) =>
+				prev
+					? {
+							...prev,
+							attendance: updatedAttendance.attendance,
+							notes: updatedNotes.notes,
+					  }
+					: prev
+			);
+		} catch ( err: any ) {
+			setError( err?.message || 'Failed to save' );
+		} finally {
+			setSaving( false );
+		}
+	}
+
 	if ( loading ) {
 		return <Spinner />;
 	}
-	if ( error ) {
+	if ( error && ! group ) {
 		return (
 			<Notice status="error" isDismissible={ false }>
 				{ error }
@@ -78,30 +106,6 @@ export function SessionDetail( {
 	}
 	if ( ! group || ! session ) {
 		return null;
-	}
-
-	const sessionIndex = sessions.findIndex( ( s ) => s.id === sessionId );
-
-	async function handleSaveNotes() {
-		setSavingNotes( true );
-		try {
-			const updated = await saveNotes( sessionId, notes );
-			setSession( ( prev ) =>
-				prev ? { ...prev, notes: updated.notes } : prev
-			);
-		} catch ( err: any ) {
-			setError( err?.message || 'Failed to save notes' );
-		} finally {
-			setSavingNotes( false );
-		}
-	}
-
-	function handleAttendanceSaved( attendance: string[] ) {
-		setSession( ( prev ) => ( prev ? { ...prev, attendance } : prev ) );
-	}
-
-	function handleGamesUpdated( games: Game[] ) {
-		setSession( ( prev ) => ( prev ? { ...prev, games } : prev ) );
 	}
 
 	return (
@@ -118,45 +122,38 @@ export function SessionDetail( {
 				{ group.title } &mdash; { session.sessionDate }
 			</Heading>
 
+			{ error && (
+				<Notice
+					status="error"
+					isDismissible
+					onDismiss={ () => setError( null ) }
+				>
+					{ error }
+				</Notice>
+			) }
+
 			<Heading level={ 3 } style={ { marginTop: 24 } }>
 				{ t.training.attendance }
 			</Heading>
 			<AttendanceForm
-				sessionId={ sessionId }
 				participants={ group.participants }
 				attendance={ session.attendance }
-				t={ t }
-				onSaved={ handleAttendanceSaved }
+				onChange={ handleAttendanceChange }
 			/>
-
-			{ group.hasTournament && (
-				<>
-					<Heading level={ 3 } style={ { marginTop: 24 } }>
-						{ t.training.pairings } &mdash; { t.training.round }{ ' ' }
-						{ sessionIndex + 1 }
-					</Heading>
-					<PairingsPanel
-						sessionId={ sessionId }
-						sessionIndex={ sessionIndex }
-						participants={ group.participants }
-						games={ session.games }
-						t={ t }
-						onGamesUpdated={ handleGamesUpdated }
-					/>
-				</>
-			) }
 
 			<Heading level={ 3 } style={ { marginTop: 24 } }>
 				{ t.training.notes }
 			</Heading>
 			<TextareaControl value={ notes } onChange={ setNotes } rows={ 4 } />
+
 			<Button
 				variant="primary"
-				onClick={ handleSaveNotes }
-				isBusy={ savingNotes }
-				disabled={ savingNotes }
+				onClick={ handleSave }
+				isBusy={ saving }
+				disabled={ saving }
+				style={ { marginTop: 8 } }
 			>
-				{ t.training.saveNotes }
+				{ t.common.save }
 			</Button>
 		</div>
 	);
