@@ -5,6 +5,7 @@ import type {
 	SsfPlayer,
 	Game,
 	CreateGroupData,
+	StoredRound,
 	EventData,
 	CreateEventData,
 } from './types';
@@ -64,6 +65,31 @@ export function removeParticipant(
 	return apiFetch( {
 		path: `${ BASE }/training-groups/${ groupId }/participants/${ participantId }`,
 		method: 'DELETE',
+	} );
+}
+
+// Rounds
+export function saveRounds(
+	groupId: number,
+	rounds: StoredRound[]
+): Promise< TrainingGroup > {
+	return apiFetch( {
+		path: `${ BASE }/training-groups/${ groupId }/rounds`,
+		method: 'PUT',
+		data: { rounds },
+	} );
+}
+
+export function saveRoundResult(
+	groupId: number,
+	roundIdx: number,
+	gameIdx: number,
+	result: string | null
+): Promise< TrainingGroup > {
+	return apiFetch( {
+		path: `${ BASE }/training-groups/${ groupId }/rounds/${ roundIdx }/games/${ gameIdx }`,
+		method: 'PUT',
+		data: { result },
 	} );
 }
 

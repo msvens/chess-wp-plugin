@@ -84,6 +84,27 @@ class TrainingApi {
 			]
 		);
 
+		// Rounds.
+		register_rest_route(
+			self::NAMESPACE,
+			'/training-groups/(?P<id>\d+)/rounds',
+			[
+				'methods'             => 'PUT',
+				'callback'            => [ self::class, 'save_rounds' ],
+				'permission_callback' => [ self::class, 'can_edit' ],
+			]
+		);
+
+		register_rest_route(
+			self::NAMESPACE,
+			'/training-groups/(?P<id>\d+)/rounds/(?P<roundIdx>\d+)/games/(?P<gameIdx>\d+)',
+			[
+				'methods'             => 'PUT',
+				'callback'            => [ self::class, 'save_round_result' ],
+				'permission_callback' => [ self::class, 'can_edit' ],
+			]
+		);
+
 		// Training Sessions.
 		register_rest_route(
 			self::NAMESPACE,
@@ -219,6 +240,15 @@ class TrainingApi {
 		if ( ! empty( $body['eventId'] ) ) {
 			update_post_meta( $post_id, 'rc_event_id', (int) $body['eventId'] );
 		}
+		if ( ! empty( $body['trainers'] ) ) {
+			update_post_meta( $post_id, 'rc_trainers', sanitize_text_field( $body['trainers'] ) );
+		}
+		if ( ! empty( $body['contact'] ) ) {
+			update_post_meta( $post_id, 'rc_contact', sanitize_text_field( $body['contact'] ) );
+		}
+		if ( ! empty( $body['tournamentLink'] ) ) {
+			update_post_meta( $post_id, 'rc_tournament_link', esc_url_raw( $body['tournamentLink'] ) );
+		}
 
 		return new WP_REST_Response( self::format_group( get_post( $post_id ) ), 201 );
 	}
@@ -266,6 +296,15 @@ class TrainingApi {
 			if ( in_array( $status, $allowed, true ) ) {
 				update_post_meta( $post->ID, 'rc_status', $status );
 			}
+		}
+		if ( isset( $body['trainers'] ) ) {
+			update_post_meta( $post->ID, 'rc_trainers', sanitize_text_field( $body['trainers'] ) );
+		}
+		if ( isset( $body['contact'] ) ) {
+			update_post_meta( $post->ID, 'rc_contact', sanitize_text_field( $body['contact'] ) );
+		}
+		if ( isset( $body['tournamentLink'] ) ) {
+			update_post_meta( $post->ID, 'rc_tournament_link', esc_url_raw( $body['tournamentLink'] ) );
 		}
 
 		return new WP_REST_Response( self::format_group( get_post( $post->ID ) ) );
@@ -354,6 +393,59 @@ class TrainingApi {
 		unset( $p );
 
 		update_post_meta( $post->ID, 'rc_participants', wp_slash( wp_json_encode( $participants ) ) );
+
+		return new WP_REST_Response( self::format_group( get_post( $post->ID ) ) );
+	}
+
+	/**
+	 * Save rounds for a training group.
+	 *
+	 * @param WP_REST_Request $request The incoming request.
+	 * @return WP_REST_Response|WP_Error
+	 */
+	public static function save_rounds( WP_REST_Request $request ): WP_REST_Response|WP_Error {
+		$url_params = $request->get_url_params();
+		$post       = get_post( (int) $url_params['id'] );
+		if ( ! $post || TrainingGroup::POST_TYPE !== $post->post_type ) {
+			return new WP_Error( 'not_found', 'Training group not found', [ 'status' => 404 ] );
+		}
+
+		$body   = $request->get_json_params();
+		$rounds = $body['rounds'] ?? [];
+
+		update_post_meta( $post->ID, 'rc_rounds', wp_slash( wp_json_encode( $rounds ) ) );
+
+		return new WP_REST_Response( self::format_group( get_post( $post->ID ) ) );
+	}
+
+	/**
+	 * Save a single game result within a round.
+	 *
+	 * @param WP_REST_Request $request The incoming request.
+	 * @return WP_REST_Response|WP_Error
+	 */
+	public static function save_round_result( WP_REST_Request $request ): WP_REST_Response|WP_Error {
+		$url_params = $request->get_url_params();
+		$post       = get_post( (int) $url_params['id'] );
+		if ( ! $post || TrainingGroup::POST_TYPE !== $post->post_type ) {
+			return new WP_Error( 'not_found', 'Training group not found', [ 'status' => 404 ] );
+		}
+
+		$round_idx = (int) $url_params['roundIdx'];
+		$game_idx  = (int) $url_params['gameIdx'];
+		$body      = $request->get_json_params();
+		$rounds    = json_decode( get_post_meta( $post->ID, 'rc_rounds', true ) ?: '[]', true );
+
+		if ( $round_idx < 0 || $round_idx >= count( $rounds ) ) {
+			return new WP_Error( 'invalid_round', 'Round index out of range', [ 'status' => 400 ] );
+		}
+		if ( $game_idx < 0 || $game_idx >= count( $rounds[ $round_idx ]['pairings'] ) ) {
+			return new WP_Error( 'invalid_game', 'Game index out of range', [ 'status' => 400 ] );
+		}
+
+		$rounds[ $round_idx ]['pairings'][ $game_idx ]['result'] = $body['result'] ?? null;
+
+		update_post_meta( $post->ID, 'rc_rounds', wp_slash( wp_json_encode( $rounds ) ) );
 
 		return new WP_REST_Response( self::format_group( get_post( $post->ID ) ) );
 	}
@@ -527,17 +619,21 @@ class TrainingApi {
 	 */
 	private static function format_group( \WP_Post $post ): array {
 		return [
-			'id'            => $post->ID,
-			'slug'          => $post->post_name,
-			'title'         => $post->post_title,
-			'description'   => $post->post_content,
-			'status'        => get_post_meta( $post->ID, 'rc_status', true ) ?: 'draft',
-			'semester'      => get_post_meta( $post->ID, 'rc_semester', true ) ?: '',
-			'hasTournament' => (bool) get_post_meta( $post->ID, 'rc_has_tournament', true ),
-			'timeControl'   => get_post_meta( $post->ID, 'rc_time_control', true ) ?: 'classical',
-			'eventId'       => (int) get_post_meta( $post->ID, 'rc_event_id', true ),
-			'participants'  => json_decode( get_post_meta( $post->ID, 'rc_participants', true ) ?: '[]', true ),
-			'createdBy'     => $post->post_author,
+			'id'             => $post->ID,
+			'slug'           => $post->post_name,
+			'title'          => $post->post_title,
+			'description'    => $post->post_content,
+			'status'         => get_post_meta( $post->ID, 'rc_status', true ) ?: 'draft',
+			'semester'       => get_post_meta( $post->ID, 'rc_semester', true ) ?: '',
+			'hasTournament'  => (bool) get_post_meta( $post->ID, 'rc_has_tournament', true ),
+			'timeControl'    => get_post_meta( $post->ID, 'rc_time_control', true ) ?: 'classical',
+			'eventId'        => (int) get_post_meta( $post->ID, 'rc_event_id', true ),
+			'participants'   => json_decode( get_post_meta( $post->ID, 'rc_participants', true ) ?: '[]', true ),
+			'trainers'       => get_post_meta( $post->ID, 'rc_trainers', true ) ?: '',
+			'contact'        => get_post_meta( $post->ID, 'rc_contact', true ) ?: '',
+			'tournamentLink' => get_post_meta( $post->ID, 'rc_tournament_link', true ) ?: '',
+			'rounds'         => json_decode( get_post_meta( $post->ID, 'rc_rounds', true ) ?: '[]', true ),
+			'createdBy'      => $post->post_author,
 		];
 	}
 

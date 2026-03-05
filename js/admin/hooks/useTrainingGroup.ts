@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from '@wordpress/element';
+import { useState, useEffect, useCallback, useRef } from '@wordpress/element';
 import type { TrainingGroup, TrainingSession, EventData } from '../types';
 import { fetchGroup, fetchSessions, fetchEvent } from '../api';
 import { expandRecurringEvents } from '../../shared';
@@ -17,9 +17,13 @@ export function useTrainingGroup( groupId: number ) {
 	const [ scheduleDates, setScheduleDates ] = useState< string[] >( [] );
 	const [ loading, setLoading ] = useState( true );
 	const [ error, setError ] = useState< string | null >( null );
+	const initialLoadDone = useRef( false );
 
 	const load = useCallback( async () => {
-		setLoading( true );
+		// Only show spinner on initial load, not on refetch
+		if ( ! initialLoadDone.current ) {
+			setLoading( true );
+		}
 		setError( null );
 		try {
 			const [ g, s ] = await Promise.all( [
@@ -47,6 +51,7 @@ export function useTrainingGroup( groupId: number ) {
 			setError( err?.message || 'Failed to load training group' );
 		} finally {
 			setLoading( false );
+			initialLoadDone.current = true;
 		}
 	}, [ groupId ] );
 

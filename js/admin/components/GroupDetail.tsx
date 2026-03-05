@@ -17,6 +17,8 @@ import { SessionList } from './SessionList';
 import { ScheduleTimeline } from './ScheduleTimeline';
 import { ExcludedDatesPanel } from './ExcludedDatesPanel';
 import { StandingsTable } from './StandingsTable';
+import { RoundsPanel } from './RoundsPanel';
+import { EditGroupModal } from './EditGroupModal';
 
 interface GroupDetailProps {
 	groupId: number;
@@ -41,6 +43,7 @@ export function GroupDetail( {
 		loading: ratingsLoading,
 	} = useSsfRatings( clubId );
 	const [ showAddModal, setShowAddModal ] = useState( false );
+	const [ showEditModal, setShowEditModal ] = useState( false );
 	const [ updatingStatus, setUpdatingStatus ] = useState( false );
 
 	const toggleStatus = () => {
@@ -102,7 +105,7 @@ export function GroupDetail( {
 			title: t.training.sessions,
 		},
 		...( group.hasTournament
-			? [ { name: 'standings', title: t.training.standings } ]
+			? [ { name: 'tournament', title: t.training.tournament } ]
 			: [] ),
 	];
 
@@ -137,11 +140,40 @@ export function GroupDetail( {
 				>
 					{ group.status === 'active' ? t.training.active : 'Draft' }
 				</Button>
+				<Button
+					variant="tertiary"
+					size="compact"
+					onClick={ () => setShowEditModal( true ) }
+				>
+					{ t.common.edit }
+				</Button>
 			</div>
 			{ group.semester && (
 				<Text style={ { display: 'block', marginBottom: 4 } }>
 					{ t.training.semester }: { group.semester }
 					{ group.hasTournament && ` | ${ t.training.tournament }` }
+				</Text>
+			) }
+			{ group.trainers && (
+				<Text style={ { display: 'block', marginBottom: 4 } }>
+					{ t.training.trainers }: { group.trainers }
+				</Text>
+			) }
+			{ group.contact && (
+				<Text style={ { display: 'block', marginBottom: 4 } }>
+					{ t.training.contact }: { group.contact }
+				</Text>
+			) }
+			{ group.tournamentLink && (
+				<Text style={ { display: 'block', marginBottom: 4 } }>
+					{ t.training.tournamentLink }:{ ' ' }
+					<a
+						href={ group.tournamentLink }
+						target="_blank"
+						rel="noopener noreferrer"
+					>
+						{ group.tournamentLink }
+					</a>
 				</Text>
 			) }
 			{ scheduleSummary && (
@@ -227,15 +259,22 @@ export function GroupDetail( {
 									) }
 								</div>
 							);
-						case 'standings':
+						case 'tournament':
 							return (
 								<div style={ { marginTop: 12 } }>
 									<StandingsTable
 										participants={ group.participants }
-										sessions={ sessions }
+										rounds={ group.rounds }
 										ratings={ ratings }
 										timeControl={ group.timeControl }
 										t={ t }
+									/>
+									<RoundsPanel
+										groupId={ groupId }
+										group={ group }
+										ratings={ ratings }
+										t={ t }
+										onUpdated={ refetch }
 									/>
 								</div>
 							);
@@ -244,6 +283,15 @@ export function GroupDetail( {
 					}
 				} }
 			</TabPanel>
+
+			{ showEditModal && (
+				<EditGroupModal
+					group={ group }
+					t={ t }
+					onClose={ () => setShowEditModal( false ) }
+					onUpdated={ refetch }
+				/>
+			) }
 		</div>
 	);
 }

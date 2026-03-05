@@ -58,6 +58,15 @@ export interface Translations {
 		excludedDates: string;
 		addExclusion: string;
 		cancelled: string;
+		trainers: string;
+		contact: string;
+		tournamentLink: string;
+		generateRounds: string;
+		regenerateWarning: string;
+		board: string;
+		white: string;
+		black: string;
+		noResult: string;
 	};
 	calendar: {
 		title: string;
@@ -183,6 +192,16 @@ const translations: Record< Language, Translations > = {
 			excludedDates: 'Excluded Dates',
 			addExclusion: 'Exclude',
 			cancelled: 'Cancelled',
+			trainers: 'Trainers',
+			contact: 'Contact',
+			tournamentLink: 'Tournament (schack.se)',
+			generateRounds: 'Generate Rounds',
+			regenerateWarning:
+				'Regenerating rounds will erase existing results. Continue?',
+			board: 'Board',
+			white: 'White',
+			black: 'Black',
+			noResult: '—',
 		},
 		calendar: {
 			title: 'Calendar',
@@ -306,6 +325,16 @@ const translations: Record< Language, Translations > = {
 			excludedDates: 'Undantagna datum',
 			addExclusion: 'Undanta',
 			cancelled: 'Inställd',
+			trainers: 'Tränare',
+			contact: 'Kontakt',
+			tournamentLink: 'Turnering (schack.se)',
+			generateRounds: 'Generera ronder',
+			regenerateWarning:
+				'Att generera om ronder raderar befintliga resultat. Fortsätta?',
+			board: 'Bord',
+			white: 'Vit',
+			black: 'Svart',
+			noResult: '—',
 		},
 		calendar: {
 			title: 'Kalender',

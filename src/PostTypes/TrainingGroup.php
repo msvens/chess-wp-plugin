@@ -45,27 +45,43 @@ class TrainingGroup {
 	 */
 	private static function register_meta(): void {
 		$meta_fields = [
-			'rc_status'         => [
+			'rc_status'          => [
 				'type'    => 'string',
 				'default' => 'draft',
 			],
-			'rc_semester'       => [
+			'rc_semester'        => [
 				'type'    => 'string',
 				'default' => '',
 			],
-			'rc_has_tournament' => [
+			'rc_has_tournament'  => [
 				'type'    => 'boolean',
 				'default' => false,
 			],
-			'rc_time_control'   => [
+			'rc_time_control'    => [
 				'type'    => 'string',
 				'default' => 'classical',
 			],
-			'rc_event_id'       => [
+			'rc_event_id'        => [
 				'type'    => 'integer',
 				'default' => 0,
 			],
-			'rc_participants'   => [
+			'rc_participants'    => [
+				'type'    => 'string', // JSON string.
+				'default' => '[]',
+			],
+			'rc_trainers'        => [
+				'type'    => 'string',
+				'default' => '',
+			],
+			'rc_contact'         => [
+				'type'    => 'string',
+				'default' => '',
+			],
+			'rc_tournament_link' => [
+				'type'    => 'string',
+				'default' => '',
+			],
+			'rc_rounds'          => [
 				'type'    => 'string', // JSON string.
 				'default' => '[]',
 			],
