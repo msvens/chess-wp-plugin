@@ -324,8 +324,9 @@ class EventApi {
 	private static function expand_recurring( array $event ): array {
 		$result = [];
 		$id     = (string) $event['id'];
-		$start  = new \DateTime( $event['startDate'] );
-		$end    = new \DateTime( $event['endDate'] );
+		$tz     = wp_timezone();
+		$start  = new \DateTime( $event['startDate'], $tz );
+		$end    = new \DateTime( $event['endDate'], $tz );
 
 		// Duration = time-of-day difference only (so multi-month span does not inflate it).
 		$start_secs    = (int) $start->format( 'H' ) * 3600 + (int) $start->format( 'i' ) * 60 + (int) $start->format( 's' );
@@ -333,7 +334,7 @@ class EventApi {
 		$duration_secs = $end_secs - $start_secs;
 
 		// Series boundary = date portion of endDate.
-		$series_end = new \DateTime( $end->format( 'Y-m-d' ) . 'T23:59:59' );
+		$series_end = new \DateTime( $end->format( 'Y-m-d' ) . 'T23:59:59', $tz );
 		$step_days  = 'biweekly' === $event['recurrenceType'] ? 14 : 7;
 		$excluded   = array_flip( $event['excludedDates'] ?? [] );
 

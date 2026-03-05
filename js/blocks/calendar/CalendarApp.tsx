@@ -136,7 +136,6 @@ export default function CalendarApp( { locale }: CalendarAppProps ) {
 					month={ currentMonth }
 					events={ filteredEvents }
 					selectedDay={ selectedDay }
-					locale={ locale }
 					t={ t.calendar }
 					onSelectDay={ handleSelectDay }
 				/>

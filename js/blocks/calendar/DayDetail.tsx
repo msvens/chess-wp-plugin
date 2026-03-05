@@ -52,12 +52,7 @@ export default function DayDetail( {
 			) : (
 				<div className="rc-cal__detail-list">
 					{ events.map( ( event ) => (
-						<EventCard
-							key={ event.id }
-							event={ event }
-							locale={ locale }
-							t={ t }
-						/>
+						<EventCard key={ event.id } event={ event } t={ t } />
 					) ) }
 				</div>
 			) }
@@ -67,16 +62,14 @@ export default function DayDetail( {
 
 function EventCard( {
 	event,
-	locale,
 	t,
 }: {
 	event: CalendarEvent;
-	locale: string;
 	t: Translations[ 'calendar' ];
 } ) {
 	const cls = categoryClassMap[ event.category ];
-	const startTime = formatTime( event.startDate, locale );
-	const endTime = formatTime( event.endDate, locale );
+	const startTime = formatTime( event.startDate );
+	const endTime = formatTime( event.endDate );
 
 	return (
 		<div className="rc-cal__event-card">

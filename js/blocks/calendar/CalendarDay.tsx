@@ -13,7 +13,6 @@ interface CalendarDayProps {
 	isCurrentMonth: boolean;
 	isSelected: boolean;
 	events: CalendarEvent[];
-	locale: string;
 	t: Translations[ 'calendar' ];
 	onSelect: ( day: number ) => void;
 }
@@ -25,7 +24,6 @@ export default function CalendarDay( {
 	isCurrentMonth,
 	isSelected,
 	events,
-	locale,
 	t,
 	onSelect,
 }: CalendarDayProps ) {
@@ -53,12 +51,7 @@ export default function CalendarDay( {
 			{ /* Desktop: pills */ }
 			<span className="rc-cal__pills">
 				{ events.slice( 0, MAX_PILLS ).map( ( ev ) => (
-					<EventPill
-						key={ ev.id }
-						event={ ev }
-						locale={ locale }
-						variant="compact"
-					/>
+					<EventPill key={ ev.id } event={ ev } variant="compact" />
 				) ) }
 				{ overflow > 0 && (
 					<span className="rc-cal__overflow">

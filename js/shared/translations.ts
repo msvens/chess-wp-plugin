@@ -68,6 +68,8 @@ export interface Translations {
 		white: string;
 		black: string;
 		noResult: string;
+		everyWeek: string;
+		everyOtherWeek: string;
 	};
 	calendar: {
 		title: string;
@@ -205,6 +207,8 @@ const translations: Record< Language, Translations > = {
 			white: 'White',
 			black: 'Black',
 			noResult: '—',
+			everyWeek: 'Every',
+			everyOtherWeek: 'Every other',
 		},
 		calendar: {
 			title: 'Calendar',
@@ -340,6 +344,8 @@ const translations: Record< Language, Translations > = {
 			white: 'Vit',
 			black: 'Svart',
 			noResult: '—',
+			everyWeek: 'Varje',
+			everyOtherWeek: 'Varannan',
 		},
 		calendar: {
 			title: 'Kalender',

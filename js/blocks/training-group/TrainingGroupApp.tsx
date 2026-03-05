@@ -1,11 +1,13 @@
-import { useState, useEffect } from '@wordpress/element';
+import { useState, useEffect, useMemo } from '@wordpress/element';
 import apiFetch from '@wordpress/api-fetch';
 import type {
 	TrainingGroup,
 	TrainingSession,
 	SsfPlayer,
+	EventData,
 } from '../../admin/types';
 import type { Language } from '../../shared/types';
+import type { Translations } from '../../shared/translations';
 import { getTranslation } from '../../shared/translations';
 import TabBar from './TabBar';
 import ParticipantsTab from './ParticipantsTab';
@@ -24,6 +26,41 @@ function toLanguage( locale: string ): Language {
 	return locale.startsWith( 'sv' ) ? 'sv' : 'en';
 }
 
+function extractTime( dateStr: string ): string {
+	const match = dateStr.match( /(\d{2}):(\d{2})/ );
+	return match ? `${ match[ 1 ] }:${ match[ 2 ] }` : '';
+}
+
+function formatSchedule(
+	event: EventData,
+	lang: Language,
+	t: Translations[ 'training' ]
+): string {
+	const start = new Date( event.startDate );
+	const loc = lang === 'sv' ? 'sv-SE' : 'en-US';
+	const weekday = start.toLocaleDateString( loc, { weekday: 'long' } );
+
+	const timeStart = extractTime( event.startDate );
+	const timeEnd = extractTime( event.endDate );
+
+	const prefix =
+		event.recurrenceType === 'biweekly'
+			? t.everyOtherWeek
+			: event.isRecurring
+			? t.everyWeek
+			: '';
+
+	const dayStr = prefix
+		? `${ prefix } ${ weekday.toLowerCase() }`
+		: weekday.charAt( 0 ).toUpperCase() + weekday.slice( 1 );
+
+	const parts = [ `${ dayStr } ${ timeStart }–${ timeEnd }` ];
+	if ( event.location ) {
+		parts.push( event.location );
+	}
+	return parts.join( ', ' );
+}
+
 export default function TrainingGroupApp( { groupId, clubId, locale }: Props ) {
 	const lang = toLanguage( locale );
 	const t = getTranslation( lang );
@@ -32,6 +69,7 @@ export default function TrainingGroupApp( { groupId, clubId, locale }: Props ) {
 	const [ ratings, setRatings ] = useState< Map< number, SsfPlayer > >(
 		new Map()
 	);
+	const [ event, setEvent ] = useState< EventData | null >( null );
 	const [ activeTab, setActiveTab ] = useState< Tab >( 'participants' );
 	const [ loading, setLoading ] = useState( true );
 
@@ -53,6 +91,14 @@ export default function TrainingGroupApp( { groupId, clubId, locale }: Props ) {
 				] );
 				setGroup( groupData );
 				setSessions( sessionData );
+
+				if ( groupData.eventId ) {
+					apiFetch< EventData >( {
+						path: `/rockaden/v1/events/${ groupData.eventId }`,
+					} )
+						.then( ( ev ) => setEvent( ev ) )
+						.catch( () => {} );
+				}
 			} catch {
 				// Silently fail — the block shows empty state.
 			} finally {
@@ -84,6 +130,11 @@ export default function TrainingGroupApp( { groupId, clubId, locale }: Props ) {
 			} );
 	}, [ clubId ] );
 
+	const schedule = useMemo(
+		() => ( event ? formatSchedule( event, lang, t.training ) : null ),
+		[ event, lang, t.training ]
+	);
+
 	if ( loading ) {
 		return <p className="rc-td__loading">{ t.common.loading }</p>;
 	}
@@ -91,6 +142,8 @@ export default function TrainingGroupApp( { groupId, clubId, locale }: Props ) {
 	if ( ! group ) {
 		return null;
 	}
+
+	const hasInfo = group.trainers || group.contact || schedule;
 
 	// Read initial tab from URL hash.
 	const initialSession =
@@ -103,6 +156,29 @@ export default function TrainingGroupApp( { groupId, clubId, locale }: Props ) {
 			<h1 className="rc-td__title">{ group.title }</h1>
 			{ group.description && (
 				<p className="rc-td__description">{ group.description }</p>
+			) }
+
+			{ hasInfo && (
+				<dl className="rc-td__info">
+					{ schedule && (
+						<div className="rc-td__info-item">
+							<dt>{ t.training.schedule }</dt>
+							<dd>{ schedule }</dd>
+						</div>
+					) }
+					{ group.trainers && (
+						<div className="rc-td__info-item">
+							<dt>{ t.training.trainers }</dt>
+							<dd>{ group.trainers }</dd>
+						</div>
+					) }
+					{ group.contact && (
+						<div className="rc-td__info-item">
+							<dt>{ t.training.contact }</dt>
+							<dd>{ group.contact }</dd>
+						</div>
+					) }
+				</dl>
 			) }
 
 			<TabBar

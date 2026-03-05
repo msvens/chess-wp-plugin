@@ -164,17 +164,14 @@ export function formatFullDate(
 }
 
 /**
- * "14:00" from an ISO date string
+ * "14:00" from a date string. Extracts HH:mm directly to avoid timezone
+ * conversion issues (dates are stored in site-local time).
+ *
  * @param dateStr
- * @param locale
  */
-export function formatTime( dateStr: string, locale: string ): string {
-	const date = new Date( dateStr );
-	return date.toLocaleTimeString( toLocaleTag( locale ), {
-		hour: '2-digit',
-		minute: '2-digit',
-		hour12: false,
-	} );
+export function formatTime( dateStr: string ): string {
+	const match = dateStr.match( /T?(\d{2}):(\d{2})/ );
+	return match ? `${ match[ 1 ] }:${ match[ 2 ] }` : '';
 }
 
 /**

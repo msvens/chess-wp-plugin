@@ -3,15 +3,10 @@ import { categoryClassMap, formatTime } from './utils';
 
 interface EventPillProps {
 	event: CalendarEvent;
-	locale: string;
 	variant: 'compact' | 'full';
 }
 
-export default function EventPill( {
-	event,
-	locale,
-	variant,
-}: EventPillProps ) {
+export default function EventPill( { event, variant }: EventPillProps ) {
 	const cls = categoryClassMap[ event.category ];
 
 	if ( variant === 'compact' ) {
@@ -22,7 +17,7 @@ export default function EventPill( {
 		);
 	}
 
-	const time = formatTime( event.startDate, locale );
+	const time = formatTime( event.startDate );
 
 	return (
 		<span className={ `rc-cal__pill rc-cal__pill--${ cls }` }>

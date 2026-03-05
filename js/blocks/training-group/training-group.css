@@ -51,6 +51,38 @@ html.dark .rc-td {
 	line-height: 1.5;
 }
 
+/* --- Info section (trainers, contact, schedule) --- */
+.rc-td__info {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 1rem 2rem;
+	margin: 0 0 1.5rem;
+	padding: 0.75rem 1rem;
+	background: var(--rc-td-surface-alt);
+	border-radius: 0.375rem;
+	font-size: 0.875rem;
+}
+
+.rc-td__info-item {
+	display: flex;
+	gap: 0.375rem;
+}
+
+.rc-td__info dt {
+	margin: 0;
+	font-weight: 600;
+	color: var(--rc-td-text-muted);
+	white-space: nowrap;
+}
+
+.rc-td__info dt::after {
+	content: ':';
+}
+
+.rc-td__info dd {
+	margin: 0;
+}
+
 /* --- Tabs --- */
 .rc-td__tabs {
 	display: flex;

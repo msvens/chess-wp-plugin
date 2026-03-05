@@ -10,7 +10,6 @@ interface CalendarMonthProps {
 	month: number;
 	events: CalendarEvent[];
 	selectedDay: number | null;
-	locale: string;
 	t: Translations[ 'calendar' ];
 	onSelectDay: ( day: number ) => void;
 }
@@ -23,7 +22,6 @@ export default function CalendarMonth( {
 	month,
 	events,
 	selectedDay,
-	locale,
 	t,
 	onSelectDay,
 }: CalendarMonthProps ) {
@@ -54,7 +52,6 @@ export default function CalendarMonth( {
 								cell.isCurrentMonth && cell.day === selectedDay
 							}
 							events={ cellEvents }
-							locale={ locale }
 							t={ t }
 							onSelect={ onSelectDay }
 						/>
