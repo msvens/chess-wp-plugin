@@ -9,6 +9,7 @@ import './calendar.css';
 document
 	.querySelectorAll< HTMLDivElement >( '.rockaden-calendar-block' )
 	.forEach( ( el ) => {
-		const locale = el.dataset.locale || 'sv';
+		const locale =
+			document.documentElement.dataset.lang || el.dataset.locale || 'sv';
 		createRoot( el ).render( <CalendarApp locale={ locale } /> );
 	} );

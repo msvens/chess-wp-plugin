@@ -1,10 +1,10 @@
 import { useState, useEffect } from '@wordpress/element';
 import apiFetch from '@wordpress/api-fetch';
 import type { TrainingGroup, SsfPlayer } from '../../admin/types';
-import type { Language } from '../../shared/types';
 import type { GameResult } from '../../shared/roundRobin';
 import { computeStandings } from '../../shared/roundRobin';
-import { getTranslation } from '../../shared/translations';
+import { getTranslation, toLanguage } from '../../shared/translations';
+import { useLocale } from '../../shared/useLocale';
 
 interface Props {
 	groupId: number;
@@ -12,12 +12,9 @@ interface Props {
 	locale: string;
 }
 
-function toLanguage( locale: string ): Language {
-	return locale.startsWith( 'sv' ) ? 'sv' : 'en';
-}
-
 export default function StandingsApp( { groupId, clubId, locale }: Props ) {
-	const lang = toLanguage( locale );
+	const currentLocale = useLocale( locale );
+	const lang = toLanguage( currentLocale );
 	const t = getTranslation( lang );
 	const [ group, setGroup ] = useState< TrainingGroup | null >( null );
 	const [ ratings, setRatings ] = useState< Map< number, SsfPlayer > >(

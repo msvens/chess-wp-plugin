@@ -8,7 +8,8 @@ import type {
 } from '../../admin/types';
 import type { Language } from '../../shared/types';
 import type { Translations } from '../../shared/translations';
-import { getTranslation } from '../../shared/translations';
+import { getTranslation, toLanguage } from '../../shared/translations';
+import { useLocale } from '../../shared/useLocale';
 import TabBar from './TabBar';
 import ParticipantsTab from './ParticipantsTab';
 import SessionsTab from './SessionsTab';
@@ -21,10 +22,6 @@ interface Props {
 }
 
 export type Tab = 'participants' | 'sessions' | 'standings';
-
-function toLanguage( locale: string ): Language {
-	return locale.startsWith( 'sv' ) ? 'sv' : 'en';
-}
 
 function extractTime( dateStr: string ): string {
 	const match = dateStr.match( /(\d{2}):(\d{2})/ );
@@ -62,7 +59,8 @@ function formatSchedule(
 }
 
 export default function TrainingGroupApp( { groupId, clubId, locale }: Props ) {
-	const lang = toLanguage( locale );
+	const currentLocale = useLocale( locale );
+	const lang = toLanguage( currentLocale );
 	const t = getTranslation( lang );
 	const [ group, setGroup ] = useState< TrainingGroup | null >( null );
 	const [ sessions, setSessions ] = useState< TrainingSession[] >( [] );

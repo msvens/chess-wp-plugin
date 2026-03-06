@@ -414,6 +414,10 @@ const translations: Record< Language, Translations > = {
 	},
 };
 
+export function toLanguage( locale: string ): Language {
+	return locale.startsWith( 'sv' ) ? 'sv' : 'en';
+}
+
 export function getTranslation( language: Language ): Translations {
 	return translations[ language ];
 }

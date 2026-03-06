@@ -5,4 +5,4 @@ export type { Translations } from './translations';
 
 export { generateRoundRobin, computeStandings } from './roundRobin';
 export { expandRecurringEvents } from './expandRecurringEvents';
-export { getTranslation } from './translations';
+export { getTranslation, toLanguage } from './translations';

@@ -1,8 +1,4 @@
-import type {
-	CalendarEvent,
-	EventCategory,
-	Language,
-} from '../../shared/types';
+import type { CalendarEvent, EventCategory } from '../../shared/types';
 
 /* ── Category styling ─────────────────────────────────────── */
 
@@ -114,14 +110,6 @@ export function groupEventsByDay(
  */
 export function toLocaleTag( locale: string ): string {
 	return locale.replace( '_', '-' );
-}
-
-/**
- * Derive Language from WP locale string
- * @param locale
- */
-export function toLanguage( locale: string ): Language {
-	return locale.startsWith( 'sv' ) ? 'sv' : 'en';
 }
 
 /**
