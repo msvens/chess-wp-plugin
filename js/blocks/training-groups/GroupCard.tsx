@@ -10,9 +10,10 @@ interface Props {
 export default function GroupCard( { group, lang }: Props ) {
 	const t = getTranslation( lang );
 	const activeParticipants = group.participants.filter( ( p ) => p.active );
-	const tcLabel =
-		t.training[ group.timeControl as 'classical' | 'rapid' | 'blitz' ] ||
-		group.timeControl;
+	const tcLabel = group.hasTournament
+		? t.training[ group.timeControl as 'classical' | 'rapid' | 'blitz' ] ||
+		  group.timeControl
+		: null;
 
 	return (
 		<a href={ `/training-groups/${ group.slug }/` } className="rc-tg__card">
@@ -37,7 +38,9 @@ export default function GroupCard( { group, lang }: Props ) {
 					{ activeParticipants.length }{ ' ' }
 					{ t.training.participants.toLowerCase() }
 				</span>
-				<span className="rc-tg__card-meta">{ tcLabel }</span>
+				{ tcLabel && (
+					<span className="rc-tg__card-meta">{ tcLabel }</span>
+				) }
 			</div>
 		</a>
 	);
