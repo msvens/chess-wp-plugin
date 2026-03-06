@@ -1,13 +1,9 @@
 import { useState, useEffect, useMemo, useCallback } from '@wordpress/element';
 import apiFetch from '@wordpress/api-fetch';
 import type { CalendarEvent, EventCategory } from '../../shared/types';
-import { getTranslation } from '../../shared/translations';
-import {
-	buildGrid,
-	groupEventsByDay,
-	categoryOrder,
-	toLanguage,
-} from './utils';
+import { getTranslation, toLanguage } from '../../shared/translations';
+import { useLocale } from '../../shared/useLocale';
+import { buildGrid, groupEventsByDay, categoryOrder } from './utils';
 import CalendarHeader from './CalendarHeader';
 import CalendarMonth from './CalendarMonth';
 import DayDetail from './DayDetail';
@@ -17,7 +13,8 @@ interface CalendarAppProps {
 }
 
 export default function CalendarApp( { locale }: CalendarAppProps ) {
-	const lang = toLanguage( locale );
+	const currentLocale = useLocale( locale );
+	const lang = toLanguage( currentLocale );
 	const t = getTranslation( lang );
 
 	const now = new Date();

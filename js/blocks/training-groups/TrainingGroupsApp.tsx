@@ -1,20 +1,17 @@
 import { useState, useEffect } from '@wordpress/element';
 import apiFetch from '@wordpress/api-fetch';
 import type { TrainingGroup } from '../../admin/types';
-import type { Language } from '../../shared/types';
-import { getTranslation } from '../../shared/translations';
+import { getTranslation, toLanguage } from '../../shared/translations';
+import { useLocale } from '../../shared/useLocale';
 import GroupCard from './GroupCard';
 
 interface Props {
 	locale: string;
 }
 
-function toLanguage( locale: string ): Language {
-	return locale.startsWith( 'sv' ) ? 'sv' : 'en';
-}
-
 export default function TrainingGroupsApp( { locale }: Props ) {
-	const lang = toLanguage( locale );
+	const currentLocale = useLocale( locale );
+	const lang = toLanguage( currentLocale );
 	const t = getTranslation( lang );
 	const [ groups, setGroups ] = useState< TrainingGroup[] >( [] );
 	const [ loading, setLoading ] = useState( true );

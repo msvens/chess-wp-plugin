@@ -8,6 +8,7 @@ import './training-groups.css';
 document
 	.querySelectorAll< HTMLDivElement >( '.rockaden-training-groups-block' )
 	.forEach( ( el ) => {
-		const locale = el.dataset.locale || 'sv';
+		const locale =
+			document.documentElement.dataset.lang || el.dataset.locale || 'sv';
 		createRoot( el ).render( <TrainingGroupsApp locale={ locale } /> );
 	} );

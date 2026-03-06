@@ -10,7 +10,8 @@ document
 	.forEach( ( el ) => {
 		const groupId = Number( el.dataset.groupId ) || 0;
 		const clubId = el.dataset.clubId || '';
-		const locale = el.dataset.locale || 'sv';
+		const locale =
+			document.documentElement.dataset.lang || el.dataset.locale || 'sv';
 		createRoot( el ).render(
 			<TrainingGroupApp
 				groupId={ groupId }
