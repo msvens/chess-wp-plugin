@@ -9,6 +9,7 @@
  * Domain Path: /languages
  * Requires at least: 6.5
  * Requires PHP: 8.1
+ * License:       MIT
  *
  * @package Rockaden
  */
