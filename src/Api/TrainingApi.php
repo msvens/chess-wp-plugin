@@ -230,6 +230,9 @@ class TrainingApi {
 		if ( ! empty( $body['eventId'] ) ) {
 			update_post_meta( $post_id, 'rc_event_id', (int) $body['eventId'] );
 		}
+		if ( ! empty( $body['ssfGroupId'] ) ) {
+			update_post_meta( $post_id, 'rc_ssf_group_id', (int) $body['ssfGroupId'] );
+		}
 		if ( ! empty( $body['trainers'] ) ) {
 			update_post_meta( $post_id, 'rc_trainers', sanitize_text_field( $body['trainers'] ) );
 		}
@@ -238,6 +241,12 @@ class TrainingApi {
 		}
 		if ( ! empty( $body['tournamentLink'] ) ) {
 			update_post_meta( $post_id, 'rc_tournament_link', esc_url_raw( $body['tournamentLink'] ) );
+		}
+		if ( isset( $body['showParticipants'] ) ) {
+			update_post_meta( $post_id, 'rc_show_participants', (bool) $body['showParticipants'] ? '1' : '0' );
+		}
+		if ( isset( $body['showStandings'] ) ) {
+			update_post_meta( $post_id, 'rc_show_standings', (bool) $body['showStandings'] ? '1' : '0' );
 		}
 
 		return new WP_REST_Response( self::format_group( get_post( $post_id ) ), 201 );
@@ -280,6 +289,9 @@ class TrainingApi {
 		if ( isset( $body['eventId'] ) ) {
 			update_post_meta( $post->ID, 'rc_event_id', (int) $body['eventId'] );
 		}
+		if ( isset( $body['ssfGroupId'] ) ) {
+			update_post_meta( $post->ID, 'rc_ssf_group_id', (int) $body['ssfGroupId'] );
+		}
 		if ( isset( $body['status'] ) ) {
 			$allowed = [ 'draft', 'active', 'archived' ];
 			$status  = sanitize_text_field( $body['status'] );
@@ -295,6 +307,12 @@ class TrainingApi {
 		}
 		if ( isset( $body['tournamentLink'] ) ) {
 			update_post_meta( $post->ID, 'rc_tournament_link', esc_url_raw( $body['tournamentLink'] ) );
+		}
+		if ( isset( $body['showParticipants'] ) ) {
+			update_post_meta( $post->ID, 'rc_show_participants', (bool) $body['showParticipants'] ? '1' : '0' );
+		}
+		if ( isset( $body['showStandings'] ) ) {
+			update_post_meta( $post->ID, 'rc_show_standings', (bool) $body['showStandings'] ? '1' : '0' );
 		}
 
 		return new WP_REST_Response( self::format_group( get_post( $post->ID ) ) );
@@ -575,22 +593,46 @@ class TrainingApi {
 	 * @return array<string, mixed>
 	 */
 	private static function format_group( \WP_Post $post ): array {
+		$show_participants = get_post_meta( $post->ID, 'rc_show_participants', true );
+		$show_standings    = get_post_meta( $post->ID, 'rc_show_standings', true );
+
+		// Unset meta returns '' — treat as true for backward compat.
+		$show_participants = ( '' === $show_participants ) ? true : (bool) $show_participants;
+		$show_standings    = ( '' === $show_standings ) ? true : (bool) $show_standings;
+
+		$is_editor    = current_user_can( 'edit_posts' );
+		$participants = json_decode( get_post_meta( $post->ID, 'rc_participants', true ) ?: '[]', true );
+		$rounds       = json_decode( get_post_meta( $post->ID, 'rc_rounds', true ) ?: '[]', true );
+
+		// Filter data for public view.
+		if ( ! $is_editor ) {
+			if ( ! $show_participants ) {
+				$participants = [];
+			}
+			if ( ! $show_standings ) {
+				$rounds = [];
+			}
+		}
+
 		return [
-			'id'             => $post->ID,
-			'slug'           => $post->post_name,
-			'title'          => $post->post_title,
-			'description'    => $post->post_content,
-			'status'         => get_post_meta( $post->ID, 'rc_status', true ) ?: 'draft',
-			'semester'       => get_post_meta( $post->ID, 'rc_semester', true ) ?: '',
-			'hasTournament'  => (bool) get_post_meta( $post->ID, 'rc_has_tournament', true ),
-			'timeControl'    => get_post_meta( $post->ID, 'rc_time_control', true ) ?: 'classical',
-			'eventId'        => (int) get_post_meta( $post->ID, 'rc_event_id', true ),
-			'participants'   => json_decode( get_post_meta( $post->ID, 'rc_participants', true ) ?: '[]', true ),
-			'trainers'       => get_post_meta( $post->ID, 'rc_trainers', true ) ?: '',
-			'contact'        => get_post_meta( $post->ID, 'rc_contact', true ) ?: '',
-			'tournamentLink' => get_post_meta( $post->ID, 'rc_tournament_link', true ) ?: '',
-			'rounds'         => json_decode( get_post_meta( $post->ID, 'rc_rounds', true ) ?: '[]', true ),
-			'createdBy'      => $post->post_author,
+			'id'               => $post->ID,
+			'slug'             => $post->post_name,
+			'title'            => $post->post_title,
+			'description'      => $post->post_content,
+			'status'           => get_post_meta( $post->ID, 'rc_status', true ) ?: 'draft',
+			'semester'         => get_post_meta( $post->ID, 'rc_semester', true ) ?: '',
+			'hasTournament'    => (bool) get_post_meta( $post->ID, 'rc_has_tournament', true ),
+			'timeControl'      => get_post_meta( $post->ID, 'rc_time_control', true ) ?: 'classical',
+			'eventId'          => (int) get_post_meta( $post->ID, 'rc_event_id', true ),
+			'ssfGroupId'       => (int) get_post_meta( $post->ID, 'rc_ssf_group_id', true ),
+			'participants'     => $participants,
+			'trainers'         => get_post_meta( $post->ID, 'rc_trainers', true ) ?: '',
+			'contact'          => get_post_meta( $post->ID, 'rc_contact', true ) ?: '',
+			'tournamentLink'   => get_post_meta( $post->ID, 'rc_tournament_link', true ) ?: '',
+			'rounds'           => $rounds,
+			'showParticipants' => $show_participants,
+			'showStandings'    => $show_standings,
+			'createdBy'        => $post->post_author,
 		];
 	}
 

@@ -7,9 +7,17 @@ import { buildGrid, groupEventsByDay, categoryOrder } from './utils';
 import CalendarHeader from './CalendarHeader';
 import CalendarMonth from './CalendarMonth';
 import DayDetail from './DayDetail';
+import type { EventGroupLink } from './DayDetail';
 
 interface CalendarAppProps {
 	locale: string;
+}
+
+interface TrainingGroupSummary {
+	id: number;
+	slug: string;
+	title: string;
+	eventId: number;
 }
 
 export default function CalendarApp( { locale }: CalendarAppProps ) {
@@ -26,6 +34,28 @@ export default function CalendarApp( { locale }: CalendarAppProps ) {
 		useState< EventCategory | null >( null );
 	const [ loading, setLoading ] = useState( true );
 	const [ error, setError ] = useState< string | null >( null );
+	const [ eventGroupMap, setEventGroupMap ] = useState<
+		Map< number, EventGroupLink[] >
+	>( new Map() );
+
+	// Fetch training groups once to build eventId → group links map
+	useEffect( () => {
+		apiFetch< TrainingGroupSummary[] >( {
+			path: '/rockaden/v1/training-groups',
+		} )
+			.then( ( groups ) => {
+				const map = new Map< number, EventGroupLink[] >();
+				for ( const g of groups ) {
+					if ( g.eventId > 0 ) {
+						const existing = map.get( g.eventId ) || [];
+						existing.push( { slug: g.slug, title: g.title } );
+						map.set( g.eventId, existing );
+					}
+				}
+				setEventGroupMap( map );
+			} )
+			.catch( () => {} );
+	}, [] );
 
 	// Fetch events when month changes
 	useEffect( () => {
@@ -146,6 +176,7 @@ export default function CalendarApp( { locale }: CalendarAppProps ) {
 					events={ selectedEvents }
 					locale={ locale }
 					t={ t.calendar }
+					eventGroupMap={ eventGroupMap }
 					onClose={ () => setSelectedDay( null ) }
 				/>
 			) }

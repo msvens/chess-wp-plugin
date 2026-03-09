@@ -11,7 +11,14 @@ import {
 } from '@wordpress/components';
 import type { Translations } from '../../shared';
 import type { EventData } from '../types';
-import { createGroup, fetchEvents, createEvent } from '../api';
+import {
+	createGroup,
+	fetchEvents,
+	createEvent,
+	addParticipant,
+	fetchSsfTournamentGroup,
+	fetchSsfTournamentResults,
+} from '../api';
 
 interface CreateGroupModalProps {
 	t: Translations;
@@ -34,8 +41,23 @@ export function CreateGroupModal( {
 	const [ trainers, setTrainers ] = useState( '' );
 	const [ contact, setContact ] = useState( '' );
 	const [ tournamentLink, setTournamentLink ] = useState( '' );
+	const [ showParticipants, setShowParticipants ] = useState( true );
+	const [ showStandings, setShowStandings ] = useState( true );
 	const [ saving, setSaving ] = useState( false );
 	const [ error, setError ] = useState< string | null >( null );
+
+	// SSF autofill state
+	const [ ssfGroupId, setSsfGroupId ] = useState( '' );
+	const [ ssfFetching, setSsfFetching ] = useState( false );
+	const [ ssfError, setSsfError ] = useState< string | null >( null );
+	const [ ssfPreview, setSsfPreview ] = useState< {
+		name: string;
+		participants: { ssfId: number; name: string }[];
+		tournamentLink: string;
+	} | null >( null );
+	const [ ssfParticipants, setSsfParticipants ] = useState<
+		{ ssfId: number; name: string }[]
+	>( [] );
 
 	// Event picker state
 	const [ events, setEvents ] = useState< EventData[] >( [] );
@@ -60,6 +82,101 @@ export function CreateGroupModal( {
 			.then( setEvents )
 			.catch( () => {} );
 	}, [] );
+
+	async function handleSsfFetch() {
+		const id = Number( ssfGroupId );
+		if ( ! id || id <= 0 ) {
+			return;
+		}
+		setSsfFetching( true );
+		setSsfError( null );
+		setSsfPreview( null );
+		try {
+			const [ tournamentData, resultsData ] = await Promise.all( [
+				fetchSsfTournamentGroup( id ),
+				fetchSsfTournamentResults( id ),
+			] );
+
+			// Parse tournament data defensively to extract group name + tournament ID
+			let groupName = '';
+			let tournamentId = 0;
+			const td = tournamentData as Record< string, unknown >;
+			if ( td && typeof td === 'object' ) {
+				tournamentId = Number( td.id ) || 0;
+				const rootClasses = td.rootClasses as
+					| Array< Record< string, unknown > >
+					| undefined;
+				if ( Array.isArray( rootClasses ) ) {
+					for ( const rc of rootClasses ) {
+						const groups = rc.groups as
+							| Array< Record< string, unknown > >
+							| undefined;
+						if ( Array.isArray( groups ) ) {
+							for ( const g of groups ) {
+								if ( Number( g.id ) === id ) {
+									groupName = String( g.name || '' );
+								}
+							}
+						}
+					}
+				}
+				// Fallback: use tournament name if no group match
+				if ( ! groupName && td.name ) {
+					groupName = String( td.name );
+				}
+			}
+
+			// Build results link
+			const resultsLink =
+				tournamentId > 0
+					? `https://chess.msvens.com/results/${ tournamentId }/${ id }`
+					: '';
+
+			// Parse results data defensively to extract participants
+			const participants: { ssfId: number; name: string }[] = [];
+			if ( Array.isArray( resultsData ) ) {
+				for ( const entry of resultsData as Array<
+					Record< string, unknown >
+				> ) {
+					const pi = entry.playerInfo as
+						| Record< string, unknown >
+						| undefined;
+					if ( pi && typeof pi === 'object' && pi.id ) {
+						participants.push( {
+							ssfId: Number( pi.id ),
+							name: `${ pi.firstName || '' } ${
+								pi.lastName || ''
+							}`.trim(),
+						} );
+					}
+				}
+			}
+
+			setSsfPreview( {
+				name: groupName,
+				participants,
+				tournamentLink: resultsLink,
+			} );
+		} catch {
+			setSsfError( t.training.ssfFetchError );
+		} finally {
+			setSsfFetching( false );
+		}
+	}
+
+	function applySsfData() {
+		if ( ! ssfPreview ) {
+			return;
+		}
+		if ( ssfPreview.name ) {
+			setTitle( ssfPreview.name );
+		}
+		if ( ssfPreview.tournamentLink ) {
+			setTournamentLink( ssfPreview.tournamentLink );
+		}
+		setSsfParticipants( ssfPreview.participants );
+		setSsfPreview( null );
+	}
 
 	async function handleSave() {
 		if ( ! title.trim() ) {
@@ -88,17 +205,32 @@ export function CreateGroupModal( {
 				eventId = Number( selectedEventId );
 			}
 
-			await createGroup( {
+			const created = await createGroup( {
 				title: title.trim(),
 				description: description.trim() || undefined,
 				semester: semester.trim() || undefined,
 				hasTournament,
 				timeControl: hasTournament ? timeControl : undefined,
 				eventId,
+				ssfGroupId: ssfGroupId ? Number( ssfGroupId ) : undefined,
 				trainers: trainers.trim() || undefined,
 				contact: contact.trim() || undefined,
 				tournamentLink: tournamentLink.trim() || undefined,
+				showParticipants,
+				showStandings,
 			} );
+
+			// Add SSF participants after group creation
+			if ( ssfParticipants.length > 0 ) {
+				for ( const p of ssfParticipants ) {
+					await addParticipant( created.id, {
+						id: `ssf-${ p.ssfId }`,
+						name: p.name,
+						ssfId: p.ssfId,
+					} );
+				}
+			}
+
 			onCreated();
 			onClose();
 		} catch ( err: any ) {
@@ -128,6 +260,115 @@ export function CreateGroupModal( {
 
 	return (
 		<Modal title={ t.training.createGroup } onRequestClose={ onClose }>
+			{ /* SSF Autofill section */ }
+			<div
+				style={ {
+					marginBottom: 16,
+					padding: 12,
+					background: '#f0f0f0',
+					borderRadius: 4,
+				} }
+			>
+				<div
+					style={ {
+						display: 'flex',
+						alignItems: 'flex-end',
+						gap: 8,
+					} }
+				>
+					<div style={ { flex: 1 } }>
+						<TextControl
+							label={ t.training.ssfGroupId }
+							value={ ssfGroupId }
+							onChange={ setSsfGroupId }
+							type="number"
+						/>
+					</div>
+					<Button
+						variant="secondary"
+						onClick={ handleSsfFetch }
+						isBusy={ ssfFetching }
+						disabled={
+							ssfFetching ||
+							! ssfGroupId ||
+							Number( ssfGroupId ) <= 0
+						}
+						style={ { marginBottom: 8 } }
+					>
+						{ ssfFetching
+							? t.training.ssfFetching
+							: t.training.fetchFromSsf }
+					</Button>
+				</div>
+				{ ssfError && (
+					<Text
+						style={ {
+							color: '#cc1818',
+							display: 'block',
+							marginTop: 4,
+						} }
+					>
+						{ ssfError }
+					</Text>
+				) }
+				{ ssfPreview && (
+					<div
+						style={ {
+							marginTop: 8,
+							padding: 8,
+							background: '#fff',
+							borderRadius: 4,
+						} }
+					>
+						<Text
+							style={ {
+								display: 'block',
+								fontWeight: 600,
+								marginBottom: 4,
+							} }
+						>
+							{ ssfPreview.name || '(no name)' }
+						</Text>
+						<Text style={ { display: 'block', marginBottom: 8 } }>
+							{ t.training.participants }:{ ' ' }
+							{ ssfPreview.participants.length }
+						</Text>
+						<div
+							style={ {
+								display: 'flex',
+								gap: 8,
+							} }
+						>
+							<Button
+								variant="primary"
+								size="small"
+								onClick={ applySsfData }
+							>
+								{ t.training.ssfPreviewConfirm }
+							</Button>
+							<Button
+								variant="tertiary"
+								size="small"
+								onClick={ () => setSsfPreview( null ) }
+							>
+								{ t.common.cancel }
+							</Button>
+						</div>
+					</div>
+				) }
+				{ ssfParticipants.length > 0 && ! ssfPreview && (
+					<Text
+						style={ {
+							display: 'block',
+							marginTop: 4,
+							color: '#1e7e34',
+						} }
+					>
+						{ t.training.participants }: { ssfParticipants.length }
+					</Text>
+				) }
+			</div>
+
 			<TextControl
 				label={ t.training.groupName }
 				value={ title }
@@ -180,6 +421,16 @@ export function CreateGroupModal( {
 					}
 				/>
 			) }
+			<CheckboxControl
+				label={ t.training.showParticipants }
+				checked={ showParticipants }
+				onChange={ setShowParticipants }
+			/>
+			<CheckboxControl
+				label={ t.training.showStandings }
+				checked={ showStandings }
+				onChange={ setShowStandings }
+			/>
 
 			{ /* Event picker */ }
 			<div

@@ -34,10 +34,12 @@ export default function GroupCard( { group, lang }: Props ) {
 				<p className="rc-tg__card-desc">{ group.description }</p>
 			) }
 			<div className="rc-tg__card-footer">
-				<span className="rc-tg__card-meta">
-					{ activeParticipants.length }{ ' ' }
-					{ t.training.participants.toLowerCase() }
-				</span>
+				{ group.showParticipants && (
+					<span className="rc-tg__card-meta">
+						{ activeParticipants.length }{ ' ' }
+						{ t.training.participants.toLowerCase() }
+					</span>
+				) }
 				{ tcLabel && (
 					<span className="rc-tg__card-meta">{ tcLabel }</span>
 				) }

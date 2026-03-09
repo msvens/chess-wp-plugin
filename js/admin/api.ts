@@ -160,6 +160,21 @@ export function updateEvent(
 	} );
 }
 
+// SSF Tournament
+export function fetchSsfTournamentGroup( groupId: number ): Promise< unknown > {
+	return apiFetch( {
+		path: `${ BASE }/ssf/tournament/group/id/${ groupId }`,
+	} );
+}
+
+export function fetchSsfTournamentResults(
+	groupId: number
+): Promise< unknown > {
+	return apiFetch( {
+		path: `${ BASE }/ssf/tournamentresults/table/id/${ groupId }`,
+	} );
+}
+
 // SSF Proxy
 export function fetchClubRatings( clubId: string ): Promise< SsfPlayer[] > {
 	const today = new Date().toISOString().split( 'T' )[ 0 ];

@@ -29,11 +29,14 @@ export interface TrainingGroup {
 	hasTournament: boolean;
 	timeControl: string;
 	eventId: number;
+	ssfGroupId: number;
 	participants: Participant[];
 	trainers: string;
 	contact: string;
 	tournamentLink: string;
 	rounds: StoredRound[];
+	showParticipants: boolean;
+	showStandings: boolean;
 	createdBy: number;
 }
 
@@ -104,9 +107,12 @@ export interface CreateGroupData {
 	hasTournament?: boolean;
 	timeControl?: string;
 	eventId?: number;
+	ssfGroupId?: number;
 	trainers?: string;
 	contact?: string;
 	tournamentLink?: string;
+	showParticipants?: boolean;
+	showStandings?: boolean;
 }
 
 // Navigation state

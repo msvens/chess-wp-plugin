@@ -70,6 +70,14 @@ export interface Translations {
 		noResult: string;
 		everyWeek: string;
 		everyOtherWeek: string;
+		showParticipants: string;
+		showStandings: string;
+		ssfGroupId: string;
+		fetchFromSsf: string;
+		ssfFetching: string;
+		ssfFetchError: string;
+		ssfPreviewConfirm: string;
+		results: string;
 	};
 	calendar: {
 		title: string;
@@ -209,6 +217,14 @@ const translations: Record< Language, Translations > = {
 			noResult: '—',
 			everyWeek: 'Every',
 			everyOtherWeek: 'Every other',
+			showParticipants: 'Show participants',
+			showStandings: 'Show standings',
+			ssfGroupId: 'SSF Group ID',
+			fetchFromSsf: 'Fetch from SSF',
+			ssfFetching: 'Fetching...',
+			ssfFetchError: 'Could not fetch SSF data',
+			ssfPreviewConfirm: 'Apply',
+			results: 'Results',
 		},
 		calendar: {
 			title: 'Calendar',
@@ -346,6 +362,14 @@ const translations: Record< Language, Translations > = {
 			noResult: '—',
 			everyWeek: 'Varje',
 			everyOtherWeek: 'Varannan',
+			showParticipants: 'Visa deltagare',
+			showStandings: 'Visa ställning',
+			ssfGroupId: 'SSF Grupp-ID',
+			fetchFromSsf: 'Hämta från SSF',
+			ssfFetching: 'Hämtar...',
+			ssfFetchError: 'Kunde inte hämta SSF-data',
+			ssfPreviewConfirm: 'Applicera',
+			results: 'Resultat',
 		},
 		calendar: {
 			title: 'Kalender',

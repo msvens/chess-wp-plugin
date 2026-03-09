@@ -39,6 +39,10 @@ export function EditGroupModal( {
 	const [ tournamentLink, setTournamentLink ] = useState(
 		group.tournamentLink
 	);
+	const [ showParticipants, setShowParticipants ] = useState(
+		group.showParticipants
+	);
+	const [ showStandings, setShowStandings ] = useState( group.showStandings );
 	const [ saving, setSaving ] = useState( false );
 	const [ error, setError ] = useState< string | null >( null );
 
@@ -58,6 +62,8 @@ export function EditGroupModal( {
 				trainers: trainers.trim(),
 				contact: contact.trim(),
 				tournamentLink: tournamentLink.trim(),
+				showParticipants,
+				showStandings,
 			} );
 			onUpdated();
 			onClose();
@@ -119,6 +125,24 @@ export function EditGroupModal( {
 					onChange={ ( v ) =>
 						setTimeControl( v as 'classical' | 'rapid' | 'blitz' )
 					}
+				/>
+			) }
+			<CheckboxControl
+				label={ t.training.showParticipants }
+				checked={ showParticipants }
+				onChange={ setShowParticipants }
+			/>
+			<CheckboxControl
+				label={ t.training.showStandings }
+				checked={ showStandings }
+				onChange={ setShowStandings }
+			/>
+			{ group.ssfGroupId > 0 && (
+				<TextControl
+					label={ t.training.ssfGroupId }
+					value={ String( group.ssfGroupId ) }
+					onChange={ () => {} }
+					readOnly
 				/>
 			) }
 

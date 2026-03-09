@@ -107,6 +107,17 @@ export default function TrainingGroupApp( { groupId, clubId, locale }: Props ) {
 		fetchData();
 	}, [ groupId ] );
 
+	// Default to sessions tab if participants are hidden.
+	useEffect( () => {
+		if (
+			group &&
+			! group.showParticipants &&
+			activeTab === 'participants'
+		) {
+			setActiveTab( 'sessions' );
+		}
+	}, [ group ] ); // eslint-disable-line react-hooks/exhaustive-deps
+
 	// Fetch SSF ratings if club ID is available.
 	useEffect( () => {
 		if ( ! clubId ) {
@@ -141,7 +152,8 @@ export default function TrainingGroupApp( { groupId, clubId, locale }: Props ) {
 		return null;
 	}
 
-	const hasInfo = group.trainers || group.contact || schedule;
+	const hasInfo =
+		group.trainers || group.contact || schedule || group.tournamentLink;
 
 	// Read initial tab from URL hash.
 	const initialSession =
@@ -176,17 +188,34 @@ export default function TrainingGroupApp( { groupId, clubId, locale }: Props ) {
 							<dd>{ group.contact }</dd>
 						</div>
 					) }
+					{ group.tournamentLink && (
+						<div className="rc-td__info-item">
+							<dt>{ t.training.results }</dt>
+							<dd>
+								<a
+									href={ group.tournamentLink }
+									target="_blank"
+									rel="noopener noreferrer"
+									className="rc-td__info-link"
+								>
+									SSF { t.training.results } ↗
+								</a>
+							</dd>
+						</div>
+					) }
 				</dl>
 			) }
 
 			<TabBar
 				activeTab={ activeTab }
 				hasTournament={ group.hasTournament }
+				showParticipants={ group.showParticipants }
+				showStandings={ group.showStandings }
 				onChange={ setActiveTab }
 				t={ t.training }
 			/>
 
-			{ activeTab === 'participants' && (
+			{ activeTab === 'participants' && group.showParticipants && (
 				<ParticipantsTab
 					participants={ group.participants }
 					ratings={ ratings }
@@ -205,7 +234,7 @@ export default function TrainingGroupApp( { groupId, clubId, locale }: Props ) {
 				/>
 			) }
 
-			{ activeTab === 'standings' && (
+			{ activeTab === 'standings' && group.showStandings && (
 				<StandingsTab
 					participants={ group.participants }
 					rounds={ group.rounds }

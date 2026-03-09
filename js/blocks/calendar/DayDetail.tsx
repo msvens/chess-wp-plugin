@@ -1,6 +1,12 @@
+import { useRef, useEffect } from '@wordpress/element';
 import type { CalendarEvent } from '../../shared/types';
 import type { Translations } from '../../shared/translations';
 import { categoryClassMap, formatFullDate, formatTime } from './utils';
+
+export interface EventGroupLink {
+	slug: string;
+	title: string;
+}
 
 interface DayDetailProps {
 	day: number;
@@ -9,6 +15,7 @@ interface DayDetailProps {
 	events: CalendarEvent[];
 	locale: string;
 	t: Translations[ 'calendar' ];
+	eventGroupMap: Map< number, EventGroupLink[] >;
 	onClose: () => void;
 }
 
@@ -19,10 +26,20 @@ export default function DayDetail( {
 	events,
 	locale,
 	t,
+	eventGroupMap,
 	onClose,
 }: DayDetailProps ) {
+	const detailRef = useRef< HTMLDivElement >( null );
+
+	useEffect( () => {
+		detailRef.current?.scrollIntoView( {
+			behavior: 'smooth',
+			block: 'start',
+		} );
+	}, [ day ] );
+
 	return (
-		<div className="rc-cal__detail">
+		<div className="rc-cal__detail" ref={ detailRef }>
 			<div className="rc-cal__detail-header">
 				<span className="rc-cal__detail-date">
 					{ formatFullDate( year, month, day, locale ) }
@@ -52,7 +69,12 @@ export default function DayDetail( {
 			) : (
 				<div className="rc-cal__detail-list">
 					{ events.map( ( event ) => (
-						<EventCard key={ event.id } event={ event } t={ t } />
+						<EventCard
+							key={ event.id }
+							event={ event }
+							t={ t }
+							eventGroupMap={ eventGroupMap }
+						/>
 					) ) }
 				</div>
 			) }
@@ -63,13 +85,21 @@ export default function DayDetail( {
 function EventCard( {
 	event,
 	t,
+	eventGroupMap,
 }: {
 	event: CalendarEvent;
 	t: Translations[ 'calendar' ];
+	eventGroupMap: Map< number, EventGroupLink[] >;
 } ) {
 	const cls = categoryClassMap[ event.category ];
 	const startTime = formatTime( event.startDate );
 	const endTime = formatTime( event.endDate );
+
+	// Look up linked training groups via the original event ID
+	const originalId = event.parentId
+		? Number( event.parentId )
+		: Number( event.id );
+	const linkedGroups = eventGroupMap.get( originalId ) || [];
 
 	return (
 		<div className="rc-cal__event-card">
@@ -130,6 +160,20 @@ function EventCard( {
 							{ event.linkLabel || event.link }
 						</a>
 					</>
+				) }
+				{ linkedGroups.length > 0 && (
+					<ul className="rc-cal__event-groups">
+						{ linkedGroups.map( ( g ) => (
+							<li key={ g.slug }>
+								<a
+									className="rc-cal__event-group-link"
+									href={ `/training-groups/${ g.slug }/` }
+								>
+									{ g.title }
+								</a>
+							</li>
+						) ) }
+					</ul>
 				) }
 			</div>
 		</div>
