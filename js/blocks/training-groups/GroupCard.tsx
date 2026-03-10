@@ -10,7 +10,10 @@ interface Props {
 export default function GroupCard( { group, lang }: Props ) {
 	const t = getTranslation( lang );
 	const activeParticipants = group.participants.filter( ( p ) => p.active );
-	const tcLabel = group.hasTournament
+	const hasTournament = group.groupType
+		? group.groupType !== 'training'
+		: group.hasTournament;
+	const tcLabel = hasTournament
 		? t.training[ group.timeControl as 'classical' | 'rapid' | 'blitz' ] ||
 		  group.timeControl
 		: null;
@@ -23,9 +26,11 @@ export default function GroupCard( { group, lang }: Props ) {
 						{ group.semester }
 					</span>
 				) }
-				{ group.hasTournament && (
+				{ hasTournament && (
 					<span className="rc-tg__badge rc-tg__badge--tournament">
-						{ t.training.tournament }
+						{ group.groupType === 'both'
+							? t.training.trainingAndTournament
+							: t.training.tournamentOnly }
 					</span>
 				) }
 			</div>

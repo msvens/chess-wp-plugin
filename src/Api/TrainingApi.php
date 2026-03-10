@@ -221,7 +221,15 @@ class TrainingApi {
 		if ( ! empty( $body['semester'] ) ) {
 			update_post_meta( $post_id, 'rc_semester', sanitize_text_field( $body['semester'] ) );
 		}
-		if ( isset( $body['hasTournament'] ) ) {
+		if ( isset( $body['groupType'] ) ) {
+			$allowed_types = [ 'training', 'tournament', 'both' ];
+			$group_type    = sanitize_text_field( $body['groupType'] );
+			if ( in_array( $group_type, $allowed_types, true ) ) {
+				update_post_meta( $post_id, 'rc_group_type', $group_type );
+				// Keep rc_has_tournament in sync for backward compat.
+				update_post_meta( $post_id, 'rc_has_tournament', 'training' !== $group_type ? '1' : '' );
+			}
+		} elseif ( isset( $body['hasTournament'] ) ) {
 			update_post_meta( $post_id, 'rc_has_tournament', (bool) $body['hasTournament'] ? '1' : '' );
 		}
 		if ( ! empty( $body['timeControl'] ) ) {
@@ -280,7 +288,14 @@ class TrainingApi {
 		if ( isset( $body['semester'] ) ) {
 			update_post_meta( $post->ID, 'rc_semester', sanitize_text_field( $body['semester'] ) );
 		}
-		if ( isset( $body['hasTournament'] ) ) {
+		if ( isset( $body['groupType'] ) ) {
+			$allowed_types = [ 'training', 'tournament', 'both' ];
+			$group_type    = sanitize_text_field( $body['groupType'] );
+			if ( in_array( $group_type, $allowed_types, true ) ) {
+				update_post_meta( $post->ID, 'rc_group_type', $group_type );
+				update_post_meta( $post->ID, 'rc_has_tournament', 'training' !== $group_type ? '1' : '' );
+			}
+		} elseif ( isset( $body['hasTournament'] ) ) {
 			update_post_meta( $post->ID, 'rc_has_tournament', (bool) $body['hasTournament'] ? '1' : '' );
 		}
 		if ( isset( $body['timeControl'] ) ) {
@@ -614,6 +629,12 @@ class TrainingApi {
 			}
 		}
 
+		// Derive groupType with backward compat: if rc_group_type is empty, fall back to rc_has_tournament.
+		$group_type = get_post_meta( $post->ID, 'rc_group_type', true );
+		if ( ! $group_type ) {
+			$group_type = (bool) get_post_meta( $post->ID, 'rc_has_tournament', true ) ? 'both' : 'training';
+		}
+
 		return [
 			'id'               => $post->ID,
 			'slug'             => $post->post_name,
@@ -621,7 +642,8 @@ class TrainingApi {
 			'description'      => $post->post_content,
 			'status'           => get_post_meta( $post->ID, 'rc_status', true ) ?: 'draft',
 			'semester'         => get_post_meta( $post->ID, 'rc_semester', true ) ?: '',
-			'hasTournament'    => (bool) get_post_meta( $post->ID, 'rc_has_tournament', true ),
+			'groupType'        => $group_type,
+			'hasTournament'    => 'training' !== $group_type,
 			'timeControl'      => get_post_meta( $post->ID, 'rc_time_control', true ) ?: 'classical',
 			'eventId'          => (int) get_post_meta( $post->ID, 'rc_event_id', true ),
 			'ssfGroupId'       => (int) get_post_meta( $post->ID, 'rc_ssf_group_id', true ),

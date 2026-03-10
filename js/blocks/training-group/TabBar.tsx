@@ -1,11 +1,13 @@
 import type { Tab } from './TrainingGroupApp';
+import type { GroupType } from '../../admin/types';
 import type { Translations } from '../../shared/translations';
 
 interface Props {
 	activeTab: Tab;
-	hasTournament: boolean;
+	groupType: GroupType;
 	showParticipants: boolean;
 	showStandings: boolean;
+	ssfGroupId: number;
 	onChange: ( tab: Tab ) => void;
 	t: Translations[ 'training' ];
 }
@@ -18,20 +20,22 @@ const tabs: { key: Tab; labelKey: keyof Translations[ 'training' ] }[] = [
 
 export default function TabBar( {
 	activeTab,
-	hasTournament,
+	groupType,
 	showParticipants,
 	showStandings,
+	ssfGroupId,
 	onChange,
 	t,
 }: Props ) {
+	const hasResults = groupType !== 'training' || ssfGroupId > 0;
 	const visibleTabs = tabs.filter( ( tab ) => {
 		if ( tab.key === 'participants' && ! showParticipants ) {
 			return false;
 		}
-		if (
-			tab.key === 'standings' &&
-			( ! hasTournament || ! showStandings )
-		) {
+		if ( tab.key === 'sessions' && groupType === 'tournament' ) {
+			return false;
+		}
+		if ( tab.key === 'standings' && ( ! hasResults || ! showStandings ) ) {
 			return false;
 		}
 		return true;

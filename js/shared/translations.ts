@@ -47,6 +47,10 @@ export interface Translations {
 		description: string;
 		timeControl: string;
 		hasTournament: string;
+		groupType: string;
+		trainingOnly: string;
+		tournamentOnly: string;
+		trainingAndTournament: string;
 		schedule: string;
 		startDate: string;
 		endDate: string;
@@ -78,6 +82,9 @@ export interface Translations {
 		ssfFetchError: string;
 		ssfPreviewConfirm: string;
 		results: string;
+		tiebreak: string;
+		loadingResults: string;
+		resultsFetchError: string;
 	};
 	calendar: {
 		title: string;
@@ -164,7 +171,7 @@ const translations: Record< Language, Translations > = {
 			wins: 'W',
 			draws: 'D',
 			losses: 'L',
-			rating: 'Rating',
+			rating: 'Elo',
 			classical: 'Classical',
 			rapid: 'Rapid',
 			blitz: 'Blitz',
@@ -186,13 +193,17 @@ const translations: Record< Language, Translations > = {
 			search: 'Search...',
 			backToGroup: 'Back to group',
 			backToList: 'Back to training',
-			ratingUnavailable: 'N/A',
+			ratingUnavailable: '-',
 			notPlayed: 'Not played',
 			createGroup: 'Create Group',
 			groupName: 'Group Name',
 			description: 'Description',
 			timeControl: 'Time Control',
 			hasTournament: 'Has Tournament',
+			groupType: 'Group Type',
+			trainingOnly: 'Training',
+			tournamentOnly: 'Tournament',
+			trainingAndTournament: 'Training & Tournament',
 			schedule: 'Schedule',
 			startDate: 'Start Date',
 			endDate: 'End Date',
@@ -225,6 +236,9 @@ const translations: Record< Language, Translations > = {
 			ssfFetchError: 'Could not fetch SSF data',
 			ssfPreviewConfirm: 'Apply',
 			results: 'Results',
+			tiebreak: 'KP',
+			loadingResults: 'Loading results...',
+			resultsFetchError: 'Could not load results.',
 		},
 		calendar: {
 			title: 'Calendar',
@@ -309,7 +323,7 @@ const translations: Record< Language, Translations > = {
 			wins: 'V',
 			draws: 'R',
 			losses: 'F',
-			rating: 'Rating',
+			rating: 'Elo',
 			classical: 'Klassiskt',
 			rapid: 'Rapid',
 			blitz: 'Blixt',
@@ -331,13 +345,17 @@ const translations: Record< Language, Translations > = {
 			search: 'Sök...',
 			backToGroup: 'Tillbaka till gruppen',
 			backToList: 'Tillbaka till träning',
-			ratingUnavailable: 'Saknas',
+			ratingUnavailable: '-',
 			notPlayed: 'Ej spelat',
 			createGroup: 'Skapa grupp',
 			groupName: 'Gruppnamn',
 			description: 'Beskrivning',
 			timeControl: 'Tidskontroll',
 			hasTournament: 'Har turnering',
+			groupType: 'Grupptyp',
+			trainingOnly: 'Träning',
+			tournamentOnly: 'Turnering',
+			trainingAndTournament: 'Träning & turnering',
 			schedule: 'Schema',
 			startDate: 'Startdatum',
 			endDate: 'Slutdatum',
@@ -370,6 +388,9 @@ const translations: Record< Language, Translations > = {
 			ssfFetchError: 'Kunde inte hämta SSF-data',
 			ssfPreviewConfirm: 'Applicera',
 			results: 'Resultat',
+			tiebreak: 'KP',
+			loadingResults: 'Laddar resultat...',
+			resultsFetchError: 'Kunde inte ladda resultat.',
 		},
 		calendar: {
 			title: 'Kalender',

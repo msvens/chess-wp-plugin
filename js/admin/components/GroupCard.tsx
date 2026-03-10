@@ -83,9 +83,11 @@ export function GroupCard( { group, t, onClick, onDeleted }: GroupCardProps ) {
 				<Text style={ { display: 'block' } }>
 					{ t.training.participants }: { activeCount }
 				</Text>
-				{ group.hasTournament && (
+				{ group.groupType && group.groupType !== 'training' && (
 					<Text style={ { display: 'block', fontStyle: 'italic' } }>
-						{ t.training.tournament }
+						{ group.groupType === 'both'
+							? t.training.trainingAndTournament
+							: t.training.tournamentOnly }
 					</Text>
 				) }
 			</CardBody>

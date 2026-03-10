@@ -57,6 +57,10 @@ class TrainingGroup {
 				'type'    => 'boolean',
 				'default' => false,
 			],
+			'rc_group_type'        => [
+				'type'    => 'string',
+				'default' => 'training',
+			],
 			'rc_time_control'      => [
 				'type'    => 'string',
 				'default' => 'classical',

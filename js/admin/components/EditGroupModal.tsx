@@ -9,7 +9,7 @@ import {
 	__experimentalText as Text,
 } from '@wordpress/components';
 import type { Translations } from '../../shared';
-import type { TrainingGroup } from '../types';
+import type { TrainingGroup, GroupType } from '../types';
 import { updateGroup } from '../api';
 
 interface EditGroupModalProps {
@@ -28,7 +28,9 @@ export function EditGroupModal( {
 	const [ title, setTitle ] = useState( group.title );
 	const [ description, setDescription ] = useState( group.description );
 	const [ semester, setSemester ] = useState( group.semester );
-	const [ hasTournament, setHasTournament ] = useState( group.hasTournament );
+	const [ groupType, setGroupType ] = useState< GroupType >(
+		group.groupType || 'training'
+	);
 	const [ timeControl, setTimeControl ] = useState<
 		'classical' | 'rapid' | 'blitz'
 	>(
@@ -53,11 +55,12 @@ export function EditGroupModal( {
 		setSaving( true );
 		setError( null );
 		try {
+			const hasTournament = groupType !== 'training';
 			await updateGroup( group.id, {
 				title: title.trim(),
 				description: description.trim(),
 				semester: semester.trim(),
-				hasTournament,
+				groupType,
 				timeControl: hasTournament ? timeControl : undefined,
 				trainers: trainers.trim(),
 				contact: contact.trim(),
@@ -108,12 +111,26 @@ export function EditGroupModal( {
 				onChange={ setSemester }
 				placeholder="VT2026"
 			/>
-			<CheckboxControl
-				label={ t.training.hasTournament }
-				checked={ hasTournament }
-				onChange={ setHasTournament }
+			<SelectControl
+				label={ t.training.groupType }
+				value={ groupType }
+				options={ [
+					{
+						label: t.training.trainingOnly,
+						value: 'training',
+					},
+					{
+						label: t.training.tournamentOnly,
+						value: 'tournament',
+					},
+					{
+						label: t.training.trainingAndTournament,
+						value: 'both',
+					},
+				] }
+				onChange={ ( v ) => setGroupType( v as GroupType ) }
 			/>
-			{ hasTournament && (
+			{ groupType !== 'training' && (
 				<SelectControl
 					label={ t.training.timeControl }
 					value={ timeControl }

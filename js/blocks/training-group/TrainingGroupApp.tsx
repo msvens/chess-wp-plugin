@@ -79,16 +79,18 @@ export default function TrainingGroupApp( { groupId, clubId, locale }: Props ) {
 
 		const fetchData = async () => {
 			try {
-				const [ groupData, sessionData ] = await Promise.all( [
-					apiFetch< TrainingGroup >( {
-						path: `/rockaden/v1/training-groups/${ groupId }`,
-					} ),
-					apiFetch< TrainingSession[] >( {
-						path: `/rockaden/v1/training-groups/${ groupId }/sessions`,
-					} ),
-				] );
+				const groupData = await apiFetch< TrainingGroup >( {
+					path: `/rockaden/v1/training-groups/${ groupId }`,
+				} );
 				setGroup( groupData );
-				setSessions( sessionData );
+
+				// Skip session fetch for tournament-only groups.
+				if ( groupData.groupType !== 'tournament' ) {
+					const sessionData = await apiFetch< TrainingSession[] >( {
+						path: `/rockaden/v1/training-groups/${ groupId }/sessions`,
+					} );
+					setSessions( sessionData );
+				}
 
 				if ( groupData.eventId ) {
 					apiFetch< EventData >( {
@@ -107,13 +109,19 @@ export default function TrainingGroupApp( { groupId, clubId, locale }: Props ) {
 		fetchData();
 	}, [ groupId ] );
 
-	// Default to sessions tab if participants are hidden.
+	// Set default tab based on groupType and visibility.
 	useEffect( () => {
-		if (
-			group &&
-			! group.showParticipants &&
-			activeTab === 'participants'
-		) {
+		if ( ! group ) {
+			return;
+		}
+		if ( group.groupType === 'tournament' ) {
+			// Tournament-only: default to standings if visible, else participants.
+			if ( group.showStandings ) {
+				setActiveTab( 'standings' );
+			} else if ( group.showParticipants ) {
+				setActiveTab( 'participants' );
+			}
+		} else if ( ! group.showParticipants && activeTab === 'participants' ) {
 			setActiveTab( 'sessions' );
 		}
 	}, [ group ] ); // eslint-disable-line react-hooks/exhaustive-deps
@@ -208,9 +216,10 @@ export default function TrainingGroupApp( { groupId, clubId, locale }: Props ) {
 
 			<TabBar
 				activeTab={ activeTab }
-				hasTournament={ group.hasTournament }
+				groupType={ group.groupType }
 				showParticipants={ group.showParticipants }
 				showStandings={ group.showStandings }
+				ssfGroupId={ group.ssfGroupId }
 				onChange={ setActiveTab }
 				t={ t.training }
 			/>
@@ -240,6 +249,7 @@ export default function TrainingGroupApp( { groupId, clubId, locale }: Props ) {
 					rounds={ group.rounds }
 					ratings={ ratings }
 					t={ t.training }
+					ssfGroupId={ group.ssfGroupId }
 				/>
 			) }
 		</div>

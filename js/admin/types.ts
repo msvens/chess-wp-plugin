@@ -19,6 +19,8 @@ export interface StoredRound {
 	bye?: string;
 }
 
+export type GroupType = 'training' | 'tournament' | 'both';
+
 export interface TrainingGroup {
 	id: number;
 	slug: string;
@@ -26,6 +28,7 @@ export interface TrainingGroup {
 	description: string;
 	status: string;
 	semester: string;
+	groupType: GroupType;
 	hasTournament: boolean;
 	timeControl: string;
 	eventId: number;
@@ -104,6 +107,7 @@ export interface CreateGroupData {
 	title: string;
 	description?: string;
 	semester?: string;
+	groupType?: GroupType;
 	hasTournament?: boolean;
 	timeControl?: string;
 	eventId?: number;

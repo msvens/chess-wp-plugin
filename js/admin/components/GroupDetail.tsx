@@ -100,11 +100,15 @@ export function GroupDetail( {
 			name: 'participants',
 			title: t.training.participants,
 		},
-		{
-			name: 'sessions',
-			title: t.training.sessions,
-		},
-		...( group.hasTournament
+		...( group.groupType !== 'tournament'
+			? [
+					{
+						name: 'sessions',
+						title: t.training.sessions,
+					},
+			  ]
+			: [] ),
+		...( group.groupType !== 'training'
 			? [ { name: 'tournament', title: t.training.tournament } ]
 			: [] ),
 	];
@@ -151,7 +155,12 @@ export function GroupDetail( {
 			{ group.semester && (
 				<Text style={ { display: 'block', marginBottom: 4 } }>
 					{ t.training.semester }: { group.semester }
-					{ group.hasTournament && ` | ${ t.training.tournament }` }
+					{ ' | ' }
+					{ group.groupType === 'both'
+						? t.training.trainingAndTournament
+						: group.groupType === 'tournament'
+						? t.training.tournamentOnly
+						: t.training.trainingOnly }
 				</Text>
 			) }
 			{ group.trainers && (

@@ -10,7 +10,7 @@ import {
 	__experimentalText as Text,
 } from '@wordpress/components';
 import type { Translations } from '../../shared';
-import type { EventData } from '../types';
+import type { EventData, GroupType } from '../types';
 import {
 	createGroup,
 	fetchEvents,
@@ -34,7 +34,7 @@ export function CreateGroupModal( {
 	const [ title, setTitle ] = useState( '' );
 	const [ description, setDescription ] = useState( '' );
 	const [ semester, setSemester ] = useState( '' );
-	const [ hasTournament, setHasTournament ] = useState( false );
+	const [ groupType, setGroupType ] = useState< GroupType >( 'training' );
 	const [ timeControl, setTimeControl ] = useState<
 		'classical' | 'rapid' | 'blitz'
 	>( 'classical' );
@@ -205,11 +205,12 @@ export function CreateGroupModal( {
 				eventId = Number( selectedEventId );
 			}
 
+			const hasTournament = groupType !== 'training';
 			const created = await createGroup( {
 				title: title.trim(),
 				description: description.trim() || undefined,
 				semester: semester.trim() || undefined,
-				hasTournament,
+				groupType,
 				timeControl: hasTournament ? timeControl : undefined,
 				eventId,
 				ssfGroupId: ssfGroupId ? Number( ssfGroupId ) : undefined,
@@ -402,12 +403,26 @@ export function CreateGroupModal( {
 				onChange={ setSemester }
 				placeholder="VT2026"
 			/>
-			<CheckboxControl
-				label={ t.training.hasTournament }
-				checked={ hasTournament }
-				onChange={ setHasTournament }
+			<SelectControl
+				label={ t.training.groupType }
+				value={ groupType }
+				options={ [
+					{
+						label: t.training.trainingOnly,
+						value: 'training',
+					},
+					{
+						label: t.training.tournamentOnly,
+						value: 'tournament',
+					},
+					{
+						label: t.training.trainingAndTournament,
+						value: 'both',
+					},
+				] }
+				onChange={ ( v ) => setGroupType( v as GroupType ) }
 			/>
-			{ hasTournament && (
+			{ groupType !== 'training' && (
 				<SelectControl
 					label={ t.training.timeControl }
 					value={ timeControl }
