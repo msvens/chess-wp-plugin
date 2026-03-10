@@ -12,6 +12,10 @@
     "groupId": {
       "type": "number",
       "default": 0
+    },
+    "showRounds": {
+      "type": "boolean",
+      "default": true
     }
   },
   "supports": {

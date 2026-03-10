@@ -175,6 +175,12 @@ export function fetchSsfTournamentResults(
 	} );
 }
 
+export function fetchSsfRoundResults( groupId: number ): Promise< unknown > {
+	return apiFetch( {
+		path: `${ BASE }/ssf/tournamentresults/roundresults/id/${ groupId }`,
+	} );
+}
+
 // SSF Proxy
 export function fetchClubRatings( clubId: string ): Promise< SsfPlayer[] > {
 	const today = new Date().toISOString().split( 'T' )[ 0 ];

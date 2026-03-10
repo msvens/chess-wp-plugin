@@ -8,6 +8,16 @@
 	--rc-st-surface-alt: #f9fafb;
 	--rc-st-text-muted: #6b7280;
 
+	/* Shared component vars (used by RoundsDisplay, SsfResultsView) */
+	--rc-td-border: #e5e7eb;
+	--rc-td-surface: #fff;
+	--rc-td-surface-alt: #f9fafb;
+	--rc-td-text-muted: #6b7280;
+	--rc-td-accent: #2563eb;
+	--rc-td-accent-bg: #dbeafe;
+	--rc-td-tab-active: #2563eb;
+	--rc-td-tab-inactive: #6b7280;
+
 	font-family: var(--wp--preset--font-family--geist, sans-serif);
 	color: var(--wp--preset--color--on-surface);
 	max-width: 100%;
@@ -17,6 +27,15 @@ html.dark .rc-st {
 	--rc-st-border: #374151;
 	--rc-st-surface-alt: #263244;
 	--rc-st-text-muted: #9ca3af;
+
+	--rc-td-border: #374151;
+	--rc-td-surface: #1f2937;
+	--rc-td-surface-alt: #263244;
+	--rc-td-text-muted: #9ca3af;
+	--rc-td-accent: #60a5fa;
+	--rc-td-accent-bg: rgba(37, 99, 235, 0.2);
+	--rc-td-tab-active: #60a5fa;
+	--rc-td-tab-inactive: #9ca3af;
 }
 
 .rc-st__loading {
@@ -75,8 +94,14 @@ html.dark .rc-st {
 }
 
 @media (max-width: 640px) {
-	.rc-st__table {
+	.rc-st__table,
+	.rc-st .rc-rounds__table,
+	.rc-st .rc-td__table {
 		display: block;
+		overflow-x: auto;
+	}
+
+	.rc-st .rc-rounds__tabs {
 		overflow-x: auto;
 	}
 }

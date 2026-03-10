@@ -1,18 +1,61 @@
 import { useState, useEffect } from '@wordpress/element';
 import apiFetch from '@wordpress/api-fetch';
-import type { TrainingGroup, SsfPlayer } from '../../admin/types';
+import type { TrainingGroup, SsfPlayer, Participant } from '../../admin/types';
 import type { GameResult } from '../../shared/roundRobin';
 import { computeStandings } from '../../shared/roundRobin';
 import { getTranslation, toLanguage } from '../../shared/translations';
 import { useLocale } from '../../shared/useLocale';
+import RoundsDisplay, { formatResult } from '../training-group/RoundsDisplay';
+import type { DisplayRound } from '../training-group/RoundsDisplay';
+import SsfResultsView from '../training-group/SsfResultsView';
 
 interface Props {
 	groupId: number;
 	clubId: string;
 	locale: string;
+	showRounds: boolean;
 }
 
-export default function StandingsApp( { groupId, clubId, locale }: Props ) {
+function buildDisplayRounds(
+	rounds: TrainingGroup[ 'rounds' ],
+	participantMap: Map< string, Participant >,
+	ratings: Map< number, SsfPlayer >
+): DisplayRound[] {
+	return rounds.map( ( r ) => ( {
+		round: r.round,
+		pairings: r.pairings.map( ( p, idx ) => {
+			const white = participantMap.get( p.whiteId );
+			const black = participantMap.get( p.blackId );
+			return {
+				board: idx + 1,
+				whiteName: white?.name || p.whiteId,
+				whiteRating: getRatingStr( white, ratings ),
+				blackName: black?.name || p.blackId,
+				blackRating: getRatingStr( black, ratings ),
+				result: formatResult( p.result ),
+			};
+		} ),
+		byeName: r.bye ? participantMap.get( r.bye )?.name || r.bye : undefined,
+	} ) );
+}
+
+function getRatingStr(
+	participant: Participant | undefined,
+	ratings: Map< number, SsfPlayer >
+): string {
+	if ( ! participant?.ssfId ) {
+		return '';
+	}
+	const player = ratings.get( participant.ssfId );
+	return player?.elo ? String( player.elo.rating ) : '';
+}
+
+export default function StandingsApp( {
+	groupId,
+	clubId,
+	locale,
+	showRounds,
+}: Props ) {
 	const currentLocale = useLocale( locale );
 	const lang = toLanguage( currentLocale );
 	const t = getTranslation( lang );
@@ -62,6 +105,23 @@ export default function StandingsApp( { groupId, clubId, locale }: Props ) {
 		return null;
 	}
 
+	// SSF-linked group: delegate entirely to SsfResultsView.
+	if ( group.ssfGroupId > 0 ) {
+		return (
+			<div className="rc-st">
+				<h2 className="rc-st__title">
+					{ t.training.standings } — { group.title }
+				</h2>
+				<SsfResultsView
+					ssfGroupId={ group.ssfGroupId }
+					t={ t.training }
+					showRounds={ showRounds }
+				/>
+			</div>
+		);
+	}
+
+	// Local tournament standings.
 	const active = group.participants.filter( ( p ) => p.active );
 	const participantIds = active.map( ( p ) => p.id );
 	const participantMap = new Map( active.map( ( p ) => [ p.id, p ] ) );
@@ -83,6 +143,10 @@ export default function StandingsApp( { groupId, clubId, locale }: Props ) {
 		const player = ratings.get( p.ssfId );
 		return player?.elo ? String( player.elo.rating ) : '';
 	};
+
+	const displayRounds = showRounds
+		? buildDisplayRounds( group.rounds, participantMap, ratings )
+		: [];
 
 	return (
 		<div className="rc-st">
@@ -127,6 +191,10 @@ export default function StandingsApp( { groupId, clubId, locale }: Props ) {
 					} ) }
 				</tbody>
 			</table>
+
+			{ showRounds && displayRounds.length > 0 && (
+				<RoundsDisplay rounds={ displayRounds } t={ t.training } />
+			) }
 		</div>
 	);
 }

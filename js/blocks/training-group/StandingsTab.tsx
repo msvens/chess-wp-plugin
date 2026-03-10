@@ -2,12 +2,52 @@ import type { Participant, StoredRound, SsfPlayer } from '../../admin/types';
 import type { GameResult } from '../../shared/roundRobin';
 import { computeStandings } from '../../shared/roundRobin';
 import type { Translations } from '../../shared/translations';
+import RoundsDisplay, { formatResult } from './RoundsDisplay';
+import type { DisplayRound } from './RoundsDisplay';
+import SsfResultsView from './SsfResultsView';
 
 interface Props {
 	participants: Participant[];
 	rounds: StoredRound[];
 	ratings: Map< number, SsfPlayer >;
 	t: Translations[ 'training' ];
+	ssfGroupId: number;
+}
+
+function buildDisplayRounds(
+	rounds: StoredRound[],
+	participantMap: Map< string, Participant >,
+	ratings: Map< number, SsfPlayer >
+): DisplayRound[] {
+	return rounds.map( ( r ) => ( {
+		round: r.round,
+		pairings: r.pairings.map( ( p, idx ) => {
+			const white = participantMap.get( p.whiteId );
+			const black = participantMap.get( p.blackId );
+			const whiteRating = getRatingStr( white, ratings );
+			const blackRating = getRatingStr( black, ratings );
+			return {
+				board: idx + 1,
+				whiteName: white?.name || p.whiteId,
+				whiteRating,
+				blackName: black?.name || p.blackId,
+				blackRating,
+				result: formatResult( p.result ),
+			};
+		} ),
+		byeName: r.bye ? participantMap.get( r.bye )?.name || r.bye : undefined,
+	} ) );
+}
+
+function getRatingStr(
+	participant: Participant | undefined,
+	ratings: Map< number, SsfPlayer >
+): string {
+	if ( ! participant?.ssfId ) {
+		return '';
+	}
+	const player = ratings.get( participant.ssfId );
+	return player?.elo ? String( player.elo.rating ) : '';
 }
 
 export default function StandingsTab( {
@@ -15,7 +55,12 @@ export default function StandingsTab( {
 	rounds,
 	ratings,
 	t,
+	ssfGroupId,
 }: Props ) {
+	if ( ssfGroupId > 0 ) {
+		return <SsfResultsView ssfGroupId={ ssfGroupId } t={ t } />;
+	}
+
 	const active = participants.filter( ( p ) => p.active );
 	const participantIds = active.map( ( p ) => p.id );
 	const participantMap = new Map( active.map( ( p ) => [ p.id, p ] ) );
@@ -38,6 +83,8 @@ export default function StandingsTab( {
 		const player = ratings.get( p.ssfId );
 		return player?.elo ? String( player.elo.rating ) : '';
 	};
+
+	const displayRounds = buildDisplayRounds( rounds, participantMap, ratings );
 
 	return (
 		<div className="rc-td__panel">
@@ -78,6 +125,8 @@ export default function StandingsTab( {
 					} ) }
 				</tbody>
 			</table>
+
+			<RoundsDisplay rounds={ displayRounds } t={ t } />
 		</div>
 	);
 }

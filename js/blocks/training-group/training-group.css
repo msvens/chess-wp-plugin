@@ -282,14 +282,121 @@ html.dark .rc-td {
 	white-space: pre-wrap;
 }
 
+/* --- Rounds display (shared component) --- */
+.rc-rounds {
+	margin-top: 1.5rem;
+}
+
+.rc-rounds__tabs {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0;
+	border-bottom: 2px solid var(--rc-td-border, #e5e7eb);
+	margin-bottom: 1rem;
+}
+
+.rc-rounds__tab {
+	padding: 0.5rem 1rem;
+	background: none;
+	border: none;
+	border-bottom: 2px solid transparent;
+	margin-bottom: -2px;
+	font-size: 0.8125rem;
+	font-weight: 500;
+	color: var(--rc-td-tab-inactive, #6b7280);
+	cursor: pointer;
+	transition: color 0.15s, border-color 0.15s;
+	font-family: inherit;
+}
+
+.rc-rounds__tab:hover {
+	color: var(--rc-td-tab-active, #2563eb);
+}
+
+.rc-rounds__tab--active {
+	color: var(--rc-td-tab-active, #2563eb);
+	border-bottom-color: var(--rc-td-tab-active, #2563eb);
+}
+
+.rc-rounds__table {
+	width: 100%;
+	border-collapse: collapse;
+	font-size: 0.875rem;
+}
+
+.rc-rounds__table th,
+.rc-rounds__table td {
+	padding: 0.5rem 0.75rem;
+	text-align: left;
+	border-bottom: 1px solid var(--rc-td-border, #e5e7eb);
+}
+
+.rc-rounds__table th {
+	font-weight: 500;
+	color: var(--rc-td-text-muted, #6b7280);
+	font-size: 0.75rem;
+	text-transform: uppercase;
+	letter-spacing: 0.05em;
+}
+
+.rc-rounds__table tbody tr:hover {
+	background: var(--rc-td-surface-alt, #f9fafb);
+}
+
+.rc-rounds__table th:first-child,
+.rc-rounds__table td:first-child {
+	text-align: center;
+	width: 3rem;
+}
+
+.rc-rounds__table th:last-child,
+.rc-rounds__table td:last-child {
+	text-align: center;
+	width: 4rem;
+}
+
+.rc-rounds__rating {
+	font-variant-numeric: tabular-nums;
+	color: var(--rc-td-text-muted, #6b7280);
+	font-size: 0.8125rem;
+}
+
+.rc-rounds__result {
+	font-weight: 600;
+	font-variant-numeric: tabular-nums;
+}
+
+.rc-rounds__bye td {
+	font-style: italic;
+	color: var(--rc-td-text-muted, #6b7280);
+}
+
+/* --- SSF results view --- */
+.rc-ssf__loading,
+.rc-ssf__error {
+	text-align: center;
+	padding: 1.5rem;
+	color: var(--rc-td-text-muted, #6b7280);
+}
+
+.rc-ssf__error {
+	color: #dc2626;
+}
+
+html.dark .rc-ssf__error {
+	color: #f87171;
+}
+
 /* --- Responsive: horizontal scroll for tables on mobile --- */
 @media (max-width: 640px) {
-	.rc-td__table {
+	.rc-td__table,
+	.rc-rounds__table {
 		display: block;
 		overflow-x: auto;
 	}
 
-	.rc-td__tabs {
+	.rc-td__tabs,
+	.rc-rounds__tabs {
 		overflow-x: auto;
 	}
 }

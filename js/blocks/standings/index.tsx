@@ -1,6 +1,6 @@
 import { registerBlockType } from '@wordpress/blocks';
 import { useBlockProps, InspectorControls } from '@wordpress/block-editor';
-import { PanelBody, TextControl } from '@wordpress/components';
+import { PanelBody, TextControl, ToggleControl } from '@wordpress/components';
 
 registerBlockType( 'rockaden/standings', {
 	edit: function Edit( { attributes, setAttributes }: any ) {
@@ -16,6 +16,13 @@ registerBlockType( 'rockaden/standings', {
 								setAttributes( { groupId: Number( val ) || 0 } )
 							}
 						/>
+						<ToggleControl
+							label="Show round results"
+							checked={ attributes.showRounds }
+							onChange={ ( val: boolean ) =>
+								setAttributes( { showRounds: val } )
+							}
+						/>
 					</PanelBody>
 				</InspectorControls>
 				<div { ...blockProps }>
@@ -27,6 +34,7 @@ registerBlockType( 'rockaden/standings', {
 						} }
 					>
 						[Standings — Group #{ attributes.groupId || '?' }]
+						{ ! attributes.showRounds && ' (rounds hidden)' }
 					</p>
 				</div>
 			</>
