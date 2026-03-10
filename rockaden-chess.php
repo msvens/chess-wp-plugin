@@ -55,7 +55,7 @@ Rockaden\Admin\EventMetaBoxes::register();
 add_action(
 	'init',
 	function (): void {
-		$blocks = [ 'calendar', 'ranking-list', 'standings', 'training-group', 'training-groups' ];
+		$blocks = [ 'calendar', 'ranking-list', 'section-nav', 'standings', 'training-group', 'training-groups' ];
 		foreach ( $blocks as $block ) {
 			$block_dir = RC_PLUGIN_DIR . "src/Blocks/{$block}";
 			if ( file_exists( "{$block_dir}/block.json" ) ) {

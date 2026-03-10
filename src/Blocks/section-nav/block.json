@@ -1,0 +1,17 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "rockaden/section-nav",
+  "version": "0.1.0",
+  "title": "Section Navigation",
+  "category": "widgets",
+  "icon": "list-view",
+  "description": "Auto-generates sidebar navigation from page hierarchy (parent + children).",
+  "textdomain": "rockaden-chess",
+  "supports": {
+    "html": false,
+    "inserter": false,
+    "align": false
+  },
+  "render": "file:./render.php"
+}
