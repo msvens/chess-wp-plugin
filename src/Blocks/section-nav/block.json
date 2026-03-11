@@ -13,5 +13,7 @@
     "inserter": false,
     "align": false
   },
-  "render": "file:./render.php"
+  "render": "file:./render.php",
+  "viewStyle": "file:../../../build/blocks/section-nav/view.css",
+  "viewScript": "file:../../../build/blocks/section-nav/view.js"
 }
