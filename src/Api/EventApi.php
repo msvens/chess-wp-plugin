@@ -83,15 +83,6 @@ class EventApi {
 	public static function list_events( WP_REST_Request $request ): WP_REST_Response {
 		$month = $request->get_param( 'month' );
 
-		// TEMP DEBUG — remove after testing.
-		return new WP_REST_Response(
-			[
-				'raw_month'    => $month,
-				'query_string' => $_SERVER['QUERY_STRING'] ?? 'NOT SET',
-				'request_uri'  => $_SERVER['REQUEST_URI'] ?? 'NOT SET',
-			]
-		);
-
 		$args = [
 			'post_type'      => Event::POST_TYPE,
 			'posts_per_page' => 200, // phpcs:ignore WordPress.WP.PostsPerPage.posts_per_page_posts_per_page -- Events are lightweight; need all for calendar.
