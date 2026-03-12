@@ -52,9 +52,5 @@ module.exports = {
 			__dirname,
 			'js/blocks/ranking-list/view.tsx'
 		),
-		'blocks/section-nav/view': path.resolve(
-			__dirname,
-			'js/blocks/section-nav/view.ts'
-		),
 	},
 };
