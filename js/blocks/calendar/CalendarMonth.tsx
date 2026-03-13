@@ -9,9 +9,11 @@ interface CalendarMonthProps {
 	year: number;
 	month: number;
 	events: CalendarEvent[];
-	selectedDay: number | null;
 	t: Translations[ 'calendar' ];
-	onSelectDay: ( day: number ) => void;
+	onSelectEvent: (
+		event: CalendarEvent,
+		rect: { top: number; left: number; bottom: number; right: number }
+	) => void;
 }
 
 const dayKeys = [ 'mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun' ] as const;
@@ -21,9 +23,8 @@ export default function CalendarMonth( {
 	year,
 	month,
 	events,
-	selectedDay,
 	t,
-	onSelectDay,
+	onSelectEvent,
 }: CalendarMonthProps ) {
 	const grouped = groupEventsByDay( events, year, month );
 
@@ -48,12 +49,9 @@ export default function CalendarMonth( {
 							month={ cell.month }
 							year={ cell.year }
 							isCurrentMonth={ cell.isCurrentMonth }
-							isSelected={
-								cell.isCurrentMonth && cell.day === selectedDay
-							}
 							events={ cellEvents }
 							t={ t }
-							onSelect={ onSelectDay }
+							onSelectEvent={ onSelectEvent }
 						/>
 					);
 				} ) }

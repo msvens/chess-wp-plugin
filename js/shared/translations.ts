@@ -94,6 +94,9 @@ export interface Translations {
 		time: string;
 		location: string;
 		moreEvents: string;
+		month: string;
+		week: string;
+		day: string;
 		days: {
 			mon: string;
 			tue: string;
@@ -248,6 +251,9 @@ const translations: Record< Language, Translations > = {
 			time: 'Time',
 			location: 'Location',
 			moreEvents: 'more',
+			month: 'Month',
+			week: 'Week',
+			day: 'Day',
 			days: {
 				mon: 'Mon',
 				tue: 'Tue',
@@ -400,6 +406,9 @@ const translations: Record< Language, Translations > = {
 			time: 'Tid',
 			location: 'Plats',
 			moreEvents: 'till',
+			month: 'Månad',
+			week: 'Vecka',
+			day: 'Dag',
 			days: {
 				mon: 'Mån',
 				tue: 'Tis',

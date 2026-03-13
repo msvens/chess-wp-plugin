@@ -1,10 +1,16 @@
 import { useState, useEffect, useRef, useCallback } from '@wordpress/element';
 import type { EventCategory } from '../../shared/types';
-import { categoryClassMap, formatMonthYear } from './utils';
+import type { ViewMode } from './utils';
+import { categoryClassMap } from './utils';
+
+interface ViewModeLabels {
+	month: string;
+	week: string;
+	day: string;
+}
 
 interface CalendarHeaderProps {
-	year: number;
-	month: number;
+	title: string;
 	locale: string;
 	todayLabel: string;
 	categories: EventCategory[];
@@ -12,60 +18,90 @@ interface CalendarHeaderProps {
 	allLabel: string;
 	filterCategory: EventCategory | null;
 	onFilterChange: ( category: EventCategory | null ) => void;
+	viewMode: ViewMode;
+	viewModeLabels: ViewModeLabels;
+	onViewModeChange: ( mode: ViewMode ) => void;
 	onPrev: () => void;
 	onNext: () => void;
 	onToday: () => void;
 }
 
+const viewModes: ViewMode[] = [ 'month', 'week', 'day' ];
+
 export default function CalendarHeader( {
-	year,
-	month,
-	locale,
+	title,
 	todayLabel,
 	categories,
 	categoryLabels,
 	allLabel,
 	filterCategory,
 	onFilterChange,
+	viewMode,
+	viewModeLabels,
+	onViewModeChange,
 	onPrev,
 	onNext,
 	onToday,
 }: CalendarHeaderProps ) {
-	const [ open, setOpen ] = useState( false );
-	const ref = useRef< HTMLDivElement >( null );
+	const [ filterOpen, setFilterOpen ] = useState( false );
+	const [ viewOpen, setViewOpen ] = useState( false );
+	const filterRef = useRef< HTMLDivElement >( null );
+	const viewRef = useRef< HTMLDivElement >( null );
 
-	const handleSelect = useCallback(
+	const handleFilterSelect = useCallback(
 		( cat: EventCategory | null ) => {
 			onFilterChange( cat );
-			setOpen( false );
+			setFilterOpen( false );
 		},
 		[ onFilterChange ]
 	);
 
-	// Close on outside click
+	const handleViewSelect = useCallback(
+		( mode: ViewMode ) => {
+			onViewModeChange( mode );
+			setViewOpen( false );
+		},
+		[ onViewModeChange ]
+	);
+
+	// Close dropdowns on outside click
 	useEffect( () => {
-		if ( ! open ) {
+		if ( ! filterOpen && ! viewOpen ) {
 			return;
 		}
 		function onClickOutside( e: MouseEvent ) {
-			if ( ref.current && ! ref.current.contains( e.target as Node ) ) {
-				setOpen( false );
+			if (
+				filterOpen &&
+				filterRef.current &&
+				! filterRef.current.contains( e.target as Node )
+			) {
+				setFilterOpen( false );
+			}
+			if (
+				viewOpen &&
+				viewRef.current &&
+				! viewRef.current.contains( e.target as Node )
+			) {
+				setViewOpen( false );
 			}
 		}
 		document.addEventListener( 'mousedown', onClickOutside );
 		return () =>
 			document.removeEventListener( 'mousedown', onClickOutside );
-	}, [ open ] );
+	}, [ filterOpen, viewOpen ] );
+
+	const navLabel =
+		viewMode === 'month' ? 'month' : viewMode === 'week' ? 'week' : 'day';
 
 	return (
 		<div className="rc-cal__header">
 			<div className="rc-cal__header-left">
-				<div className="rc-cal__filter" ref={ ref }>
+				<div className="rc-cal__filter" ref={ filterRef }>
 					<button
 						type="button"
 						className="rc-cal__filter-btn"
-						onClick={ () => setOpen( ! open ) }
-						aria-expanded={ open }
+						onClick={ () => setFilterOpen( ! filterOpen ) }
+						aria-expanded={ filterOpen }
 						aria-haspopup="listbox"
 					>
 						{ filterCategory && (
@@ -91,7 +127,7 @@ export default function CalendarHeader( {
 						</svg>
 					</button>
 
-					{ open && (
+					{ filterOpen && (
 						<ul className="rc-cal__filter-menu" role="listbox">
 							<li>
 								<button
@@ -103,7 +139,7 @@ export default function CalendarHeader( {
 									}` }
 									role="option"
 									aria-selected={ filterCategory === null }
-									onClick={ () => handleSelect( null ) }
+									onClick={ () => handleFilterSelect( null ) }
 								>
 									{ allLabel }
 								</button>
@@ -119,7 +155,9 @@ export default function CalendarHeader( {
 										}` }
 										role="option"
 										aria-selected={ filterCategory === cat }
-										onClick={ () => handleSelect( cat ) }
+										onClick={ () =>
+											handleFilterSelect( cat )
+										}
 									>
 										<span
 											className={ `rc-cal__filter-dot rc-cal__filter-dot--${ categoryClassMap[ cat ] }` }
@@ -138,7 +176,7 @@ export default function CalendarHeader( {
 					type="button"
 					className="rc-cal__nav-btn"
 					onClick={ onPrev }
-					aria-label="Previous month"
+					aria-label={ `Previous ${ navLabel }` }
 				>
 					<svg
 						viewBox="0 0 24 24"
@@ -152,15 +190,13 @@ export default function CalendarHeader( {
 					</svg>
 				</button>
 
-				<span className="rc-cal__header-title">
-					{ formatMonthYear( year, month, locale ) }
-				</span>
+				<span className="rc-cal__header-title">{ title }</span>
 
 				<button
 					type="button"
 					className="rc-cal__nav-btn"
 					onClick={ onNext }
-					aria-label="Next month"
+					aria-label={ `Next ${ navLabel }` }
 				>
 					<svg
 						viewBox="0 0 24 24"
@@ -183,6 +219,53 @@ export default function CalendarHeader( {
 				>
 					{ todayLabel }
 				</button>
+
+				<div className="rc-cal__view-switcher" ref={ viewRef }>
+					<button
+						type="button"
+						className="rc-cal__view-btn"
+						onClick={ () => setViewOpen( ! viewOpen ) }
+						aria-expanded={ viewOpen }
+						aria-haspopup="listbox"
+					>
+						<span>{ viewModeLabels[ viewMode ] }</span>
+						<svg
+							className="rc-cal__filter-chevron"
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							strokeWidth="2"
+							strokeLinecap="round"
+							strokeLinejoin="round"
+						>
+							<polyline points="6 9 12 15 18 9" />
+						</svg>
+					</button>
+
+					{ viewOpen && (
+						<ul className="rc-cal__view-menu" role="listbox">
+							{ viewModes.map( ( mode ) => (
+								<li key={ mode }>
+									<button
+										type="button"
+										className={ `rc-cal__view-option${
+											viewMode === mode
+												? ' rc-cal__view-option--active'
+												: ''
+										}` }
+										role="option"
+										aria-selected={ viewMode === mode }
+										onClick={ () =>
+											handleViewSelect( mode )
+										}
+									>
+										{ viewModeLabels[ mode ] }
+									</button>
+								</li>
+							) ) }
+						</ul>
+					) }
+				</div>
 			</div>
 		</div>
 	);

@@ -11,10 +11,12 @@ interface CalendarDayProps {
 	month: number;
 	year: number;
 	isCurrentMonth: boolean;
-	isSelected: boolean;
 	events: CalendarEvent[];
 	t: Translations[ 'calendar' ];
-	onSelect: ( day: number ) => void;
+	onSelectEvent: (
+		event: CalendarEvent,
+		rect: { top: number; left: number; bottom: number; right: number }
+	) => void;
 }
 
 export default function CalendarDay( {
@@ -22,16 +24,14 @@ export default function CalendarDay( {
 	month,
 	year,
 	isCurrentMonth,
-	isSelected,
 	events,
 	t,
-	onSelect,
+	onSelectEvent,
 }: CalendarDayProps ) {
 	const today = isToday( year, month, day );
 	const classes = [
 		'rc-cal__day',
 		! isCurrentMonth && 'rc-cal__day--other-month',
-		isSelected && 'rc-cal__day--selected',
 		today && 'rc-cal__day--today',
 	]
 		.filter( Boolean )
@@ -40,18 +40,18 @@ export default function CalendarDay( {
 	const overflow = events.length - MAX_PILLS;
 
 	return (
-		<button
-			type="button"
-			className={ classes }
-			onClick={ () => isCurrentMonth && onSelect( day ) }
-			aria-label={ `${ day }` }
-		>
+		<div className={ classes } aria-label={ `${ day }` }>
 			<span className="rc-cal__day-number">{ day }</span>
 
 			{ /* Desktop: pills */ }
 			<span className="rc-cal__pills">
 				{ events.slice( 0, MAX_PILLS ).map( ( ev ) => (
-					<EventPill key={ ev.id } event={ ev } variant="compact" />
+					<EventPill
+						key={ ev.id }
+						event={ ev }
+						variant="compact"
+						onClick={ onSelectEvent }
+					/>
 				) ) }
 				{ overflow > 0 && (
 					<span className="rc-cal__overflow">
@@ -71,6 +71,6 @@ export default function CalendarDay( {
 					/>
 				) ) }
 			</span>
-		</button>
+		</div>
 	);
 }
