@@ -782,6 +782,56 @@ html.dark .rc-cal {
 	background: #dc2626;
 }
 
+/* --- Day events popover (mobile multi-event) --- */
+.rc-cal__day-popover {
+	max-height: 70vh;
+	overflow-y: auto;
+}
+
+.rc-cal__day-popover-list {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	display: flex;
+	flex-direction: column;
+	gap: 0.625rem;
+}
+
+.rc-cal__day-popover-item {
+	display: flex;
+	align-items: flex-start;
+	gap: 0.5rem;
+	padding-bottom: 0.625rem;
+	border-bottom: 1px solid var(--rc-border);
+}
+
+.rc-cal__day-popover-item:last-child {
+	border-bottom: none;
+	padding-bottom: 0;
+}
+
+.rc-cal__day-popover-item .rc-cal__filter-dot {
+	margin-top: 0.25rem;
+}
+
+.rc-cal__day-popover-detail {
+	display: flex;
+	flex-direction: column;
+	gap: 0.125rem;
+	min-width: 0;
+}
+
+.rc-cal__day-popover-title {
+	font-size: 0.875rem;
+	font-weight: 500;
+	color: var(--wp--preset--color--on-surface);
+}
+
+.rc-cal__day-popover-time {
+	font-size: 0.8125rem;
+	color: var(--wp--preset--color--on-surface-muted);
+}
+
 /* --- Event popover (week/day click detail) --- */
 .rc-cal__popover {
 	position: fixed;
@@ -831,9 +881,39 @@ html.dark .rc-cal {
 
 /* --- Responsive: mobile (<640px) --- */
 @media screen and (max-width: 639px) {
+	/* Header: wrap nav onto its own row */
+	.rc-cal__header {
+		flex-wrap: wrap;
+		gap: 0.5rem;
+	}
+
+	.rc-cal__header-nav {
+		order: -1;
+		width: 100%;
+		justify-content: center;
+	}
+
+	.rc-cal__header-left,
+	.rc-cal__header-right {
+		min-width: auto;
+	}
+
+	.rc-cal__header-right {
+		margin-left: auto;
+	}
+
+	.rc-cal__header-title {
+		font-size: 1rem;
+	}
+
+	/* Month grid */
 	.rc-cal__day {
 		min-height: 3rem;
 		padding: 0.125rem;
+	}
+
+	.rc-cal__day--has-events {
+		cursor: pointer;
 	}
 
 	.rc-cal__pills {
@@ -842,10 +922,6 @@ html.dark .rc-cal {
 
 	.rc-cal__dots {
 		display: flex;
-	}
-
-	.rc-cal__header-title {
-		font-size: 1rem;
 	}
 
 	.rc-cal__dayname {

@@ -17,6 +17,7 @@ import CalendarMonth from './CalendarMonth';
 import CalendarWeek from './CalendarWeek';
 import CalendarDayView from './CalendarDayView';
 import EventPopover from './EventPopover';
+import DayEventsPopover from './DayEventsPopover';
 
 interface CalendarAppProps {
 	locale: string;
@@ -46,6 +47,11 @@ export default function CalendarApp( { locale }: CalendarAppProps ) {
 	>( new Map() );
 	const [ popoverEvent, setPopoverEvent ] = useState< {
 		event: CalendarEvent;
+		rect: { top: number; left: number; bottom: number; right: number };
+	} | null >( null );
+	const [ dayPopover, setDayPopover ] = useState< {
+		events: CalendarEvent[];
+		dayLabel: string;
 		rect: { top: number; left: number; bottom: number; right: number };
 	} | null >( null );
 
@@ -110,6 +116,7 @@ export default function CalendarApp( { locale }: CalendarAppProps ) {
 	// Navigation — view-mode-aware
 	const goToPrev = useCallback( () => {
 		setPopoverEvent( null );
+		setDayPopover( null );
 		setViewDate( ( d ) => {
 			const next = new Date( d );
 			if ( viewMode === 'month' ) {
@@ -125,6 +132,7 @@ export default function CalendarApp( { locale }: CalendarAppProps ) {
 
 	const goToNext = useCallback( () => {
 		setPopoverEvent( null );
+		setDayPopover( null );
 		setViewDate( ( d ) => {
 			const next = new Date( d );
 			if ( viewMode === 'month' ) {
@@ -140,18 +148,21 @@ export default function CalendarApp( { locale }: CalendarAppProps ) {
 
 	const goToToday = useCallback( () => {
 		setPopoverEvent( null );
+		setDayPopover( null );
 		setViewDate( new Date() );
 	}, [] );
 
 	const handleViewModeChange = useCallback( ( mode: ViewMode ) => {
 		setViewMode( mode );
 		setPopoverEvent( null );
+		setDayPopover( null );
 	}, [] );
 
 	const handleDrillToDay = useCallback( ( date: Date ) => {
 		setViewDate( date );
 		setViewMode( 'day' );
 		setPopoverEvent( null );
+		setDayPopover( null );
 	}, [] );
 
 	const handleSelectEvent = useCallback(
@@ -159,11 +170,34 @@ export default function CalendarApp( { locale }: CalendarAppProps ) {
 			event: CalendarEvent,
 			rect: { top: number; left: number; bottom: number; right: number }
 		) => {
+			setDayPopover( null );
 			setPopoverEvent( ( prev ) =>
 				prev?.event.id === event.id ? null : { event, rect }
 			);
 		},
 		[]
+	);
+
+	const handleDaySelect = useCallback(
+		(
+			dayEvents: CalendarEvent[],
+			rect: { top: number; left: number; bottom: number; right: number }
+		) => {
+			setPopoverEvent( null );
+			// Build a day label from the first event's date
+			const d = new Date( dayEvents[ 0 ].startDate );
+			const label = d.toLocaleDateString( locale.replace( '_', '-' ), {
+				weekday: 'long',
+				day: 'numeric',
+				month: 'long',
+			} );
+			setDayPopover( {
+				events: dayEvents,
+				dayLabel: label.charAt( 0 ).toUpperCase() + label.slice( 1 ),
+				rect,
+			} );
+		},
+		[ locale ]
 	);
 
 	// Compute title based on view mode
@@ -215,6 +249,7 @@ export default function CalendarApp( { locale }: CalendarAppProps ) {
 					events={ filteredEvents }
 					t={ t.calendar }
 					onSelectEvent={ handleSelectEvent }
+					onDaySelect={ handleDaySelect }
 				/>
 			) }
 
@@ -247,6 +282,17 @@ export default function CalendarApp( { locale }: CalendarAppProps ) {
 					t={ t.calendar }
 					eventGroupMap={ eventGroupMap }
 					onClose={ () => setPopoverEvent( null ) }
+				/>
+			) }
+
+			{ dayPopover && (
+				<DayEventsPopover
+					events={ dayPopover.events }
+					dayLabel={ dayPopover.dayLabel }
+					anchorRect={ dayPopover.rect }
+					t={ t.calendar }
+					eventGroupMap={ eventGroupMap }
+					onClose={ () => setDayPopover( null ) }
 				/>
 			) }
 		</div>

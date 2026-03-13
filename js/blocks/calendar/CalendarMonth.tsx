@@ -4,16 +4,16 @@ import type { GridCell } from './utils';
 import { groupEventsByDay } from './utils';
 import CalendarDay from './CalendarDay';
 
+type Rect = { top: number; left: number; bottom: number; right: number };
+
 interface CalendarMonthProps {
 	grid: GridCell[];
 	year: number;
 	month: number;
 	events: CalendarEvent[];
 	t: Translations[ 'calendar' ];
-	onSelectEvent: (
-		event: CalendarEvent,
-		rect: { top: number; left: number; bottom: number; right: number }
-	) => void;
+	onSelectEvent: ( event: CalendarEvent, rect: Rect ) => void;
+	onDaySelect: ( events: CalendarEvent[], rect: Rect ) => void;
 }
 
 const dayKeys = [ 'mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun' ] as const;
@@ -25,6 +25,7 @@ export default function CalendarMonth( {
 	events,
 	t,
 	onSelectEvent,
+	onDaySelect,
 }: CalendarMonthProps ) {
 	const grouped = groupEventsByDay( events, year, month );
 
@@ -52,6 +53,7 @@ export default function CalendarMonth( {
 							events={ cellEvents }
 							t={ t }
 							onSelectEvent={ onSelectEvent }
+							onDaySelect={ onDaySelect }
 						/>
 					);
 				} ) }
