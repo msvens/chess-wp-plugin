@@ -296,6 +296,7 @@ export function GroupDetail( {
 			{ showEditModal && (
 				<EditGroupModal
 					group={ group }
+					event={ event }
 					t={ t }
 					onClose={ () => setShowEditModal( false ) }
 					onUpdated={ refetch }

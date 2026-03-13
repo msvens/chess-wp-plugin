@@ -4,3 +4,30 @@
 		font-size: 14px;
 	}
 }
+
+/* Wider modals for create/edit group */
+.rc-wide-modal {
+	width: 720px;
+	max-width: 90vw;
+}
+
+/* Date picker field layout */
+.rc-date-fields {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 12px;
+	margin-bottom: 12px;
+}
+
+.rc-date-field label {
+	display: block;
+	margin-bottom: 4px;
+	font-weight: 500;
+	font-size: 11px;
+	text-transform: uppercase;
+}
+
+/* Ensure flatpickr calendar renders above WP Modal (z-index: 100000) */
+.flatpickr-calendar {
+	z-index: 100001 !important;
+}

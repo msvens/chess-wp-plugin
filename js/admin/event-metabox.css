@@ -1,0 +1,110 @@
+#rc-event-editor {
+	max-width: 800px;
+	margin: 20px 0;
+}
+
+.rc-event-section {
+	background: #fff;
+	border: 1px solid #c3c4c7;
+	border-radius: 4px;
+	padding: 16px 20px;
+	margin-bottom: 16px;
+}
+
+.rc-event-section h3 {
+	margin: 0 0 12px;
+	padding: 0;
+	font-size: 11px;
+	font-weight: 600;
+	text-transform: uppercase;
+	letter-spacing: 0.05em;
+	color: #50575e;
+}
+
+.rc-event-field {
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+}
+
+.rc-event-field label {
+	font-size: 13px;
+	font-weight: 500;
+	color: #1d2327;
+}
+
+.rc-event-field input,
+.rc-event-field select,
+.rc-event-field textarea {
+	width: 100%;
+	max-width: 100%;
+}
+
+.rc-event-row {
+	margin-bottom: 12px;
+}
+
+.rc-event-row:last-child {
+	margin-bottom: 0;
+}
+
+.rc-event-row--dates {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 16px;
+}
+
+.rc-event-row--recurrence {
+	display: flex;
+	align-items: center;
+	gap: 16px;
+}
+
+.rc-event-checkbox {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	font-size: 13px;
+	font-weight: 500;
+	color: #1d2327;
+	cursor: pointer;
+}
+
+.rc-event-checkbox input[type="checkbox"] {
+	margin: 0;
+}
+
+#rc-recurrence-fields select {
+	min-width: 120px;
+}
+
+#rc-excluded-dates-field {
+	margin-top: 12px;
+}
+
+#rc-excluded-dates-field label {
+	display: block;
+	font-size: 13px;
+	font-weight: 500;
+	color: #1d2327;
+	margin-bottom: 4px;
+}
+
+#rc-excluded-dates-field textarea {
+	width: 100%;
+}
+
+#rc-excluded-dates-field .description {
+	margin-top: 4px;
+}
+
+/* wp_editor container */
+.rc-event-section .wp-editor-wrap {
+	margin-top: 0;
+}
+
+@media (max-width: 600px) {
+	.rc-event-row--dates {
+		grid-template-columns: 1fr;
+	}
+}

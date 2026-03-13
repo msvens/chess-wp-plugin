@@ -6,7 +6,6 @@ import {
 	CheckboxControl,
 	SelectControl,
 	Button,
-	DateTimePicker,
 	__experimentalText as Text,
 } from '@wordpress/components';
 import type { Translations } from '../../shared';
@@ -19,6 +18,7 @@ import {
 	fetchSsfTournamentGroup,
 	fetchSsfTournamentResults,
 } from '../api';
+import { FlatpickrInput } from './FlatpickrInput';
 
 interface CreateGroupModalProps {
 	t: Translations;
@@ -74,8 +74,6 @@ export function CreateGroupModal( {
 	const [ eventRecurrenceType, setEventRecurrenceType ] = useState<
 		'weekly' | 'biweekly'
 	>( 'weekly' );
-	const [ showStartPicker, setShowStartPicker ] = useState( false );
-	const [ showEndPicker, setShowEndPicker ] = useState( false );
 
 	useEffect( () => {
 		fetchEvents()
@@ -240,27 +238,17 @@ export function CreateGroupModal( {
 		}
 	}
 
-	function formatDateTime( iso: string ): string {
-		if ( ! iso ) {
-			return '';
-		}
-		const d = new Date( iso );
-		return d.toLocaleString( 'sv-SE', {
-			year: 'numeric',
-			month: '2-digit',
-			day: '2-digit',
-			hour: '2-digit',
-			minute: '2-digit',
-		} );
-	}
-
 	const eventOptions = [
 		{ label: t.training.selectEvent, value: '' },
 		...events.map( ( e ) => ( { label: e.title, value: String( e.id ) } ) ),
 	];
 
 	return (
-		<Modal title={ t.training.createGroup } onRequestClose={ onClose }>
+		<Modal
+			title={ t.training.createGroup }
+			onRequestClose={ onClose }
+			className="rc-wide-modal"
+		>
 			{ /* SSF Autofill section */ }
 			<div
 				style={ {
@@ -496,7 +484,7 @@ export function CreateGroupModal( {
 				{ showNewEvent && (
 					<div
 						style={ {
-							padding: 8,
+							padding: 12,
 							background: '#fff',
 							borderRadius: 4,
 						} }
@@ -509,84 +497,24 @@ export function CreateGroupModal( {
 							onChange={ setEventTitle }
 							placeholder={ title }
 						/>
-						<div style={ { display: 'flex', gap: 12 } }>
-							<div style={ { flex: 1 } }>
-								<label
-									style={ {
-										display: 'block',
-										marginBottom: 4,
-										fontWeight: 500,
-										fontSize: '11px',
-										textTransform: 'uppercase',
-									} }
-								>
-									{ t.training.startDate } *
-								</label>
-								<Button
-									variant="secondary"
-									onClick={ () =>
-										setShowStartPicker( ! showStartPicker )
-									}
-									style={ {
-										width: '100%',
-										justifyContent: 'flex-start',
-									} }
-								>
-									{ eventStart
-										? formatDateTime( eventStart )
-										: '—' }
-								</Button>
+						<div className="rc-date-fields">
+							<div className="rc-date-field">
+								<label>{ t.training.startDate } *</label>
+								<FlatpickrInput
+									value={ eventStart }
+									onChange={ setEventStart }
+									required
+								/>
 							</div>
-							<div style={ { flex: 1 } }>
-								<label
-									style={ {
-										display: 'block',
-										marginBottom: 4,
-										fontWeight: 500,
-										fontSize: '11px',
-										textTransform: 'uppercase',
-									} }
-								>
-									{ t.training.endDate } *
-								</label>
-								<Button
-									variant="secondary"
-									onClick={ () =>
-										setShowEndPicker( ! showEndPicker )
-									}
-									style={ {
-										width: '100%',
-										justifyContent: 'flex-start',
-									} }
-								>
-									{ eventEnd
-										? formatDateTime( eventEnd )
-										: '—' }
-								</Button>
+							<div className="rc-date-field">
+								<label>{ t.training.endDate } *</label>
+								<FlatpickrInput
+									value={ eventEnd }
+									onChange={ setEventEnd }
+									required
+								/>
 							</div>
 						</div>
-						{ showStartPicker && (
-							<DateTimePicker
-								currentDate={ eventStart || undefined }
-								onChange={ ( date ) => {
-									if ( date ) {
-										setEventStart( date );
-									}
-								} }
-								is12Hour={ false }
-							/>
-						) }
-						{ showEndPicker && (
-							<DateTimePicker
-								currentDate={ eventEnd || undefined }
-								onChange={ ( date ) => {
-									if ( date ) {
-										setEventEnd( date );
-									}
-								} }
-								is12Hour={ false }
-							/>
-						) }
 						<CheckboxControl
 							label={ t.calendar.recurring }
 							checked={ eventRecurring }
@@ -613,9 +541,7 @@ export function CreateGroupModal( {
 								}
 							/>
 						) }
-						<div
-							style={ { display: 'flex', gap: 12, marginTop: 8 } }
-						>
+						<div style={ { display: 'flex', gap: 12 } }>
 							<div style={ { flex: 1 } }>
 								<TextControl
 									label={ t.training.location }

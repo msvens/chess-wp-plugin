@@ -1,6 +1,6 @@
 <?php
 /**
- * Event meta boxes for the post editor.
+ * Event editor form rendered after the title input.
  *
  * @package Rockaden
  */
@@ -10,7 +10,7 @@ namespace Rockaden\Admin;
 use Rockaden\PostTypes\Event;
 
 /**
- * Registers meta boxes for the rc_event post type editor screen.
+ * Renders a focused event editor form via the edit_form_after_title hook.
  */
 class EventMetaBoxes {
 
@@ -18,7 +18,7 @@ class EventMetaBoxes {
 	 * Register hooks.
 	 */
 	public static function register(): void {
-		add_action( 'add_meta_boxes_' . Event::POST_TYPE, [ self::class, 'add_meta_boxes' ] );
+		add_action( 'edit_form_after_title', [ self::class, 'render' ] );
 		add_action( 'save_post_' . Event::POST_TYPE, [ self::class, 'save' ], 10, 2 );
 		add_action( 'admin_enqueue_scripts', [ self::class, 'enqueue_assets' ] );
 	}
@@ -57,25 +57,15 @@ class EventMetaBoxes {
 	}
 
 	/**
-	 * Add the event details meta box.
-	 */
-	public static function add_meta_boxes(): void {
-		add_meta_box(
-			'rc_event_fields',
-			__( 'Event Details', 'rockaden-chess' ),
-			[ self::class, 'render' ],
-			Event::POST_TYPE,
-			'normal',
-			'high',
-		);
-	}
-
-	/**
-	 * Render the event details meta box.
+	 * Render the event editor form.
 	 *
 	 * @param \WP_Post $post The current post object.
 	 */
 	public static function render( \WP_Post $post ): void {
+		if ( Event::POST_TYPE !== $post->post_type ) {
+			return;
+		}
+
 		wp_nonce_field( 'rc_event_meta', 'rc_event_meta_nonce' );
 
 		$start_date      = get_post_meta( $post->ID, 'rc_start_date', true );
@@ -101,75 +91,90 @@ class EventMetaBoxes {
 		$start_local = $start_date ? gmdate( 'Y-m-d H:i', strtotime( $start_date ) ) : '';
 		$end_local   = $end_date ? gmdate( 'Y-m-d H:i', strtotime( $end_date ) ) : '';
 		?>
-		<table class="form-table">
-			<tr>
-				<th><label for="rc_start_date"><?php esc_html_e( 'Start Date', 'rockaden-chess' ); ?> *</label></th>
-				<td><input type="text" id="rc_start_date" name="rc_start_date" value="<?php echo esc_attr( $start_local ); ?>" required class="regular-text" /></td>
-			</tr>
-			<tr>
-				<th><label for="rc_end_date"><?php esc_html_e( 'End Date', 'rockaden-chess' ); ?> *</label></th>
-				<td><input type="text" id="rc_end_date" name="rc_end_date" value="<?php echo esc_attr( $end_local ); ?>" required class="regular-text" /></td>
-			</tr>
-			<tr>
-				<th><label for="rc_is_recurring"><?php esc_html_e( 'Recurring', 'rockaden-chess' ); ?></label></th>
-				<td><input type="checkbox" id="rc_is_recurring" name="rc_is_recurring" value="1" <?php checked( $is_recurring ); ?> /></td>
-			</tr>
-			<tr>
-				<th><label for="rc_location"><?php esc_html_e( 'Location', 'rockaden-chess' ); ?></label></th>
-				<td><input type="text" id="rc_location" name="rc_location" value="<?php echo esc_attr( $location ); ?>" class="regular-text" /></td>
-			</tr>
-			<tr>
-				<th><label for="rc_category"><?php esc_html_e( 'Category', 'rockaden-chess' ); ?></label></th>
-				<td>
-					<select id="rc_category" name="rc_category">
-						<?php foreach ( $categories as $value => $label ) : ?>
-							<option value="<?php echo esc_attr( $value ); ?>" <?php selected( $category, $value ); ?>><?php echo esc_html( $label ); ?></option>
-						<?php endforeach; ?>
-					</select>
-				</td>
-			</tr>
-			<tr>
-				<th><label for="rc_link"><?php esc_html_e( 'Link', 'rockaden-chess' ); ?></label></th>
-				<td><input type="url" id="rc_link" name="rc_link" value="<?php echo esc_attr( $link ); ?>" class="regular-text" /></td>
-			</tr>
-			<tr>
-				<th><label for="rc_link_label"><?php esc_html_e( 'Link Label', 'rockaden-chess' ); ?></label></th>
-				<td><input type="text" id="rc_link_label" name="rc_link_label" value="<?php echo esc_attr( $link_label ); ?>" class="regular-text" /></td>
-			</tr>
-		</table>
+		<div id="rc-event-editor">
 
-		<div id="rc-recurrence-fields" style="<?php echo $is_recurring ? '' : 'display:none;'; ?>">
-			<table class="form-table">
-				<tr>
-					<th><label for="rc_recurrence_type"><?php esc_html_e( 'Recurrence Type', 'rockaden-chess' ); ?></label></th>
-					<td>
+			<div class="rc-event-section">
+				<h3><?php esc_html_e( 'Date & Time', 'rockaden-chess' ); ?></h3>
+				<div class="rc-event-row rc-event-row--dates">
+					<div class="rc-event-field">
+						<label for="rc_start_date"><?php esc_html_e( 'Start', 'rockaden-chess' ); ?> *</label>
+						<input type="text" id="rc_start_date" name="rc_start_date" value="<?php echo esc_attr( $start_local ); ?>" required class="regular-text" />
+					</div>
+					<div class="rc-event-field">
+						<label for="rc_end_date"><?php esc_html_e( 'End', 'rockaden-chess' ); ?> *</label>
+						<input type="text" id="rc_end_date" name="rc_end_date" value="<?php echo esc_attr( $end_local ); ?>" required class="regular-text" />
+					</div>
+				</div>
+				<div class="rc-event-row rc-event-row--recurrence">
+					<label class="rc-event-checkbox">
+						<input type="checkbox" id="rc_is_recurring" name="rc_is_recurring" value="1" <?php checked( $is_recurring ); ?> />
+						<?php esc_html_e( 'Recurring', 'rockaden-chess' ); ?>
+					</label>
+					<div id="rc-recurrence-fields" style="<?php echo $is_recurring ? '' : 'display:none;'; ?>">
 						<select id="rc_recurrence_type" name="rc_recurrence_type">
 							<option value="weekly" <?php selected( $recurrence_type, 'weekly' ); ?>><?php esc_html_e( 'Weekly', 'rockaden-chess' ); ?></option>
 							<option value="biweekly" <?php selected( $recurrence_type, 'biweekly' ); ?>><?php esc_html_e( 'Biweekly', 'rockaden-chess' ); ?></option>
 						</select>
-					</td>
-				</tr>
-				<tr>
-					<th><label for="rc_excluded_dates"><?php esc_html_e( 'Excluded Dates', 'rockaden-chess' ); ?></label></th>
-					<td>
-						<textarea id="rc_excluded_dates" name="rc_excluded_dates" class="large-text" rows="3" placeholder="2026-03-15, 2026-04-01"><?php echo esc_textarea( $excluded_str ); ?></textarea>
-						<p class="description"><?php esc_html_e( 'Comma-separated YYYY-MM-DD dates to exclude from recurrence.', 'rockaden-chess' ); ?></p>
-					</td>
-				</tr>
-			</table>
-		</div>
+					</div>
+				</div>
+				<div id="rc-excluded-dates-field" style="<?php echo $is_recurring ? '' : 'display:none;'; ?>">
+					<label for="rc_excluded_dates"><?php esc_html_e( 'Excluded Dates', 'rockaden-chess' ); ?></label>
+					<textarea id="rc_excluded_dates" name="rc_excluded_dates" rows="2" placeholder="2026-03-15, 2026-04-01"><?php echo esc_textarea( $excluded_str ); ?></textarea>
+					<p class="description"><?php esc_html_e( 'Comma-separated YYYY-MM-DD dates to exclude from recurrence.', 'rockaden-chess' ); ?></p>
+				</div>
+			</div>
 
-		<script>
-		(function() {
-			var cb = document.getElementById('rc_is_recurring');
-			var fields = document.getElementById('rc-recurrence-fields');
-			if (cb && fields) {
-				cb.addEventListener('change', function() {
-					fields.style.display = this.checked ? '' : 'none';
-				});
-			}
-		})();
-		</script>
+			<div class="rc-event-section">
+				<h3><?php esc_html_e( 'Details', 'rockaden-chess' ); ?></h3>
+				<div class="rc-event-row">
+					<div class="rc-event-field">
+						<label for="rc_location"><?php esc_html_e( 'Location', 'rockaden-chess' ); ?></label>
+						<input type="text" id="rc_location" name="rc_location" value="<?php echo esc_attr( $location ); ?>" class="regular-text" />
+					</div>
+				</div>
+				<div class="rc-event-row">
+					<div class="rc-event-field">
+						<label for="rc_category"><?php esc_html_e( 'Category', 'rockaden-chess' ); ?></label>
+						<select id="rc_category" name="rc_category">
+							<?php foreach ( $categories as $value => $label ) : ?>
+								<option value="<?php echo esc_attr( $value ); ?>" <?php selected( $category, $value ); ?>><?php echo esc_html( $label ); ?></option>
+							<?php endforeach; ?>
+						</select>
+					</div>
+				</div>
+			</div>
+
+			<div class="rc-event-section">
+				<h3><?php esc_html_e( 'Link', 'rockaden-chess' ); ?></h3>
+				<div class="rc-event-row rc-event-row--dates">
+					<div class="rc-event-field">
+						<label for="rc_link"><?php esc_html_e( 'URL', 'rockaden-chess' ); ?></label>
+						<input type="url" id="rc_link" name="rc_link" value="<?php echo esc_attr( $link ); ?>" class="regular-text" />
+					</div>
+					<div class="rc-event-field">
+						<label for="rc_link_label"><?php esc_html_e( 'Link Text', 'rockaden-chess' ); ?></label>
+						<input type="text" id="rc_link_label" name="rc_link_label" value="<?php echo esc_attr( $link_label ); ?>" class="regular-text" />
+					</div>
+				</div>
+			</div>
+
+			<div class="rc-event-section">
+				<h3><?php esc_html_e( 'Description', 'rockaden-chess' ); ?></h3>
+				<?php
+				wp_editor(
+					$post->post_content,
+					'rc_description',
+					[
+						'media_buttons' => false,
+						'textarea_rows' => 6,
+						'teeny'         => true,
+						'quicktags'     => true,
+					]
+				);
+				?>
+			</div>
+
+		</div>
 		<?php
 	}
 
@@ -240,5 +245,16 @@ class EventMetaBoxes {
 			update_post_meta( $post_id, 'rc_recurrence_end', '' );
 			update_post_meta( $post_id, 'rc_excluded_dates', '[]' );
 		}
+
+		// Save description to post_content.
+		$description = wp_kses_post( wp_unslash( $_POST['rc_description'] ?? '' ) );
+		remove_action( 'save_post_' . Event::POST_TYPE, [ self::class, 'save' ], 10 );
+		wp_update_post(
+			[
+				'ID'           => $post_id,
+				'post_content' => $description,
+			]
+		);
+		add_action( 'save_post_' . Event::POST_TYPE, [ self::class, 'save' ], 10, 2 );
 	}
 }

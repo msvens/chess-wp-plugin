@@ -29,7 +29,7 @@ class Event {
 				],
 				'public'       => true,
 				'show_in_rest' => true,
-				'supports'     => [ 'title', 'editor', 'author' ],
+				'supports'     => [ 'title', 'author' ],
 				'has_archive'  => true,
 				'menu_icon'    => 'dashicons-calendar-alt',
 				'rewrite'      => [ 'slug' => 'events' ],
@@ -37,6 +37,15 @@ class Event {
 		);
 
 		self::register_meta();
+
+		add_filter(
+			'use_block_editor_for_post_type',
+			function ( bool $enabled, string $post_type ): bool {
+				return self::POST_TYPE === $post_type ? false : $enabled;
+			},
+			10,
+			2
+		);
 	}
 
 	/**
