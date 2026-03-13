@@ -3,7 +3,7 @@
  * Plugin Name: Rockaden Chess
  * Plugin URI:  https://github.com/msvens/rockaden-wp
  * Description: Training management, calendar, and SSF integration for SK Rockaden.
- * Version:     0.7.0
+ * Version:     0.7.1
  * Author:      SK Rockaden
  * Text Domain: rockaden-chess
  * Domain Path: /languages
@@ -18,7 +18,7 @@ defined( 'ABSPATH' ) || exit;
 
 define( 'RC_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'RC_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
-define( 'RC_VERSION', '0.7.0' );
+define( 'RC_VERSION', '0.7.1' );
 
 // PSR-4-style autoloader for plugin classes.
 spl_autoload_register(
