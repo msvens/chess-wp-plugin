@@ -8,6 +8,7 @@ import type {
 	EventData,
 	CreateEventData,
 } from './types';
+import type { SsfEndResult, SsfRoundResult } from '../shared/ssfTypes';
 
 const BASE = 'rockaden/v1';
 
@@ -169,13 +170,15 @@ export function fetchSsfTournamentGroup( groupId: number ): Promise< unknown > {
 
 export function fetchSsfTournamentResults(
 	groupId: number
-): Promise< unknown > {
+): Promise< SsfEndResult[] > {
 	return apiFetch( {
 		path: `${ BASE }/ssf/tournamentresults/table/id/${ groupId }`,
 	} );
 }
 
-export function fetchSsfRoundResults( groupId: number ): Promise< unknown > {
+export function fetchSsfRoundResults(
+	groupId: number
+): Promise< SsfRoundResult[] > {
 	return apiFetch( {
 		path: `${ BASE }/ssf/tournamentresults/roundresults/id/${ groupId }`,
 	} );

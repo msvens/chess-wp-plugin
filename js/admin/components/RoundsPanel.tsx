@@ -17,6 +17,7 @@ interface RoundsPanelProps {
 	ratings: Map< number, SsfRatingInfo >;
 	t: Translations;
 	onUpdated: () => void;
+	readOnly?: boolean;
 }
 
 export function RoundsPanel( {
@@ -25,6 +26,7 @@ export function RoundsPanel( {
 	ratings,
 	t,
 	onUpdated,
+	readOnly,
 }: RoundsPanelProps ) {
 	const [ activeRound, setActiveRound ] = useState( 0 );
 	const [ saving, setSaving ] = useState( false );
@@ -113,6 +115,19 @@ export function RoundsPanel( {
 		return nameMap.get( id ) || id;
 	}
 
+	function resultLabel( result: string | null ): string {
+		switch ( result ) {
+			case '1-0':
+				return '1 - 0';
+			case '0.5-0.5':
+				return '½ - ½';
+			case '0-1':
+				return '0 - 1';
+			default:
+				return t.training.notPlayed;
+		}
+	}
+
 	const rLabel = ratingLabel( group.timeControl, t );
 	const round = hasRounds ? group.rounds[ activeRound ] : null;
 
@@ -129,7 +144,7 @@ export function RoundsPanel( {
 				<Heading level={ 4 } style={ { margin: 0 } }>
 					{ t.training.round }
 				</Heading>
-				{ activeParticipants.length >= 2 && (
+				{ ! readOnly && activeParticipants.length >= 2 && (
 					<Button
 						variant={ hasRounds ? 'tertiary' : 'secondary' }
 						isDestructive={ hasRounds }
@@ -223,18 +238,26 @@ export function RoundsPanel( {
 											{ getRating( pairing.blackId ) }
 										</td>
 										<td>
-											<GameResultSelect
-												value={ pairing.result || null }
-												onChange={ ( result ) =>
-													handleResultChange(
-														activeRound,
-														gi,
-														result
-													)
-												}
-												t={ t }
-												disabled={ saving }
-											/>
+											{ readOnly ? (
+												resultLabel(
+													pairing.result || null
+												)
+											) : (
+												<GameResultSelect
+													value={
+														pairing.result || null
+													}
+													onChange={ ( result ) =>
+														handleResultChange(
+															activeRound,
+															gi,
+															result
+														)
+													}
+													t={ t }
+													disabled={ saving }
+												/>
+											) }
 										</td>
 									</tr>
 								) ) }

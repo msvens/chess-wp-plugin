@@ -130,18 +130,14 @@ export function CreateGroupModal( {
 					? `https://chess.msvens.com/results/${ tournamentId }/${ id }`
 					: '';
 
-			// Parse results data defensively to extract participants
+			// Extract participants from typed results
 			const participants: { ssfId: number; name: string }[] = [];
 			if ( Array.isArray( resultsData ) ) {
-				for ( const entry of resultsData as Array<
-					Record< string, unknown >
-				> ) {
-					const pi = entry.playerInfo as
-						| Record< string, unknown >
-						| undefined;
-					if ( pi && typeof pi === 'object' && pi.id ) {
+				for ( const entry of resultsData ) {
+					const pi = entry.playerInfo;
+					if ( pi?.id ) {
 						participants.push( {
-							ssfId: Number( pi.id ),
+							ssfId: pi.id,
 							name: `${ pi.firstName || '' } ${
 								pi.lastName || ''
 							}`.trim(),
@@ -172,6 +168,7 @@ export function CreateGroupModal( {
 		if ( ssfPreview.tournamentLink ) {
 			setTournamentLink( ssfPreview.tournamentLink );
 		}
+		setGroupType( 'tournament' );
 		setSsfParticipants( ssfPreview.participants );
 		setSsfPreview( null );
 	}

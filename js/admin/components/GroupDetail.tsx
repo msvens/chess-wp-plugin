@@ -18,6 +18,7 @@ import { ScheduleTimeline } from './ScheduleTimeline';
 import { ExcludedDatesPanel } from './ExcludedDatesPanel';
 import { StandingsTable } from './StandingsTable';
 import { RoundsPanel } from './RoundsPanel';
+import { SsfTournamentView } from './SsfTournamentView';
 import { EditGroupModal } from './EditGroupModal';
 
 interface GroupDetailProps {
@@ -95,6 +96,8 @@ export function GroupDetail( {
 		}
 	}
 
+	const isSsfLinked = group.ssfGroupId > 0;
+
 	const tabs = [
 		{
 			name: 'participants',
@@ -108,7 +111,7 @@ export function GroupDetail( {
 					},
 			  ]
 			: [] ),
-		...( group.groupType !== 'training'
+		...( group.groupType !== 'training' || isSsfLinked
 			? [ { name: 'tournament', title: t.training.tournament } ]
 			: [] ),
 	];
@@ -185,6 +188,11 @@ export function GroupDetail( {
 					</a>
 				</Text>
 			) }
+			{ isSsfLinked && (
+				<Text style={ { display: 'block', marginBottom: 4 } }>
+					{ t.training.ssfGroupId }: { group.ssfGroupId }
+				</Text>
+			) }
 			{ scheduleSummary && (
 				<Text
 					style={ {
@@ -213,8 +221,9 @@ export function GroupDetail( {
 										onAddClick={ () =>
 											setShowAddModal( true )
 										}
+										readOnly={ isSsfLinked }
 									/>
-									{ showAddModal && (
+									{ ! isSsfLinked && showAddModal && (
 										<AddParticipantModal
 											groupId={ groupId }
 											existingParticipants={
@@ -271,20 +280,33 @@ export function GroupDetail( {
 						case 'tournament':
 							return (
 								<div style={ { marginTop: 12 } }>
-									<StandingsTable
-										participants={ group.participants }
-										rounds={ group.rounds }
-										ratings={ ratings }
-										timeControl={ group.timeControl }
-										t={ t }
-									/>
-									<RoundsPanel
-										groupId={ groupId }
-										group={ group }
-										ratings={ ratings }
-										t={ t }
-										onUpdated={ refetch }
-									/>
+									{ isSsfLinked ? (
+										<SsfTournamentView
+											ssfGroupId={ group.ssfGroupId }
+											t={ t }
+										/>
+									) : (
+										<>
+											<StandingsTable
+												participants={
+													group.participants
+												}
+												rounds={ group.rounds }
+												ratings={ ratings }
+												timeControl={
+													group.timeControl
+												}
+												t={ t }
+											/>
+											<RoundsPanel
+												groupId={ groupId }
+												group={ group }
+												ratings={ ratings }
+												t={ t }
+												onUpdated={ refetch }
+											/>
+										</>
+									) }
 								</div>
 							);
 						default:

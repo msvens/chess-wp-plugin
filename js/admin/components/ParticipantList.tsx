@@ -13,6 +13,7 @@ interface ParticipantListProps {
 	t: Translations;
 	onUpdated: () => void;
 	onAddClick: () => void;
+	readOnly?: boolean;
 }
 
 export function ParticipantList( {
@@ -23,6 +24,7 @@ export function ParticipantList( {
 	t,
 	onUpdated,
 	onAddClick,
+	readOnly,
 }: ParticipantListProps ) {
 	const [ removing, setRemoving ] = useState< string | null >( null );
 	const [ error, setError ] = useState< string | null >( null );
@@ -72,18 +74,20 @@ export function ParticipantList( {
 				</Notice>
 			) }
 
-			<div style={ { marginBottom: 12 } }>
-				<Button variant="primary" onClick={ onAddClick }>
-					{ t.training.addParticipant }
-				</Button>
-			</div>
+			{ ! readOnly && (
+				<div style={ { marginBottom: 12 } }>
+					<Button variant="primary" onClick={ onAddClick }>
+						{ t.training.addParticipant }
+					</Button>
+				</div>
+			) }
 
 			<table className="widefat striped">
 				<thead>
 					<tr>
 						<th>{ t.training.name }</th>
 						<th>{ ratingLabel( timeControl, t ) }</th>
-						<th></th>
+						{ ! readOnly && <th></th> }
 					</tr>
 				</thead>
 				<tbody>
@@ -91,23 +95,25 @@ export function ParticipantList( {
 						<tr key={ p.id }>
 							<td>{ p.name }</td>
 							<td>{ getRating( p ) }</td>
-							<td>
-								<Button
-									variant="tertiary"
-									isDestructive
-									isBusy={ removing === p.id }
-									disabled={ removing !== null }
-									onClick={ () => handleRemove( p.id ) }
-								>
-									{ t.training.removeParticipant }
-								</Button>
-							</td>
+							{ ! readOnly && (
+								<td>
+									<Button
+										variant="tertiary"
+										isDestructive
+										isBusy={ removing === p.id }
+										disabled={ removing !== null }
+										onClick={ () => handleRemove( p.id ) }
+									>
+										{ t.training.removeParticipant }
+									</Button>
+								</td>
+							) }
 						</tr>
 					) ) }
 					{ active.length === 0 && (
 						<tr>
 							<td
-								colSpan={ 3 }
+								colSpan={ readOnly ? 2 : 3 }
 								style={ {
 									textAlign: 'center',
 									fontStyle: 'italic',

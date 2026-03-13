@@ -44,6 +44,9 @@ export function EditGroupModal( {
 	const [ tournamentLink, setTournamentLink ] = useState(
 		group.tournamentLink
 	);
+	const [ ssfGroupId, setSsfGroupId ] = useState(
+		String( group.ssfGroupId || '' )
+	);
 	const [ showParticipants, setShowParticipants ] = useState(
 		group.showParticipants
 	);
@@ -131,6 +134,7 @@ export function EditGroupModal( {
 				trainers: trainers.trim(),
 				contact: contact.trim(),
 				tournamentLink: tournamentLink.trim(),
+				ssfGroupId: ssfGroupId ? Number( ssfGroupId ) : 0,
 				showParticipants,
 				showStandings,
 				...( eventId !== undefined ? { eventId } : {} ),
@@ -233,14 +237,17 @@ export function EditGroupModal( {
 				checked={ showStandings }
 				onChange={ setShowStandings }
 			/>
-			{ group.ssfGroupId > 0 && (
-				<TextControl
-					label={ t.training.ssfGroupId }
-					value={ String( group.ssfGroupId ) }
-					onChange={ () => {} }
-					readOnly
-				/>
-			) }
+			<TextControl
+				label={ t.training.ssfGroupId }
+				value={ ssfGroupId }
+				onChange={ ( v ) => {
+					setSsfGroupId( v );
+					if ( Number( v ) > 0 ) {
+						setGroupType( 'tournament' );
+					}
+				} }
+				type="number"
+			/>
 
 			{ /* Event section */ }
 			<div
