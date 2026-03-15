@@ -7,4 +7,4 @@
 
 define( 'RC_PLUGIN_DIR', __DIR__ . '/' );
 define( 'RC_PLUGIN_URL', 'https://example.com/wp-content/plugins/rockaden-chess/' );
-define( 'RC_VERSION', '0.7.1' );
+define( 'RC_VERSION', '0.7.2' );
