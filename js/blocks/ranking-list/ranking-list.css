@@ -94,12 +94,12 @@ html.dark .rc-rl {
 .rc-rl__table {
 	width: 100%;
 	border-collapse: collapse;
-	font-size: 0.875rem;
+	font-size: 0.8125rem;
 }
 
 .rc-rl__table th,
 .rc-rl__table td {
-	padding: 0.5rem 0.75rem;
+	padding: 0.375rem 0.625rem;
 	text-align: left;
 	border-bottom: 1px solid var(--rc-rl-border);
 }
@@ -112,8 +112,12 @@ html.dark .rc-rl {
 	letter-spacing: 0.05em;
 }
 
-.rc-rl__table tbody tr:hover {
+.rc-rl__table tbody tr:nth-child(even) {
 	background: var(--rc-rl-surface-alt);
+}
+
+.rc-rl__table tbody tr:hover {
+	background: var(--rc-rl-border);
 }
 
 /* Rank column */
@@ -215,6 +219,28 @@ html.dark .rc-rl {
 /* ---- Responsive ---- */
 @media (max-width: 640px) {
 	.rc-rl__filters {
-		grid-template-columns: 1fr;
+		gap: 0.5rem;
+	}
+
+	.rc-rl__filter-label {
+		font-size: 0.625rem;
+	}
+
+	.rc-rl__select {
+		font-size: 0.75rem;
+		padding: 0.375rem 1.5rem 0.375rem 0.5rem;
+	}
+
+	.rc-rl__table {
+		font-size: 0.75rem;
+	}
+
+	.rc-rl__table th,
+	.rc-rl__table td {
+		padding: 0.25rem 0.375rem;
+	}
+
+	.rc-rl__table th {
+		font-size: 0.625rem;
 	}
 }
