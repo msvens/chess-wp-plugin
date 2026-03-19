@@ -151,7 +151,12 @@ export default function EventPopover( {
 			</div>
 
 			{ event.description && (
-				<p className="rc-cal__event-desc">{ event.description }</p>
+				<div
+					className="rc-cal__event-desc"
+					dangerouslySetInnerHTML={ {
+						__html: event.description,
+					} }
+				/>
 			) }
 
 			<span

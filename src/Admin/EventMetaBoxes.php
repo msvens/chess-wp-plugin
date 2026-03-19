@@ -68,16 +68,18 @@ class EventMetaBoxes {
 
 		wp_nonce_field( 'rc_event_meta', 'rc_event_meta_nonce' );
 
-		$start_date      = get_post_meta( $post->ID, 'rc_start_date', true );
-		$end_date        = get_post_meta( $post->ID, 'rc_end_date', true );
-		$location        = get_post_meta( $post->ID, 'rc_location', true );
-		$category        = get_post_meta( $post->ID, 'rc_category', true ) ?: 'other';
-		$link            = get_post_meta( $post->ID, 'rc_link', true );
-		$link_label      = get_post_meta( $post->ID, 'rc_link_label', true );
-		$is_recurring    = (bool) get_post_meta( $post->ID, 'rc_is_recurring', true );
-		$recurrence_type = get_post_meta( $post->ID, 'rc_recurrence_type', true ) ?: 'weekly';
-		$excluded_dates  = get_post_meta( $post->ID, 'rc_excluded_dates', true ) ?: '[]';
-		$excluded_str    = implode( ', ', json_decode( $excluded_dates, true ) ?: [] );
+		$start_date        = get_post_meta( $post->ID, 'rc_start_date', true );
+		$end_date          = get_post_meta( $post->ID, 'rc_end_date', true );
+		$location          = get_post_meta( $post->ID, 'rc_location', true );
+		$category          = get_post_meta( $post->ID, 'rc_category', true ) ?: 'other';
+		$link              = get_post_meta( $post->ID, 'rc_link', true );
+		$link_label        = get_post_meta( $post->ID, 'rc_link_label', true );
+		$is_recurring      = (bool) get_post_meta( $post->ID, 'rc_is_recurring', true );
+		$recurrence_type   = get_post_meta( $post->ID, 'rc_recurrence_type', true ) ?: 'weekly';
+		$excluded_dates    = get_post_meta( $post->ID, 'rc_excluded_dates', true ) ?: '[]';
+		$excluded_str      = implode( ', ', json_decode( $excluded_dates, true ) ?: [] );
+		$ssf_group_id      = absint( get_post_meta( $post->ID, 'rc_ssf_group_id', true ) );
+		$ssf_tournament_id = absint( get_post_meta( $post->ID, 'rc_ssf_tournament_id', true ) );
 
 		$categories = [
 			'training'    => __( 'Training', 'rockaden-chess' ),
@@ -92,6 +94,37 @@ class EventMetaBoxes {
 		$end_local   = $end_date ? gmdate( 'Y-m-d H:i', strtotime( $end_date ) ) : '';
 		?>
 		<div id="rc-event-editor">
+
+			<div class="rc-event-section rc-ssf-section">
+				<h3><?php esc_html_e( 'SSF Import', 'rockaden-chess' ); ?></h3>
+				<?php if ( $ssf_group_id ) : ?>
+					<p class="rc-ssf-linked">
+						<?php
+						printf(
+							/* translators: %d: SSF group ID */
+							esc_html__( 'Linked to SSF group %d', 'rockaden-chess' ),
+							intval( $ssf_group_id )
+						);
+						if ( $ssf_tournament_id ) {
+							printf(
+								/* translators: %d: SSF tournament ID */
+								' (%s %d)',
+								esc_html__( 'tournament', 'rockaden-chess' ),
+								intval( $ssf_tournament_id )
+							);
+						}
+						?>
+					</p>
+				<?php endif; ?>
+				<div class="rc-ssf-fetch-row">
+					<input type="number" id="rc_ssf_lookup_id" value="<?php echo $ssf_group_id ? esc_attr( (string) $ssf_group_id ) : ''; ?>" placeholder="<?php esc_attr_e( 'SSF ID', 'rockaden-chess' ); ?>" min="1" class="regular-text" />
+					<button type="button" id="rc-ssf-fetch-group-btn" class="button"><?php esc_html_e( 'Fetch Group', 'rockaden-chess' ); ?></button>
+					<button type="button" id="rc-ssf-fetch-tournament-btn" class="button"><?php esc_html_e( 'Fetch Tournament', 'rockaden-chess' ); ?></button>
+				</div>
+				<div id="rc-ssf-preview"></div>
+				<input type="hidden" id="rc_ssf_group_id" name="rc_ssf_group_id" value="<?php echo esc_attr( (string) $ssf_group_id ); ?>" />
+				<input type="hidden" id="rc_ssf_tournament_id" name="rc_ssf_tournament_id" value="<?php echo esc_attr( (string) $ssf_tournament_id ); ?>" />
+			</div>
 
 			<div class="rc-event-section">
 				<h3><?php esc_html_e( 'Date & Time', 'rockaden-chess' ); ?></h3>
@@ -245,6 +278,10 @@ class EventMetaBoxes {
 			update_post_meta( $post_id, 'rc_recurrence_end', '' );
 			update_post_meta( $post_id, 'rc_excluded_dates', '[]' );
 		}
+
+		// SSF IDs.
+		update_post_meta( $post_id, 'rc_ssf_group_id', absint( $_POST['rc_ssf_group_id'] ?? 0 ) );
+		update_post_meta( $post_id, 'rc_ssf_tournament_id', absint( $_POST['rc_ssf_tournament_id'] ?? 0 ) );
 
 		// Save description to post_content.
 		$description = wp_kses_post( wp_unslash( $_POST['rc_description'] ?? '' ) );

@@ -35,3 +35,43 @@ export interface SsfRoundResult {
 	awayResult: number;
 	date: string;
 }
+
+export interface SsfLocalTime {
+	hour: number;
+	minute: number;
+}
+
+export interface SsfTournamentRound {
+	roundNumber: number;
+	roundDate: string;
+}
+
+export interface SsfTournamentGroup {
+	id: number;
+	name: string;
+	start: string;
+	end: string;
+	nrofrounds: number;
+	arenaStart: SsfLocalTime | null;
+	arenaEnd: SsfLocalTime | null;
+	cost: number;
+	tournamentRounds: SsfTournamentRound[];
+}
+
+export interface SsfTournamentClass {
+	classID: number;
+	className: string;
+	groups: SsfTournamentGroup[];
+	subClasses: SsfTournamentClass[];
+}
+
+export interface SsfTournament {
+	id: number;
+	name: string;
+	start: string;
+	end: string;
+	city: string;
+	arena: string;
+	invitationurl: string;
+	rootClasses: SsfTournamentClass[];
+}

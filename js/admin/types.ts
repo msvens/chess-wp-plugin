@@ -90,6 +90,8 @@ export interface EventData {
 	recurrenceType: 'weekly' | 'biweekly' | null;
 	recurrenceEndDate: string;
 	excludedDates: string[];
+	ssfGroupId: number;
+	ssfTournamentId: number;
 }
 
 export interface CreateEventData {

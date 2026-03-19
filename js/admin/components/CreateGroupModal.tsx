@@ -95,33 +95,20 @@ export function CreateGroupModal( {
 				fetchSsfTournamentResults( id ),
 			] );
 
-			// Parse tournament data defensively to extract group name + tournament ID
+			// Extract group name + tournament ID from typed response
 			let groupName = '';
-			let tournamentId = 0;
-			const td = tournamentData as Record< string, unknown >;
-			if ( td && typeof td === 'object' ) {
-				tournamentId = Number( td.id ) || 0;
-				const rootClasses = td.rootClasses as
-					| Array< Record< string, unknown > >
-					| undefined;
-				if ( Array.isArray( rootClasses ) ) {
-					for ( const rc of rootClasses ) {
-						const groups = rc.groups as
-							| Array< Record< string, unknown > >
-							| undefined;
-						if ( Array.isArray( groups ) ) {
-							for ( const g of groups ) {
-								if ( Number( g.id ) === id ) {
-									groupName = String( g.name || '' );
-								}
-							}
+			const tournamentId = tournamentData.id || 0;
+			if ( tournamentData.rootClasses ) {
+				for ( const rc of tournamentData.rootClasses ) {
+					for ( const g of rc.groups ) {
+						if ( g.id === id ) {
+							groupName = g.name || '';
 						}
 					}
 				}
-				// Fallback: use tournament name if no group match
-				if ( ! groupName && td.name ) {
-					groupName = String( td.name );
-				}
+			}
+			if ( ! groupName && tournamentData.name ) {
+				groupName = tournamentData.name;
 			}
 
 			// Build results link

@@ -276,6 +276,13 @@ class EventApi {
 			update_post_meta( $post_id, 'rc_excluded_dates', wp_slash( wp_json_encode( $excluded ) ) );
 		}
 
+		if ( isset( $body['ssfGroupId'] ) ) {
+			update_post_meta( $post_id, 'rc_ssf_group_id', absint( $body['ssfGroupId'] ) );
+		}
+		if ( isset( $body['ssfTournamentId'] ) ) {
+			update_post_meta( $post_id, 'rc_ssf_tournament_id', absint( $body['ssfTournamentId'] ) );
+		}
+
 		// Auto-derive rc_recurrence_end from rc_end_date for recurring events.
 		$is_recurring = get_post_meta( $post_id, 'rc_is_recurring', true );
 		$end_date     = get_post_meta( $post_id, 'rc_end_date', true );
@@ -298,7 +305,7 @@ class EventApi {
 		return [
 			'id'                => $post->ID,
 			'title'             => $post->post_title,
-			'description'       => $post->post_content,
+			'description'       => wpautop( $post->post_content ),
 			'startDate'         => get_post_meta( $post->ID, 'rc_start_date', true ) ?: '',
 			'endDate'           => get_post_meta( $post->ID, 'rc_end_date', true ) ?: '',
 			'location'          => get_post_meta( $post->ID, 'rc_location', true ) ?: '',
@@ -312,6 +319,8 @@ class EventApi {
 				get_post_meta( $post->ID, 'rc_excluded_dates', true ) ?: '[]',
 				true,
 			),
+			'ssfGroupId'        => absint( get_post_meta( $post->ID, 'rc_ssf_group_id', true ) ),
+			'ssfTournamentId'   => absint( get_post_meta( $post->ID, 'rc_ssf_tournament_id', true ) ),
 		];
 	}
 

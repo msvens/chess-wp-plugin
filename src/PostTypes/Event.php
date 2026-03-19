@@ -53,45 +53,53 @@ class Event {
 	 */
 	private static function register_meta(): void {
 		$meta_fields = [
-			'rc_start_date'      => [
+			'rc_start_date'        => [
 				'type'    => 'string',
 				'default' => '',
 			],
-			'rc_end_date'        => [
+			'rc_end_date'          => [
 				'type'    => 'string',
 				'default' => '',
 			],
-			'rc_location'        => [
+			'rc_location'          => [
 				'type'    => 'string',
 				'default' => '',
 			],
-			'rc_category'        => [
+			'rc_category'          => [
 				'type'    => 'string',
 				'default' => 'other',
 			],
-			'rc_is_recurring'    => [
+			'rc_is_recurring'      => [
 				'type'    => 'boolean',
 				'default' => false,
 			],
-			'rc_recurrence_type' => [
+			'rc_recurrence_type'   => [
 				'type'    => 'string',
 				'default' => '',
 			],
-			'rc_recurrence_end'  => [
+			'rc_recurrence_end'    => [
 				'type'    => 'string',
 				'default' => '',
 			],
-			'rc_excluded_dates'  => [
+			'rc_excluded_dates'    => [
 				'type'    => 'string', // JSON string.
 				'default' => '[]',
 			],
-			'rc_link'            => [
+			'rc_link'              => [
 				'type'    => 'string',
 				'default' => '',
 			],
-			'rc_link_label'      => [
+			'rc_link_label'        => [
 				'type'    => 'string',
 				'default' => '',
+			],
+			'rc_ssf_group_id'      => [
+				'type'    => 'integer',
+				'default' => 0,
+			],
+			'rc_ssf_tournament_id' => [
+				'type'    => 'integer',
+				'default' => 0,
 			],
 		];
 
