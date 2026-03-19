@@ -13,16 +13,16 @@ namespace Rockaden\Admin;
 class SettingsPage {
 
 	private const OPTION_GROUP = 'rockaden_settings';
-	private const PAGE_SLUG    = 'rockaden-settings';
+	private const PAGE_SLUG    = 'rockaden-chess-settings';
 
 	/**
-	 * Register the submenu page.
+	 * Register the submenu page under Settings.
 	 */
 	public static function register_page(): void {
 		add_submenu_page(
-			'rockaden-training',
+			'options-general.php',
 			__( 'Rockaden Settings', 'rockaden-chess' ),
-			__( 'Settings', 'rockaden-chess' ),
+			__( 'Rockaden', 'rockaden-chess' ),
 			'manage_options',
 			self::PAGE_SLUG,
 			[ self::class, 'render' ]

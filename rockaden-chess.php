@@ -51,6 +51,17 @@ add_action( 'admin_menu', [ Rockaden\Admin\SettingsPage::class, 'register_page' 
 
 Rockaden\Admin\EventMetaBoxes::register();
 
+// Add "Settings" link on the Plugins page.
+add_filter(
+	'plugin_action_links_' . plugin_basename( __FILE__ ),
+	function ( array $links ): array {
+		$url           = admin_url( 'options-general.php?page=rockaden-chess-settings' );
+		$settings_link = sprintf( '<a href="%s">%s</a>', esc_url( $url ), esc_html__( 'Settings', 'rockaden-chess' ) );
+		$links[]       = $settings_link;
+		return $links;
+	}
+);
+
 // Register Gutenberg blocks.
 add_action(
 	'init',
