@@ -251,7 +251,7 @@ export function CreateGroupModal( {
 				>
 					<div style={ { flex: 1 } }>
 						<TextControl
-							label={ t.training.ssfGroupId }
+							label={ t.training.ssfTournamentGroupId }
 							value={ ssfGroupId }
 							onChange={ setSsfGroupId }
 							type="number"

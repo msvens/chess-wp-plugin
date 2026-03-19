@@ -238,7 +238,7 @@ export function EditGroupModal( {
 				onChange={ setShowStandings }
 			/>
 			<TextControl
-				label={ t.training.ssfGroupId }
+				label={ t.training.ssfTournamentGroupId }
 				value={ ssfGroupId }
 				onChange={ ( v ) => {
 					setSsfGroupId( v );

@@ -48,6 +48,7 @@ add_action( 'rest_api_init', [ Rockaden\Api\EventApi::class, 'register_routes' ]
 
 add_action( 'admin_menu', [ Rockaden\Admin\TrainingAdmin::class, 'register_page' ] );
 add_action( 'admin_menu', [ Rockaden\Admin\SettingsPage::class, 'register_page' ] );
+add_action( 'admin_menu', [ Rockaden\Admin\HelpPage::class, 'register_page' ] );
 
 Rockaden\Admin\EventMetaBoxes::register();
 
@@ -58,6 +59,11 @@ add_filter(
 		$url           = admin_url( 'options-general.php?page=rockaden-chess-settings' );
 		$settings_link = sprintf( '<a href="%s">%s</a>', esc_url( $url ), esc_html__( 'Settings', 'rockaden-chess' ) );
 		$links[]       = $settings_link;
+
+		$help_url  = admin_url( 'admin.php?page=rockaden-chess-help' );
+		$help_link = sprintf( '<a href="%s">%s</a>', esc_url( $help_url ), esc_html__( 'Help', 'rockaden-chess' ) );
+		$links[]   = $help_link;
+
 		return $links;
 	}
 );

@@ -77,6 +77,7 @@ export interface Translations {
 		showParticipants: string;
 		showStandings: string;
 		ssfGroupId: string;
+		ssfTournamentGroupId: string;
 		fetchFromSsf: string;
 		ssfFetching: string;
 		ssfFetchError: string;
@@ -234,6 +235,7 @@ const translations: Record< Language, Translations > = {
 			showParticipants: 'Show participants',
 			showStandings: 'Show standings',
 			ssfGroupId: 'SSF Group ID',
+			ssfTournamentGroupId: 'SSF Tournament Group ID',
 			fetchFromSsf: 'Fetch from SSF',
 			ssfFetching: 'Fetching...',
 			ssfFetchError: 'Could not fetch SSF data',
@@ -389,6 +391,7 @@ const translations: Record< Language, Translations > = {
 			showParticipants: 'Visa deltagare',
 			showStandings: 'Visa ställning',
 			ssfGroupId: 'SSF Grupp-ID',
+			ssfTournamentGroupId: 'SSF Turnerings-ID',
 			fetchFromSsf: 'Hämta från SSF',
 			ssfFetching: 'Hämtar...',
 			ssfFetchError: 'Kunde inte hämta SSF-data',
