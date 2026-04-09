@@ -40,6 +40,13 @@ export interface TrainingGroup {
 	rounds: StoredRound[];
 	showParticipants: boolean;
 	showStandings: boolean;
+	schedule: {
+		startDate: string;
+		endDate: string;
+		isRecurring: boolean;
+		recurrenceType: string;
+		location: string;
+	} | null;
 	createdBy: number;
 }
 

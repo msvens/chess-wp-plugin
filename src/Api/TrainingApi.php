@@ -635,6 +635,22 @@ class TrainingApi {
 			$group_type = (bool) get_post_meta( $post->ID, 'rc_has_tournament', true ) ? 'both' : 'training';
 		}
 
+		// Fetch linked event schedule for overview display.
+		$schedule = null;
+		$event_id = (int) get_post_meta( $post->ID, 'rc_event_id', true );
+		if ( $event_id ) {
+			$event_post = get_post( $event_id );
+			if ( $event_post && 'rc_event' === $event_post->post_type ) {
+				$schedule = [
+					'startDate'      => get_post_meta( $event_id, 'rc_start_date', true ) ?: '',
+					'endDate'        => get_post_meta( $event_id, 'rc_end_date', true ) ?: '',
+					'isRecurring'    => (bool) get_post_meta( $event_id, 'rc_is_recurring', true ),
+					'recurrenceType' => get_post_meta( $event_id, 'rc_recurrence_type', true ) ?: '',
+					'location'       => get_post_meta( $event_id, 'rc_location', true ) ?: '',
+				];
+			}
+		}
+
 		return [
 			'id'               => $post->ID,
 			'slug'             => $post->post_name,
@@ -645,7 +661,7 @@ class TrainingApi {
 			'groupType'        => $group_type,
 			'hasTournament'    => 'training' !== $group_type,
 			'timeControl'      => get_post_meta( $post->ID, 'rc_time_control', true ) ?: 'classical',
-			'eventId'          => (int) get_post_meta( $post->ID, 'rc_event_id', true ),
+			'eventId'          => $event_id,
 			'ssfGroupId'       => (int) get_post_meta( $post->ID, 'rc_ssf_group_id', true ),
 			'participants'     => $participants,
 			'trainers'         => get_post_meta( $post->ID, 'rc_trainers', true ) ?: '',
@@ -654,6 +670,7 @@ class TrainingApi {
 			'rounds'           => $rounds,
 			'showParticipants' => $show_participants,
 			'showStandings'    => $show_standings,
+			'schedule'         => $schedule,
 			'createdBy'        => $post->post_author,
 		];
 	}

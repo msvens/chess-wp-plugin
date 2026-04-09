@@ -116,6 +116,13 @@ html.dark .rc-tg__card:hover {
 	overflow: hidden;
 }
 
+.rc-tg__card-schedule {
+	margin: 0 0 0.75rem;
+	font-size: 0.8125rem;
+	color: var(--rc-tg-meta-text);
+	line-height: 1.4;
+}
+
 /* --- Card footer --- */
 .rc-tg__card-footer {
 	display: flex;
