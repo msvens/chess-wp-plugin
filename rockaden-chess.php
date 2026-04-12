@@ -68,11 +68,73 @@ add_filter(
 	}
 );
 
+// Documentation: rewrite rules + query var.
+add_action( 'init', [ 'Rockaden\Docs\DocsPageSetup', 'register_rewrites' ], 5 );
+add_filter( 'query_vars', [ 'Rockaden\Docs\DocsPageSetup', 'add_query_var' ] );
+
+// Documentation: create page on first run.
+add_action( 'init', [ 'Rockaden\Docs\DocsPageSetup', 'maybe_create_page' ], 15 );
+
+// Documentation: register plugin docs, then let theme add theirs.
+add_action(
+	'init',
+	function (): void {
+		$docs_dir = RC_PLUGIN_DIR . 'docs/';
+		Rockaden\Docs\DocsRegistry::register(
+			[
+				'slug'       => 'kom-igang',
+				'title_sv'   => 'Kom igång',
+				'title_en'   => 'Getting started',
+				'section_sv' => 'Plugin',
+				'section_en' => 'Plugin',
+				'file'       => $docs_dir . 'kom-igang.html',
+				'order'      => 10,
+			]
+		);
+		Rockaden\Docs\DocsRegistry::register(
+			[
+				'slug'       => 'kalender',
+				'title_sv'   => 'Kalender',
+				'title_en'   => 'Calendar',
+				'section_sv' => 'Plugin',
+				'section_en' => 'Plugin',
+				'file'       => $docs_dir . 'kalender.html',
+				'order'      => 20,
+			]
+		);
+		Rockaden\Docs\DocsRegistry::register(
+			[
+				'slug'       => 'traning',
+				'title_sv'   => 'Träning',
+				'title_en'   => 'Training',
+				'section_sv' => 'Plugin',
+				'section_en' => 'Plugin',
+				'file'       => $docs_dir . 'traning.html',
+				'order'      => 30,
+			]
+		);
+		Rockaden\Docs\DocsRegistry::register(
+			[
+				'slug'       => 'block',
+				'title_sv'   => 'Block',
+				'title_en'   => 'Blocks',
+				'section_sv' => 'Plugin',
+				'section_en' => 'Plugin',
+				'file'       => $docs_dir . 'block.html',
+				'order'      => 40,
+			]
+		);
+
+		do_action( 'rc_register_docs' );
+	},
+	20
+);
+
 // Register Gutenberg blocks.
 add_action(
 	'init',
 	function (): void {
-		$blocks = [ 'calendar', 'ranking-list', 'standings', 'training-group', 'training-groups' ];
+		$blocks = [ 'calendar', 'documentation', 'ranking-list', 'standings', 'training-group', 'training-groups' ];
 		foreach ( $blocks as $block ) {
 			$block_dir = RC_PLUGIN_DIR . "src/Blocks/{$block}";
 			if ( file_exists( "{$block_dir}/block.json" ) ) {

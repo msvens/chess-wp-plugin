@@ -12,6 +12,10 @@ module.exports = {
 			__dirname,
 			'js/admin/event-metabox.ts'
 		),
+		'blocks/documentation/index': path.resolve(
+			__dirname,
+			'js/blocks/documentation/index.tsx'
+		),
 		'blocks/calendar/index': path.resolve(
 			__dirname,
 			'js/blocks/calendar/index.tsx'

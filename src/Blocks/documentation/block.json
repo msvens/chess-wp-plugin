@@ -1,0 +1,19 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "rockaden/documentation",
+  "version": "0.1.0",
+  "title": "Documentation",
+  "category": "widgets",
+  "icon": "book",
+  "description": "Renders bundled plugin and theme documentation.",
+  "textdomain": "rockaden-chess",
+  "supports": {
+    "html": false,
+    "inserter": false
+  },
+  "editorScript": "file:../../../build/blocks/documentation/index.js",
+  "viewScript": "file:./view.js",
+  "viewStyle": "file:./documentation.css",
+  "render": "file:./render.php"
+}

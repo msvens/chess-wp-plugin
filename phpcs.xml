@@ -4,6 +4,7 @@
 
     <file>rockaden-chess.php</file>
     <file>src/</file>
+    <exclude-pattern>*.js</exclude-pattern>
 
     <!-- WordPress coding standards -->
     <rule ref="WordPress">
