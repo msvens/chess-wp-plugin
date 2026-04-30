@@ -8,6 +8,7 @@
 namespace Rockaden\Api;
 
 use Rockaden\PostTypes\Event;
+use Rockaden\Services\EventExpander;
 use WP_REST_Request;
 use WP_REST_Response;
 use WP_Error;
@@ -128,31 +129,20 @@ class EventApi {
 
 		// No month param: return raw events (for admin dropdowns).
 		if ( ! $month ) {
-			$events = array_map( [ self::class, 'format_event_raw' ], $posts );
+			$events = array_map( [ EventExpander::class, 'format_event_raw' ], $posts );
 			return new WP_REST_Response( $events );
 		}
 
 		// With month param: return expanded events (for calendar).
 		$events = [];
 		foreach ( $posts as $post ) {
-			$base = self::format_event_raw( $post );
+			$base = EventExpander::format_event_raw( $post );
 
 			if ( $base['isRecurring'] && $base['recurrenceType'] && $base['recurrenceEndDate'] ) {
-				$expanded = self::expand_recurring( $base );
+				$expanded = EventExpander::expand_recurring( $base );
 				array_push( $events, ...$expanded );
 			} else {
-				$events[] = [
-					'id'          => (string) $base['id'],
-					'title'       => $base['title'],
-					'startDate'   => $base['startDate'],
-					'endDate'     => $base['endDate'],
-					'description' => $base['description'],
-					'location'    => $base['location'],
-					'category'    => $base['category'],
-					'source'      => 'cms',
-					'link'        => $base['link'],
-					'linkLabel'   => $base['linkLabel'],
-				];
+				$events[] = EventExpander::format_occurrence( $base );
 			}
 		}
 
@@ -172,7 +162,7 @@ class EventApi {
 			return new WP_Error( 'not_found', 'Event not found', [ 'status' => 404 ] );
 		}
 
-		return new WP_REST_Response( self::format_event_raw( $post ) );
+		return new WP_REST_Response( EventExpander::format_event_raw( $post ) );
 	}
 
 	/**
@@ -207,7 +197,7 @@ class EventApi {
 
 		self::save_event_meta( $post_id, $body );
 
-		return new WP_REST_Response( self::format_event_raw( get_post( $post_id ) ), 201 );
+		return new WP_REST_Response( EventExpander::format_event_raw( get_post( $post_id ) ), 201 );
 	}
 
 	/**
@@ -236,7 +226,7 @@ class EventApi {
 		wp_update_post( $updates );
 		self::save_event_meta( $post->ID, $body );
 
-		return new WP_REST_Response( self::format_event_raw( get_post( $post->ID ) ) );
+		return new WP_REST_Response( EventExpander::format_event_raw( get_post( $post->ID ) ) );
 	}
 
 	/**
@@ -293,85 +283,5 @@ class EventApi {
 		} elseif ( ! $is_recurring ) {
 			update_post_meta( $post_id, 'rc_recurrence_end', '' );
 		}
-	}
-
-	/**
-	 * Format a post as a raw event array.
-	 *
-	 * @param \WP_Post $post The post to format.
-	 * @return array<string, mixed>
-	 */
-	private static function format_event_raw( \WP_Post $post ): array {
-		return [
-			'id'                => $post->ID,
-			'title'             => $post->post_title,
-			'description'       => wpautop( $post->post_content ),
-			'startDate'         => get_post_meta( $post->ID, 'rc_start_date', true ) ?: '',
-			'endDate'           => get_post_meta( $post->ID, 'rc_end_date', true ) ?: '',
-			'location'          => get_post_meta( $post->ID, 'rc_location', true ) ?: '',
-			'category'          => get_post_meta( $post->ID, 'rc_category', true ) ?: 'other',
-			'link'              => get_post_meta( $post->ID, 'rc_link', true ) ?: '',
-			'linkLabel'         => get_post_meta( $post->ID, 'rc_link_label', true ) ?: '',
-			'isRecurring'       => (bool) get_post_meta( $post->ID, 'rc_is_recurring', true ),
-			'recurrenceType'    => get_post_meta( $post->ID, 'rc_recurrence_type', true ) ?: '',
-			'recurrenceEndDate' => get_post_meta( $post->ID, 'rc_recurrence_end', true ) ?: '',
-			'excludedDates'     => json_decode(
-				get_post_meta( $post->ID, 'rc_excluded_dates', true ) ?: '[]',
-				true,
-			),
-			'ssfGroupId'        => absint( get_post_meta( $post->ID, 'rc_ssf_group_id', true ) ),
-			'ssfTournamentId'   => absint( get_post_meta( $post->ID, 'rc_ssf_tournament_id', true ) ),
-		];
-	}
-
-	/**
-	 * Expand a recurring event into individual occurrences.
-	 *
-	 * @param array<string, mixed> $event The base event data.
-	 * @return array<int, array<string, mixed>>
-	 */
-	private static function expand_recurring( array $event ): array {
-		$result = [];
-		$id     = (string) $event['id'];
-		$tz     = wp_timezone();
-		$start  = new \DateTime( $event['startDate'], $tz );
-		$end    = new \DateTime( $event['endDate'], $tz );
-
-		// Duration = time-of-day difference only (so multi-month span does not inflate it).
-		$start_secs    = (int) $start->format( 'H' ) * 3600 + (int) $start->format( 'i' ) * 60 + (int) $start->format( 's' );
-		$end_secs      = (int) $end->format( 'H' ) * 3600 + (int) $end->format( 'i' ) * 60 + (int) $end->format( 's' );
-		$duration_secs = $end_secs - $start_secs;
-
-		// Series boundary = date portion of endDate.
-		$series_end = new \DateTime( $end->format( 'Y-m-d' ) . 'T23:59:59', $tz );
-		$step_days  = 'biweekly' === $event['recurrenceType'] ? 14 : 7;
-		$excluded   = array_flip( $event['excludedDates'] ?? [] );
-
-		$current = clone $start;
-		while ( $current <= $series_end ) {
-			$date_key = $current->format( 'Y-m-d' );
-			if ( ! isset( $excluded[ $date_key ] ) ) {
-				$occ_start = clone $current;
-				$occ_end   = clone $current;
-				$occ_end->modify( "+{$duration_secs} seconds" );
-
-				$result[] = [
-					'id'          => "{$id}-{$date_key}",
-					'parentId'    => $id,
-					'title'       => $event['title'],
-					'startDate'   => $occ_start->format( 'c' ),
-					'endDate'     => $occ_end->format( 'c' ),
-					'description' => $event['description'],
-					'location'    => $event['location'],
-					'category'    => $event['category'],
-					'source'      => 'cms',
-					'link'        => $event['link'],
-					'linkLabel'   => $event['linkLabel'],
-				];
-			}
-			$current->modify( "+{$step_days} days" );
-		}
-
-		return $result;
 	}
 }

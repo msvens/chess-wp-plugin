@@ -56,5 +56,17 @@ module.exports = {
 			__dirname,
 			'js/blocks/ranking-list/view.tsx'
 		),
+		'blocks/latest-news/index': path.resolve(
+			__dirname,
+			'js/blocks/latest-news/index.tsx'
+		),
+		'blocks/shop-grid/index': path.resolve(
+			__dirname,
+			'js/blocks/shop-grid/index.tsx'
+		),
+		'blocks/upcoming-events/index': path.resolve(
+			__dirname,
+			'js/blocks/upcoming-events/index.tsx'
+		),
 	},
 };

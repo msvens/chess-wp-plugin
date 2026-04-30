@@ -1,0 +1,36 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "rockaden/shop-grid",
+  "version": "0.1.0",
+  "title": "Shop Items",
+  "category": "widgets",
+  "icon": "cart",
+  "description": "Displays shop items (chess equipment for sale).",
+  "textdomain": "rockaden-chess",
+  "attributes": {
+    "count": {
+      "type": "number",
+      "default": 4
+    },
+    "moreUrl": {
+      "type": "string",
+      "default": "/schackmaterial"
+    },
+    "moreLabel": {
+      "type": "string",
+      "default": "Mer schackmaterial"
+    },
+    "layout": {
+      "type": "string",
+      "default": "grid",
+      "enum": ["grid", "column"]
+    }
+  },
+  "supports": {
+    "html": false,
+    "align": ["wide", "full"]
+  },
+  "editorScript": "file:../../../build/blocks/shop-grid/index.js",
+  "render": "file:./render.php"
+}

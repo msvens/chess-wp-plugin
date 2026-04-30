@@ -1,0 +1,31 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "rockaden/latest-news",
+  "version": "0.1.0",
+  "title": "Latest News",
+  "category": "widgets",
+  "icon": "media-document",
+  "description": "Displays the latest news posts as cards with a link to the full archive.",
+  "textdomain": "rockaden-chess",
+  "attributes": {
+    "count": {
+      "type": "number",
+      "default": 3
+    },
+    "moreUrl": {
+      "type": "string",
+      "default": "/nyheter"
+    },
+    "moreLabel": {
+      "type": "string",
+      "default": "Mer nyheter"
+    }
+  },
+  "supports": {
+    "html": false,
+    "align": ["wide", "full"]
+  },
+  "editorScript": "file:../../../build/blocks/latest-news/index.js",
+  "render": "file:./render.php"
+}
