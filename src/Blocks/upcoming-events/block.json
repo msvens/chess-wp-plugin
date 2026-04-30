@@ -1,0 +1,31 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "rockaden/upcoming-events",
+  "version": "0.1.0",
+  "title": "Upcoming Events",
+  "category": "widgets",
+  "icon": "calendar",
+  "description": "Displays the next N upcoming events (recurring expanded) as a strip of cards.",
+  "textdomain": "rockaden-chess",
+  "attributes": {
+    "count": {
+      "type": "number",
+      "default": 4
+    },
+    "moreUrl": {
+      "type": "string",
+      "default": "/kalender"
+    },
+    "moreLabel": {
+      "type": "string",
+      "default": "Se hela kalendern"
+    }
+  },
+  "supports": {
+    "html": false,
+    "align": ["wide", "full"]
+  },
+  "editorScript": "file:../../../build/blocks/upcoming-events/index.js",
+  "render": "file:./render.php"
+}

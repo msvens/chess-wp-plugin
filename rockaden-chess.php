@@ -41,16 +41,19 @@ spl_autoload_register(
 add_action( 'init', [ Rockaden\PostTypes\TrainingGroup::class, 'register' ] );
 add_action( 'init', [ Rockaden\PostTypes\TrainingSession::class, 'register' ] );
 add_action( 'init', [ Rockaden\PostTypes\Event::class, 'register' ] );
+add_action( 'init', [ Rockaden\PostTypes\ShopItem::class, 'register' ] );
 
 add_action( 'rest_api_init', [ Rockaden\Api\SsfProxy::class, 'register_routes' ] );
 add_action( 'rest_api_init', [ Rockaden\Api\TrainingApi::class, 'register_routes' ] );
 add_action( 'rest_api_init', [ Rockaden\Api\EventApi::class, 'register_routes' ] );
+add_action( 'rest_api_init', [ Rockaden\Api\ShopApi::class, 'register_routes' ] );
 
 add_action( 'admin_menu', [ Rockaden\Admin\TrainingAdmin::class, 'register_page' ] );
 add_action( 'admin_menu', [ Rockaden\Admin\SettingsPage::class, 'register_page' ] );
 add_action( 'admin_menu', [ Rockaden\Admin\HelpPage::class, 'register_page' ] );
 
 Rockaden\Admin\EventMetaBoxes::register();
+Rockaden\Admin\ShopItemMetaBox::register();
 
 // Add "Settings" link on the Plugins page.
 add_filter(
@@ -134,7 +137,7 @@ add_action(
 add_action(
 	'init',
 	function (): void {
-		$blocks = [ 'calendar', 'documentation', 'ranking-list', 'standings', 'training-group', 'training-groups' ];
+		$blocks = [ 'calendar', 'documentation', 'latest-news', 'ranking-list', 'shop-grid', 'standings', 'training-group', 'training-groups', 'upcoming-events' ];
 		foreach ( $blocks as $block ) {
 			$block_dir = RC_PLUGIN_DIR . "src/Blocks/{$block}";
 			if ( file_exists( "{$block_dir}/block.json" ) ) {
