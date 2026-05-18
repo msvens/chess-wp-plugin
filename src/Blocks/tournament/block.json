@@ -1,0 +1,25 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "rockaden/tournament",
+  "version": "0.1.0",
+  "title": "Tournament",
+  "category": "widgets",
+  "icon": "awards",
+  "description": "Displays a single tournament page with participants, results and SSF link.",
+  "textdomain": "rockaden-chess",
+  "attributes": {
+    "tournamentId": {
+      "type": "number",
+      "default": 0
+    }
+  },
+  "supports": {
+    "html": false,
+    "align": ["wide"]
+  },
+  "editorScript": "file:../../../build/blocks/tournament/index.js",
+  "viewScript": "file:../../../build/blocks/tournament/view.js",
+  "viewStyle": "file:../../../build/blocks/tournament/view.css",
+  "render": "file:./render.php"
+}

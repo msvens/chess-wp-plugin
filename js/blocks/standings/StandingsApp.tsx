@@ -1,6 +1,6 @@
 import { useState, useEffect } from '@wordpress/element';
 import apiFetch from '@wordpress/api-fetch';
-import type { TrainingGroup, SsfPlayer, Participant } from '../../admin/types';
+import type { Tournament, SsfPlayer, Participant } from '../../admin/types';
 import type { GameResult } from '../../shared/roundRobin';
 import { computeStandings } from '../../shared/roundRobin';
 import { getTranslation, toLanguage } from '../../shared/translations';
@@ -10,14 +10,14 @@ import type { DisplayRound } from '../training-group/RoundsDisplay';
 import SsfResultsView from '../training-group/SsfResultsView';
 
 interface Props {
-	groupId: number;
+	tournamentId: number;
 	clubId: string;
 	locale: string;
 	showRounds: boolean;
 }
 
 function buildDisplayRounds(
-	rounds: TrainingGroup[ 'rounds' ],
+	rounds: Tournament[ 'rounds' ],
 	participantMap: Map< string, Participant >,
 	ratings: Map< number, SsfPlayer >
 ): DisplayRound[] {
@@ -51,7 +51,7 @@ function getRatingStr(
 }
 
 export default function StandingsApp( {
-	groupId,
+	tournamentId,
 	clubId,
 	locale,
 	showRounds,
@@ -59,25 +59,25 @@ export default function StandingsApp( {
 	const currentLocale = useLocale( locale );
 	const lang = toLanguage( currentLocale );
 	const t = getTranslation( lang );
-	const [ group, setGroup ] = useState< TrainingGroup | null >( null );
+	const [ tournament, setTournament ] = useState< Tournament | null >( null );
 	const [ ratings, setRatings ] = useState< Map< number, SsfPlayer > >(
 		new Map()
 	);
 	const [ loading, setLoading ] = useState( true );
 
 	useEffect( () => {
-		if ( ! groupId ) {
+		if ( ! tournamentId ) {
 			setLoading( false );
 			return;
 		}
 
-		apiFetch< TrainingGroup >( {
-			path: `/rockaden/v1/training-groups/${ groupId }`,
+		apiFetch< Tournament >( {
+			path: `/rockaden/v1/tournaments/${ tournamentId }`,
 		} )
-			.then( ( data ) => setGroup( data ) )
+			.then( ( data ) => setTournament( data ) )
 			.catch( () => {} )
 			.finally( () => setLoading( false ) );
-	}, [ groupId ] );
+	}, [ tournamentId ] );
 
 	useEffect( () => {
 		if ( ! clubId ) {
@@ -101,19 +101,19 @@ export default function StandingsApp( {
 		return <p className="rc-st__loading">{ t.common.loading }</p>;
 	}
 
-	if ( ! group ) {
+	if ( ! tournament ) {
 		return null;
 	}
 
-	// SSF-linked group: delegate entirely to SsfResultsView.
-	if ( group.ssfGroupId > 0 ) {
+	// SSF-backed tournament: delegate to SsfResultsView.
+	if ( tournament.ssfGroupId > 0 ) {
 		return (
 			<div className="rc-st">
 				<h2 className="rc-st__title">
-					{ t.training.standings } — { group.title }
+					{ t.training.standings } — { tournament.title }
 				</h2>
 				<SsfResultsView
-					ssfGroupId={ group.ssfGroupId }
+					ssfGroupId={ tournament.ssfGroupId }
 					t={ t.training }
 					showRounds={ showRounds }
 				/>
@@ -122,11 +122,13 @@ export default function StandingsApp( {
 	}
 
 	// Local tournament standings.
-	const active = group.participants.filter( ( p ) => p.active );
+	const active = tournament.participants.filter( ( p ) => p.active );
 	const participantIds = active.map( ( p ) => p.id );
 	const participantMap = new Map( active.map( ( p ) => [ p.id, p ] ) );
 
-	const allGames: GameResult[] = group.rounds.flatMap( ( r ) => r.pairings );
+	const allGames: GameResult[] = tournament.rounds.flatMap(
+		( r ) => r.pairings
+	);
 	const standings = computeStandings( participantIds, allGames );
 
 	if ( standings.length === 0 ) {
@@ -145,13 +147,13 @@ export default function StandingsApp( {
 	};
 
 	const displayRounds = showRounds
-		? buildDisplayRounds( group.rounds, participantMap, ratings )
+		? buildDisplayRounds( tournament.rounds, participantMap, ratings )
 		: [];
 
 	return (
 		<div className="rc-st">
 			<h2 className="rc-st__title">
-				{ t.training.standings } — { group.title }
+				{ t.training.standings } — { tournament.title }
 			</h2>
 			<table className="rc-st__table">
 				<thead>

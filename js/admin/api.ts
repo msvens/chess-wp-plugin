@@ -7,12 +7,12 @@ import type {
 	StoredRound,
 	EventData,
 	CreateEventData,
+	Tournament,
+	CreateTournamentData,
+	TournamentCategory,
+	TournamentStatus,
 } from './types';
-import type {
-	SsfEndResult,
-	SsfRoundResult,
-	SsfTournament,
-} from '../shared/ssfTypes';
+import type { SsfEndResult, SsfRoundResult } from '../shared/ssfTypes';
 
 const BASE = 'rockaden/v1';
 
@@ -69,31 +69,6 @@ export function removeParticipant(
 	return apiFetch( {
 		path: `${ BASE }/training-groups/${ groupId }/participants/${ participantId }`,
 		method: 'DELETE',
-	} );
-}
-
-// Rounds
-export function saveRounds(
-	groupId: number,
-	rounds: StoredRound[]
-): Promise< TrainingGroup > {
-	return apiFetch( {
-		path: `${ BASE }/training-groups/${ groupId }/rounds`,
-		method: 'PUT',
-		data: { rounds },
-	} );
-}
-
-export function saveRoundResult(
-	groupId: number,
-	roundIdx: number,
-	gameIdx: number,
-	result: string | null
-): Promise< TrainingGroup > {
-	return apiFetch( {
-		path: `${ BASE }/training-groups/${ groupId }/rounds/${ roundIdx }/games/${ gameIdx }`,
-		method: 'PUT',
-		data: { result },
 	} );
 }
 
@@ -165,23 +140,104 @@ export function updateEvent(
 	} );
 }
 
+// Tournaments
+export function fetchTournaments( filters?: {
+	status?: TournamentStatus;
+	category?: TournamentCategory;
+} ): Promise< Tournament[] > {
+	const params = new URLSearchParams();
+	if ( filters?.status ) {
+		params.set( 'status', filters.status );
+	}
+	if ( filters?.category ) {
+		params.set( 'category', filters.category );
+	}
+	const qs = params.toString();
+	return apiFetch( {
+		path: `${ BASE }/tournaments${ qs ? `?${ qs }` : '' }`,
+	} );
+}
+
+export function fetchTournament( id: number ): Promise< Tournament > {
+	return apiFetch( { path: `${ BASE }/tournaments/${ id }` } );
+}
+
+export function createTournament(
+	data: CreateTournamentData
+): Promise< Tournament > {
+	return apiFetch( {
+		path: `${ BASE }/tournaments`,
+		method: 'POST',
+		data,
+	} );
+}
+
+export function updateTournament(
+	id: number,
+	data: Partial< CreateTournamentData >
+): Promise< Tournament > {
+	return apiFetch( {
+		path: `${ BASE }/tournaments/${ id }`,
+		method: 'PUT',
+		data,
+	} );
+}
+
+export function deleteTournament(
+	id: number
+): Promise< { deleted: boolean } > {
+	return apiFetch( {
+		path: `${ BASE }/tournaments/${ id }`,
+		method: 'DELETE',
+	} );
+}
+
+export function addTournamentParticipant(
+	tournamentId: number,
+	data: { id: string; name: string; ssfId: number | null }
+): Promise< Tournament > {
+	return apiFetch( {
+		path: `${ BASE }/tournaments/${ tournamentId }/participants`,
+		method: 'POST',
+		data,
+	} );
+}
+
+export function removeTournamentParticipant(
+	tournamentId: number,
+	participantId: string
+): Promise< Tournament > {
+	return apiFetch( {
+		path: `${ BASE }/tournaments/${ tournamentId }/participants/${ participantId }`,
+		method: 'DELETE',
+	} );
+}
+
+export function saveTournamentRounds(
+	tournamentId: number,
+	rounds: StoredRound[]
+): Promise< Tournament > {
+	return apiFetch( {
+		path: `${ BASE }/tournaments/${ tournamentId }/rounds`,
+		method: 'PUT',
+		data: { rounds },
+	} );
+}
+
+export function saveTournamentRoundResult(
+	tournamentId: number,
+	roundIdx: number,
+	gameIdx: number,
+	result: string | null
+): Promise< Tournament > {
+	return apiFetch( {
+		path: `${ BASE }/tournaments/${ tournamentId }/rounds/${ roundIdx }/games/${ gameIdx }`,
+		method: 'PUT',
+		data: { result },
+	} );
+}
+
 // SSF Tournament
-export function fetchSsfTournamentGroup(
-	groupId: number
-): Promise< SsfTournament > {
-	return apiFetch( {
-		path: `${ BASE }/ssf/tournament/group/id/${ groupId }`,
-	} );
-}
-
-export function fetchSsfTournament(
-	tournamentId: number
-): Promise< SsfTournament > {
-	return apiFetch( {
-		path: `${ BASE }/ssf/tournament/tournament/id/${ tournamentId }`,
-	} );
-}
-
 export function fetchSsfTournamentResults(
 	groupId: number
 ): Promise< SsfEndResult[] > {

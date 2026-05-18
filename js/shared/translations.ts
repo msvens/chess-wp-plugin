@@ -87,6 +87,44 @@ export interface Translations {
 		loadingResults: string;
 		resultsFetchError: string;
 	};
+	tournament: {
+		title: string;
+		subtitle: string;
+		createTournament: string;
+		noTournaments: string;
+		tournamentName: string;
+		category: string;
+		categories: {
+			junior: string;
+			youth: string;
+			adult: string;
+			senior: string;
+			mixed: string;
+		};
+		status: string;
+		statuses: {
+			planned: string;
+			active: string;
+			completed: string;
+		};
+		format: string;
+		formats: {
+			roundRobin: string;
+		};
+		startDate: string;
+		endDate: string;
+		externalLink: string;
+		linkedEvent: string;
+		ssfBacked: string;
+		ssfBackedHint: string;
+		ssfBackedNote: string;
+		overview: string;
+		linkedTournament: string;
+		noLinkedTournament: string;
+		viewTournament: string;
+		backToList: string;
+		officialResult: string;
+	};
 	calendar: {
 		title: string;
 		subtitle: string;
@@ -245,6 +283,46 @@ const translations: Record< Language, Translations > = {
 			loadingResults: 'Loading results...',
 			resultsFetchError: 'Could not load results.',
 		},
+		tournament: {
+			title: 'Tournaments',
+			subtitle: 'Tournaments at SK Rockaden — round-robin or SSF-backed.',
+			createTournament: 'Create Tournament',
+			noTournaments: 'No tournaments yet.',
+			tournamentName: 'Tournament name',
+			category: 'Category',
+			categories: {
+				junior: 'Junior',
+				youth: 'Youth',
+				adult: 'Adult',
+				senior: 'Senior',
+				mixed: 'Mixed',
+			},
+			status: 'Status',
+			statuses: {
+				planned: 'Planned',
+				active: 'Active',
+				completed: 'Completed',
+			},
+			format: 'Format',
+			formats: {
+				roundRobin: 'Round-robin',
+			},
+			startDate: 'Start date',
+			endDate: 'End date',
+			externalLink: 'External link',
+			linkedEvent: 'Linked calendar event',
+			ssfBacked: 'SSF tournament ID',
+			ssfBackedHint:
+				'If set, standings come from SSF (read-only). Leave empty for a Rockaden-managed tournament.',
+			ssfBackedNote:
+				'Standings are pulled from SSF. Local pairings/results are not used.',
+			overview: 'Overview',
+			linkedTournament: 'Linked tournament',
+			noLinkedTournament: 'No tournament',
+			viewTournament: 'View tournament',
+			backToList: 'Back to tournaments',
+			officialResult: 'Official result',
+		},
 		calendar: {
 			title: 'Calendar',
 			subtitle: 'Upcoming events and activities at SK Rockaden.',
@@ -400,6 +478,47 @@ const translations: Record< Language, Translations > = {
 			tiebreak: 'KP',
 			loadingResults: 'Laddar resultat...',
 			resultsFetchError: 'Kunde inte ladda resultat.',
+		},
+		tournament: {
+			title: 'Turneringar',
+			subtitle:
+				'Turneringar på SK Rockaden — egna eller länkade till SSF.',
+			createTournament: 'Skapa turnering',
+			noTournaments: 'Inga turneringar än.',
+			tournamentName: 'Turneringsnamn',
+			category: 'Kategori',
+			categories: {
+				junior: 'Junior',
+				youth: 'Ungdom',
+				adult: 'Vuxen',
+				senior: 'Senior',
+				mixed: 'Blandad',
+			},
+			status: 'Status',
+			statuses: {
+				planned: 'Planerad',
+				active: 'Pågående',
+				completed: 'Avslutad',
+			},
+			format: 'Format',
+			formats: {
+				roundRobin: 'Berger',
+			},
+			startDate: 'Startdatum',
+			endDate: 'Slutdatum',
+			externalLink: 'Extern länk',
+			linkedEvent: 'Kopplad kalenderhändelse',
+			ssfBacked: 'SSF turnerings-ID',
+			ssfBackedHint:
+				'Om angivet hämtas ställning från SSF (läsläge). Lämna tomt för Rockaden-styrd turnering.',
+			ssfBackedNote:
+				'Ställning hämtas från SSF. Lokala lottningar/resultat används inte.',
+			overview: 'Översikt',
+			linkedTournament: 'Kopplad turnering',
+			noLinkedTournament: 'Ingen turnering',
+			viewTournament: 'Visa turnering',
+			backToList: 'Tillbaka till turneringar',
+			officialResult: 'Officiellt resultat',
 		},
 		calendar: {
 			title: 'Kalender',

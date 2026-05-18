@@ -1,42 +1,14 @@
-import type { Participant, StoredRound, SsfPlayer } from '../../admin/types';
+import type { Tournament, SsfPlayer, Participant } from '../../admin/types';
 import type { GameResult } from '../../shared/roundRobin';
 import { computeStandings } from '../../shared/roundRobin';
 import type { Translations } from '../../shared/translations';
-import RoundsDisplay, { formatResult } from './RoundsDisplay';
-import type { DisplayRound } from './RoundsDisplay';
-import SsfResultsView from './SsfResultsView';
+import RoundsDisplay, { formatResult } from '../training-group/RoundsDisplay';
+import type { DisplayRound } from '../training-group/RoundsDisplay';
 
 interface Props {
-	participants: Participant[];
-	rounds: StoredRound[];
+	tournament: Tournament;
 	ratings: Map< number, SsfPlayer >;
 	t: Translations[ 'training' ];
-	ssfGroupId: number;
-}
-
-function buildDisplayRounds(
-	rounds: StoredRound[],
-	participantMap: Map< string, Participant >,
-	ratings: Map< number, SsfPlayer >
-): DisplayRound[] {
-	return rounds.map( ( r ) => ( {
-		round: r.round,
-		pairings: r.pairings.map( ( p, idx ) => {
-			const white = participantMap.get( p.whiteId );
-			const black = participantMap.get( p.blackId );
-			const whiteRating = getRatingStr( white, ratings );
-			const blackRating = getRatingStr( black, ratings );
-			return {
-				board: idx + 1,
-				whiteName: white?.name || p.whiteId,
-				whiteRating,
-				blackName: black?.name || p.blackId,
-				blackRating,
-				result: formatResult( p.result ),
-			};
-		} ),
-		byeName: r.bye ? participantMap.get( r.bye )?.name || r.bye : undefined,
-	} ) );
 }
 
 function getRatingStr(
@@ -50,23 +22,37 @@ function getRatingStr(
 	return player?.elo ? String( player.elo.rating ) : '';
 }
 
-export default function StandingsTab( {
-	participants,
-	rounds,
-	ratings,
-	t,
-	ssfGroupId,
-}: Props ) {
-	if ( ssfGroupId > 0 ) {
-		return <SsfResultsView ssfGroupId={ ssfGroupId } t={ t } />;
-	}
+function buildDisplayRounds(
+	rounds: Tournament[ 'rounds' ],
+	participantMap: Map< string, Participant >,
+	ratings: Map< number, SsfPlayer >
+): DisplayRound[] {
+	return rounds.map( ( r ) => ( {
+		round: r.round,
+		pairings: r.pairings.map( ( p, idx ) => {
+			const white = participantMap.get( p.whiteId );
+			const black = participantMap.get( p.blackId );
+			return {
+				board: idx + 1,
+				whiteName: white?.name || p.whiteId,
+				whiteRating: getRatingStr( white, ratings ),
+				blackName: black?.name || p.blackId,
+				blackRating: getRatingStr( black, ratings ),
+				result: formatResult( p.result ),
+			};
+		} ),
+		byeName: r.bye ? participantMap.get( r.bye )?.name || r.bye : undefined,
+	} ) );
+}
 
-	const active = participants.filter( ( p ) => p.active );
+export default function StandingsTab( { tournament, ratings, t }: Props ) {
+	const active = tournament.participants.filter( ( p ) => p.active );
 	const participantIds = active.map( ( p ) => p.id );
 	const participantMap = new Map( active.map( ( p ) => [ p.id, p ] ) );
 
-	// Collect all games from rounds + synthetic bye results.
-	const allGames: GameResult[] = rounds.flatMap( ( r ) => r.pairings );
+	const allGames: GameResult[] = tournament.rounds.flatMap(
+		( r ) => r.pairings
+	);
 	const standings = computeStandings( participantIds, allGames );
 
 	if ( standings.length === 0 ) {
@@ -77,18 +63,18 @@ export default function StandingsTab( {
 
 	const getRating = ( id: string ): string => {
 		const p = participantMap.get( id );
-		if ( ! p?.ssfId ) {
-			return '';
-		}
-		const player = ratings.get( p.ssfId );
-		return player?.elo ? String( player.elo.rating ) : '';
+		return getRatingStr( p, ratings );
 	};
 
-	const displayRounds = buildDisplayRounds( rounds, participantMap, ratings );
+	const displayRounds = buildDisplayRounds(
+		tournament.rounds,
+		participantMap,
+		ratings
+	);
 
 	return (
 		<div className="rc-td__panel">
-			<table className="rc-td__table rc-td__table--standings">
+			<table className="rc-td__table">
 				<thead>
 					<tr>
 						<th>{ t.rank }</th>
@@ -126,7 +112,9 @@ export default function StandingsTab( {
 				</tbody>
 			</table>
 
-			<RoundsDisplay rounds={ displayRounds } t={ t } />
+			{ displayRounds.length > 0 && (
+				<RoundsDisplay rounds={ displayRounds } t={ t } />
+			) }
 		</div>
 	);
 }

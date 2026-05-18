@@ -1,4 +1,4 @@
-import { useState } from '@wordpress/element';
+import { useState, useEffect } from '@wordpress/element';
 import {
 	Button,
 	Spinner,
@@ -8,17 +8,15 @@ import {
 	__experimentalText as Text,
 } from '@wordpress/components';
 import type { Translations } from '../../shared';
+import type { Tournament } from '../types';
 import { useTrainingGroup } from '../hooks/useTrainingGroup';
 import { useSsfRatings } from '../hooks/useSsfRatings';
-import { updateGroup } from '../api';
+import { updateGroup, fetchTournament } from '../api';
 import { ParticipantList } from './ParticipantList';
 import { AddParticipantModal } from './AddParticipantModal';
 import { SessionList } from './SessionList';
 import { ScheduleTimeline } from './ScheduleTimeline';
 import { ExcludedDatesPanel } from './ExcludedDatesPanel';
-import { StandingsTable } from './StandingsTable';
-import { RoundsPanel } from './RoundsPanel';
-import { SsfTournamentView } from './SsfTournamentView';
 import { EditGroupModal } from './EditGroupModal';
 
 interface GroupDetailProps {
@@ -46,6 +44,18 @@ export function GroupDetail( {
 	const [ showAddModal, setShowAddModal ] = useState( false );
 	const [ showEditModal, setShowEditModal ] = useState( false );
 	const [ updatingStatus, setUpdatingStatus ] = useState( false );
+	const [ linkedTournament, setLinkedTournament ] =
+		useState< Tournament | null >( null );
+
+	useEffect( () => {
+		if ( ! group || ! group.linkedTournamentId ) {
+			setLinkedTournament( null );
+			return;
+		}
+		fetchTournament( group.linkedTournamentId )
+			.then( setLinkedTournament )
+			.catch( () => setLinkedTournament( null ) );
+	}, [ group?.linkedTournamentId ] ); // eslint-disable-line react-hooks/exhaustive-deps
 
 	const toggleStatus = () => {
 		if ( ! group ) {
@@ -72,7 +82,6 @@ export function GroupDetail( {
 		return null;
 	}
 
-	// Build schedule summary from event
 	let scheduleSummary = '';
 	if ( event ) {
 		const start = new Date( event.startDate );
@@ -96,24 +105,15 @@ export function GroupDetail( {
 		}
 	}
 
-	const isSsfLinked = group.ssfGroupId > 0;
-
 	const tabs = [
 		{
 			name: 'participants',
 			title: t.training.participants,
 		},
-		...( group.groupType !== 'tournament'
-			? [
-					{
-						name: 'sessions',
-						title: t.training.sessions,
-					},
-			  ]
-			: [] ),
-		...( group.groupType !== 'training' || isSsfLinked
-			? [ { name: 'tournament', title: t.training.tournament } ]
-			: [] ),
+		{
+			name: 'sessions',
+			title: t.training.sessions,
+		},
 	];
 
 	return (
@@ -158,12 +158,6 @@ export function GroupDetail( {
 			{ group.semester && (
 				<Text style={ { display: 'block', marginBottom: 4 } }>
 					{ t.training.semester }: { group.semester }
-					{ ' | ' }
-					{ group.groupType === 'both'
-						? t.training.trainingAndTournament
-						: group.groupType === 'tournament'
-						? t.training.tournamentOnly
-						: t.training.trainingOnly }
 				</Text>
 			) }
 			{ group.trainers && (
@@ -174,23 +168,6 @@ export function GroupDetail( {
 			{ group.contact && (
 				<Text style={ { display: 'block', marginBottom: 4 } }>
 					{ t.training.contact }: { group.contact }
-				</Text>
-			) }
-			{ group.tournamentLink && (
-				<Text style={ { display: 'block', marginBottom: 4 } }>
-					{ t.training.tournamentLink }:{ ' ' }
-					<a
-						href={ group.tournamentLink }
-						target="_blank"
-						rel="noopener noreferrer"
-					>
-						{ group.tournamentLink }
-					</a>
-				</Text>
-			) }
-			{ isSsfLinked && (
-				<Text style={ { display: 'block', marginBottom: 4 } }>
-					{ t.training.ssfGroupId }: { group.ssfGroupId }
 				</Text>
 			) }
 			{ scheduleSummary && (
@@ -205,6 +182,39 @@ export function GroupDetail( {
 				</Text>
 			) }
 
+			{ linkedTournament && (
+				<div
+					style={ {
+						marginBottom: 16,
+						padding: 12,
+						background: '#f9fafb',
+						borderRadius: 4,
+						borderLeft: '3px solid #2563eb',
+					} }
+				>
+					<Text
+						style={ {
+							display: 'block',
+							fontSize: 11,
+							textTransform: 'uppercase',
+							letterSpacing: '0.05em',
+							color: '#6b7280',
+							marginBottom: 4,
+						} }
+					>
+						{ t.tournament.linkedTournament }
+					</Text>
+					<Heading level={ 4 } style={ { margin: '0 0 4px 0' } }>
+						{ linkedTournament.title }
+					</Heading>
+					<Text style={ { display: 'block', color: '#555' } }>
+						{ t.tournament.statuses[ linkedTournament.status ] }
+						{ ' — ' }
+						{ t.tournament.categories[ linkedTournament.category ] }
+					</Text>
+				</div>
+			) }
+
 			<TabPanel tabs={ tabs }>
 				{ ( tab ) => {
 					switch ( tab.name ) {
@@ -215,15 +225,14 @@ export function GroupDetail( {
 										groupId={ groupId }
 										participants={ group.participants }
 										ratings={ ratings }
-										timeControl={ group.timeControl }
+										timeControl={ 'classical' }
 										t={ t }
 										onUpdated={ refetch }
 										onAddClick={ () =>
 											setShowAddModal( true )
 										}
-										readOnly={ isSsfLinked }
 									/>
-									{ ! isSsfLinked && showAddModal && (
+									{ showAddModal && (
 										<AddParticipantModal
 											groupId={ groupId }
 											existingParticipants={
@@ -274,38 +283,6 @@ export function GroupDetail( {
 											onSelectSession={ onSelectSession }
 											onCreated={ refetch }
 										/>
-									) }
-								</div>
-							);
-						case 'tournament':
-							return (
-								<div style={ { marginTop: 12 } }>
-									{ isSsfLinked ? (
-										<SsfTournamentView
-											ssfGroupId={ group.ssfGroupId }
-											t={ t }
-										/>
-									) : (
-										<>
-											<StandingsTable
-												participants={
-													group.participants
-												}
-												rounds={ group.rounds }
-												ratings={ ratings }
-												timeControl={
-													group.timeControl
-												}
-												t={ t }
-											/>
-											<RoundsPanel
-												groupId={ groupId }
-												group={ group }
-												ratings={ ratings }
-												t={ t }
-												onUpdated={ refetch }
-											/>
-										</>
 									) }
 								</div>
 							);

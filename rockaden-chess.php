@@ -40,17 +40,25 @@ spl_autoload_register(
 // Boot plugin.
 add_action( 'init', [ Rockaden\PostTypes\TrainingGroup::class, 'register' ] );
 add_action( 'init', [ Rockaden\PostTypes\TrainingSession::class, 'register' ] );
+add_action( 'init', [ Rockaden\PostTypes\Tournament::class, 'register' ] );
 add_action( 'init', [ Rockaden\PostTypes\Event::class, 'register' ] );
 add_action( 'init', [ Rockaden\PostTypes\ShopItem::class, 'register' ] );
 
 add_action( 'rest_api_init', [ Rockaden\Api\SsfProxy::class, 'register_routes' ] );
 add_action( 'rest_api_init', [ Rockaden\Api\TrainingApi::class, 'register_routes' ] );
+add_action( 'rest_api_init', [ Rockaden\Api\TournamentApi::class, 'register_routes' ] );
 add_action( 'rest_api_init', [ Rockaden\Api\EventApi::class, 'register_routes' ] );
 add_action( 'rest_api_init', [ Rockaden\Api\ShopApi::class, 'register_routes' ] );
 
 add_action( 'admin_menu', [ Rockaden\Admin\TrainingAdmin::class, 'register_page' ] );
+add_action( 'admin_menu', [ Rockaden\Admin\TournamentAdmin::class, 'register_page' ] );
 add_action( 'admin_menu', [ Rockaden\Admin\SettingsPage::class, 'register_page' ] );
 add_action( 'admin_menu', [ Rockaden\Admin\HelpPage::class, 'register_page' ] );
+
+// WP-CLI commands.
+if ( defined( 'WP_CLI' ) && WP_CLI ) {
+	Rockaden\Cli\TournamentMigration::register();
+}
 
 Rockaden\Admin\EventMetaBoxes::register();
 Rockaden\Admin\ShopItemMetaBox::register();
@@ -137,7 +145,7 @@ add_action(
 add_action(
 	'init',
 	function (): void {
-		$blocks = [ 'calendar', 'documentation', 'latest-news', 'ranking-list', 'shop-grid', 'standings', 'training-group', 'training-groups', 'upcoming-events' ];
+		$blocks = [ 'calendar', 'documentation', 'latest-news', 'ranking-list', 'shop-grid', 'standings', 'tournament', 'tournaments', 'training-group', 'training-groups', 'upcoming-events' ];
 		foreach ( $blocks as $block ) {
 			$block_dir = RC_PLUGIN_DIR . "src/Blocks/{$block}";
 			if ( file_exists( "{$block_dir}/block.json" ) ) {
@@ -146,3 +154,18 @@ add_action(
 		}
 	}
 );
+
+// Flush rewrite rules on activation so CPT permalinks (e.g. /tournaments/...) start working immediately.
+register_activation_hook(
+	__FILE__,
+	function (): void {
+		Rockaden\PostTypes\TrainingGroup::register();
+		Rockaden\PostTypes\TrainingSession::register();
+		Rockaden\PostTypes\Tournament::register();
+		Rockaden\PostTypes\Event::register();
+		Rockaden\PostTypes\ShopItem::register();
+		flush_rewrite_rules();
+	}
+);
+
+register_deactivation_hook( __FILE__, 'flush_rewrite_rules' );
