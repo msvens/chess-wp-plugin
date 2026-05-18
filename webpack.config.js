@@ -8,6 +8,10 @@ module.exports = {
 			__dirname,
 			'js/admin/training-manager.tsx'
 		),
+		'admin/tournament-manager': path.resolve(
+			__dirname,
+			'js/admin/tournament-manager.tsx'
+		),
 		'admin/event-metabox': path.resolve(
 			__dirname,
 			'js/admin/event-metabox.ts'
@@ -32,6 +36,14 @@ module.exports = {
 			__dirname,
 			'js/blocks/training-groups/view.tsx'
 		),
+		'blocks/tournaments/index': path.resolve(
+			__dirname,
+			'js/blocks/tournaments/index.tsx'
+		),
+		'blocks/tournaments/view': path.resolve(
+			__dirname,
+			'js/blocks/tournaments/view.tsx'
+		),
 		'blocks/training-group/index': path.resolve(
 			__dirname,
 			'js/blocks/training-group/index.tsx'
@@ -39,6 +51,14 @@ module.exports = {
 		'blocks/training-group/view': path.resolve(
 			__dirname,
 			'js/blocks/training-group/view.tsx'
+		),
+		'blocks/tournament/index': path.resolve(
+			__dirname,
+			'js/blocks/tournament/index.tsx'
+		),
+		'blocks/tournament/view': path.resolve(
+			__dirname,
+			'js/blocks/tournament/view.tsx'
 		),
 		'blocks/standings/index': path.resolve(
 			__dirname,

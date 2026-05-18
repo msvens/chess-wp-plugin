@@ -1,19 +1,46 @@
 import { registerBlockType } from '@wordpress/blocks';
 import { useBlockProps, InspectorControls } from '@wordpress/block-editor';
-import { PanelBody, TextControl, ToggleControl } from '@wordpress/components';
+import { PanelBody, SelectControl, ToggleControl } from '@wordpress/components';
+import { useSelect } from '@wordpress/data';
+import { store as coreStore } from '@wordpress/core-data';
+
+interface TournamentEntity {
+	id: number;
+	title: { raw?: string; rendered: string };
+}
 
 registerBlockType( 'rockaden/standings', {
 	edit: function Edit( { attributes, setAttributes }: any ) {
 		const blockProps = useBlockProps();
+
+		const tournaments = useSelect( ( select: any ) => {
+			return select( coreStore ).getEntityRecords(
+				'postType',
+				'rc_tournament',
+				{ per_page: 100, status: 'publish' }
+			) as TournamentEntity[] | null;
+		}, [] );
+
+		const options = [
+			{ label: '— Select tournament —', value: '' },
+			...( tournaments || [] ).map( ( tournament ) => ( {
+				label: tournament.title.raw || tournament.title.rendered,
+				value: String( tournament.id ),
+			} ) ),
+		];
+
 		return (
 			<>
 				<InspectorControls>
 					<PanelBody title="Settings">
-						<TextControl
-							label="Training Group ID"
-							value={ String( attributes.groupId || '' ) }
+						<SelectControl
+							label="Tournament"
+							value={ String( attributes.tournamentId || '' ) }
+							options={ options }
 							onChange={ ( val: string ) =>
-								setAttributes( { groupId: Number( val ) || 0 } )
+								setAttributes( {
+									tournamentId: Number( val ) || 0,
+								} )
 							}
 						/>
 						<ToggleControl
@@ -33,7 +60,8 @@ registerBlockType( 'rockaden/standings', {
 							textAlign: 'center',
 						} }
 					>
-						[Standings — Group #{ attributes.groupId || '?' }]
+						[Standings — Tournament #
+						{ attributes.tournamentId || '?' }]
 						{ ! attributes.showRounds && ' (rounds hidden)' }
 					</p>
 				</div>

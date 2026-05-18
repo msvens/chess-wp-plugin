@@ -9,8 +9,14 @@ import {
 	__experimentalText as Text,
 } from '@wordpress/components';
 import type { Translations } from '../../shared';
-import type { TrainingGroup, EventData, GroupType } from '../types';
-import { updateGroup, updateEvent, createEvent, fetchEvents } from '../api';
+import type { TrainingGroup, EventData, Tournament } from '../types';
+import {
+	updateGroup,
+	updateEvent,
+	createEvent,
+	fetchEvents,
+	fetchTournaments,
+} from '../api';
 import { FlatpickrInput } from './FlatpickrInput';
 
 interface EditGroupModalProps {
@@ -31,30 +37,14 @@ export function EditGroupModal( {
 	const [ title, setTitle ] = useState( group.title );
 	const [ description, setDescription ] = useState( group.description );
 	const [ semester, setSemester ] = useState( group.semester );
-	const [ groupType, setGroupType ] = useState< GroupType >(
-		group.groupType || 'training'
-	);
-	const [ timeControl, setTimeControl ] = useState<
-		'classical' | 'rapid' | 'blitz'
-	>(
-		( group.timeControl as 'classical' | 'rapid' | 'blitz' ) || 'classical'
-	);
 	const [ trainers, setTrainers ] = useState( group.trainers );
 	const [ contact, setContact ] = useState( group.contact );
-	const [ tournamentLink, setTournamentLink ] = useState(
-		group.tournamentLink
+	const [ linkedTournamentId, setLinkedTournamentId ] = useState(
+		String( group.linkedTournamentId || '' )
 	);
-	const [ ssfGroupId, setSsfGroupId ] = useState(
-		String( group.ssfGroupId || '' )
-	);
-	const [ showParticipants, setShowParticipants ] = useState(
-		group.showParticipants
-	);
-	const [ showStandings, setShowStandings ] = useState( group.showStandings );
 	const [ saving, setSaving ] = useState( false );
 	const [ error, setError ] = useState< string | null >( null );
 
-	// Event editing state
 	const [ eventStart, setEventStart ] = useState( event?.startDate || '' );
 	const [ eventEnd, setEventEnd ] = useState( event?.endDate || '' );
 	const [ eventLocation, setEventLocation ] = useState(
@@ -70,11 +60,12 @@ export function EditGroupModal( {
 		'weekly' | 'biweekly'
 	>( event?.recurrenceType || 'weekly' );
 
-	// New event state (when no event is linked)
 	const [ showNewEvent, setShowNewEvent ] = useState( false );
 	const [ existingEvents, setExistingEvents ] = useState< EventData[] >( [] );
 	const [ selectedEventId, setSelectedEventId ] = useState( '' );
 	const [ eventTitle, setEventTitle ] = useState( '' );
+
+	const [ tournaments, setTournaments ] = useState< Tournament[] >( [] );
 
 	useEffect( () => {
 		if ( ! event ) {
@@ -82,6 +73,9 @@ export function EditGroupModal( {
 				.then( setExistingEvents )
 				.catch( () => {} );
 		}
+		fetchTournaments()
+			.then( setTournaments )
+			.catch( () => {} );
 	}, [ event ] );
 
 	async function handleSave() {
@@ -91,11 +85,9 @@ export function EditGroupModal( {
 		setSaving( true );
 		setError( null );
 		try {
-			// Handle event updates
 			let eventId: number | undefined;
 
 			if ( event ) {
-				// Update existing linked event
 				await updateEvent( event.id, {
 					startDate: eventStart,
 					endDate: eventEnd,
@@ -107,7 +99,6 @@ export function EditGroupModal( {
 						: undefined,
 				} );
 			} else if ( showNewEvent && eventStart && eventEnd ) {
-				// Create new event
 				const created = await createEvent( {
 					title: eventTitle.trim() || title.trim(),
 					startDate: eventStart,
@@ -124,19 +115,15 @@ export function EditGroupModal( {
 				eventId = Number( selectedEventId );
 			}
 
-			const hasTournament = groupType !== 'training';
 			await updateGroup( group.id, {
 				title: title.trim(),
 				description: description.trim(),
 				semester: semester.trim(),
-				groupType,
-				timeControl: hasTournament ? timeControl : undefined,
 				trainers: trainers.trim(),
 				contact: contact.trim(),
-				tournamentLink: tournamentLink.trim(),
-				ssfGroupId: ssfGroupId ? Number( ssfGroupId ) : 0,
-				showParticipants,
-				showStandings,
+				linkedTournamentId: linkedTournamentId
+					? Number( linkedTournamentId )
+					: 0,
 				...( eventId !== undefined ? { eventId } : {} ),
 			} );
 			onUpdated();
@@ -152,6 +139,14 @@ export function EditGroupModal( {
 		...existingEvents.map( ( e ) => ( {
 			label: e.title,
 			value: String( e.id ),
+		} ) ),
+	];
+
+	const tournamentOptions = [
+		{ label: t.tournament.noLinkedTournament, value: '' },
+		...tournaments.map( ( tournament ) => ( {
+			label: tournament.title,
+			value: String( tournament.id ),
 		} ) ),
 	];
 
@@ -183,70 +178,17 @@ export function EditGroupModal( {
 				onChange={ setContact }
 			/>
 			<TextControl
-				label={ t.training.tournamentLink }
-				value={ tournamentLink }
-				onChange={ setTournamentLink }
-				type="url"
-			/>
-			<TextControl
 				label={ t.training.semester }
 				value={ semester }
 				onChange={ setSemester }
 				placeholder="VT2026"
 			/>
+
 			<SelectControl
-				label={ t.training.groupType }
-				value={ groupType }
-				options={ [
-					{
-						label: t.training.trainingOnly,
-						value: 'training',
-					},
-					{
-						label: t.training.tournamentOnly,
-						value: 'tournament',
-					},
-					{
-						label: t.training.trainingAndTournament,
-						value: 'both',
-					},
-				] }
-				onChange={ ( v ) => setGroupType( v as GroupType ) }
-			/>
-			{ groupType !== 'training' && (
-				<SelectControl
-					label={ t.training.timeControl }
-					value={ timeControl }
-					options={ [
-						{ label: t.training.classical, value: 'classical' },
-						{ label: t.training.rapid, value: 'rapid' },
-						{ label: t.training.blitz, value: 'blitz' },
-					] }
-					onChange={ ( v ) =>
-						setTimeControl( v as 'classical' | 'rapid' | 'blitz' )
-					}
-				/>
-			) }
-			<CheckboxControl
-				label={ t.training.showParticipants }
-				checked={ showParticipants }
-				onChange={ setShowParticipants }
-			/>
-			<CheckboxControl
-				label={ t.training.showStandings }
-				checked={ showStandings }
-				onChange={ setShowStandings }
-			/>
-			<TextControl
-				label={ t.training.ssfTournamentGroupId }
-				value={ ssfGroupId }
-				onChange={ ( v ) => {
-					setSsfGroupId( v );
-					if ( Number( v ) > 0 ) {
-						setGroupType( 'tournament' );
-					}
-				} }
-				type="number"
+				label={ t.tournament.linkedTournament }
+				value={ linkedTournamentId }
+				options={ tournamentOptions }
+				onChange={ setLinkedTournamentId }
 			/>
 
 			{ /* Event section */ }

@@ -4,16 +4,16 @@ import {
 	Notice,
 	__experimentalHeading as Heading,
 } from '@wordpress/components';
-import type { Translations } from '../../shared';
-import { generateRoundRobin } from '../../shared';
-import type { TrainingGroup, SsfRatingInfo, StoredRound } from '../types';
-import { saveRounds, saveRoundResult } from '../api';
-import { GameResultSelect } from './GameResultSelect';
-import { ratingForTimeControl, ratingLabel } from './ratingUtils';
+import type { Translations } from '../../../shared';
+import { generateRoundRobin } from '../../../shared';
+import type { Tournament, SsfRatingInfo, StoredRound } from '../../types';
+import { saveTournamentRounds, saveTournamentRoundResult } from '../../api';
+import { GameResultSelect } from '../GameResultSelect';
+import { ratingForTimeControl, ratingLabel } from '../ratingUtils';
 
 interface RoundsPanelProps {
-	groupId: number;
-	group: TrainingGroup;
+	tournamentId: number;
+	tournament: Tournament;
 	ratings: Map< number, SsfRatingInfo >;
 	t: Translations;
 	onUpdated: () => void;
@@ -21,8 +21,8 @@ interface RoundsPanelProps {
 }
 
 export function RoundsPanel( {
-	groupId,
-	group,
+	tournamentId,
+	tournament,
 	ratings,
 	t,
 	onUpdated,
@@ -34,18 +34,18 @@ export function RoundsPanel( {
 
 	const nameMap = useMemo( () => {
 		const m = new Map< string, string >();
-		for ( const p of group.participants ) {
+		for ( const p of tournament.participants ) {
 			m.set( p.id, p.name );
 		}
 		return m;
-	}, [ group.participants ] );
+	}, [ tournament.participants ] );
 
 	const activeParticipants = useMemo(
-		() => group.participants.filter( ( p ) => p.active ),
-		[ group.participants ]
+		() => tournament.participants.filter( ( p ) => p.active ),
+		[ tournament.participants ]
 	);
 
-	const hasRounds = group.rounds.length > 0;
+	const hasRounds = tournament.rounds.length > 0;
 
 	async function handleGenerate() {
 		if (
@@ -71,7 +71,7 @@ export function RoundsPanel( {
 				} ) ),
 				bye: r.bye,
 			} ) );
-			await saveRounds( groupId, storedRounds );
+			await saveTournamentRounds( tournamentId, storedRounds );
 			setActiveRound( 0 );
 			onUpdated();
 		} catch ( err: any ) {
@@ -89,7 +89,12 @@ export function RoundsPanel( {
 		setSaving( true );
 		setError( null );
 		try {
-			await saveRoundResult( groupId, roundIdx, gameIdx, result );
+			await saveTournamentRoundResult(
+				tournamentId,
+				roundIdx,
+				gameIdx,
+				result
+			);
 			onUpdated();
 		} catch ( err: any ) {
 			setError( err?.message || 'Failed to save result' );
@@ -99,7 +104,9 @@ export function RoundsPanel( {
 	}
 
 	function getRating( participantId: string ): string {
-		const p = group.participants.find( ( pp ) => pp.id === participantId );
+		const p = tournament.participants.find(
+			( pp ) => pp.id === participantId
+		);
 		if ( ! p?.ssfId ) {
 			return t.training.ratingUnavailable;
 		}
@@ -107,7 +114,7 @@ export function RoundsPanel( {
 		if ( ! r ) {
 			return t.training.ratingUnavailable;
 		}
-		const val = ratingForTimeControl( r, group.timeControl );
+		const val = ratingForTimeControl( r, tournament.timeControl );
 		return val ? String( val ) : t.training.ratingUnavailable;
 	}
 
@@ -128,8 +135,8 @@ export function RoundsPanel( {
 		}
 	}
 
-	const rLabel = ratingLabel( group.timeControl, t );
-	const round = hasRounds ? group.rounds[ activeRound ] : null;
+	const rLabel = ratingLabel( tournament.timeControl, t );
+	const round = hasRounds ? tournament.rounds[ activeRound ] : null;
 
 	return (
 		<div style={ { marginTop: 24 } }>
@@ -187,7 +194,7 @@ export function RoundsPanel( {
 							borderBottom: '1px solid #ccc',
 						} }
 					>
-						{ group.rounds.map( ( r, idx ) => {
+						{ tournament.rounds.map( ( r, idx ) => {
 							const isActive = idx === activeRound;
 							return (
 								<button

@@ -84,27 +84,6 @@ class TrainingApi {
 			]
 		);
 
-		// Rounds.
-		register_rest_route(
-			self::NAMESPACE,
-			'/training-groups/(?P<id>\d+)/rounds',
-			[
-				'methods'             => 'PUT',
-				'callback'            => [ self::class, 'save_rounds' ],
-				'permission_callback' => [ self::class, 'can_edit' ],
-			]
-		);
-
-		register_rest_route(
-			self::NAMESPACE,
-			'/training-groups/(?P<id>\d+)/rounds/(?P<roundIdx>\d+)/games/(?P<gameIdx>\d+)',
-			[
-				'methods'             => 'PUT',
-				'callback'            => [ self::class, 'save_round_result' ],
-				'permission_callback' => [ self::class, 'can_edit' ],
-			]
-		);
-
 		// Training Sessions.
 		register_rest_route(
 			self::NAMESPACE,
@@ -221,40 +200,17 @@ class TrainingApi {
 		if ( ! empty( $body['semester'] ) ) {
 			update_post_meta( $post_id, 'rc_semester', sanitize_text_field( $body['semester'] ) );
 		}
-		if ( isset( $body['groupType'] ) ) {
-			$allowed_types = [ 'training', 'tournament', 'both' ];
-			$group_type    = sanitize_text_field( $body['groupType'] );
-			if ( in_array( $group_type, $allowed_types, true ) ) {
-				update_post_meta( $post_id, 'rc_group_type', $group_type );
-				// Keep rc_has_tournament in sync for backward compat.
-				update_post_meta( $post_id, 'rc_has_tournament', 'training' !== $group_type ? '1' : '' );
-			}
-		} elseif ( isset( $body['hasTournament'] ) ) {
-			update_post_meta( $post_id, 'rc_has_tournament', (bool) $body['hasTournament'] ? '1' : '' );
-		}
-		if ( ! empty( $body['timeControl'] ) ) {
-			update_post_meta( $post_id, 'rc_time_control', sanitize_text_field( $body['timeControl'] ) );
-		}
 		if ( ! empty( $body['eventId'] ) ) {
 			update_post_meta( $post_id, 'rc_event_id', (int) $body['eventId'] );
 		}
-		if ( ! empty( $body['ssfGroupId'] ) ) {
-			update_post_meta( $post_id, 'rc_ssf_group_id', (int) $body['ssfGroupId'] );
+		if ( isset( $body['linkedTournamentId'] ) ) {
+			update_post_meta( $post_id, 'rc_linked_tournament_id', (int) $body['linkedTournamentId'] );
 		}
 		if ( ! empty( $body['trainers'] ) ) {
 			update_post_meta( $post_id, 'rc_trainers', sanitize_text_field( $body['trainers'] ) );
 		}
 		if ( ! empty( $body['contact'] ) ) {
 			update_post_meta( $post_id, 'rc_contact', sanitize_text_field( $body['contact'] ) );
-		}
-		if ( ! empty( $body['tournamentLink'] ) ) {
-			update_post_meta( $post_id, 'rc_tournament_link', esc_url_raw( $body['tournamentLink'] ) );
-		}
-		if ( isset( $body['showParticipants'] ) ) {
-			update_post_meta( $post_id, 'rc_show_participants', (bool) $body['showParticipants'] ? '1' : '0' );
-		}
-		if ( isset( $body['showStandings'] ) ) {
-			update_post_meta( $post_id, 'rc_show_standings', (bool) $body['showStandings'] ? '1' : '0' );
 		}
 
 		return new WP_REST_Response( self::format_group( get_post( $post_id ) ), 201 );
@@ -288,24 +244,11 @@ class TrainingApi {
 		if ( isset( $body['semester'] ) ) {
 			update_post_meta( $post->ID, 'rc_semester', sanitize_text_field( $body['semester'] ) );
 		}
-		if ( isset( $body['groupType'] ) ) {
-			$allowed_types = [ 'training', 'tournament', 'both' ];
-			$group_type    = sanitize_text_field( $body['groupType'] );
-			if ( in_array( $group_type, $allowed_types, true ) ) {
-				update_post_meta( $post->ID, 'rc_group_type', $group_type );
-				update_post_meta( $post->ID, 'rc_has_tournament', 'training' !== $group_type ? '1' : '' );
-			}
-		} elseif ( isset( $body['hasTournament'] ) ) {
-			update_post_meta( $post->ID, 'rc_has_tournament', (bool) $body['hasTournament'] ? '1' : '' );
-		}
-		if ( isset( $body['timeControl'] ) ) {
-			update_post_meta( $post->ID, 'rc_time_control', sanitize_text_field( $body['timeControl'] ) );
-		}
 		if ( isset( $body['eventId'] ) ) {
 			update_post_meta( $post->ID, 'rc_event_id', (int) $body['eventId'] );
 		}
-		if ( isset( $body['ssfGroupId'] ) ) {
-			update_post_meta( $post->ID, 'rc_ssf_group_id', (int) $body['ssfGroupId'] );
+		if ( isset( $body['linkedTournamentId'] ) ) {
+			update_post_meta( $post->ID, 'rc_linked_tournament_id', (int) $body['linkedTournamentId'] );
 		}
 		if ( isset( $body['status'] ) ) {
 			$allowed = [ 'draft', 'active', 'archived' ];
@@ -319,15 +262,6 @@ class TrainingApi {
 		}
 		if ( isset( $body['contact'] ) ) {
 			update_post_meta( $post->ID, 'rc_contact', sanitize_text_field( $body['contact'] ) );
-		}
-		if ( isset( $body['tournamentLink'] ) ) {
-			update_post_meta( $post->ID, 'rc_tournament_link', esc_url_raw( $body['tournamentLink'] ) );
-		}
-		if ( isset( $body['showParticipants'] ) ) {
-			update_post_meta( $post->ID, 'rc_show_participants', (bool) $body['showParticipants'] ? '1' : '0' );
-		}
-		if ( isset( $body['showStandings'] ) ) {
-			update_post_meta( $post->ID, 'rc_show_standings', (bool) $body['showStandings'] ? '1' : '0' );
 		}
 
 		return new WP_REST_Response( self::format_group( get_post( $post->ID ) ) );
@@ -416,59 +350,6 @@ class TrainingApi {
 		unset( $p );
 
 		update_post_meta( $post->ID, 'rc_participants', wp_slash( wp_json_encode( $participants ) ) );
-
-		return new WP_REST_Response( self::format_group( get_post( $post->ID ) ) );
-	}
-
-	/**
-	 * Save rounds for a training group.
-	 *
-	 * @param WP_REST_Request $request The incoming request.
-	 * @return WP_REST_Response|WP_Error
-	 */
-	public static function save_rounds( WP_REST_Request $request ): WP_REST_Response|WP_Error {
-		$url_params = $request->get_url_params();
-		$post       = get_post( (int) $url_params['id'] );
-		if ( ! $post || TrainingGroup::POST_TYPE !== $post->post_type ) {
-			return new WP_Error( 'not_found', 'Training group not found', [ 'status' => 404 ] );
-		}
-
-		$body   = $request->get_json_params();
-		$rounds = $body['rounds'] ?? [];
-
-		update_post_meta( $post->ID, 'rc_rounds', wp_slash( wp_json_encode( $rounds ) ) );
-
-		return new WP_REST_Response( self::format_group( get_post( $post->ID ) ) );
-	}
-
-	/**
-	 * Save a single game result within a round.
-	 *
-	 * @param WP_REST_Request $request The incoming request.
-	 * @return WP_REST_Response|WP_Error
-	 */
-	public static function save_round_result( WP_REST_Request $request ): WP_REST_Response|WP_Error {
-		$url_params = $request->get_url_params();
-		$post       = get_post( (int) $url_params['id'] );
-		if ( ! $post || TrainingGroup::POST_TYPE !== $post->post_type ) {
-			return new WP_Error( 'not_found', 'Training group not found', [ 'status' => 404 ] );
-		}
-
-		$round_idx = (int) $url_params['roundIdx'];
-		$game_idx  = (int) $url_params['gameIdx'];
-		$body      = $request->get_json_params();
-		$rounds    = json_decode( get_post_meta( $post->ID, 'rc_rounds', true ) ?: '[]', true );
-
-		if ( $round_idx < 0 || $round_idx >= count( $rounds ) ) {
-			return new WP_Error( 'invalid_round', 'Round index out of range', [ 'status' => 400 ] );
-		}
-		if ( $game_idx < 0 || $game_idx >= count( $rounds[ $round_idx ]['pairings'] ) ) {
-			return new WP_Error( 'invalid_game', 'Game index out of range', [ 'status' => 400 ] );
-		}
-
-		$rounds[ $round_idx ]['pairings'][ $game_idx ]['result'] = $body['result'] ?? null;
-
-		update_post_meta( $post->ID, 'rc_rounds', wp_slash( wp_json_encode( $rounds ) ) );
 
 		return new WP_REST_Response( self::format_group( get_post( $post->ID ) ) );
 	}
@@ -608,32 +489,7 @@ class TrainingApi {
 	 * @return array<string, mixed>
 	 */
 	private static function format_group( \WP_Post $post ): array {
-		$show_participants = get_post_meta( $post->ID, 'rc_show_participants', true );
-		$show_standings    = get_post_meta( $post->ID, 'rc_show_standings', true );
-
-		// Unset meta returns '' — treat as true for backward compat.
-		$show_participants = ( '' === $show_participants ) ? true : (bool) $show_participants;
-		$show_standings    = ( '' === $show_standings ) ? true : (bool) $show_standings;
-
-		$is_editor    = current_user_can( 'edit_posts' );
 		$participants = json_decode( get_post_meta( $post->ID, 'rc_participants', true ) ?: '[]', true );
-		$rounds       = json_decode( get_post_meta( $post->ID, 'rc_rounds', true ) ?: '[]', true );
-
-		// Filter data for public view.
-		if ( ! $is_editor ) {
-			if ( ! $show_participants ) {
-				$participants = [];
-			}
-			if ( ! $show_standings ) {
-				$rounds = [];
-			}
-		}
-
-		// Derive groupType with backward compat: if rc_group_type is empty, fall back to rc_has_tournament.
-		$group_type = get_post_meta( $post->ID, 'rc_group_type', true );
-		if ( ! $group_type ) {
-			$group_type = (bool) get_post_meta( $post->ID, 'rc_has_tournament', true ) ? 'both' : 'training';
-		}
 
 		// Fetch linked event schedule for overview display.
 		$schedule = null;
@@ -652,26 +508,19 @@ class TrainingApi {
 		}
 
 		return [
-			'id'               => $post->ID,
-			'slug'             => $post->post_name,
-			'title'            => $post->post_title,
-			'description'      => $post->post_content,
-			'status'           => get_post_meta( $post->ID, 'rc_status', true ) ?: 'draft',
-			'semester'         => get_post_meta( $post->ID, 'rc_semester', true ) ?: '',
-			'groupType'        => $group_type,
-			'hasTournament'    => 'training' !== $group_type,
-			'timeControl'      => get_post_meta( $post->ID, 'rc_time_control', true ) ?: 'classical',
-			'eventId'          => $event_id,
-			'ssfGroupId'       => (int) get_post_meta( $post->ID, 'rc_ssf_group_id', true ),
-			'participants'     => $participants,
-			'trainers'         => get_post_meta( $post->ID, 'rc_trainers', true ) ?: '',
-			'contact'          => get_post_meta( $post->ID, 'rc_contact', true ) ?: '',
-			'tournamentLink'   => get_post_meta( $post->ID, 'rc_tournament_link', true ) ?: '',
-			'rounds'           => $rounds,
-			'showParticipants' => $show_participants,
-			'showStandings'    => $show_standings,
-			'schedule'         => $schedule,
-			'createdBy'        => $post->post_author,
+			'id'                 => $post->ID,
+			'slug'               => $post->post_name,
+			'title'              => $post->post_title,
+			'description'        => $post->post_content,
+			'status'             => get_post_meta( $post->ID, 'rc_status', true ) ?: 'draft',
+			'semester'           => get_post_meta( $post->ID, 'rc_semester', true ) ?: '',
+			'eventId'            => $event_id,
+			'linkedTournamentId' => (int) get_post_meta( $post->ID, 'rc_linked_tournament_id', true ),
+			'participants'       => $participants,
+			'trainers'           => get_post_meta( $post->ID, 'rc_trainers', true ) ?: '',
+			'contact'            => get_post_meta( $post->ID, 'rc_contact', true ) ?: '',
+			'schedule'           => $schedule,
+			'createdBy'          => $post->post_author,
 		];
 	}
 

@@ -19,8 +19,6 @@ export interface StoredRound {
 	bye?: string;
 }
 
-export type GroupType = 'training' | 'tournament' | 'both';
-
 export interface TrainingGroup {
 	id: number;
 	slug: string;
@@ -28,18 +26,11 @@ export interface TrainingGroup {
 	description: string;
 	status: string;
 	semester: string;
-	groupType: GroupType;
-	hasTournament: boolean;
-	timeControl: string;
 	eventId: number;
-	ssfGroupId: number;
+	linkedTournamentId: number;
 	participants: Participant[];
 	trainers: string;
 	contact: string;
-	tournamentLink: string;
-	rounds: StoredRound[];
-	showParticipants: boolean;
-	showStandings: boolean;
 	schedule: {
 		startDate: string;
 		endDate: string;
@@ -116,17 +107,63 @@ export interface CreateGroupData {
 	title: string;
 	description?: string;
 	semester?: string;
-	groupType?: GroupType;
-	hasTournament?: boolean;
-	timeControl?: string;
 	eventId?: number;
-	ssfGroupId?: number;
 	trainers?: string;
 	contact?: string;
-	tournamentLink?: string;
+	linkedTournamentId?: number;
+}
+
+export type TournamentCategory =
+	| 'junior'
+	| 'youth'
+	| 'adult'
+	| 'senior'
+	| 'mixed';
+
+export type TournamentStatus = 'planned' | 'active' | 'completed';
+
+export type TournamentFormat = 'round-robin';
+
+export interface Tournament {
+	id: number;
+	slug: string;
+	title: string;
+	description: string;
+	category: TournamentCategory;
+	status: TournamentStatus;
+	format: TournamentFormat;
+	timeControl: string;
+	participants: Participant[];
+	rounds: StoredRound[];
+	ssfGroupId: number;
+	eventId: number;
+	externalLink: string;
+	startDate: string;
+	endDate: string;
+	showParticipants: boolean;
+	showStandings: boolean;
+	createdBy: number;
+}
+
+export interface CreateTournamentData {
+	title: string;
+	description?: string;
+	category?: TournamentCategory;
+	status?: TournamentStatus;
+	format?: TournamentFormat;
+	timeControl?: string;
+	ssfGroupId?: number;
+	eventId?: number;
+	externalLink?: string;
+	startDate?: string;
+	endDate?: string;
 	showParticipants?: boolean;
 	showStandings?: boolean;
 }
+
+export type TournamentView =
+	| { screen: 'list' }
+	| { screen: 'detail'; tournamentId: number };
 
 // Navigation state
 export type View =

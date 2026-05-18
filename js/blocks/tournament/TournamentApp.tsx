@@ -1,27 +1,18 @@
 import { useState, useEffect, useMemo } from '@wordpress/element';
 import apiFetch from '@wordpress/api-fetch';
-import type {
-	TrainingGroup,
-	TrainingSession,
-	SsfPlayer,
-	EventData,
-	Tournament,
-} from '../../admin/types';
+import type { Tournament, SsfPlayer, EventData } from '../../admin/types';
 import type { Language } from '../../shared/types';
 import type { Translations } from '../../shared/translations';
 import { getTranslation, toLanguage } from '../../shared/translations';
 import { useLocale } from '../../shared/useLocale';
-import TabBar from './TabBar';
-import ParticipantsTab from './ParticipantsTab';
-import SessionsTab from './SessionsTab';
+import SsfResultsView from '../training-group/SsfResultsView';
+import StandingsTab from './StandingsTab';
 
 interface Props {
-	groupId: number;
+	tournamentId: number;
 	clubId: string;
 	locale: string;
 }
-
-export type Tab = 'participants' | 'sessions';
 
 function extractTime( dateStr: string ): string {
 	const match = dateStr.match( /(\d{2}):(\d{2})/ );
@@ -58,62 +49,43 @@ function formatSchedule(
 	return parts.join( ', ' );
 }
 
-export default function TrainingGroupApp( { groupId, clubId, locale }: Props ) {
+export default function TournamentApp( {
+	tournamentId,
+	clubId,
+	locale,
+}: Props ) {
 	const currentLocale = useLocale( locale );
 	const lang = toLanguage( currentLocale );
 	const t = getTranslation( lang );
-	const [ group, setGroup ] = useState< TrainingGroup | null >( null );
-	const [ sessions, setSessions ] = useState< TrainingSession[] >( [] );
+	const [ tournament, setTournament ] = useState< Tournament | null >( null );
 	const [ ratings, setRatings ] = useState< Map< number, SsfPlayer > >(
 		new Map()
 	);
 	const [ event, setEvent ] = useState< EventData | null >( null );
-	const [ tournament, setTournament ] = useState< Tournament | null >( null );
-	const [ activeTab, setActiveTab ] = useState< Tab >( 'participants' );
 	const [ loading, setLoading ] = useState( true );
 
 	useEffect( () => {
-		if ( ! groupId ) {
+		if ( ! tournamentId ) {
 			setLoading( false );
 			return;
 		}
 
-		const fetchData = async () => {
-			try {
-				const groupData = await apiFetch< TrainingGroup >( {
-					path: `/rockaden/v1/training-groups/${ groupId }`,
-				} );
-				setGroup( groupData );
-
-				const sessionData = await apiFetch< TrainingSession[] >( {
-					path: `/rockaden/v1/training-groups/${ groupId }/sessions`,
-				} );
-				setSessions( sessionData );
-
-				if ( groupData.eventId ) {
+		apiFetch< Tournament >( {
+			path: `/rockaden/v1/tournaments/${ tournamentId }`,
+		} )
+			.then( ( data ) => {
+				setTournament( data );
+				if ( data.eventId ) {
 					apiFetch< EventData >( {
-						path: `/rockaden/v1/events/${ groupData.eventId }`,
+						path: `/rockaden/v1/events/${ data.eventId }`,
 					} )
 						.then( ( ev ) => setEvent( ev ) )
 						.catch( () => {} );
 				}
-
-				if ( groupData.linkedTournamentId ) {
-					apiFetch< Tournament >( {
-						path: `/rockaden/v1/tournaments/${ groupData.linkedTournamentId }`,
-					} )
-						.then( ( tn ) => setTournament( tn ) )
-						.catch( () => {} );
-				}
-			} catch {
-				// Silently fail — the block shows empty state.
-			} finally {
-				setLoading( false );
-			}
-		};
-
-		fetchData();
-	}, [ groupId ] );
+			} )
+			.catch( () => {} )
+			.finally( () => setLoading( false ) );
+	}, [ tournamentId ] );
 
 	useEffect( () => {
 		if ( ! clubId ) {
@@ -142,22 +114,18 @@ export default function TrainingGroupApp( { groupId, clubId, locale }: Props ) {
 		return <p className="rc-td__loading">{ t.common.loading }</p>;
 	}
 
-	if ( ! group ) {
+	if ( ! tournament ) {
 		return null;
 	}
 
-	const hasInfo = group.trainers || group.contact || schedule || tournament;
-
-	const initialSession =
-		typeof window !== 'undefined'
-			? window.location.hash.match( /^#session-(\d+)$/ )
-			: null;
+	const isSsfBacked = tournament.ssfGroupId > 0;
+	const hasInfo = schedule || tournament.externalLink;
 
 	return (
 		<div className="rc-td">
-			<h1 className="rc-td__title">{ group.title }</h1>
-			{ group.description && (
-				<p className="rc-td__description">{ group.description }</p>
+			<h1 className="rc-td__title">{ tournament.title }</h1>
+			{ tournament.description && (
+				<p className="rc-td__description">{ tournament.description }</p>
 			) }
 
 			{ hasInfo && (
@@ -168,27 +136,17 @@ export default function TrainingGroupApp( { groupId, clubId, locale }: Props ) {
 							<dd>{ schedule }</dd>
 						</div>
 					) }
-					{ group.trainers && (
+					{ tournament.externalLink && (
 						<div className="rc-td__info-item">
-							<dt>{ t.training.trainers }</dt>
-							<dd>{ group.trainers }</dd>
-						</div>
-					) }
-					{ group.contact && (
-						<div className="rc-td__info-item">
-							<dt>{ t.training.contact }</dt>
-							<dd>{ group.contact }</dd>
-						</div>
-					) }
-					{ tournament && (
-						<div className="rc-td__info-item">
-							<dt>{ t.tournament.linkedTournament }</dt>
+							<dt>{ t.tournament.officialResult }</dt>
 							<dd>
 								<a
-									href={ `/tournaments/${ tournament.slug }/` }
+									href={ tournament.externalLink }
+									target="_blank"
+									rel="noopener noreferrer"
 									className="rc-td__info-link"
 								>
-									{ tournament.title } ↗
+									SSF ↗
 								</a>
 							</dd>
 						</div>
@@ -196,27 +154,15 @@ export default function TrainingGroupApp( { groupId, clubId, locale }: Props ) {
 				</dl>
 			) }
 
-			<TabBar
-				activeTab={ activeTab }
-				onChange={ setActiveTab }
-				t={ t.training }
-			/>
-
-			{ activeTab === 'participants' && (
-				<ParticipantsTab
-					participants={ group.participants }
-					ratings={ ratings }
+			{ isSsfBacked ? (
+				<SsfResultsView
+					ssfGroupId={ tournament.ssfGroupId }
 					t={ t.training }
 				/>
-			) }
-
-			{ activeTab === 'sessions' && (
-				<SessionsTab
-					sessions={ sessions }
-					participants={ group.participants }
-					initialSessionId={
-						initialSession ? Number( initialSession[ 1 ] ) : null
-					}
+			) : (
+				<StandingsTab
+					tournament={ tournament }
+					ratings={ ratings }
 					t={ t.training }
 				/>
 			) }

@@ -7,19 +7,26 @@ import {
 	__experimentalHeading as Heading,
 	__experimentalText as Text,
 } from '@wordpress/components';
-import type { Translations } from '../../shared';
-import type { TrainingGroup } from '../types';
-import { deleteGroup } from '../api';
+import type { Translations } from '../../../shared';
+import type { Tournament } from '../../types';
+import { deleteTournament } from '../../api';
 
-interface GroupCardProps {
-	group: TrainingGroup;
+interface TournamentCardProps {
+	tournament: Tournament;
 	t: Translations;
 	onClick: () => void;
 	onDeleted: () => void;
 }
 
-export function GroupCard( { group, t, onClick, onDeleted }: GroupCardProps ) {
-	const activeCount = group.participants.filter( ( p ) => p.active ).length;
+export function TournamentCard( {
+	tournament,
+	t,
+	onClick,
+	onDeleted,
+}: TournamentCardProps ) {
+	const activeCount = tournament.participants.filter(
+		( p ) => p.active
+	).length;
 	const [ confirming, setConfirming ] = useState( false );
 
 	function handleDelete( e: React.MouseEvent ) {
@@ -28,7 +35,7 @@ export function GroupCard( { group, t, onClick, onDeleted }: GroupCardProps ) {
 			setConfirming( true );
 			return;
 		}
-		deleteGroup( group.id )
+		deleteTournament( tournament.id )
 			.then( onDeleted )
 			.catch( () => setConfirming( false ) );
 	}
@@ -45,7 +52,7 @@ export function GroupCard( { group, t, onClick, onDeleted }: GroupCardProps ) {
 					} }
 				>
 					<Heading level={ 4 } style={ { margin: 0 } }>
-						{ group.title }
+						{ tournament.title }
 					</Heading>
 					<Button
 						isDestructive
@@ -59,30 +66,34 @@ export function GroupCard( { group, t, onClick, onDeleted }: GroupCardProps ) {
 				</div>
 			</CardHeader>
 			<CardBody>
-				<Text
-					style={ {
-						display: 'inline-block',
-						padding: '1px 8px',
-						borderRadius: 9999,
-						fontSize: 11,
-						fontWeight: 500,
-						marginBottom: 4,
-						background:
-							group.status === 'active' ? '#dbeafe' : '#f3f4f6',
-						color:
-							group.status === 'active' ? '#1e40af' : '#6b7280',
-					} }
-				>
-					{ group.status === 'active' ? t.training.active : 'Draft' }
-				</Text>
-				{ group.semester && (
-					<Text style={ { display: 'block' } }>
-						{ t.training.semester }: { group.semester }
+				<div style={ { marginBottom: 6 } }>
+					<span
+						className={ `rc-status-pill is-${ tournament.status }` }
+					>
+						{ t.tournament.statuses[ tournament.status ] }
+					</span>
+					<span className="rc-category-pill">
+						{ t.tournament.categories[ tournament.category ] }
+					</span>
+				</div>
+				{ tournament.ssfGroupId > 0 && (
+					<Text style={ { display: 'block', fontStyle: 'italic' } }>
+						SSF #{ tournament.ssfGroupId }
 					</Text>
 				) }
-				<Text style={ { display: 'block' } }>
-					{ t.training.participants }: { activeCount }
-				</Text>
+				{ tournament.ssfGroupId === 0 && (
+					<Text style={ { display: 'block' } }>
+						{ t.training.participants }: { activeCount }
+					</Text>
+				) }
+				{ tournament.startDate && (
+					<Text style={ { display: 'block' } }>
+						{ tournament.startDate }
+						{ tournament.endDate
+							? ` — ${ tournament.endDate }`
+							: '' }
+					</Text>
+				) }
 			</CardBody>
 		</Card>
 	);

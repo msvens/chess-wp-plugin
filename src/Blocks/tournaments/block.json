@@ -1,0 +1,19 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "rockaden/tournaments",
+  "version": "0.1.0",
+  "title": "Tournaments",
+  "category": "widgets",
+  "icon": "awards",
+  "description": "Displays an overview grid of tournaments.",
+  "textdomain": "rockaden-chess",
+  "supports": {
+    "html": false,
+    "align": ["wide", "full"]
+  },
+  "editorScript": "file:../../../build/blocks/tournaments/index.js",
+  "viewScript": "file:../../../build/blocks/tournaments/view.js",
+  "viewStyle": "file:../../../build/blocks/tournaments/view.css",
+  "render": "file:./render.php"
+}

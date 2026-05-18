@@ -1,8 +1,8 @@
 import { useMemo } from '@wordpress/element';
-import type { Translations } from '../../shared';
-import { computeStandings } from '../../shared';
-import type { Participant, StoredRound, SsfRatingInfo } from '../types';
-import { ratingForTimeControl, ratingLabel } from './ratingUtils';
+import type { Translations } from '../../../shared';
+import { computeStandings } from '../../../shared';
+import type { Participant, StoredRound, SsfRatingInfo } from '../../types';
+import { ratingForTimeControl, ratingLabel } from '../ratingUtils';
 
 interface StandingsTableProps {
 	participants: Participant[];
@@ -60,7 +60,11 @@ export function StandingsTable( {
 	}
 
 	if ( standings.length === 0 ) {
-		return <p style={ { fontStyle: 'italic' } }>{ t.training.noGroups }</p>;
+		return (
+			<p style={ { fontStyle: 'italic' } }>
+				{ t.tournament.noTournaments }
+			</p>
+		);
 	}
 
 	return (

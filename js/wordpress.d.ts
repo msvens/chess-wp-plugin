@@ -7,6 +7,10 @@ declare module '@wordpress/block-editor' {
 	export function InspectorControls( props: any ): any;
 }
 
+declare module '@wordpress/core-data' {
+	export const store: any;
+}
+
 interface TinyMCEEditor {
 	getContent(): string;
 	setContent( content: string ): void;

@@ -9,14 +9,12 @@ import {
 	__experimentalText as Text,
 } from '@wordpress/components';
 import type { Translations } from '../../shared';
-import type { EventData, GroupType } from '../types';
+import type { EventData, Tournament } from '../types';
 import {
 	createGroup,
 	fetchEvents,
 	createEvent,
-	addParticipant,
-	fetchSsfTournamentGroup,
-	fetchSsfTournamentResults,
+	fetchTournaments,
 } from '../api';
 import { FlatpickrInput } from './FlatpickrInput';
 
@@ -34,37 +32,17 @@ export function CreateGroupModal( {
 	const [ title, setTitle ] = useState( '' );
 	const [ description, setDescription ] = useState( '' );
 	const [ semester, setSemester ] = useState( '' );
-	const [ groupType, setGroupType ] = useState< GroupType >( 'training' );
-	const [ timeControl, setTimeControl ] = useState<
-		'classical' | 'rapid' | 'blitz'
-	>( 'classical' );
 	const [ trainers, setTrainers ] = useState( '' );
 	const [ contact, setContact ] = useState( '' );
-	const [ tournamentLink, setTournamentLink ] = useState( '' );
-	const [ showParticipants, setShowParticipants ] = useState( true );
-	const [ showStandings, setShowStandings ] = useState( true );
+	const [ linkedTournamentId, setLinkedTournamentId ] = useState( '' );
 	const [ saving, setSaving ] = useState( false );
 	const [ error, setError ] = useState< string | null >( null );
 
-	// SSF autofill state
-	const [ ssfGroupId, setSsfGroupId ] = useState( '' );
-	const [ ssfFetching, setSsfFetching ] = useState( false );
-	const [ ssfError, setSsfError ] = useState< string | null >( null );
-	const [ ssfPreview, setSsfPreview ] = useState< {
-		name: string;
-		participants: { ssfId: number; name: string }[];
-		tournamentLink: string;
-	} | null >( null );
-	const [ ssfParticipants, setSsfParticipants ] = useState<
-		{ ssfId: number; name: string }[]
-	>( [] );
-
-	// Event picker state
 	const [ events, setEvents ] = useState< EventData[] >( [] );
+	const [ tournaments, setTournaments ] = useState< Tournament[] >( [] );
 	const [ selectedEventId, setSelectedEventId ] = useState( '' );
 	const [ showNewEvent, setShowNewEvent ] = useState( false );
 
-	// New event fields
 	const [ eventTitle, setEventTitle ] = useState( '' );
 	const [ eventStart, setEventStart ] = useState( '' );
 	const [ eventEnd, setEventEnd ] = useState( '' );
@@ -79,86 +57,10 @@ export function CreateGroupModal( {
 		fetchEvents()
 			.then( setEvents )
 			.catch( () => {} );
+		fetchTournaments()
+			.then( setTournaments )
+			.catch( () => {} );
 	}, [] );
-
-	async function handleSsfFetch() {
-		const id = Number( ssfGroupId );
-		if ( ! id || id <= 0 ) {
-			return;
-		}
-		setSsfFetching( true );
-		setSsfError( null );
-		setSsfPreview( null );
-		try {
-			const [ tournamentData, resultsData ] = await Promise.all( [
-				fetchSsfTournamentGroup( id ),
-				fetchSsfTournamentResults( id ),
-			] );
-
-			// Extract group name + tournament ID from typed response
-			let groupName = '';
-			const tournamentId = tournamentData.id || 0;
-			if ( tournamentData.rootClasses ) {
-				for ( const rc of tournamentData.rootClasses ) {
-					for ( const g of rc.groups ) {
-						if ( g.id === id ) {
-							groupName = g.name || '';
-						}
-					}
-				}
-			}
-			if ( ! groupName && tournamentData.name ) {
-				groupName = tournamentData.name;
-			}
-
-			// Build results link
-			const resultsLink =
-				tournamentId > 0
-					? `https://chess.msvens.com/results/${ tournamentId }/${ id }`
-					: '';
-
-			// Extract participants from typed results
-			const participants: { ssfId: number; name: string }[] = [];
-			if ( Array.isArray( resultsData ) ) {
-				for ( const entry of resultsData ) {
-					const pi = entry.playerInfo;
-					if ( pi?.id ) {
-						participants.push( {
-							ssfId: pi.id,
-							name: `${ pi.firstName || '' } ${
-								pi.lastName || ''
-							}`.trim(),
-						} );
-					}
-				}
-			}
-
-			setSsfPreview( {
-				name: groupName,
-				participants,
-				tournamentLink: resultsLink,
-			} );
-		} catch {
-			setSsfError( t.training.ssfFetchError );
-		} finally {
-			setSsfFetching( false );
-		}
-	}
-
-	function applySsfData() {
-		if ( ! ssfPreview ) {
-			return;
-		}
-		if ( ssfPreview.name ) {
-			setTitle( ssfPreview.name );
-		}
-		if ( ssfPreview.tournamentLink ) {
-			setTournamentLink( ssfPreview.tournamentLink );
-		}
-		setGroupType( 'tournament' );
-		setSsfParticipants( ssfPreview.participants );
-		setSsfPreview( null );
-	}
 
 	async function handleSave() {
 		if ( ! title.trim() ) {
@@ -169,7 +71,6 @@ export function CreateGroupModal( {
 		try {
 			let eventId: number | undefined;
 
-			// Create new event if inline form was filled
 			if ( showNewEvent && eventStart && eventEnd ) {
 				const created = await createEvent( {
 					title: eventTitle.trim() || title.trim(),
@@ -187,32 +88,17 @@ export function CreateGroupModal( {
 				eventId = Number( selectedEventId );
 			}
 
-			const hasTournament = groupType !== 'training';
-			const created = await createGroup( {
+			await createGroup( {
 				title: title.trim(),
 				description: description.trim() || undefined,
 				semester: semester.trim() || undefined,
-				groupType,
-				timeControl: hasTournament ? timeControl : undefined,
 				eventId,
-				ssfGroupId: ssfGroupId ? Number( ssfGroupId ) : undefined,
 				trainers: trainers.trim() || undefined,
 				contact: contact.trim() || undefined,
-				tournamentLink: tournamentLink.trim() || undefined,
-				showParticipants,
-				showStandings,
+				linkedTournamentId: linkedTournamentId
+					? Number( linkedTournamentId )
+					: undefined,
 			} );
-
-			// Add SSF participants after group creation
-			if ( ssfParticipants.length > 0 ) {
-				for ( const p of ssfParticipants ) {
-					await addParticipant( created.id, {
-						id: `ssf-${ p.ssfId }`,
-						name: p.name,
-						ssfId: p.ssfId,
-					} );
-				}
-			}
 
 			onCreated();
 			onClose();
@@ -227,121 +113,20 @@ export function CreateGroupModal( {
 		...events.map( ( e ) => ( { label: e.title, value: String( e.id ) } ) ),
 	];
 
+	const tournamentOptions = [
+		{ label: t.tournament.noLinkedTournament, value: '' },
+		...tournaments.map( ( tournament ) => ( {
+			label: tournament.title,
+			value: String( tournament.id ),
+		} ) ),
+	];
+
 	return (
 		<Modal
 			title={ t.training.createGroup }
 			onRequestClose={ onClose }
 			className="rc-wide-modal"
 		>
-			{ /* SSF Autofill section */ }
-			<div
-				style={ {
-					marginBottom: 16,
-					padding: 12,
-					background: '#f0f0f0',
-					borderRadius: 4,
-				} }
-			>
-				<div
-					style={ {
-						display: 'flex',
-						alignItems: 'flex-end',
-						gap: 8,
-					} }
-				>
-					<div style={ { flex: 1 } }>
-						<TextControl
-							label={ t.training.ssfTournamentGroupId }
-							value={ ssfGroupId }
-							onChange={ setSsfGroupId }
-							type="number"
-						/>
-					</div>
-					<Button
-						variant="secondary"
-						onClick={ handleSsfFetch }
-						isBusy={ ssfFetching }
-						disabled={
-							ssfFetching ||
-							! ssfGroupId ||
-							Number( ssfGroupId ) <= 0
-						}
-						style={ { marginBottom: 8 } }
-					>
-						{ ssfFetching
-							? t.training.ssfFetching
-							: t.training.fetchFromSsf }
-					</Button>
-				</div>
-				{ ssfError && (
-					<Text
-						style={ {
-							color: '#cc1818',
-							display: 'block',
-							marginTop: 4,
-						} }
-					>
-						{ ssfError }
-					</Text>
-				) }
-				{ ssfPreview && (
-					<div
-						style={ {
-							marginTop: 8,
-							padding: 8,
-							background: '#fff',
-							borderRadius: 4,
-						} }
-					>
-						<Text
-							style={ {
-								display: 'block',
-								fontWeight: 600,
-								marginBottom: 4,
-							} }
-						>
-							{ ssfPreview.name || '(no name)' }
-						</Text>
-						<Text style={ { display: 'block', marginBottom: 8 } }>
-							{ t.training.participants }:{ ' ' }
-							{ ssfPreview.participants.length }
-						</Text>
-						<div
-							style={ {
-								display: 'flex',
-								gap: 8,
-							} }
-						>
-							<Button
-								variant="primary"
-								size="small"
-								onClick={ applySsfData }
-							>
-								{ t.training.ssfPreviewConfirm }
-							</Button>
-							<Button
-								variant="tertiary"
-								size="small"
-								onClick={ () => setSsfPreview( null ) }
-							>
-								{ t.common.cancel }
-							</Button>
-						</div>
-					</div>
-				) }
-				{ ssfParticipants.length > 0 && ! ssfPreview && (
-					<Text
-						style={ {
-							display: 'block',
-							marginTop: 4,
-							color: '#1e7e34',
-						} }
-					>
-						{ t.training.participants }: { ssfParticipants.length }
-					</Text>
-				) }
-			</div>
-
 			<TextControl
 				label={ t.training.groupName }
 				value={ title }
@@ -364,59 +149,17 @@ export function CreateGroupModal( {
 				onChange={ setContact }
 			/>
 			<TextControl
-				label={ t.training.tournamentLink }
-				value={ tournamentLink }
-				onChange={ setTournamentLink }
-				type="url"
-			/>
-			<TextControl
 				label={ t.training.semester }
 				value={ semester }
 				onChange={ setSemester }
 				placeholder="VT2026"
 			/>
+
 			<SelectControl
-				label={ t.training.groupType }
-				value={ groupType }
-				options={ [
-					{
-						label: t.training.trainingOnly,
-						value: 'training',
-					},
-					{
-						label: t.training.tournamentOnly,
-						value: 'tournament',
-					},
-					{
-						label: t.training.trainingAndTournament,
-						value: 'both',
-					},
-				] }
-				onChange={ ( v ) => setGroupType( v as GroupType ) }
-			/>
-			{ groupType !== 'training' && (
-				<SelectControl
-					label={ t.training.timeControl }
-					value={ timeControl }
-					options={ [
-						{ label: t.training.classical, value: 'classical' },
-						{ label: t.training.rapid, value: 'rapid' },
-						{ label: t.training.blitz, value: 'blitz' },
-					] }
-					onChange={ ( v ) =>
-						setTimeControl( v as 'classical' | 'rapid' | 'blitz' )
-					}
-				/>
-			) }
-			<CheckboxControl
-				label={ t.training.showParticipants }
-				checked={ showParticipants }
-				onChange={ setShowParticipants }
-			/>
-			<CheckboxControl
-				label={ t.training.showStandings }
-				checked={ showStandings }
-				onChange={ setShowStandings }
+				label={ t.tournament.linkedTournament }
+				value={ linkedTournamentId }
+				options={ tournamentOptions }
+				onChange={ setLinkedTournamentId }
 			/>
 
 			{ /* Event picker */ }

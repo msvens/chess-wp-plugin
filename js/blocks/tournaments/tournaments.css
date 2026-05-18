@@ -1,0 +1,163 @@
+/* =========================================================
+   Tournaments Overview — tournaments.css
+   BEM naming: rc-tn-*
+   ========================================================= */
+
+.rc-tn {
+	--rc-tn-border: #e5e7eb;
+	--rc-tn-card-bg: #fff;
+	--rc-tn-card-hover: #f9fafb;
+	--rc-tn-meta-text: #6b7280;
+
+	--rc-tn-status-planned-bg: #f3f4f6;
+	--rc-tn-status-planned-text: #4b5563;
+	--rc-tn-status-active-bg: #dcfce7;
+	--rc-tn-status-active-text: #166534;
+	--rc-tn-status-completed-bg: #dbeafe;
+	--rc-tn-status-completed-text: #1e40af;
+
+	--rc-tn-category-bg: #f3f4f6;
+	--rc-tn-category-text: #4b5563;
+
+	--rc-tn-ssf-bg: #fef3c7;
+	--rc-tn-ssf-text: #92400e;
+
+	font-family: var(--wp--preset--font-family--geist, sans-serif);
+	color: var(--wp--preset--color--on-surface);
+	max-width: 100%;
+}
+
+html.dark .rc-tn {
+	--rc-tn-border: #374151;
+	--rc-tn-card-bg: #1f2937;
+	--rc-tn-card-hover: #263244;
+	--rc-tn-meta-text: #9ca3af;
+
+	--rc-tn-status-planned-bg: rgba(107, 114, 128, 0.2);
+	--rc-tn-status-planned-text: #d1d5db;
+	--rc-tn-status-active-bg: rgba(22, 163, 74, 0.2);
+	--rc-tn-status-active-text: #86efac;
+	--rc-tn-status-completed-bg: rgba(37, 99, 235, 0.2);
+	--rc-tn-status-completed-text: #93c5fd;
+
+	--rc-tn-category-bg: rgba(107, 114, 128, 0.2);
+	--rc-tn-category-text: #d1d5db;
+
+	--rc-tn-ssf-bg: rgba(217, 119, 6, 0.2);
+	--rc-tn-ssf-text: #fcd34d;
+}
+
+.rc-tn__loading,
+.rc-tn__empty {
+	text-align: center;
+	padding: 2rem;
+	color: var(--rc-tn-meta-text);
+}
+
+.rc-tn__grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+	gap: 1.25rem;
+}
+
+.rc-tn__card {
+	display: flex;
+	flex-direction: column;
+	padding: 1.25rem;
+	background: var(--rc-tn-card-bg);
+	border: 1px solid var(--rc-tn-border);
+	border-radius: 0.5rem;
+	text-decoration: none;
+	color: inherit;
+	transition: background-color 0.15s, box-shadow 0.15s;
+}
+
+.rc-tn__card:hover {
+	background: var(--rc-tn-card-hover);
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+html.dark .rc-tn__card:hover {
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.rc-tn__card-header {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.5rem;
+	margin-bottom: 0.75rem;
+}
+
+.rc-tn__badge {
+	display: inline-block;
+	padding: 0.125rem 0.5rem;
+	font-size: 0.75rem;
+	font-weight: 500;
+	line-height: 1.5;
+	border-radius: 9999px;
+	letter-spacing: 0.025em;
+	text-transform: uppercase;
+}
+
+.rc-tn__badge--status.is-planned {
+	background: var(--rc-tn-status-planned-bg);
+	color: var(--rc-tn-status-planned-text);
+}
+
+.rc-tn__badge--status.is-active {
+	background: var(--rc-tn-status-active-bg);
+	color: var(--rc-tn-status-active-text);
+}
+
+.rc-tn__badge--status.is-completed {
+	background: var(--rc-tn-status-completed-bg);
+	color: var(--rc-tn-status-completed-text);
+}
+
+.rc-tn__badge--category {
+	background: var(--rc-tn-category-bg);
+	color: var(--rc-tn-category-text);
+}
+
+.rc-tn__badge--ssf {
+	background: var(--rc-tn-ssf-bg);
+	color: var(--rc-tn-ssf-text);
+}
+
+.rc-tn__card-title {
+	margin: 0 0 0.5rem;
+	font-size: 1.125rem;
+	font-weight: 500;
+	line-height: 1.3;
+}
+
+.rc-tn__card-desc {
+	margin: 0 0 0.75rem;
+	font-size: 0.875rem;
+	color: var(--rc-tn-meta-text);
+	line-height: 1.5;
+	display: -webkit-box;
+	-webkit-line-clamp: 2;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+}
+
+.rc-tn__card-footer {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-top: auto;
+	padding-top: 0.75rem;
+	border-top: 1px solid var(--rc-tn-border);
+}
+
+.rc-tn__card-meta {
+	font-size: 0.8125rem;
+	color: var(--rc-tn-meta-text);
+}
+
+@media (max-width: 640px) {
+	.rc-tn__grid {
+		grid-template-columns: 1fr;
+	}
+}
