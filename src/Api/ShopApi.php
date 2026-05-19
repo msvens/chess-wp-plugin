@@ -73,15 +73,17 @@ class ShopApi {
 	public static function format_item( \WP_Post $post ): array {
 		$thumb_id = (int) get_post_thumbnail_id( $post->ID );
 		return [
-			'id'        => $post->ID,
-			'title'     => $post->post_title,
-			'permalink' => get_permalink( $post ),
-			'excerpt'   => $post->post_excerpt,
-			'price'     => get_post_meta( $post->ID, 'rc_price', true ) ?: '',
-			'salePrice' => get_post_meta( $post->ID, 'rc_sale_price', true ) ?: '',
-			'buyUrl'    => get_post_meta( $post->ID, 'rc_buy_url', true ) ?: '',
-			'imageUrl'  => $thumb_id ? wp_get_attachment_image_url( $thumb_id, 'medium' ) : '',
-			'imageAlt'  => $thumb_id ? get_post_meta( $thumb_id, '_wp_attachment_image_alt', true ) : '',
+			'id'          => $post->ID,
+			'title'       => $post->post_title,
+			'permalink'   => get_permalink( $post ),
+			'excerpt'     => $post->post_excerpt,
+			'price'       => get_post_meta( $post->ID, 'rc_price', true ) ?: '',
+			'salePrice'   => get_post_meta( $post->ID, 'rc_sale_price', true ) ?: '',
+			'buyUrl'      => get_post_meta( $post->ID, 'rc_buy_url', true ) ?: '',
+			'stockStatus' => get_post_meta( $post->ID, 'rc_stock_status', true ) ?: 'in_stock',
+			'howToOrder'  => get_post_meta( $post->ID, 'rc_how_to_order', true ) ?: '',
+			'imageUrl'    => $thumb_id ? wp_get_attachment_image_url( $thumb_id, 'medium' ) : '',
+			'imageAlt'    => $thumb_id ? get_post_meta( $thumb_id, '_wp_attachment_image_alt', true ) : '',
 		];
 	}
 }

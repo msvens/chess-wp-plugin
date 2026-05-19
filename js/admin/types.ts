@@ -19,6 +19,8 @@ export interface StoredRound {
 	bye?: string;
 }
 
+export type TrainingAudience = 'junior' | 'adult' | 'mixed';
+
 export interface TrainingGroup {
 	id: number;
 	slug: string;
@@ -26,6 +28,7 @@ export interface TrainingGroup {
 	description: string;
 	status: string;
 	semester: string;
+	audience: TrainingAudience;
 	eventId: number;
 	linkedTournamentId: number;
 	participants: Participant[];
@@ -107,6 +110,7 @@ export interface CreateGroupData {
 	title: string;
 	description?: string;
 	semester?: string;
+	audience?: TrainingAudience;
 	eventId?: number;
 	trainers?: string;
 	contact?: string;

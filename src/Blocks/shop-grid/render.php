@@ -56,6 +56,11 @@ $wrapper_attributes = get_block_wrapper_attributes(
 						<h3 class="rockaden-shop-card__title">
 							<a href="<?php echo esc_url( $item['permalink'] ); ?>"><?php echo esc_html( $item['title'] ); ?></a>
 						</h3>
+						<?php if ( 'out_of_stock' === ( $item['stockStatus'] ?? 'in_stock' ) ) : ?>
+							<p class="rockaden-shop-card__stock rockaden-shop-card__stock--out">
+								<?php esc_html_e( 'Slut i lager', 'rockaden-chess' ); ?>
+							</p>
+						<?php endif; ?>
 						<?php if ( $item['salePrice'] ) : ?>
 							<p class="rockaden-shop-card__price">
 								<s class="rockaden-shop-card__price-original"><?php echo esc_html( $item['price'] ); ?></s>
@@ -64,6 +69,11 @@ $wrapper_attributes = get_block_wrapper_attributes(
 						<?php elseif ( $item['price'] ) : ?>
 							<p class="rockaden-shop-card__price">
 								<span><?php echo esc_html( $item['price'] ); ?></span>
+							</p>
+						<?php endif; ?>
+						<?php if ( ! empty( $item['howToOrder'] ) ) : ?>
+							<p class="rockaden-shop-card__instructions">
+								<?php echo esc_html( $item['howToOrder'] ); ?>
 							</p>
 						<?php endif; ?>
 						<?php if ( $item['buyUrl'] ) : ?>

@@ -37,6 +37,9 @@ export function EditGroupModal( {
 	const [ title, setTitle ] = useState( group.title );
 	const [ description, setDescription ] = useState( group.description );
 	const [ semester, setSemester ] = useState( group.semester );
+	const [ audience, setAudience ] = useState< 'junior' | 'adult' | 'mixed' >(
+		group.audience || 'mixed'
+	);
 	const [ trainers, setTrainers ] = useState( group.trainers );
 	const [ contact, setContact ] = useState( group.contact );
 	const [ linkedTournamentId, setLinkedTournamentId ] = useState(
@@ -119,6 +122,7 @@ export function EditGroupModal( {
 				title: title.trim(),
 				description: description.trim(),
 				semester: semester.trim(),
+				audience,
 				trainers: trainers.trim(),
 				contact: contact.trim(),
 				linkedTournamentId: linkedTournamentId
@@ -182,6 +186,28 @@ export function EditGroupModal( {
 				value={ semester }
 				onChange={ setSemester }
 				placeholder="VT2026"
+			/>
+
+			<SelectControl
+				label={ t.training.audience }
+				value={ audience }
+				options={ [
+					{
+						label: t.training.audiences.junior,
+						value: 'junior',
+					},
+					{
+						label: t.training.audiences.adult,
+						value: 'adult',
+					},
+					{
+						label: t.training.audiences.mixed,
+						value: 'mixed',
+					},
+				] }
+				onChange={ ( v ) =>
+					setAudience( v as 'junior' | 'adult' | 'mixed' )
+				}
 			/>
 
 			<SelectControl

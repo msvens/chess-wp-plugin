@@ -32,6 +32,9 @@ export function CreateGroupModal( {
 	const [ title, setTitle ] = useState( '' );
 	const [ description, setDescription ] = useState( '' );
 	const [ semester, setSemester ] = useState( '' );
+	const [ audience, setAudience ] = useState< 'junior' | 'adult' | 'mixed' >(
+		'mixed'
+	);
 	const [ trainers, setTrainers ] = useState( '' );
 	const [ contact, setContact ] = useState( '' );
 	const [ linkedTournamentId, setLinkedTournamentId ] = useState( '' );
@@ -92,6 +95,7 @@ export function CreateGroupModal( {
 				title: title.trim(),
 				description: description.trim() || undefined,
 				semester: semester.trim() || undefined,
+				audience,
 				eventId,
 				trainers: trainers.trim() || undefined,
 				contact: contact.trim() || undefined,
@@ -153,6 +157,28 @@ export function CreateGroupModal( {
 				value={ semester }
 				onChange={ setSemester }
 				placeholder="VT2026"
+			/>
+
+			<SelectControl
+				label={ t.training.audience }
+				value={ audience }
+				options={ [
+					{
+						label: t.training.audiences.junior,
+						value: 'junior',
+					},
+					{
+						label: t.training.audiences.adult,
+						value: 'adult',
+					},
+					{
+						label: t.training.audiences.mixed,
+						value: 'mixed',
+					},
+				] }
+				onChange={ ( v ) =>
+					setAudience( v as 'junior' | 'adult' | 'mixed' )
+				}
 			/>
 
 			<SelectControl

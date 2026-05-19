@@ -20,6 +20,8 @@ class TrainingApi {
 
 	private const NAMESPACE = 'rockaden/v1';
 
+	private const ALLOWED_AUDIENCES = [ 'junior', 'adult', 'mixed' ];
+
 	/**
 	 * Register REST routes.
 	 */
@@ -200,6 +202,12 @@ class TrainingApi {
 		if ( ! empty( $body['semester'] ) ) {
 			update_post_meta( $post_id, 'rc_semester', sanitize_text_field( $body['semester'] ) );
 		}
+		if ( ! empty( $body['audience'] ) ) {
+			$audience = sanitize_text_field( $body['audience'] );
+			if ( in_array( $audience, self::ALLOWED_AUDIENCES, true ) ) {
+				update_post_meta( $post_id, 'rc_audience', $audience );
+			}
+		}
 		if ( ! empty( $body['eventId'] ) ) {
 			update_post_meta( $post_id, 'rc_event_id', (int) $body['eventId'] );
 		}
@@ -243,6 +251,12 @@ class TrainingApi {
 
 		if ( isset( $body['semester'] ) ) {
 			update_post_meta( $post->ID, 'rc_semester', sanitize_text_field( $body['semester'] ) );
+		}
+		if ( isset( $body['audience'] ) ) {
+			$audience = sanitize_text_field( $body['audience'] );
+			if ( in_array( $audience, self::ALLOWED_AUDIENCES, true ) ) {
+				update_post_meta( $post->ID, 'rc_audience', $audience );
+			}
 		}
 		if ( isset( $body['eventId'] ) ) {
 			update_post_meta( $post->ID, 'rc_event_id', (int) $body['eventId'] );
@@ -514,6 +528,7 @@ class TrainingApi {
 			'description'        => $post->post_content,
 			'status'             => get_post_meta( $post->ID, 'rc_status', true ) ?: 'draft',
 			'semester'           => get_post_meta( $post->ID, 'rc_semester', true ) ?: '',
+			'audience'           => get_post_meta( $post->ID, 'rc_audience', true ) ?: 'mixed',
 			'eventId'            => $event_id,
 			'linkedTournamentId' => (int) get_post_meta( $post->ID, 'rc_linked_tournament_id', true ),
 			'participants'       => $participants,

@@ -24,6 +24,12 @@ export interface Translations {
 		blitz: string;
 		bye: string;
 		semester: string;
+		audience: string;
+		audiences: {
+			junior: string;
+			adult: string;
+			mixed: string;
+		};
 		startSession: string;
 		saveAttendance: string;
 		saveResults: string;
@@ -225,6 +231,12 @@ const translations: Record< Language, Translations > = {
 			blitz: 'Blitz',
 			bye: 'Bye',
 			semester: 'Semester',
+			audience: 'Audience',
+			audiences: {
+				junior: 'Junior',
+				adult: 'Adult',
+				mixed: 'Mixed',
+			},
 			startSession: 'Start Session',
 			saveAttendance: 'Save Attendance',
 			saveResults: 'Save Results',
@@ -427,6 +439,12 @@ const translations: Record< Language, Translations > = {
 			blitz: 'Blixt',
 			bye: 'Bye',
 			semester: 'Termin',
+			audience: 'Målgrupp',
+			audiences: {
+				junior: 'Junior',
+				adult: 'Vuxen',
+				mixed: 'Blandad',
+			},
 			startSession: 'Starta tillfälle',
 			saveAttendance: 'Spara närvaro',
 			saveResults: 'Spara resultat',

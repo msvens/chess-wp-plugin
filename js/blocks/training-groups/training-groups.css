@@ -37,10 +37,39 @@ html.dark .rc-tg {
 	color: var(--rc-tg-meta-text);
 }
 
-/* --- Card grid --- */
+/* --- Audience columns: Junior | Adult+Mixed --- */
+.rc-tg__columns {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 2rem;
+}
+
+.rc-tg__column {
+	display: flex;
+	flex-direction: column;
+	min-width: 0;
+}
+
+.rc-tg__column-title {
+	margin: 0 0 1rem;
+	font-size: 1.125rem;
+	font-weight: 500;
+	letter-spacing: 0.025em;
+	text-transform: uppercase;
+	color: var(--rc-tg-meta-text);
+}
+
+@media (max-width: 640px) {
+	.rc-tg__columns {
+		grid-template-columns: 1fr;
+		gap: 2rem;
+	}
+}
+
+/* --- Card grid (inside each column) --- */
 .rc-tg__grid {
 	display: grid;
-	grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+	grid-template-columns: 1fr;
 	gap: 1.25rem;
 }
 

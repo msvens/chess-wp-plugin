@@ -53,6 +53,10 @@ class TrainingGroup {
 				'type'    => 'string',
 				'default' => '',
 			],
+			'rc_audience'             => [
+				'type'    => 'string',
+				'default' => 'mixed',
+			],
 			'rc_event_id'             => [
 				'type'    => 'integer',
 				'default' => 0,

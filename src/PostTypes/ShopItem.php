@@ -49,15 +49,23 @@ class ShopItem {
 	 */
 	private static function register_meta(): void {
 		$meta_fields = [
-			'rc_price'      => [
+			'rc_price'        => [
 				'type'    => 'string',
 				'default' => '',
 			],
-			'rc_sale_price' => [
+			'rc_sale_price'   => [
 				'type'    => 'string',
 				'default' => '',
 			],
-			'rc_buy_url'    => [
+			'rc_buy_url'      => [
+				'type'    => 'string',
+				'default' => '',
+			],
+			'rc_stock_status' => [
+				'type'    => 'string',
+				'default' => 'in_stock',
+			],
+			'rc_how_to_order' => [
 				'type'    => 'string',
 				'default' => '',
 			],
