@@ -14,6 +14,8 @@ import {
 	TIME_GRID_START,
 	TIME_GRID_HOURS,
 } from './utils';
+import { useDragSelect } from './useDragSelect';
+import type { ActiveSelection } from './useDragSelect';
 
 interface CalendarDayViewProps {
 	viewDate: Date;
@@ -25,6 +27,19 @@ interface CalendarDayViewProps {
 		event: CalendarEvent,
 		rect: { top: number; left: number; bottom: number; right: number }
 	) => void;
+	canEdit: boolean;
+	onCreateAt: (
+		startISO: string,
+		endISO: string,
+		anchorRect: {
+			top: number;
+			left: number;
+			bottom: number;
+			right: number;
+		}
+	) => void;
+	activeSelection: ActiveSelection | null;
+	setActiveSelection: ( sel: ActiveSelection | null ) => void;
 }
 
 export default function CalendarDayView( {
@@ -33,11 +48,22 @@ export default function CalendarDayView( {
 	t,
 	eventGroupMap,
 	onSelectEvent,
+	canEdit,
+	onCreateAt,
+	activeSelection,
+	setActiveSelection,
 }: CalendarDayViewProps ) {
 	const key = dateKey( viewDate );
 	const grouped = useMemo( () => groupEventsByDate( events ), [ events ] );
 	const dayEvents = grouped[ key ] || [];
 	const slots = layoutEvents( dayEvents );
+	const { onPointerDown, overlayStyle } = useDragSelect(
+		key,
+		canEdit,
+		onCreateAt,
+		activeSelection,
+		setActiveSelection
+	);
 
 	const hours = Array.from(
 		{ length: TIME_GRID_HOURS },
@@ -82,10 +108,20 @@ export default function CalendarDayView( {
 					) ) }
 				</div>
 
-				<div className="rc-cal__day-col">
+				<div
+					className="rc-cal__day-col"
+					onPointerDown={ onPointerDown }
+				>
 					{ hours.map( ( h ) => (
 						<div key={ h } className="rc-cal__hour-line" />
 					) ) }
+
+					{ overlayStyle && (
+						<div
+							className="rc-cal__drag-overlay"
+							style={ overlayStyle }
+						/>
+					) }
 
 					{ slots.map( ( slot ) => {
 						const cls = categoryClassMap[ slot.event.category ];

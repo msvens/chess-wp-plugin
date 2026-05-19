@@ -157,6 +157,12 @@ export interface Translations {
 		recurring: string;
 		weekly: string;
 		biweekly: string;
+		edit: string;
+		delete: string;
+		deleteConfirm: string;
+		deleteThisOnly: string;
+		deleteSeries: string;
+		createEvent: string;
 	};
 	ranking: {
 		title: string;
@@ -355,6 +361,12 @@ const translations: Record< Language, Translations > = {
 			recurring: 'Recurring',
 			weekly: 'Weekly',
 			biweekly: 'Biweekly',
+			edit: 'Edit',
+			delete: 'Delete',
+			deleteConfirm: 'Delete this event?',
+			deleteThisOnly: 'Just this one',
+			deleteSeries: 'Whole series',
+			createEvent: 'Create event',
 		},
 		ranking: {
 			title: 'Ranking List',
@@ -552,6 +564,12 @@ const translations: Record< Language, Translations > = {
 			recurring: 'Återkommande',
 			weekly: 'Varje vecka',
 			biweekly: 'Varannan vecka',
+			edit: 'Redigera',
+			delete: 'Ta bort',
+			deleteConfirm: 'Ta bort detta event?',
+			deleteThisOnly: 'Bara denna',
+			deleteSeries: 'Hela serien',
+			createEvent: 'Skapa event',
 		},
 		ranking: {
 			title: 'Rankinglista',

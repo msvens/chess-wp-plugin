@@ -1,16 +1,21 @@
-import { useEffect, useRef } from '@wordpress/element';
+import { useEffect, useRef, useState } from '@wordpress/element';
 import type { CalendarEvent } from '../../shared/types';
 import type { Translations } from '../../shared/translations';
 import type { EventGroupLink } from './utils';
 import { categoryClassMap, formatTime } from './utils';
+import DeleteConfirmDialog from './DeleteConfirmDialog';
 
 interface DayEventsPopoverProps {
 	events: CalendarEvent[];
 	dayLabel: string;
 	anchorRect: { top: number; left: number; bottom: number; right: number };
 	t: Translations[ 'calendar' ];
+	commonT: Translations[ 'common' ];
 	eventGroupMap: Map< number, EventGroupLink[] >;
 	onClose: () => void;
+	canEdit: boolean;
+	adminBase: string;
+	onDeleted: ( event: CalendarEvent ) => void;
 }
 
 export default function DayEventsPopover( {
@@ -18,10 +23,15 @@ export default function DayEventsPopover( {
 	dayLabel,
 	anchorRect,
 	t,
+	commonT,
 	eventGroupMap,
 	onClose,
+	canEdit,
+	adminBase,
+	onDeleted,
 }: DayEventsPopoverProps ) {
 	const ref = useRef< HTMLDivElement >( null );
+	const [ confirmFor, setConfirmFor ] = useState< string | null >( null );
 
 	// Position near the anchor, keeping within viewport
 	useEffect( () => {
@@ -118,6 +128,7 @@ export default function DayEventsPopover( {
 						? Number( ev.parentId )
 						: Number( ev.id );
 					const linkedGroups = eventGroupMap.get( originalId ) || [];
+					const showingConfirm = confirmFor === ev.id;
 					return (
 						<li key={ ev.id } className="rc-cal__day-popover-item">
 							<span
@@ -160,6 +171,39 @@ export default function DayEventsPopover( {
 											</li>
 										) ) }
 									</ul>
+								) }
+								{ canEdit && ! showingConfirm && (
+									<div className="rc-cal__popover-actions">
+										<button
+											type="button"
+											className="rc-cal__btn"
+											onClick={ () => {
+												window.location.assign(
+													`${ adminBase }post.php?post=${ originalId }&action=edit`
+												);
+											} }
+										>
+											{ t.edit }
+										</button>
+										<button
+											type="button"
+											className="rc-cal__btn rc-cal__btn--danger"
+											onClick={ () =>
+												setConfirmFor( ev.id )
+											}
+										>
+											{ t.delete }
+										</button>
+									</div>
+								) }
+								{ canEdit && showingConfirm && (
+									<DeleteConfirmDialog
+										event={ ev }
+										t={ t }
+										commonT={ commonT }
+										onCancel={ () => setConfirmFor( null ) }
+										onDeleted={ onDeleted }
+									/>
 								) }
 							</div>
 						</li>

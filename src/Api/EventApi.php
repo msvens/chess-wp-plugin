@@ -62,6 +62,11 @@ class EventApi {
 					'callback'            => [ self::class, 'update_event' ],
 					'permission_callback' => [ self::class, 'can_edit' ],
 				],
+				[
+					'methods'             => 'DELETE',
+					'callback'            => [ self::class, 'delete_event' ],
+					'permission_callback' => [ self::class, 'can_edit' ],
+				],
 			]
 		);
 	}
@@ -227,6 +232,24 @@ class EventApi {
 		self::save_event_meta( $post->ID, $body );
 
 		return new WP_REST_Response( EventExpander::format_event_raw( get_post( $post->ID ) ) );
+	}
+
+	/**
+	 * Delete an event.
+	 *
+	 * @param WP_REST_Request $request The incoming request.
+	 * @return WP_REST_Response|WP_Error
+	 */
+	public static function delete_event( WP_REST_Request $request ): WP_REST_Response|WP_Error {
+		$post = get_post( (int) $request->get_url_params()['id'] );
+
+		if ( ! $post || Event::POST_TYPE !== $post->post_type ) {
+			return new WP_Error( 'not_found', 'Event not found', [ 'status' => 404 ] );
+		}
+
+		wp_delete_post( $post->ID, true );
+
+		return new WP_REST_Response( null, 204 );
 	}
 
 	/**

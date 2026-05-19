@@ -20,6 +20,8 @@ $wrapper_attributes = get_block_wrapper_attributes(
 ?>
 <div <?php echo wp_kses_post( $wrapper_attributes ); ?>
 	data-rest-url="<?php echo esc_url( rest_url( 'rockaden/v1/' ) ); ?>"
-	data-locale="<?php echo esc_attr( determine_locale() ); ?>">
+	data-locale="<?php echo esc_attr( determine_locale() ); ?>"
+	data-can-edit="<?php echo current_user_can( 'edit_posts' ) ? '1' : '0'; ?>"
+	data-admin-base="<?php echo esc_url( admin_url() ); ?>">
 	<p><?php esc_html_e( 'Loading calendar...', 'rockaden-chess' ); ?></p>
 </div>

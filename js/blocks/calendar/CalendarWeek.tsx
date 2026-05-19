@@ -14,6 +14,9 @@ import {
 	TIME_GRID_START,
 	TIME_GRID_HOURS,
 } from './utils';
+import type { LayoutSlot } from './utils';
+import { useDragSelect } from './useDragSelect';
+import type { ActiveSelection } from './useDragSelect';
 
 const dayKeys = [ 'mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun' ] as const;
 
@@ -27,6 +30,135 @@ interface CalendarWeekProps {
 		event: CalendarEvent,
 		rect: { top: number; left: number; bottom: number; right: number }
 	) => void;
+	canEdit: boolean;
+	onCreateAt: (
+		startISO: string,
+		endISO: string,
+		anchorRect: {
+			top: number;
+			left: number;
+			bottom: number;
+			right: number;
+		}
+	) => void;
+	activeSelection: ActiveSelection | null;
+	setActiveSelection: ( sel: ActiveSelection | null ) => void;
+}
+
+interface WeekDayColumnProps {
+	date: Date;
+	slots: LayoutSlot[];
+	hours: number[];
+	today: boolean;
+	nowPosition: number;
+	canEdit: boolean;
+	onCreateAt: (
+		startISO: string,
+		endISO: string,
+		anchorRect: {
+			top: number;
+			left: number;
+			bottom: number;
+			right: number;
+		}
+	) => void;
+	activeSelection: ActiveSelection | null;
+	setActiveSelection: ( sel: ActiveSelection | null ) => void;
+	onSelectEvent: (
+		event: CalendarEvent,
+		rect: { top: number; left: number; bottom: number; right: number }
+	) => void;
+	onEventClick: (
+		evt: CalendarEvent,
+		e: React.MouseEvent< HTMLDivElement >
+	) => void;
+}
+
+function WeekDayColumn( {
+	date,
+	slots,
+	hours,
+	today,
+	nowPosition,
+	canEdit,
+	onCreateAt,
+	activeSelection,
+	setActiveSelection,
+	onSelectEvent,
+	onEventClick,
+}: WeekDayColumnProps ) {
+	const key = dateKey( date );
+	const { onPointerDown, overlayStyle } = useDragSelect(
+		key,
+		canEdit,
+		onCreateAt,
+		activeSelection,
+		setActiveSelection
+	);
+
+	return (
+		<div className="rc-cal__day-col" onPointerDown={ onPointerDown }>
+			{ hours.map( ( h ) => (
+				<div key={ h } className="rc-cal__hour-line" />
+			) ) }
+
+			{ overlayStyle && (
+				<div className="rc-cal__drag-overlay" style={ overlayStyle } />
+			) }
+
+			{ slots.map( ( slot ) => {
+				const cls = categoryClassMap[ slot.event.category ];
+				const top = timeToPosition( slot.event.startDate );
+				const height = durationToHeight(
+					slot.event.startDate,
+					slot.event.endDate
+				);
+				const width = 100 / slot.totalColumns;
+				const left = slot.column * width;
+
+				return (
+					<div
+						key={ slot.event.id }
+						className={ `rc-cal__time-event rc-cal__time-event--${ cls }` }
+						style={ {
+							top: `${ top }%`,
+							height: `${ Math.max( height, 1.5 ) }%`,
+							left: `${ left }%`,
+							width: `calc(${ width }% - 2px)`,
+						} }
+						title={ `${ slot.event.title } (${ formatTime(
+							slot.event.startDate
+						) }–${ formatTime( slot.event.endDate ) })` }
+						onClick={ ( e ) => onEventClick( slot.event, e ) }
+						role="button"
+						tabIndex={ 0 }
+						onKeyDown={ ( e ) => {
+							if ( e.key === 'Enter' || e.key === ' ' ) {
+								const rect =
+									e.currentTarget.getBoundingClientRect();
+								onSelectEvent( slot.event, rect );
+							}
+						} }
+					>
+						<div className="rc-cal__time-event-title">
+							{ slot.event.title }
+						</div>
+						<div className="rc-cal__time-event-time">
+							{ formatTime( slot.event.startDate ) }–
+							{ formatTime( slot.event.endDate ) }
+						</div>
+					</div>
+				);
+			} ) }
+
+			{ today && nowPosition > 0 && nowPosition < 100 && (
+				<div
+					className="rc-cal__now-line"
+					style={ { top: `${ nowPosition }%` } }
+				/>
+			) }
+		</div>
+	);
 }
 
 export default function CalendarWeek( {
@@ -35,6 +167,10 @@ export default function CalendarWeek( {
 	t,
 	onDrillToDay,
 	onSelectEvent,
+	canEdit,
+	onCreateAt,
+	activeSelection,
+	setActiveSelection,
 }: CalendarWeekProps ) {
 	const weekDates = useMemo( () => getWeekDates( viewDate ), [ viewDate ] );
 	const grouped = useMemo( () => groupEventsByDate( events ), [ events ] );
@@ -131,86 +267,20 @@ export default function CalendarWeek( {
 					);
 
 					return (
-						<div key={ key } className="rc-cal__day-col">
-							{ hours.map( ( h ) => (
-								<div key={ h } className="rc-cal__hour-line" />
-							) ) }
-
-							{ slots.map( ( slot ) => {
-								const cls =
-									categoryClassMap[ slot.event.category ];
-								const top = timeToPosition(
-									slot.event.startDate
-								);
-								const height = durationToHeight(
-									slot.event.startDate,
-									slot.event.endDate
-								);
-								const width = 100 / slot.totalColumns;
-								const left = slot.column * width;
-
-								return (
-									<div
-										key={ slot.event.id }
-										className={ `rc-cal__time-event rc-cal__time-event--${ cls }` }
-										style={ {
-											top: `${ top }%`,
-											height: `${ Math.max(
-												height,
-												1.5
-											) }%`,
-											left: `${ left }%`,
-											width: `calc(${ width }% - 2px)`,
-										} }
-										title={ `${
-											slot.event.title
-										} (${ formatTime(
-											slot.event.startDate
-										) }–${ formatTime(
-											slot.event.endDate
-										) })` }
-										onClick={ ( e ) =>
-											handleEventClick( slot.event, e )
-										}
-										role="button"
-										tabIndex={ 0 }
-										onKeyDown={ ( e ) => {
-											if (
-												e.key === 'Enter' ||
-												e.key === ' '
-											) {
-												const rect =
-													e.currentTarget.getBoundingClientRect();
-												onSelectEvent(
-													slot.event,
-													rect
-												);
-											}
-										} }
-									>
-										<div className="rc-cal__time-event-title">
-											{ slot.event.title }
-										</div>
-										<div className="rc-cal__time-event-time">
-											{ formatTime(
-												slot.event.startDate
-											) }
-											–
-											{ formatTime( slot.event.endDate ) }
-										</div>
-									</div>
-								);
-							} ) }
-
-							{ today && nowPosition > 0 && nowPosition < 100 && (
-								<div
-									className="rc-cal__now-line"
-									style={ {
-										top: `${ nowPosition }%`,
-									} }
-								/>
-							) }
-						</div>
+						<WeekDayColumn
+							key={ key }
+							date={ date }
+							slots={ slots }
+							hours={ hours }
+							today={ today }
+							nowPosition={ nowPosition }
+							canEdit={ canEdit }
+							onCreateAt={ onCreateAt }
+							activeSelection={ activeSelection }
+							setActiveSelection={ setActiveSelection }
+							onSelectEvent={ onSelectEvent }
+							onEventClick={ handleEventClick }
+						/>
 					);
 				} ) }
 			</div>

@@ -307,6 +307,24 @@ document.addEventListener( 'DOMContentLoaded', () => {
 		: startInstances;
 	fpEnd = Array.isArray( endInstances ) ? endInstances[ 0 ] : endInstances;
 
+	// Prefill start/end from query string when opening a brand-new event page
+	// (e.g. from the calendar's click/drag-to-create flow).
+	const titleField = document.getElementById(
+		'title'
+	) as HTMLInputElement | null;
+	if ( ! titleField || titleField.value === '' ) {
+		const params = new URLSearchParams( window.location.search );
+		const qStart = params.get( 'start' );
+		const qEnd = params.get( 'end' );
+		const fmt = ( raw: string ): string => raw.replace( 'T', ' ' );
+		if ( qStart && fpStart ) {
+			fpStart.setDate( fmt( qStart ), true );
+		}
+		if ( qEnd && fpEnd ) {
+			fpEnd.setDate( fmt( qEnd ), true );
+		}
+	}
+
 	// Recurrence toggle.
 	const cb = document.getElementById(
 		'rc_is_recurring'
