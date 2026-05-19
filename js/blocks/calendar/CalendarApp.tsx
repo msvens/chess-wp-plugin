@@ -1,4 +1,10 @@
-import { useState, useEffect, useMemo, useCallback } from '@wordpress/element';
+import {
+	useState,
+	useEffect,
+	useMemo,
+	useCallback,
+	useRef,
+} from '@wordpress/element';
 import apiFetch from '@wordpress/api-fetch';
 import type { CalendarEvent, EventCategory } from '../../shared/types';
 import { getTranslation, toLanguage } from '../../shared/translations';
@@ -12,15 +18,37 @@ import {
 	getWeekDates,
 } from './utils';
 import type { ViewMode, EventGroupLink } from './utils';
+import type { ActiveSelection } from './useDragSelect';
 import CalendarHeader from './CalendarHeader';
 import CalendarMonth from './CalendarMonth';
 import CalendarWeek from './CalendarWeek';
 import CalendarDayView from './CalendarDayView';
 import EventPopover from './EventPopover';
 import DayEventsPopover from './DayEventsPopover';
+import CreateEventPopover from './CreateEventPopover';
+
+const VIEW_MODE_KEY = 'rockaden-calendar-view';
+const DISMISS_GRACE_MS = 200;
+
+function loadStoredViewMode(): ViewMode {
+	if ( typeof window === 'undefined' ) {
+		return 'month';
+	}
+	try {
+		const stored = window.localStorage.getItem( VIEW_MODE_KEY );
+		if ( stored === 'month' || stored === 'week' || stored === 'day' ) {
+			return stored;
+		}
+	} catch {
+		// localStorage may be unavailable (private mode, etc.) — fall back.
+	}
+	return 'month';
+}
 
 interface CalendarAppProps {
 	locale: string;
+	canEdit: boolean;
+	adminBase: string;
 }
 
 interface TrainingGroupSummary {
@@ -30,12 +58,17 @@ interface TrainingGroupSummary {
 	eventId: number;
 }
 
-export default function CalendarApp( { locale }: CalendarAppProps ) {
+export default function CalendarApp( {
+	locale,
+	canEdit,
+	adminBase,
+}: CalendarAppProps ) {
 	const currentLocale = useLocale( locale );
 	const lang = toLanguage( currentLocale );
 	const t = getTranslation( lang );
 
-	const [ viewMode, setViewMode ] = useState< ViewMode >( 'month' );
+	const [ viewMode, setViewMode ] =
+		useState< ViewMode >( loadStoredViewMode );
 	const [ viewDate, setViewDate ] = useState( () => new Date() );
 	const [ events, setEvents ] = useState< CalendarEvent[] >( [] );
 	const [ filterCategory, setFilterCategory ] =
@@ -54,6 +87,17 @@ export default function CalendarApp( { locale }: CalendarAppProps ) {
 		dayLabel: string;
 		rect: { top: number; left: number; bottom: number; right: number };
 	} | null >( null );
+	const [ refetchKey, setRefetchKey ] = useState( 0 );
+	const [ createPopover, setCreatePopover ] = useState< {
+		startISO: string;
+		endISO: string;
+		rect: { top: number; left: number; bottom: number; right: number };
+	} | null >( null );
+	const [ activeSelection, setActiveSelection ] =
+		useState< ActiveSelection | null >( null );
+	// Suppress a fresh create-popover for a short grace period after dismissing
+	// one, so a click that closes the popover doesn't immediately re-open it.
+	const justDismissedRef = useRef< number >( 0 );
 
 	// Derived year/month from viewDate
 	const currentYear = viewDate.getFullYear();
@@ -98,7 +142,7 @@ export default function CalendarApp( { locale }: CalendarAppProps ) {
 				setError( 'Failed to load events' );
 				setLoading( false );
 			} );
-	}, [ currentYear, currentMonth ] );
+	}, [ currentYear, currentMonth, refetchKey ] );
 
 	const filteredEvents = useMemo(
 		() =>
@@ -156,6 +200,13 @@ export default function CalendarApp( { locale }: CalendarAppProps ) {
 		setViewMode( mode );
 		setPopoverEvent( null );
 		setDayPopover( null );
+		if ( typeof window !== 'undefined' ) {
+			try {
+				window.localStorage.setItem( VIEW_MODE_KEY, mode );
+			} catch {
+				// localStorage may be unavailable; ignore.
+			}
+		}
 	}, [] );
 
 	const handleDrillToDay = useCallback( ( date: Date ) => {
@@ -163,6 +214,13 @@ export default function CalendarApp( { locale }: CalendarAppProps ) {
 		setViewMode( 'day' );
 		setPopoverEvent( null );
 		setDayPopover( null );
+		if ( typeof window !== 'undefined' ) {
+			try {
+				window.localStorage.setItem( VIEW_MODE_KEY, 'day' );
+			} catch {
+				// localStorage may be unavailable; ignore.
+			}
+		}
 	}, [] );
 
 	const handleSelectEvent = useCallback(
@@ -199,6 +257,77 @@ export default function CalendarApp( { locale }: CalendarAppProps ) {
 		},
 		[ locale ]
 	);
+
+	const handleEventDeleted = useCallback( ( deletedEvent: CalendarEvent ) => {
+		const parentId = deletedEvent.parentId
+			? Number( deletedEvent.parentId )
+			: Number( deletedEvent.id );
+		// Optimistic local-state filter: drop the deleted occurrence (or all occurrences of the series).
+		setEvents( ( prev ) =>
+			prev.filter( ( e ) => {
+				if ( e.id === deletedEvent.id ) {
+					return false;
+				}
+				// If we deleted the whole series (parent post), strip all siblings too.
+				const eParentId = e.parentId
+					? Number( e.parentId )
+					: Number( e.id );
+				if ( ! deletedEvent.parentId && eParentId === parentId ) {
+					return false;
+				}
+				return true;
+			} )
+		);
+		setPopoverEvent( null );
+		setDayPopover( null );
+		setRefetchKey( ( k ) => k + 1 );
+	}, [] );
+
+	const handleCreateAt = useCallback(
+		(
+			startISO: string,
+			endISO: string,
+			anchorRect: {
+				top: number;
+				left: number;
+				bottom: number;
+				right: number;
+			}
+		) => {
+			// Swallow create-events that fire within the grace window after a
+			// dismiss (so clicking outside the popover doesn't immediately
+			// re-open one at the new click location).
+			if ( Date.now() - justDismissedRef.current < DISMISS_GRACE_MS ) {
+				return;
+			}
+			setPopoverEvent( null );
+			setDayPopover( null );
+			setCreatePopover( {
+				startISO,
+				endISO,
+				rect: anchorRect,
+			} );
+		},
+		[]
+	);
+
+	const dismissCreatePopover = useCallback( () => {
+		justDismissedRef.current = Date.now();
+		setCreatePopover( null );
+		setActiveSelection( null );
+	}, [] );
+
+	const handleCreateConfirm = useCallback( () => {
+		if ( ! createPopover ) {
+			return;
+		}
+		const url =
+			`${ adminBase }post-new.php?post_type=rc_event` +
+			`&start=${ encodeURIComponent(
+				createPopover.startISO
+			) }&end=${ encodeURIComponent( createPopover.endISO ) }`;
+		window.location.assign( url );
+	}, [ adminBase, createPopover ] );
 
 	// Compute title based on view mode
 	const headerTitle = useMemo( () => {
@@ -250,6 +379,8 @@ export default function CalendarApp( { locale }: CalendarAppProps ) {
 					t={ t.calendar }
 					onSelectEvent={ handleSelectEvent }
 					onDaySelect={ handleDaySelect }
+					canEdit={ canEdit }
+					onCreateAt={ handleCreateAt }
 				/>
 			) }
 
@@ -261,6 +392,10 @@ export default function CalendarApp( { locale }: CalendarAppProps ) {
 					t={ t.calendar }
 					onDrillToDay={ handleDrillToDay }
 					onSelectEvent={ handleSelectEvent }
+					canEdit={ canEdit }
+					onCreateAt={ handleCreateAt }
+					activeSelection={ activeSelection }
+					setActiveSelection={ setActiveSelection }
 				/>
 			) }
 
@@ -272,6 +407,10 @@ export default function CalendarApp( { locale }: CalendarAppProps ) {
 					t={ t.calendar }
 					eventGroupMap={ eventGroupMap }
 					onSelectEvent={ handleSelectEvent }
+					canEdit={ canEdit }
+					onCreateAt={ handleCreateAt }
+					activeSelection={ activeSelection }
+					setActiveSelection={ setActiveSelection }
 				/>
 			) }
 
@@ -280,8 +419,12 @@ export default function CalendarApp( { locale }: CalendarAppProps ) {
 					event={ popoverEvent.event }
 					anchorRect={ popoverEvent.rect }
 					t={ t.calendar }
+					commonT={ t.common }
 					eventGroupMap={ eventGroupMap }
 					onClose={ () => setPopoverEvent( null ) }
+					canEdit={ canEdit }
+					adminBase={ adminBase }
+					onDeleted={ handleEventDeleted }
 				/>
 			) }
 
@@ -291,8 +434,24 @@ export default function CalendarApp( { locale }: CalendarAppProps ) {
 					dayLabel={ dayPopover.dayLabel }
 					anchorRect={ dayPopover.rect }
 					t={ t.calendar }
+					commonT={ t.common }
 					eventGroupMap={ eventGroupMap }
 					onClose={ () => setDayPopover( null ) }
+					canEdit={ canEdit }
+					adminBase={ adminBase }
+					onDeleted={ handleEventDeleted }
+				/>
+			) }
+
+			{ createPopover && (
+				<CreateEventPopover
+					anchorRect={ createPopover.rect }
+					startISO={ createPopover.startISO }
+					endISO={ createPopover.endISO }
+					locale={ locale }
+					t={ t.calendar }
+					onCancel={ dismissCreatePopover }
+					onCreate={ handleCreateConfirm }
 				/>
 			) }
 		</div>

@@ -956,3 +956,142 @@ html.dark .rc-cal {
 		overflow-x: visible;
 	}
 }
+
+/* --- Inline editing affordances --- */
+.rc-cal__popover-actions {
+	display: flex;
+	gap: 0.5rem;
+	margin-top: 0.75rem;
+	padding-top: 0.75rem;
+	border-top: 1px solid var(--rc-border);
+}
+
+.rc-cal__btn {
+	font-family: inherit;
+	font-size: 0.8125rem;
+	padding: 0.375rem 0.75rem;
+	border-radius: 0.25rem;
+	border: 1px solid var(--rc-border);
+	background: transparent;
+	color: inherit;
+	cursor: pointer;
+	transition:
+		background 0.12s ease,
+		border-color 0.12s ease;
+}
+
+.rc-cal__btn:hover:not(:disabled) {
+	background: var(--rc-highlight-light);
+	border-color: var(--rc-highlight);
+}
+
+.rc-cal__btn:disabled {
+	opacity: 0.5;
+	cursor: not-allowed;
+}
+
+.rc-cal__btn--primary {
+	background: var(--wp--preset--color--primary, #2563eb);
+	color: #fff;
+	border-color: transparent;
+	font-weight: 500;
+}
+
+.rc-cal__btn--primary:hover:not(:disabled) {
+	background: var(--wp--preset--color--primary, #1d4ed8);
+	border-color: transparent;
+	filter: brightness(0.95);
+}
+
+.rc-cal__btn--danger {
+	color: #b91c1c;
+	border-color: #fecaca;
+}
+
+html.dark .rc-cal__btn--danger {
+	color: #fca5a5;
+	border-color: rgba(220, 38, 38, 0.4);
+}
+
+.rc-cal__btn--danger:hover:not(:disabled) {
+	background: #fee2e2;
+	border-color: #fca5a5;
+}
+
+html.dark .rc-cal__btn--danger:hover:not(:disabled) {
+	background: rgba(220, 38, 38, 0.15);
+	border-color: #fca5a5;
+}
+
+.rc-cal__confirm {
+	margin-top: 0.75rem;
+	padding-top: 0.75rem;
+	border-top: 1px solid var(--rc-border);
+}
+
+.rc-cal__confirm-prompt {
+	margin: 0 0 0.5rem;
+	font-size: 0.875rem;
+}
+
+.rc-cal__confirm-error {
+	margin: 0 0 0.5rem;
+	font-size: 0.8125rem;
+	color: #b91c1c;
+}
+
+html.dark .rc-cal__confirm-error {
+	color: #fca5a5;
+}
+
+.rc-cal__confirm-actions {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.5rem;
+}
+
+/* --- Drag-to-select overlay (week/day timegrid) --- */
+.rc-cal__day-col {
+	position: relative;
+}
+
+.rc-cal__drag-overlay {
+	position: absolute;
+	left: 0;
+	right: 0;
+	background: var(--rc-highlight-light);
+	border: 1px dashed var(--rc-highlight);
+	border-radius: 0.25rem;
+	pointer-events: none;
+	z-index: 1;
+}
+
+/* Create-event quick popover. */
+.rc-cal__create-popover {
+	width: auto;
+	min-width: 13rem;
+	padding: 0.625rem 0.75rem;
+}
+
+.rc-cal__create-time {
+	margin: 0 0 0.5rem;
+	font-size: 0.8125rem;
+	color: var(--wp--preset--color--on-surface-muted, #6b7280);
+	font-variant-numeric: tabular-nums;
+}
+
+.rc-cal__create-popover .rc-cal__btn {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 0.5rem;
+	width: 100%;
+	padding: 0.5rem 0.75rem;
+	font-size: 0.875rem;
+}
+
+.rc-cal__create-popover .rc-cal__btn-icon {
+	width: 1rem;
+	height: 1rem;
+	flex-shrink: 0;
+}

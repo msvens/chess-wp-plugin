@@ -1,25 +1,35 @@
-import { useEffect, useRef } from '@wordpress/element';
+import { useEffect, useRef, useState } from '@wordpress/element';
 import type { CalendarEvent } from '../../shared/types';
 import type { Translations } from '../../shared/translations';
 import type { EventGroupLink } from './utils';
 import { categoryClassMap, formatTime } from './utils';
+import DeleteConfirmDialog from './DeleteConfirmDialog';
 
 interface EventPopoverProps {
 	event: CalendarEvent;
 	anchorRect: { top: number; left: number; bottom: number; right: number };
 	t: Translations[ 'calendar' ];
+	commonT: Translations[ 'common' ];
 	eventGroupMap: Map< number, EventGroupLink[] >;
 	onClose: () => void;
+	canEdit: boolean;
+	adminBase: string;
+	onDeleted: ( event: CalendarEvent ) => void;
 }
 
 export default function EventPopover( {
 	event,
 	anchorRect,
 	t,
+	commonT,
 	eventGroupMap,
 	onClose,
+	canEdit,
+	adminBase,
+	onDeleted,
 }: EventPopoverProps ) {
 	const ref = useRef< HTMLDivElement >( null );
+	const [ showConfirm, setShowConfirm ] = useState( false );
 
 	// Position the popover near the anchor, keeping it within the viewport
 	useEffect( () => {
@@ -192,6 +202,39 @@ export default function EventPopover( {
 						</li>
 					) ) }
 				</ul>
+			) }
+
+			{ canEdit && ! showConfirm && (
+				<div className="rc-cal__popover-actions">
+					<button
+						type="button"
+						className="rc-cal__btn"
+						onClick={ () => {
+							window.location.assign(
+								`${ adminBase }post.php?post=${ originalId }&action=edit`
+							);
+						} }
+					>
+						{ t.edit }
+					</button>
+					<button
+						type="button"
+						className="rc-cal__btn rc-cal__btn--danger"
+						onClick={ () => setShowConfirm( true ) }
+					>
+						{ t.delete }
+					</button>
+				</div>
+			) }
+
+			{ canEdit && showConfirm && (
+				<DeleteConfirmDialog
+					event={ event }
+					t={ t }
+					commonT={ commonT }
+					onCancel={ () => setShowConfirm( false ) }
+					onDeleted={ onDeleted }
+				/>
 			) }
 		</div>
 	);

@@ -316,6 +316,23 @@ export function durationToHeight( startDate: string, endDate: string ): number {
 }
 
 /**
+ * Inverse of timeToPosition: percent (0–100) within the timegrid → hour/minute,
+ * snapped to a given minute granularity. Used by the drag-to-select hook.
+ * @param percent
+ * @param snapMinutes
+ */
+export function positionToTime(
+	percent: number,
+	snapMinutes: number
+): { hour: number; minute: number } {
+	const clamped = Math.max( 0, Math.min( 100, percent ) );
+	const totalMinutes =
+		( clamped / 100 ) * TIME_GRID_HOURS * 60 + TIME_GRID_START * 60;
+	const snapped = Math.round( totalMinutes / snapMinutes ) * snapMinutes;
+	return { hour: Math.floor( snapped / 60 ), minute: snapped % 60 };
+}
+
+/**
  * Format date as YYYY-MM-DD key.
  * @param date
  */

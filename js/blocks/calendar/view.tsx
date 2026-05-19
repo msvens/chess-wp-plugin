@@ -11,5 +11,13 @@ document
 	.forEach( ( el ) => {
 		const locale =
 			document.documentElement.dataset.lang || el.dataset.locale || 'sv';
-		createRoot( el ).render( <CalendarApp locale={ locale } /> );
+		const canEdit = el.dataset.canEdit === '1';
+		const adminBase = el.dataset.adminBase || '/wp-admin/';
+		createRoot( el ).render(
+			<CalendarApp
+				locale={ locale }
+				canEdit={ canEdit }
+				adminBase={ adminBase }
+			/>
+		);
 	} );

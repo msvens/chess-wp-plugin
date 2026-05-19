@@ -14,6 +14,8 @@ interface CalendarMonthProps {
 	t: Translations[ 'calendar' ];
 	onSelectEvent: ( event: CalendarEvent, rect: Rect ) => void;
 	onDaySelect: ( events: CalendarEvent[], rect: Rect ) => void;
+	canEdit: boolean;
+	onCreateAt: ( startISO: string, endISO: string, anchorRect: Rect ) => void;
 }
 
 const dayKeys = [ 'mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun' ] as const;
@@ -26,6 +28,8 @@ export default function CalendarMonth( {
 	t,
 	onSelectEvent,
 	onDaySelect,
+	canEdit,
+	onCreateAt,
 }: CalendarMonthProps ) {
 	const grouped = groupEventsByDay( events, year, month );
 
@@ -54,6 +58,8 @@ export default function CalendarMonth( {
 							t={ t }
 							onSelectEvent={ onSelectEvent }
 							onDaySelect={ onDaySelect }
+							canEdit={ canEdit && cell.isCurrentMonth }
+							onCreateAt={ onCreateAt }
 						/>
 					);
 				} ) }

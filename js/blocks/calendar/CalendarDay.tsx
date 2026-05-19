@@ -18,6 +18,8 @@ interface CalendarDayProps {
 	t: Translations[ 'calendar' ];
 	onSelectEvent: ( event: CalendarEvent, rect: Rect ) => void;
 	onDaySelect: ( events: CalendarEvent[], rect: Rect ) => void;
+	canEdit: boolean;
+	onCreateAt: ( startISO: string, endISO: string, anchorRect: Rect ) => void;
 }
 
 export default function CalendarDay( {
@@ -29,6 +31,8 @@ export default function CalendarDay( {
 	t,
 	onSelectEvent,
 	onDaySelect,
+	canEdit,
+	onCreateAt,
 }: CalendarDayProps ) {
 	const cellRef = useRef< HTMLDivElement >( null );
 	const today = isToday( year, month, day );
@@ -43,29 +47,57 @@ export default function CalendarDay( {
 
 	const overflow = events.length - MAX_PILLS;
 
-	// Mobile: tap the day cell to show event popover(s)
+	// Click handling. Pills already stopPropagation, so we only land here when
+	// the user clicked the bare cell (or the day-number / pills / dots wrappers).
+	// On mobile, tapping a populated cell shows the events popover (existing).
+	// Otherwise (admin), trigger create-event for the clicked day.
 	const handleCellClick = useCallback(
 		( e: React.MouseEvent< HTMLDivElement > ) => {
-			// Only act on mobile (dots visible, pills hidden)
 			const dots = cellRef.current?.querySelector( '.rc-cal__dots' );
-			if (
-				! dots ||
-				window.getComputedStyle( dots ).display === 'none'
-			) {
+			const dotsVisible =
+				!! dots && window.getComputedStyle( dots ).display !== 'none';
+
+			// Mobile + populated cell → open the events popover (existing behavior).
+			if ( dotsVisible && events.length > 0 ) {
+				e.stopPropagation();
+				const rect = cellRef.current!.getBoundingClientRect();
+				if ( events.length === 1 ) {
+					onSelectEvent( events[ 0 ], rect );
+				} else {
+					onDaySelect( events, rect );
+				}
 				return;
 			}
-			if ( events.length === 0 ) {
-				return;
-			}
-			e.stopPropagation();
-			const rect = cellRef.current!.getBoundingClientRect();
-			if ( events.length === 1 ) {
-				onSelectEvent( events[ 0 ], rect );
-			} else {
-				onDaySelect( events, rect );
+
+			// Admin: clicking anywhere on the cell (empty or populated) shows the
+			// create-event popover. Pills already consumed their own clicks.
+			if ( canEdit ) {
+				const mm = String( month + 1 ).padStart( 2, '0' );
+				const dd = String( day ).padStart( 2, '0' );
+				const dayKey = `${ year }-${ mm }-${ dd }`;
+				const anchorRect: Rect = {
+					top: e.clientY,
+					bottom: e.clientY,
+					left: e.clientX,
+					right: e.clientX,
+				};
+				onCreateAt(
+					`${ dayKey }T18:00`,
+					`${ dayKey }T19:00`,
+					anchorRect
+				);
 			}
 		},
-		[ events, onSelectEvent, onDaySelect ]
+		[
+			canEdit,
+			events,
+			month,
+			day,
+			year,
+			onCreateAt,
+			onSelectEvent,
+			onDaySelect,
+		]
 	);
 
 	const handleCellKeyDown = useCallback(
