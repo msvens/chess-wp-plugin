@@ -23,7 +23,7 @@
 	--rc-tn-ssf-text: #92400e;
 
 	font-family: var(--wp--preset--font-family--geist, sans-serif);
-	color: var(--wp--preset--color--on-surface);
+	color: var(--wp--preset--color--on-surface, #111827);
 	max-width: 100%;
 }
 
