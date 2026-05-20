@@ -5,6 +5,8 @@ declare module '@wordpress/blocks' {
 declare module '@wordpress/block-editor' {
 	export function useBlockProps( props?: any ): any;
 	export function InspectorControls( props: any ): any;
+	export function MediaUpload( props: any ): any;
+	export function MediaUploadCheck( props: any ): any;
 }
 
 declare module '@wordpress/core-data' {

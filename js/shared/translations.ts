@@ -170,6 +170,41 @@ export interface Translations {
 		deleteSeries: string;
 		createEvent: string;
 	};
+	carousel: {
+		addImages: string;
+		editImages: string;
+		removeImage: string;
+		moveUp: string;
+		moveDown: string;
+		noImages: string;
+		displayMode: string;
+		modes: { slider: string; carousel: string };
+		autoplay: string;
+		interval: string;
+		visibleItems: string;
+		aspectRatio: string;
+		aspectRatios: {
+			'16:9': string;
+			'4:3': string;
+			'1:1': string;
+			'3:4': string;
+			'9:16': string;
+			auto: string;
+		};
+		imageFit: string;
+		fits: { cover: string; contain: string };
+		backdropStyle: string;
+		backdrops: { blurred: string; black: string };
+		constrain: string;
+		constraints: { none: string; width: string; height: string };
+		constraintWidth: string;
+		constraintHeight: string;
+		alignment: string;
+		alignments: { left: string; center: string; right: string };
+		prev: string;
+		next: string;
+		slideOf: string;
+	};
 	ranking: {
 		title: string;
 		ratingPeriod: string;
@@ -380,6 +415,55 @@ const translations: Record< Language, Translations > = {
 			deleteSeries: 'Whole series',
 			createEvent: 'Create event',
 		},
+		carousel: {
+			addImages: 'Add images',
+			editImages: 'Edit images',
+			removeImage: 'Remove',
+			moveUp: 'Move up',
+			moveDown: 'Move down',
+			noImages: 'No images selected yet.',
+			displayMode: 'Display mode',
+			modes: { slider: 'Slider', carousel: 'Carousel' },
+			autoplay: 'Auto-advance',
+			interval: 'Interval (seconds)',
+			visibleItems: 'Visible items',
+			aspectRatio: 'Aspect ratio',
+			aspectRatios: {
+				'16:9': '16:9 (Landscape wide)',
+				'4:3': '4:3 (Landscape)',
+				'1:1': '1:1 (Square)',
+				'3:4': '3:4 (Portrait)',
+				'9:16': '9:16 (Portrait tall)',
+				auto: 'Auto',
+			},
+			imageFit: 'Image fit',
+			fits: {
+				cover: 'Fill (crop edges)',
+				contain: 'Fit whole image',
+			},
+			backdropStyle: 'Backdrop',
+			backdrops: {
+				blurred: 'Blurred image',
+				black: 'Black bars',
+			},
+			constrain: 'Constrain size',
+			constraints: {
+				none: 'No limit (fill container)',
+				width: 'By max width',
+				height: 'By max height',
+			},
+			constraintWidth: 'Max width (px)',
+			constraintHeight: 'Max height (px)',
+			alignment: 'Alignment',
+			alignments: {
+				left: 'Left',
+				center: 'Center',
+				right: 'Right',
+			},
+			prev: 'Previous',
+			next: 'Next',
+			slideOf: 'Slide {n} of {total}',
+		},
 		ranking: {
 			title: 'Ranking List',
 			ratingPeriod: 'Rating Period',
@@ -588,6 +672,55 @@ const translations: Record< Language, Translations > = {
 			deleteThisOnly: 'Bara denna',
 			deleteSeries: 'Hela serien',
 			createEvent: 'Skapa event',
+		},
+		carousel: {
+			addImages: 'Lägg till bilder',
+			editImages: 'Redigera bilder',
+			removeImage: 'Ta bort',
+			moveUp: 'Flytta upp',
+			moveDown: 'Flytta ned',
+			noImages: 'Inga bilder valda ännu.',
+			displayMode: 'Visningsläge',
+			modes: { slider: 'Bildspel', carousel: 'Karusell' },
+			autoplay: 'Spela automatiskt',
+			interval: 'Intervall (sekunder)',
+			visibleItems: 'Synliga bilder',
+			aspectRatio: 'Bildformat',
+			aspectRatios: {
+				'16:9': '16:9 (Bred landskap)',
+				'4:3': '4:3 (Landskap)',
+				'1:1': '1:1 (Kvadrat)',
+				'3:4': '3:4 (Porträtt)',
+				'9:16': '9:16 (Högt porträtt)',
+				auto: 'Auto',
+			},
+			imageFit: 'Bildanpassning',
+			fits: {
+				cover: 'Fyll (beskär kanter)',
+				contain: 'Visa hela bilden',
+			},
+			backdropStyle: 'Bakgrund',
+			backdrops: {
+				blurred: 'Suddig bild',
+				black: 'Svarta kanter',
+			},
+			constrain: 'Begränsa storlek',
+			constraints: {
+				none: 'Ingen gräns (fyll behållaren)',
+				width: 'Med maxbredd',
+				height: 'Med maxhöjd',
+			},
+			constraintWidth: 'Maxbredd (px)',
+			constraintHeight: 'Maxhöjd (px)',
+			alignment: 'Justering',
+			alignments: {
+				left: 'Vänster',
+				center: 'Centrerad',
+				right: 'Höger',
+			},
+			prev: 'Föregående',
+			next: 'Nästa',
+			slideOf: 'Bild {n} av {total}',
 		},
 		ranking: {
 			title: 'Rankinglista',

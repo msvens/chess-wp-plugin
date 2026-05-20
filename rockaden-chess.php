@@ -145,7 +145,7 @@ add_action(
 add_action(
 	'init',
 	function (): void {
-		$blocks = [ 'calendar', 'documentation', 'latest-news', 'ranking-list', 'shop-grid', 'standings', 'tournament', 'tournaments', 'training-group', 'training-groups', 'upcoming-events' ];
+		$blocks = [ 'calendar', 'carousel', 'documentation', 'latest-news', 'ranking-list', 'shop-grid', 'standings', 'tournament', 'tournaments', 'training-group', 'training-groups', 'upcoming-events' ];
 		foreach ( $blocks as $block ) {
 			$block_dir = RC_PLUGIN_DIR . "src/Blocks/{$block}";
 			if ( file_exists( "{$block_dir}/block.json" ) ) {

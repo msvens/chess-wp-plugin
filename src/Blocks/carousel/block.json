@@ -1,0 +1,65 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "rockaden/carousel",
+  "version": "0.1.0",
+  "title": "Image Carousel",
+  "category": "widgets",
+  "icon": "images-alt2",
+  "description": "Configurable image slider or carousel.",
+  "textdomain": "rockaden-chess",
+  "attributes": {
+    "imageIds": {
+      "type": "array",
+      "default": []
+    },
+    "mode": {
+      "type": "string",
+      "default": "slider"
+    },
+    "autoplay": {
+      "type": "boolean",
+      "default": false
+    },
+    "autoplayInterval": {
+      "type": "number",
+      "default": 5
+    },
+    "visibleItems": {
+      "type": "number",
+      "default": 3
+    },
+    "aspectRatio": {
+      "type": "string",
+      "default": "16:9"
+    },
+    "imageFit": {
+      "type": "string",
+      "default": "contain"
+    },
+    "backdropStyle": {
+      "type": "string",
+      "default": "blurred"
+    },
+    "constrain": {
+      "type": "string",
+      "default": "none"
+    },
+    "constraintValue": {
+      "type": "number",
+      "default": 0
+    },
+    "alignment": {
+      "type": "string",
+      "default": "center"
+    }
+  },
+  "supports": {
+    "html": false,
+    "align": ["wide", "full"]
+  },
+  "editorScript": "file:../../../build/blocks/carousel/index.js",
+  "viewScript": "file:../../../build/blocks/carousel/view.js",
+  "viewStyle": "file:../../../build/blocks/carousel/view.css",
+  "render": "file:./render.php"
+}

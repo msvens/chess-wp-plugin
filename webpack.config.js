@@ -68,6 +68,14 @@ module.exports = {
 			__dirname,
 			'js/blocks/standings/view.tsx'
 		),
+		'blocks/carousel/index': path.resolve(
+			__dirname,
+			'js/blocks/carousel/index.tsx'
+		),
+		'blocks/carousel/view': path.resolve(
+			__dirname,
+			'js/blocks/carousel/view.tsx'
+		),
 		'blocks/ranking-list/index': path.resolve(
 			__dirname,
 			'js/blocks/ranking-list/index.tsx'

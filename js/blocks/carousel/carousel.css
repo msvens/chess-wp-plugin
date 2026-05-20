@@ -1,0 +1,205 @@
+/* =========================================================
+   Rockaden Image Carousel — carousel.css
+   BEM naming: rc-carousel-*
+   Two modes: slider (one slide visible) + carousel (N visible)
+   ========================================================= */
+
+.rc-carousel {
+	position: relative;
+	max-width: 100%;
+	font-family: var(--wp--preset--font-family--geist, sans-serif);
+	color: var(--wp--preset--color--on-surface);
+	outline: none;
+}
+
+.rc-carousel:focus-visible {
+	outline: 2px solid var(--wp--preset--color--primary, #2563eb);
+	outline-offset: 2px;
+}
+
+.rc-carousel__loading {
+	text-align: center;
+	padding: 2rem;
+	color: var(--wp--preset--color--on-surface-muted, #6b7280);
+}
+
+/* Viewport: clips overflow in slider mode, scrolls in carousel mode */
+.rc-carousel__viewport {
+	overflow: hidden;
+	border-radius: 0.5rem;
+}
+
+.rc-carousel--carousel .rc-carousel__viewport {
+	overflow-x: auto;
+	scroll-snap-type: x mandatory;
+	scrollbar-width: none;
+}
+
+.rc-carousel--carousel .rc-carousel__viewport::-webkit-scrollbar {
+	display: none;
+}
+
+/* Track: flex row of slides */
+.rc-carousel__track {
+	display: flex;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	height: 100%;
+}
+
+.rc-carousel--slider .rc-carousel__track {
+	transition: transform 0.4s ease;
+}
+
+/* Slide */
+.rc-carousel__slide {
+	flex-shrink: 0;
+	scroll-snap-align: start;
+	position: relative;
+	overflow: hidden;
+}
+
+.rc-carousel__image {
+	display: block;
+	position: relative;
+	z-index: 1;
+	width: 100%;
+	height: 100%;
+}
+
+/* Image fit variants */
+.rc-carousel--fit-cover .rc-carousel__image {
+	object-fit: cover;
+}
+
+.rc-carousel--fit-contain .rc-carousel__image {
+	object-fit: contain;
+}
+
+/* Backdrop behind contained images — fills the letterbox bars. */
+.rc-carousel__backdrop {
+	position: absolute;
+	z-index: 0;
+}
+
+.rc-carousel__backdrop--blurred {
+	inset: -8%;
+	background-size: cover;
+	background-position: center;
+	filter: blur(28px) saturate(1.1);
+	transform: scale(1.1);
+}
+
+.rc-carousel__backdrop--black {
+	inset: 0;
+	background: #000;
+}
+
+/* Aspect-ratio variants apply to the viewport so the slides stay sized */
+.rc-carousel--ar-16-9 .rc-carousel__viewport {
+	aspect-ratio: 16 / 9;
+}
+
+.rc-carousel--ar-4-3 .rc-carousel__viewport {
+	aspect-ratio: 4 / 3;
+}
+
+.rc-carousel--ar-1-1 .rc-carousel__viewport {
+	aspect-ratio: 1 / 1;
+}
+
+.rc-carousel--ar-3-4 .rc-carousel__viewport {
+	aspect-ratio: 3 / 4;
+}
+
+.rc-carousel--ar-9-16 .rc-carousel__viewport {
+	aspect-ratio: 9 / 16;
+}
+
+.rc-carousel--ar-auto .rc-carousel__viewport {
+	aspect-ratio: auto;
+}
+
+/* Nav buttons: absolute over the viewport */
+.rc-carousel__nav {
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+	width: 2.5rem;
+	height: 2.5rem;
+	border-radius: 50%;
+	border: none;
+	background: rgba(0, 0, 0, 0.5);
+	color: #fff;
+	font-size: 1.5rem;
+	line-height: 1;
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	transition: background 0.15s;
+	z-index: 2;
+}
+
+.rc-carousel__nav:hover {
+	background: rgba(0, 0, 0, 0.75);
+}
+
+.rc-carousel__nav:focus-visible {
+	outline: 2px solid #fff;
+	outline-offset: 2px;
+}
+
+.rc-carousel__nav--prev {
+	left: 0.5rem;
+}
+
+.rc-carousel__nav--next {
+	right: 0.5rem;
+}
+
+/* Dots (slider mode only) */
+.rc-carousel__dots {
+	display: flex;
+	justify-content: center;
+	gap: 0.5rem;
+	margin-top: 0.75rem;
+}
+
+.rc-carousel__dot {
+	width: 0.6rem;
+	height: 0.6rem;
+	border-radius: 50%;
+	border: none;
+	padding: 0;
+	background: var(--wp--preset--color--on-surface-muted, #9ca3af);
+	cursor: pointer;
+	transition: background 0.15s, transform 0.15s;
+}
+
+.rc-carousel__dot:hover {
+	transform: scale(1.2);
+}
+
+.rc-carousel__dot--active {
+	background: var(--wp--preset--color--primary, #2563eb);
+}
+
+.rc-carousel__dot:focus-visible {
+	outline: 2px solid var(--wp--preset--color--primary, #2563eb);
+	outline-offset: 2px;
+}
+
+/* Mobile: carousel mode collapses to single visible item */
+@media (max-width: 640px) {
+	.rc-carousel--carousel .rc-carousel__slide {
+		width: 100% !important;
+	}
+
+	.rc-carousel__nav {
+		width: 2rem;
+		height: 2rem;
+		font-size: 1.25rem;
+	}
+}
