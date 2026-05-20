@@ -1,24 +1,19 @@
 <p class="rc-doc-sv">
-	Pluginet tillhandahåller fem Gutenberg-block som du hittar under kategorin <strong>Rockaden</strong> i blockinfogarens sökruta.
+	Pluginet tillhandahåller ett antal Gutenberg-block som du hittar under kategorin <strong>Rockaden</strong> i blockinfogarens sökruta. Block som kalender, träningsgrupper, turneringar och shop används både på syntetiska sidor som skapas av temat och kan släppas in på vilken sida som helst.
 </p>
 <p class="rc-doc-en">
-	The plugin provides five Gutenberg blocks, found under the <strong>Rockaden</strong> category in the block inserter search.
+	The plugin provides a number of Gutenberg blocks, found under the <strong>Rockaden</strong> category in the block inserter search. Blocks for calendar, training groups, tournaments, and the shop are used both on the theme's generated pages and can be dropped onto any page.
 </p>
 
 <h2 class="rc-doc-sv">Kalender</h2>
 <h2 class="rc-doc-en">Calendar</h2>
 
 <p class="rc-doc-sv">
-	Visar en månadskalender med evenemang. Stöder kategorifiltrering och navigering mellan månader. Användare kan klicka på ett evenemang för att se detaljer.
+	Visar en månadskalender med evenemang, med stöd för månads-, vecko- och dagvy. Återkommande evenemang expanderas automatiskt. Inloggade redaktörer kan skapa, redigera och ta bort evenemang direkt från blocket — se <em>Kalender</em> för detaljer.
 </p>
 <p class="rc-doc-en">
-	Displays a monthly calendar with events. Supports category filtering and navigation between months. Users can click an event to see details.
+	Shows a monthly calendar with events, with month / week / day views. Recurring events are expanded automatically. Signed-in editors can create, edit, and delete events directly from the block — see <em>Calendar</em> for details.
 </p>
-
-<div class="rc-docs-tip">
-	<span class="rc-doc-sv"><strong>Tips:</strong> Placera kalenderblocket på en dedikerad sida (t.ex. <code>/kalender</code>) för bästa resultat.</span>
-	<span class="rc-doc-en"><strong>Tip:</strong> Place the calendar block on a dedicated page (e.g. <code>/kalender</code>) for best results.</span>
-</div>
 
 <h2 class="rc-doc-sv">Ratinglista</h2>
 <h2 class="rc-doc-en">Ranking List</h2>
@@ -30,37 +25,102 @@
 	Shows SSF player ratings for club members. Fetches data from the SSF API using the configured club ID (see <strong>Settings → Rockaden</strong>).
 </p>
 
-<h2 class="rc-doc-sv">Ställning</h2>
-<h2 class="rc-doc-en">Standings</h2>
-
-<p class="rc-doc-sv">
-	Visar turneringsställning från en träningsgrupps rundturnering. Välj vilken grupp som ska visas i blockinställningarna.
-</p>
-<p class="rc-doc-en">
-	Displays tournament standings from a training group's round-robin sessions. Select which group to show in block settings.
-</p>
-
 <h2 class="rc-doc-sv">Träningsgrupp</h2>
 <h2 class="rc-doc-en">Training Group</h2>
 
 <p class="rc-doc-sv">
-	Visar detaljer för en enskild träningsgrupp: schema, deltagare och kommande pass. Används automatiskt på gruppens detaljsida (<code>/training-groups/gruppnamn/</code>).
+	Visar en enskild träningsgrupp: schema, beskrivning, deltagarlista och länk till eventuell turnering. Används automatiskt på gruppens detaljsida.
 </p>
 <p class="rc-doc-en">
-	Shows details for a single training group: schedule, participants, and upcoming sessions. Used automatically on the group detail page (<code>/training-groups/group-slug/</code>).
+	Shows a single training group: schedule, description, participant list, and a link to the linked tournament if any. Used automatically on the group detail page.
 </p>
 
-<h2 class="rc-doc-sv">Träningsgrupper</h2>
-<h2 class="rc-doc-en">Training Groups</h2>
+<h2 class="rc-doc-sv">Träningsgrupper (översikt)</h2>
+<h2 class="rc-doc-en">Training Groups (overview)</h2>
 
 <p class="rc-doc-sv">
-	Visar ett rutnät med alla aktiva träningsgrupper. Varje kort visar namn, beskrivning, schema och antal deltagare. Klicka på ett kort för att gå till gruppens detaljsida.
+	Visar alla aktiva träningsgrupper i två kolumner — juniorer till vänster, vuxna (och blandade grupper) till höger. På smala skärmar staplas kolumnerna.
 </p>
 <p class="rc-doc-en">
-	Displays a grid of all active training groups. Each card shows name, description, schedule, and participant count. Click a card to go to the group's detail page.
+	Shows all active training groups in two columns — juniors on the left, adults (and mixed groups) on the right. On narrow viewports the columns stack.
 </p>
 
-<div class="rc-docs-tip">
-	<span class="rc-doc-sv"><strong>Tips:</strong> Placera detta block på träningsöversiktssidan (t.ex. <code>/training</code>).</span>
-	<span class="rc-doc-en"><strong>Tip:</strong> Place this block on the training overview page (e.g. <code>/training</code>).</span>
-</div>
+<h2 class="rc-doc-sv">Turnering</h2>
+<h2 class="rc-doc-en">Tournament</h2>
+
+<p class="rc-doc-sv">
+	Visar en enskild turnering: titel, status, kategori, schema (om kopplad till evenemang), länk till officiellt resultat och ställning. För SSF-baserade turneringar hämtas data direkt från <code>member.schack.se</code>. Används automatiskt på turneringens detaljsida.
+</p>
+<p class="rc-doc-en">
+	Shows a single tournament: title, status, category, schedule (if linked to an event), Official result link, and standings. For SSF-backed tournaments the data is fetched from <code>member.schack.se</code>. Used automatically on the tournament's detail page.
+</p>
+
+<h2 class="rc-doc-sv">Turneringar (översikt)</h2>
+<h2 class="rc-doc-en">Tournaments (overview)</h2>
+
+<p class="rc-doc-sv">
+	Visar alla turneringar som ett rutnät med statusbrickor, kategori och SSF-märkning. Används automatiskt på <code>/tournaments/</code>.
+</p>
+<p class="rc-doc-en">
+	Shows all tournaments as a grid with status pills, category, and SSF badge. Used automatically on <code>/tournaments/</code>.
+</p>
+
+<h2 class="rc-doc-sv">Ställning</h2>
+<h2 class="rc-doc-en">Standings</h2>
+
+<p class="rc-doc-sv">
+	Visar enbart ställningstabellen för en turnering. Användbart när du vill bädda in en specifik turnerings resultat på en sida som inte är turneringens egen.
+</p>
+<p class="rc-doc-en">
+	Shows just the standings table for a tournament. Useful for embedding a specific tournament's results on a page other than the tournament's own page.
+</p>
+
+<h2 class="rc-doc-sv">Bildkarusell</h2>
+<h2 class="rc-doc-en">Image Carousel</h2>
+
+<p class="rc-doc-sv">
+	Bildspel eller karusell med konfigurerbart bildformat, anpassning, bakgrund och valfri automatisk växling. Se <em>Bildkarusell</em> för fullständiga inställningar.
+</p>
+<p class="rc-doc-en">
+	Slider or multi-item carousel with configurable aspect ratio, image fit, backdrop, and optional autoplay. See <em>Image Carousel</em> for the full settings.
+</p>
+
+<h2 class="rc-doc-sv">Shop-rutnät</h2>
+<h2 class="rc-doc-en">Shop Grid</h2>
+
+<p class="rc-doc-sv">
+	Visar shopartiklar som ett rutnät. Varje artikel har titel, bild, pris (samt eventuellt reapris), valfri köp-länk, lagerstatus (<em>I lager</em> / <em>Slut i lager</em>) och fri text för hur man beställer.
+</p>
+<p class="rc-doc-en">
+	Shows shop items as a grid. Each item has a title, image, price (plus optional sale price), an optional buy link, a stock status (<em>In stock</em> / <em>Out of stock</em>), and free-text ordering instructions.
+</p>
+
+<h2 class="rc-doc-sv">Senaste nytt</h2>
+<h2 class="rc-doc-en">Latest News</h2>
+
+<p class="rc-doc-sv">
+	Visar de senaste publicerade inläggen. Antal inlägg ställs in i blockinställningarna.
+</p>
+<p class="rc-doc-en">
+	Shows the most recent published posts. The number of posts is configurable in block settings.
+</p>
+
+<h2 class="rc-doc-sv">Kommande evenemang</h2>
+<h2 class="rc-doc-en">Upcoming Events</h2>
+
+<p class="rc-doc-sv">
+	Visar en kompakt lista över kommande kalenderevenemang. Återkommande evenemang räknas in.
+</p>
+<p class="rc-doc-en">
+	Shows a compact list of upcoming calendar events, including recurring ones.
+</p>
+
+<h2 class="rc-doc-sv">Dokumentation</h2>
+<h2 class="rc-doc-en">Documentation</h2>
+
+<p class="rc-doc-sv">
+	Blocket bakom den här sidan. Renderar de bundlade hjälpfilerna i en två-kolumns-layout med sidonavigering. Endast inloggade redaktörer kan se sidan.
+</p>
+<p class="rc-doc-en">
+	The block that powers this page. Renders the bundled help files in a two-column layout with sidebar nav. Visible only to signed-in editors.
+</p>
