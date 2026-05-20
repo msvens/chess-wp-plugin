@@ -1,0 +1,111 @@
+<p class="rc-doc-sv">
+	Innehåll på sajten byggs av WordPress-sidor med <em>Gutenberg-blocks</em>. Pluginet och temat lägger till egna block och mönster som kan användas tillsammans med standardblocken från WordPress.
+</p>
+<p class="rc-doc-en">
+	Site content is built from WordPress pages using <em>Gutenberg blocks</em>. The plugin and theme add their own blocks and patterns that work alongside WordPress's standard blocks.
+</p>
+
+<h2 class="rc-doc-sv">Block vs mönster</h2>
+<h2 class="rc-doc-en">Blocks vs patterns</h2>
+
+<ul>
+	<li class="rc-doc-sv">Ett <strong>block</strong> är en enskild byggsten — t.ex. en rubrik, en bild, eller bildkarusellen. Block hittas under <em>Block</em>-fliken i infogaren.</li>
+	<li class="rc-doc-en">A <strong>block</strong> is a single building unit — e.g. a heading, an image, or the image carousel. Blocks live under the <em>Blocks</em> tab in the inserter.</li>
+	<li class="rc-doc-sv">Ett <strong>mönster</strong> är en färdig sammansättning av flera block. När det infogas blir det till de underliggande blocken, fritt redigerbara. Mönster hittas under <em>Mönster</em>-fliken.</li>
+	<li class="rc-doc-en">A <strong>pattern</strong> is a pre-arranged set of blocks. Once inserted, it becomes those individual blocks, freely editable. Patterns live under the <em>Patterns</em> tab.</li>
+</ul>
+
+<h2 class="rc-doc-sv">Stub-sidor som temat skapar</h2>
+<h2 class="rc-doc-en">Stub pages the theme creates</h2>
+
+<p class="rc-doc-sv">
+	Vid aktivering skapar temat ett antal start-sidor (t.ex. <em>Hem</em>, <em>Nyheter</em>, <em>Kalender</em>, <em>Träning</em>). Sidornas innehåll är fritt redigerbart — temat skriver bara över innehållet vid första aktiveringen, aldrig efteråt.
+</p>
+<p class="rc-doc-en">
+	On activation, the theme creates a set of stub pages (e.g. <em>Hem</em>, <em>Nyheter</em>, <em>Kalender</em>, <em>Träning</em>). Their content is freely editable — the theme writes the initial content on first activation only, never again.
+</p>
+
+<h2 class="rc-doc-sv">Hero-mönster</h2>
+<h2 class="rc-doc-en">Hero pattern</h2>
+
+<p class="rc-doc-sv">
+	Hero-bannern på framsidan är ett <strong>mönster</strong> som heter <em>Landing Hero</em>. Det består av en omslagsblock (cover) med rubrik, underrubrik och två knappar. Det går att infoga på vilken sida som helst — i infogaren, gå till fliken <em>Mönster</em>, kategorin <strong>Rockaden</strong>, och välj <em>Landing Hero</em>. Bilden sätts via cover-blockets verktygsfält efter infogning, och text/knappar redigeras direkt i blocken.
+</p>
+<p class="rc-doc-en">
+	The front-page hero banner is a <strong>pattern</strong> called <em>Landing Hero</em>. It's a cover block with a heading, subtitle, and two buttons. It can be inserted on any page — in the inserter, go to the <em>Patterns</em> tab, the <strong>Rockaden</strong> category, and pick <em>Landing Hero</em>. The image is set via the cover block's toolbar after insertion, and the text/buttons are edited directly inside the blocks.
+</p>
+
+<div class="rc-docs-tip">
+	<span class="rc-doc-sv"><strong>Tips:</strong> Standardtexter och knapplänkar i hero-mönstret är skrivna för framsidan ("Bli medlem", "Prova gratis"). Tänk på att skriva om dem för andra sidor.</span>
+	<span class="rc-doc-en"><strong>Tip:</strong> The hero pattern's default text and button targets are written for the front page ("Bli medlem", "Prova gratis"). Remember to rewrite them on other pages.</span>
+</div>
+
+<h2 class="rc-doc-sv">Sidor med sidopanel (Page Section Nav-mallen)</h2>
+<h2 class="rc-doc-en">Pages with a sidebar (Page Section Nav template)</h2>
+
+<p class="rc-doc-sv">
+	Sidor som <code>/medlemmar/</code> har en automatisk sidopanel till vänster med navigering till undersidor. Detta drivs av två saker som måste sättas på rätt sätt: <strong>sidhierarkin</strong> (förälder/barn-relationer mellan WP-sidor) och sidmallen <strong>Page (Section Nav)</strong>. Sidopanelen byggs sedan automatiskt av blocket <strong>Section Nav</strong>.
+</p>
+<p class="rc-doc-en">
+	Pages like <code>/medlemmar/</code> have an automatic left sidebar that navigates between sub-pages. This is driven by two things that need to be set correctly: the <strong>page hierarchy</strong> (parent/child relationships between WP pages) and the <strong>Page (Section Nav)</strong> template. The sidebar itself is then built automatically by the <strong>Section Nav</strong> block.
+</p>
+
+<h3 class="rc-doc-sv">Så här bygger du en sektion med sidopanel</h3>
+<h3 class="rc-doc-en">How to build a sidebar section</h3>
+
+<ol>
+	<li class="rc-doc-sv"><strong>Skapa rotssidan</strong> (t.ex. "Medlemmar") som en vanlig sida.</li>
+	<li class="rc-doc-en"><strong>Create the root page</strong> (e.g. "Members") as a regular page.</li>
+	<li class="rc-doc-sv"><strong>Skapa undersidor</strong> och sätt <em>Sidan</em> → <em>Sidattribut</em> → <em>Förälder</em> till rotssidan. Detta är det enda sättet undersidor "syns" som tillhörande sektionen — själva URL-sökvägen räcker inte.</li>
+	<li class="rc-doc-en"><strong>Create sub-pages</strong> and set <em>Page</em> → <em>Page Attributes</em> → <em>Parent</em> to the root page. This is the only way sub-pages are seen as belonging to the section — having a similar URL path is not enough.</li>
+	<li class="rc-doc-sv"><strong>Tilldela mallen</strong> <em>Page (Section Nav)</em> på <em>varje</em> sida i sektionen (både rot och undersidor): <em>Sidan</em> → <em>Mall</em>. Glömmer du mallen renderas sidan utan sidopanel.</li>
+	<li class="rc-doc-en"><strong>Assign the template</strong> <em>Page (Section Nav)</em> on <em>each</em> page in the section (root <em>and</em> sub-pages): <em>Page</em> → <em>Template</em>. If you forget the template, the page renders without the sidebar.</li>
+	<li class="rc-doc-sv">Publicera/uppdatera. Sidopanelen byggs automatiskt nästa gång sidan laddas.</li>
+	<li class="rc-doc-en">Publish/update. The sidebar is built automatically the next time the page loads.</li>
+</ol>
+
+<h3 class="rc-doc-sv">Vad sidopanelen visar</h3>
+<h3 class="rc-doc-en">What the sidebar shows</h3>
+
+<p class="rc-doc-sv">
+	Section Nav-blocket utgår från den aktuella sidan och hittar <em>roten</em> i sektionen — antingen sidans förälder, eller sidan själv om den inte har någon förälder. Sidopanelen listar sedan <strong>roten överst</strong> följt av <strong>alla direkta undersidor</strong>, sorterade efter <em>Sidattribut → Ordning</em> och sedan titel. Den nuvarande sidan markeras automatiskt.
+</p>
+<p class="rc-doc-en">
+	The Section Nav block starts from the current page and finds the <em>root</em> of the section — either the page's parent, or the page itself if it has no parent. The sidebar then lists the <strong>root at the top</strong> followed by <strong>all direct sub-pages</strong>, sorted by <em>Page Attributes → Order</em> and then title. The current page is highlighted automatically.
+</p>
+
+<p class="rc-doc-sv">
+	Detta innebär att samma rotssida och samma syskonlista visas oavsett vilken sida i sektionen besökaren är på.
+</p>
+<p class="rc-doc-en">
+	This means the same root and the same sibling list are shown regardless of which page within the section the visitor is on.
+</p>
+
+<h3 class="rc-doc-sv">Att tänka på</h3>
+<h3 class="rc-doc-en">Things to know</h3>
+
+<ul>
+	<li class="rc-doc-sv"><strong>Bara en nivå.</strong> Sidopanelen visar roten och dess direkta undersidor. Barnbarn (undersidor till undersidor) visas inte.</li>
+	<li class="rc-doc-en"><strong>One level only.</strong> The sidebar shows the root and its direct sub-pages. Grandchildren (sub-pages of sub-pages) are not listed.</li>
+	<li class="rc-doc-sv"><strong>Inga barn = ingen panel.</strong> Om rotssidan inte har några undersidor visas ingen sidopanel alls. Lägg till minst en undersida (eller välj en annan sidmall).</li>
+	<li class="rc-doc-en"><strong>No children = no sidebar.</strong> If the root page has no sub-pages, no sidebar is shown at all. Add at least one sub-page (or use a different template).</li>
+	<li class="rc-doc-sv"><strong>Ordning kontrolleras via Sidattribut.</strong> För att styra i vilken ordning länkarna visas, sätt ett heltal i <em>Sidattribut → Ordning</em> på varje undersida (lägre tal först).</li>
+	<li class="rc-doc-en"><strong>Order is controlled via Page Attributes.</strong> To control the order of the links, set an integer in <em>Page Attributes → Order</em> on each sub-page (lower numbers first).</li>
+	<li class="rc-doc-sv"><strong>URL-strukturen.</strong> Med förälder satt blir undersidans URL <code>/rotssida/undersida/</code>. Detta hanteras automatiskt av WordPress.</li>
+	<li class="rc-doc-en"><strong>URL structure.</strong> With a parent set, the sub-page's URL becomes <code>/root-page/sub-page/</code>. WordPress handles this automatically.</li>
+</ul>
+
+<div class="rc-docs-tip">
+	<span class="rc-doc-sv"><strong>Tips:</strong> När du publicerar en ny undersida och sidopanelen inte uppdaterar sig direkt — verifiera att (a) <em>Förälder</em> är satt, (b) <em>Page (Section Nav)</em>-mallen är vald på både rot och undersida, och (c) statusen är <em>Publicerad</em> (inte <em>Utkast</em>).</span>
+	<span class="rc-doc-en"><strong>Tip:</strong> When you publish a new sub-page and the sidebar doesn't update — verify that (a) <em>Parent</em> is set, (b) <em>Page (Section Nav)</em> template is selected on both the root and the sub-page, and (c) the status is <em>Published</em> (not <em>Draft</em>).</span>
+</div>
+
+<h2 class="rc-doc-sv">Övriga mönster</h2>
+<h2 class="rc-doc-en">Other patterns</h2>
+
+<p class="rc-doc-sv">
+	Mönstren <em>Landing Hero</em>, <em>Landing Why Section</em> och <em>Landing News &amp; Shop</em> utgör tillsammans framsidans layout och används av temat för att bygga <em>/hem</em> vid aktivering. De kan infogas på andra sidor om man vill ha samma utseende, men är primärt avsedda för framsidan.
+</p>
+<p class="rc-doc-en">
+	The <em>Landing Hero</em>, <em>Landing Why Section</em>, and <em>Landing News &amp; Shop</em> patterns together form the front-page layout; the theme uses them to build <em>/hem</em> on activation. They can be inserted on other pages if you want the same look, but they're primarily intended for the front page.
+</p>

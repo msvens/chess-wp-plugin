@@ -1,0 +1,50 @@
+<p class="rc-doc-sv">
+	Turneringar hanteras under <strong>Turneringar</strong> i adminmenyn. En turnering är ett separat innehåll (egen post-typ) som kan stå för sig själv eller länkas från en träningsgrupp.
+</p>
+<p class="rc-doc-en">
+	Tournaments are managed under <strong>Tournaments</strong> in the admin sidebar. A tournament is its own piece of content (a separate post type) that can stand alone or be linked from a training group.
+</p>
+
+<h2 class="rc-doc-sv">Fält</h2>
+<h2 class="rc-doc-en">Fields</h2>
+
+<ul>
+	<li><strong class="rc-doc-sv">Titel och beskrivning</strong><strong class="rc-doc-en">Title and description</strong> <span class="rc-doc-sv">— turneringens namn och beskrivning.</span><span class="rc-doc-en">— the tournament name and description.</span></li>
+	<li><strong class="rc-doc-sv">Status</strong><strong class="rc-doc-en">Status</strong> <span class="rc-doc-sv">— planerad, pågående eller avslutad.</span><span class="rc-doc-en">— planned, ongoing, or completed.</span></li>
+	<li><strong class="rc-doc-sv">Kategori</strong><strong class="rc-doc-en">Category</strong> <span class="rc-doc-sv">— junior, ungdom, vuxen, senior eller blandad.</span><span class="rc-doc-en">— junior, youth, adult, senior, or mixed.</span></li>
+	<li><strong class="rc-doc-sv">Tidsformat</strong><strong class="rc-doc-en">Time control</strong> <span class="rc-doc-sv">— klassisk, rapid eller blixt.</span><span class="rc-doc-en">— classical, rapid, or blitz.</span></li>
+	<li><strong class="rc-doc-sv">Format</strong><strong class="rc-doc-en">Format</strong> <span class="rc-doc-sv">— rundturnering (Berger).</span><span class="rc-doc-en">— round-robin (Berger method).</span></li>
+	<li><strong class="rc-doc-sv">SSF-grupp-ID</strong><strong class="rc-doc-en">SSF Group ID</strong> <span class="rc-doc-sv">— sätts om turneringen finns hos SSF.</span><span class="rc-doc-en">— set when the tournament exists at SSF.</span></li>
+	<li><strong class="rc-doc-sv">Officiellt resultat (länk)</strong><strong class="rc-doc-en">Official result (link)</strong> <span class="rc-doc-sv">— extern länk som visas på den publika sidan.</span><span class="rc-doc-en">— external link shown on the public page.</span></li>
+	<li><strong class="rc-doc-sv">Kalenderevenemang</strong><strong class="rc-doc-en">Calendar event</strong> <span class="rc-doc-sv">— valfri koppling som ger schema och plats.</span><span class="rc-doc-en">— optional link that surfaces schedule and location.</span></li>
+</ul>
+
+<h2 class="rc-doc-sv">SSF-baserade turneringar</h2>
+<h2 class="rc-doc-en">SSF-backed tournaments</h2>
+
+<p class="rc-doc-sv">
+	När turneringen har ett <strong>SSF-grupp-ID</strong> hämtas deltagare, lottningar och resultat direkt från <code>member.schack.se</code>. Lokal redigering av deltagarlistan stängs av eftersom SSF är källan.
+</p>
+<p class="rc-doc-en">
+	When the tournament has an <strong>SSF Group ID</strong>, participants, pairings, and results are pulled live from <code>member.schack.se</code>. Local editing of the participants list is disabled because SSF is the source of truth.
+</p>
+
+<h2 class="rc-doc-sv">Koppling från träningsgrupp</h2>
+<h2 class="rc-doc-en">Linking from a training group</h2>
+
+<p class="rc-doc-sv">
+	En träningsgrupp kan ha en länkad turnering. När länken finns visas turneringen i gruppens detaljvy och deltagare hittar resultat direkt.
+</p>
+<p class="rc-doc-en">
+	A training group can have a linked tournament. When the link is set, the tournament shows up in the group's detail view so members can reach results directly.
+</p>
+
+<h2 class="rc-doc-sv">Publika sidor</h2>
+<h2 class="rc-doc-en">Public pages</h2>
+
+<ul>
+	<li class="rc-doc-sv"><code>/tournaments/</code> — översikt över alla publicerade turneringar, sorterade efter status.</li>
+	<li class="rc-doc-en"><code>/tournaments/</code> — overview of all published tournaments, sorted by status.</li>
+	<li class="rc-doc-sv"><code>/tournaments/&lt;slug&gt;/</code> — turneringens egen sida med rubrik, statusbricka, schema (om kopplad till evenemang), länk till officiellt resultat och ställning.</li>
+	<li class="rc-doc-en"><code>/tournaments/&lt;slug&gt;/</code> — the tournament's own page with title, status pill, schedule (if linked to an event), Official result link, and standings.</li>
+</ul>

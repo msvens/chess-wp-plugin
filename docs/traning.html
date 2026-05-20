@@ -9,74 +9,66 @@
 <h2 class="rc-doc-en">Groups</h2>
 
 <p class="rc-doc-sv">
-	En träningsgrupp representerar en återkommande aktivitet (t.ex. "Tisdagsträning vuxna"). Varje grupp har namn, valfri beskrivning, och kan kopplas till ett kalenderevenemang för schema och plats.
+	En träningsgrupp representerar en återkommande aktivitet (t.ex. "Tisdagsträning vuxna"). Varje grupp har namn, valfri beskrivning, termin och målgrupp, och kan kopplas till ett kalenderevenemang för schema och plats samt till en turnering för ställning och resultat.
 </p>
 <p class="rc-doc-en">
-	A training group represents a recurring activity (e.g. "Tuesday adult training"). Each group has a name, optional description, and can be linked to a calendar event for schedule and location.
+	A training group represents a recurring activity (e.g. "Tuesday adult training"). Each group has a name, optional description, semester, audience, and can be linked to a calendar event for schedule/location and to a tournament for standings/results.
 </p>
 
-<h3 class="rc-doc-sv">Grupptyper</h3>
-<h3 class="rc-doc-en">Group Types</h3>
+<h2 class="rc-doc-sv">Målgrupp</h2>
+<h2 class="rc-doc-en">Audience</h2>
+
+<p class="rc-doc-sv">
+	Varje grupp har ett <strong>målgruppsfält</strong> med tre värden:
+</p>
+<p class="rc-doc-en">
+	Each group has an <strong>audience</strong> field with three values:
+</p>
 
 <ul>
-	<li><strong class="rc-doc-sv">Träning</strong><strong class="rc-doc-en">Training</strong> <span class="rc-doc-sv">— enbart träning, ingen turnering</span><span class="rc-doc-en">— training only, no tournament</span></li>
-	<li><strong class="rc-doc-sv">Turnering</strong><strong class="rc-doc-en">Tournament</strong> <span class="rc-doc-sv">— enbart turnering (rundturnering)</span><span class="rc-doc-en">— tournament only (round-robin)</span></li>
-	<li><strong class="rc-doc-sv">Träning och turnering</strong><strong class="rc-doc-en">Training and tournament</strong> <span class="rc-doc-sv">— kombination av träning och pågående turnering</span><span class="rc-doc-en">— combination of training and ongoing tournament</span></li>
+	<li><strong>Junior</strong> <span class="rc-doc-sv">— juniorgrupper</span><span class="rc-doc-en">— junior groups</span></li>
+	<li><strong class="rc-doc-sv">Vuxen</strong><strong class="rc-doc-en">Adult</strong> <span class="rc-doc-sv">— vuxengrupper</span><span class="rc-doc-en">— adult groups</span></li>
+	<li><strong class="rc-doc-sv">Blandad</strong><strong class="rc-doc-en">Mixed</strong> <span class="rc-doc-sv">— grupper utan tydlig åldersuppdelning</span><span class="rc-doc-en">— groups without a clear age split</span></li>
 </ul>
 
-<h3 class="rc-doc-sv">Hantera grupper</h3>
-<h3 class="rc-doc-en">Managing Groups</h3>
+<p class="rc-doc-sv">
+	På den publika sidan <code>/training-groups/</code> visas grupperna i två kolumner: <strong>Junior</strong> till vänster och <strong>Vuxen</strong> (inklusive blandade grupper) till höger.
+</p>
+<p class="rc-doc-en">
+	On the public <code>/training-groups/</code> page, groups are shown in two columns: <strong>Junior</strong> on the left and <strong>Adult</strong> (including Mixed groups) on the right.
+</p>
 
-<ul>
-	<li>
-		<strong class="rc-doc-sv">Skapa:</strong><strong class="rc-doc-en">Create:</strong>
-		<span class="rc-doc-sv"> Klicka <em>Skapa grupp</em> på träningssidan. Fyll i namn, schema och plats.</span>
-		<span class="rc-doc-en"> Click <em>Create Group</em> on the training page. Fill in name, schedule, and location.</span>
-	</li>
-	<li>
-		<strong class="rc-doc-sv">Redigera:</strong><strong class="rc-doc-en">Edit:</strong>
-		<span class="rc-doc-sv"> Klicka på gruppens namn för att öppna detaljvyn, sedan <em>Redigera</em>.</span>
-		<span class="rc-doc-en"> Click the group name to open the detail view, then <em>Edit</em>.</span>
-	</li>
-	<li>
-		<strong class="rc-doc-sv">Ta bort:</strong><strong class="rc-doc-en">Delete:</strong>
-		<span class="rc-doc-sv"> Klicka <em>Ta bort</em> i detaljvyn. Detta tar även bort alla träningspass.</span>
-		<span class="rc-doc-en"> Click <em>Delete</em> in the detail view. This also removes all sessions.</span>
-	</li>
-</ul>
+<h2 class="rc-doc-sv">Koppling till kalender och turnering</h2>
+<h2 class="rc-doc-en">Calendar and tournament link</h2>
+
+<p class="rc-doc-sv">
+	En grupp kan länkas till ett <strong>kalenderevenemang</strong> så att schema och plats visas på gruppens publika sida. Den kan också länkas till en <strong>turnering</strong> så att ställning och resultat blir tillgängliga från gruppen. Båda är valfria.
+</p>
+<p class="rc-doc-en">
+	A group can be linked to a <strong>calendar event</strong> so schedule and location show on the group's public page. It can also be linked to a <strong>tournament</strong> so standings and results are available from the group. Both are optional.
+</p>
+
+<div class="rc-docs-tip">
+	<span class="rc-doc-sv"><strong>Tips:</strong> Turneringsdata (lottningar, resultat, ställning) ligger inte längre på träningsgruppen utan på själva turneringen. Se <em>Turneringar</em> för detaljer.</span>
+	<span class="rc-doc-en"><strong>Tip:</strong> Tournament data (pairings, results, standings) no longer lives on the training group — it lives on the tournament itself. See <em>Tournaments</em> for details.</span>
+</div>
 
 <h2 class="rc-doc-sv">Deltagare</h2>
 <h2 class="rc-doc-en">Participants</h2>
 
 <p class="rc-doc-sv">
-	Varje grupp har en deltagarlista. Deltagare kan kopplas till SSF-spelar-ID för automatisk ratinghämtning. Använd <em>Lägg till deltagare</em> i gruppens detaljvy.
+	Varje grupp har en deltagarlista. Deltagare kan kopplas till SSF-spelar-ID för automatisk ratinghämtning.
 </p>
 <p class="rc-doc-en">
-	Each group has a participant list. Participants can be linked to SSF player IDs for automatic rating lookups. Use <em>Add Participant</em> in the group detail view.
+	Each group has a participant list. Participants can be linked to SSF player IDs for automatic rating lookups.
 </p>
 
 <h2 class="rc-doc-sv">Träningspass</h2>
 <h2 class="rc-doc-en">Sessions</h2>
 
 <p class="rc-doc-sv">
-	Ett träningspass representerar ett tillfälle för en grupp. Varje pass kan spåra:
+	Ett träningspass representerar ett tillfälle för en grupp och kan spåra närvaro, partier och anteckningar.
 </p>
 <p class="rc-doc-en">
-	A session represents one meeting of a group. Each session can track:
-</p>
-
-<ul>
-	<li><strong class="rc-doc-sv">Närvaro</strong><strong class="rc-doc-en">Attendance</strong> <span class="rc-doc-sv">— markera vilka deltagare som var närvarande.</span><span class="rc-doc-en">— mark which participants were present.</span></li>
-	<li><strong class="rc-doc-sv">Partier</strong><strong class="rc-doc-en">Games</strong> <span class="rc-doc-sv">— registrera rundturneringslottning och resultat (Berger-metoden).</span><span class="rc-doc-en">— record round-robin pairings and results (Berger method).</span></li>
-	<li><strong class="rc-doc-sv">Anteckningar</strong><strong class="rc-doc-en">Notes</strong> <span class="rc-doc-sv">— fritext-anteckningar för passet.</span><span class="rc-doc-en">— free-text notes for the session.</span></li>
-</ul>
-
-<h2 class="rc-doc-sv">SSF-koppling</h2>
-<h2 class="rc-doc-en">SSF Integration</h2>
-
-<p class="rc-doc-sv">
-	Du kan koppla en grupp till ett <strong>SSF-turneringsgrupp-ID</strong> för att hämta turneringsdata (lottningar, resultat, ställning) direkt från <code>member.schack.se</code>. Ange ID:t när du skapar eller redigerar gruppen och klicka <em>Hämta från SSF</em>.
-</p>
-<p class="rc-doc-en">
-	You can link a group to an <strong>SSF Tournament Group ID</strong> to pull tournament data (pairings, results, standings) directly from <code>member.schack.se</code>. Enter the ID when creating or editing the group and click <em>Fetch from SSF</em>.
+	A session represents one meeting of a group and can track attendance, games, and notes.
 </p>

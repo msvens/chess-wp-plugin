@@ -1,0 +1,86 @@
+<p class="rc-doc-sv">
+	Bildkarusellblocket (<strong>Rockaden → Bildkarusell</strong> i blockinfogaren) visar en uppsättning bilder antingen som ett bildspel (en bild i taget) eller som en horisontell karusell med flera bilder samtidigt. Konfigurationen är per instans — varje karusell på sidan har sina egna inställningar.
+</p>
+<p class="rc-doc-en">
+	The Image Carousel block (<strong>Rockaden → Image Carousel</strong> in the inserter) shows a set of images as either a slider (one image at a time) or a horizontal carousel (multiple images visible). Settings are per-instance — every carousel on the page has its own configuration.
+</p>
+
+<h2 class="rc-doc-sv">Visningsläge</h2>
+<h2 class="rc-doc-en">Display mode</h2>
+
+<ul>
+	<li><strong class="rc-doc-sv">Bildspel</strong><strong class="rc-doc-en">Slider</strong> <span class="rc-doc-sv">— en bild i taget med pilar och prickar. Bildspelet är cirkulärt: efter sista bilden kommer den första.</span><span class="rc-doc-en">— one image at a time with arrows and dots. The slider is truly circular: after the last image comes the first.</span></li>
+	<li><strong class="rc-doc-sv">Karusell</strong><strong class="rc-doc-en">Carousel</strong> <span class="rc-doc-sv">— en rullande remsa där flera bilder syns samtidigt (2–5). Antal synliga bilder ställs in per instans.</span><span class="rc-doc-en">— a scrollable strip with several images visible at once (2–5). The number of visible items is per-instance.</span></li>
+</ul>
+
+<h2 class="rc-doc-sv">Bildformat</h2>
+<h2 class="rc-doc-en">Aspect ratio</h2>
+
+<p class="rc-doc-sv">
+	Karusellen har ett fast bildformat: 16:9, 4:3, 1:1, 3:4, 9:16 eller <em>Auto</em> (bildens naturliga proportioner). Höjden härleds automatiskt från bredden enligt valt format.
+</p>
+<p class="rc-doc-en">
+	The carousel has a fixed aspect ratio: 16:9, 4:3, 1:1, 3:4, 9:16, or <em>Auto</em> (the image's natural proportions). The height is derived automatically from the width using the chosen ratio.
+</p>
+
+<h2 class="rc-doc-sv">Bildanpassning</h2>
+<h2 class="rc-doc-en">Image fit</h2>
+
+<ul>
+	<li><strong class="rc-doc-sv">Visa hela bilden</strong><strong class="rc-doc-en">Fit whole image</strong> <span class="rc-doc-sv">— hela bilden visas; ramens överskott fylls med en bakgrund (se nedan). Standardvärde.</span><span class="rc-doc-en">— the whole image is shown; the leftover space in the frame is filled with a backdrop (see below). Default.</span></li>
+	<li><strong class="rc-doc-sv">Fyll (beskär kanter)</strong><strong class="rc-doc-en">Fill (crop edges)</strong> <span class="rc-doc-sv">— bilden fyller ramen helt; över- och underkanter (eller sidor) beskärs.</span><span class="rc-doc-en">— the image fills the frame completely; edges (top/bottom or sides) are cropped.</span></li>
+</ul>
+
+<h2 class="rc-doc-sv">Bakgrund</h2>
+<h2 class="rc-doc-en">Backdrop</h2>
+
+<p class="rc-doc-sv">
+	När <em>Visa hela bilden</em> är vald kan tomrummet runt bilden fyllas på två sätt:
+</p>
+<p class="rc-doc-en">
+	When <em>Fit whole image</em> is selected, the empty space around the image can be filled in two ways:
+</p>
+
+<ul>
+	<li><strong class="rc-doc-sv">Suddig bild</strong><strong class="rc-doc-en">Blurred image</strong> <span class="rc-doc-sv">— en skalad, suddig kopia av samma bild fyller bakgrunden (standard).</span><span class="rc-doc-en">— a scaled, blurred copy of the same image fills the backdrop (default).</span></li>
+	<li><strong class="rc-doc-sv">Svarta kanter</strong><strong class="rc-doc-en">Black bars</strong> <span class="rc-doc-sv">— enfärgade svarta kanter, som i en biografvisning.</span><span class="rc-doc-en">— solid black bars, like a cinematic letterbox.</span></li>
+</ul>
+
+<h2 class="rc-doc-sv">Storlek och justering</h2>
+<h2 class="rc-doc-en">Size and alignment</h2>
+
+<p class="rc-doc-sv">
+	Som standard fyller karusellen sin behållare (kolumn, grupp, eller sidans innehållsbredd). För att begränsa storleken används <strong>Begränsa storlek</strong>:
+</p>
+<p class="rc-doc-en">
+	By default the carousel fills its container (column, group, or page content width). To constrain it, use <strong>Constrain size</strong>:
+</p>
+
+<ul>
+	<li class="rc-doc-sv"><strong>Med maxbredd</strong> — karusellen blir högst så bred. Höjden följer bildformatet.</li>
+	<li class="rc-doc-en"><strong>By max width</strong> — the carousel won't exceed this width. Height follows the aspect ratio.</li>
+	<li class="rc-doc-sv"><strong>Med maxhöjd</strong> — karusellen blir högst så hög. Bredden räknas ut från bildformatet så att proportionerna behålls.</li>
+	<li class="rc-doc-en"><strong>By max height</strong> — the carousel won't exceed this height. Width is derived from the aspect ratio so the proportions are preserved.</li>
+</ul>
+
+<p class="rc-doc-sv">
+	När en begränsning är aktiv kan blocket dessutom justeras till vänster, mitten eller höger inom behållaren.
+</p>
+<p class="rc-doc-en">
+	When a constraint is active, the block can additionally be aligned to the left, center, or right within its container.
+</p>
+
+<div class="rc-docs-tip">
+	<span class="rc-doc-sv"><strong>Tips:</strong> Höjdbegränsning kräver ett konkret bildformat (inte <em>Auto</em>) eftersom bredden härleds från formatet.</span>
+	<span class="rc-doc-en"><strong>Tip:</strong> The height constraint requires a concrete aspect ratio (not <em>Auto</em>) because the width is derived from the ratio.</span>
+</div>
+
+<h2 class="rc-doc-sv">Automatisk bildväxling</h2>
+<h2 class="rc-doc-en">Autoplay</h2>
+
+<p class="rc-doc-sv">
+	Automatisk växling är avstängd som standard. Slås den på kan intervallet ställas in (2–15 sekunder). Växlingen pausas när muspekaren är över karusellen eller när någon del av karusellen har fokus, och stängs av helt om besökaren har <em>prefers-reduced-motion</em> aktiverat.
+</p>
+<p class="rc-doc-en">
+	Autoplay is off by default. When enabled, the interval can be set (2–15 seconds). The rotation pauses when the cursor is over the carousel or anything inside it has focus, and is disabled entirely if the visitor has <em>prefers-reduced-motion</em> turned on.
+</p>

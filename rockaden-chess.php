@@ -104,6 +104,17 @@ add_action(
 		);
 		Rockaden\Docs\DocsRegistry::register(
 			[
+				'slug'       => 'sidor-och-monster',
+				'title_sv'   => 'Sidor och mönster',
+				'title_en'   => 'Pages and patterns',
+				'section_sv' => 'Plugin',
+				'section_en' => 'Plugin',
+				'file'       => $docs_dir . 'sidor-och-monster.html',
+				'order'      => 15,
+			]
+		);
+		Rockaden\Docs\DocsRegistry::register(
+			[
 				'slug'       => 'kalender',
 				'title_sv'   => 'Kalender',
 				'title_en'   => 'Calendar',
@@ -126,6 +137,17 @@ add_action(
 		);
 		Rockaden\Docs\DocsRegistry::register(
 			[
+				'slug'       => 'turnering',
+				'title_sv'   => 'Turnering',
+				'title_en'   => 'Tournaments',
+				'section_sv' => 'Plugin',
+				'section_en' => 'Plugin',
+				'file'       => $docs_dir . 'turnering.html',
+				'order'      => 35,
+			]
+		);
+		Rockaden\Docs\DocsRegistry::register(
+			[
 				'slug'       => 'block',
 				'title_sv'   => 'Block',
 				'title_en'   => 'Blocks',
@@ -133,6 +155,17 @@ add_action(
 				'section_en' => 'Plugin',
 				'file'       => $docs_dir . 'block.html',
 				'order'      => 40,
+			]
+		);
+		Rockaden\Docs\DocsRegistry::register(
+			[
+				'slug'       => 'bildkarusell',
+				'title_sv'   => 'Bildkarusell',
+				'title_en'   => 'Image Carousel',
+				'section_sv' => 'Plugin',
+				'section_en' => 'Plugin',
+				'file'       => $docs_dir . 'bildkarusell.html',
+				'order'      => 45,
 			]
 		);
 
