@@ -180,7 +180,7 @@ export default function CalendarDayView( {
 											<li key={ g.slug }>
 												<a
 													className="rc-cal__event-group-link"
-													href={ `/training-groups/${ g.slug }/` }
+													href={ `/training/${ g.slug }/` }
 												>
 													{ g.title }
 												</a>
