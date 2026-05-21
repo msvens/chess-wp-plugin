@@ -35,9 +35,9 @@ class ShopItem {
 				'show_ui'      => true,
 				'show_in_rest' => true,
 				'supports'     => [ 'title', 'editor', 'thumbnail', 'excerpt' ],
-				'has_archive'  => true,
+				'has_archive'  => false,
 				'menu_icon'    => 'dashicons-cart',
-				'rewrite'      => [ 'slug' => 'schackmaterial' ],
+				'rewrite'      => [ 'slug' => 'shop' ],
 			]
 		);
 

@@ -46,7 +46,7 @@ export default function GroupCard( { group, lang }: Props ) {
 			: null;
 
 	return (
-		<a href={ `/training-groups/${ group.slug }/` } className="rc-tg__card">
+		<a href={ `/training/${ group.slug }/` } className="rc-tg__card">
 			<div className="rc-tg__card-header">
 				{ group.semester && (
 					<span className="rc-tg__badge rc-tg__badge--semester">

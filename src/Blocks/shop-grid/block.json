@@ -15,7 +15,7 @@
     },
     "moreUrl": {
       "type": "string",
-      "default": "/schackmaterial"
+      "default": "/shop"
     },
     "moreLabel": {
       "type": "string",

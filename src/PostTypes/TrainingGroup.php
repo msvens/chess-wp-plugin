@@ -32,8 +32,8 @@ class TrainingGroup {
 				'show_ui'            => false, // Managed via React admin page.
 				'show_in_rest'       => true,
 				'supports'           => [ 'title', 'editor', 'author' ],
-				'has_archive'        => true,
-				'rewrite'            => [ 'slug' => 'training-groups' ],
+				'has_archive'        => false,
+				'rewrite'            => [ 'slug' => 'training' ],
 			]
 		);
 

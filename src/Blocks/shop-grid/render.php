@@ -13,12 +13,12 @@ use Rockaden\Api\ShopApi;
 use Rockaden\PostTypes\ShopItem;
 
 $count      = isset( $attributes['count'] ) ? (int) $attributes['count'] : 4;
-$more_url   = (string) ( $attributes['moreUrl'] ?? '/schackmaterial' );
+$more_url   = (string) ( $attributes['moreUrl'] ?? '/shop' );
 $more_label = (string) ( $attributes['moreLabel'] ?? __( 'Mer schackmaterial', 'rockaden-chess' ) );
 $layout     = isset( $attributes['layout'] ) && 'column' === $attributes['layout'] ? 'column' : 'grid';
 
-// count: 0 (or any non-positive value) means "show all" — used by the
-// /schackmaterial archive template. Positive values cap the result set,
+// count: 0 (or any non-positive value) means "show all" — used when the
+// block is the shop landing page's primary content. Positive values cap the result set,
 // used by the landing page.
 $posts_per_page = $count > 0 ? $count : -1;
 
