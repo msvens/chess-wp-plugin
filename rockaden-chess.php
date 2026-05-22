@@ -20,6 +20,26 @@ define( 'RC_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'RC_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 define( 'RC_VERSION', '0.17.1' );
 
+// GitHub-based update checker. Reads release assets from the rockaden-wp
+// repository and lets WordPress show the standard "update available" UI in
+// Plugins. Pre-releases on GitHub are skipped automatically.
+if ( file_exists( RC_PLUGIN_DIR . 'vendor/autoload.php' ) ) {
+	require_once RC_PLUGIN_DIR . 'vendor/autoload.php';
+
+	$rc_update_checker = YahnisElsts\PluginUpdateChecker\v5\PucFactory::buildUpdateChecker(
+		'https://github.com/msvens/rockaden-wp/',
+		__FILE__,
+		'rockaden-chess'
+	);
+	/**
+	 * Narrow the VCS API type so static analysis can see the GitHub-specific methods.
+	 *
+	 * @var \YahnisElsts\PluginUpdateChecker\v5p6\Vcs\GitHubApi $rc_vcs_api
+	 */
+	$rc_vcs_api = $rc_update_checker->getVcsApi();
+	$rc_vcs_api->enableReleaseAssets( '/rockaden-chess\.zip$/' );
+}
+
 // PSR-4-style autoloader for plugin classes.
 spl_autoload_register(
 	function ( string $classname ): void {
