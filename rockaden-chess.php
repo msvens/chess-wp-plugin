@@ -62,13 +62,11 @@ add_action( 'init', [ Rockaden\PostTypes\TrainingGroup::class, 'register' ] );
 add_action( 'init', [ Rockaden\PostTypes\TrainingSession::class, 'register' ] );
 add_action( 'init', [ Rockaden\PostTypes\Tournament::class, 'register' ] );
 add_action( 'init', [ Rockaden\PostTypes\Event::class, 'register' ] );
-add_action( 'init', [ Rockaden\PostTypes\ShopItem::class, 'register' ] );
 
 add_action( 'rest_api_init', [ Rockaden\Api\SsfProxy::class, 'register_routes' ] );
 add_action( 'rest_api_init', [ Rockaden\Api\TrainingApi::class, 'register_routes' ] );
 add_action( 'rest_api_init', [ Rockaden\Api\TournamentApi::class, 'register_routes' ] );
 add_action( 'rest_api_init', [ Rockaden\Api\EventApi::class, 'register_routes' ] );
-add_action( 'rest_api_init', [ Rockaden\Api\ShopApi::class, 'register_routes' ] );
 
 add_action( 'admin_menu', [ Rockaden\Admin\TrainingAdmin::class, 'register_page' ] );
 add_action( 'admin_menu', [ Rockaden\Admin\TournamentAdmin::class, 'register_page' ] );
@@ -81,7 +79,6 @@ if ( defined( 'WP_CLI' ) && WP_CLI ) {
 }
 
 Rockaden\Admin\EventMetaBoxes::register();
-Rockaden\Admin\ShopItemMetaBox::register();
 
 // Add "Settings" link on the Plugins page.
 add_filter(
@@ -198,7 +195,7 @@ add_action(
 add_action(
 	'init',
 	function (): void {
-		$blocks = [ 'calendar', 'carousel', 'documentation', 'latest-news', 'ranking-list', 'shop-grid', 'standings', 'tournament', 'tournaments', 'training-group', 'training-groups', 'upcoming-events' ];
+		$blocks = [ 'calendar', 'carousel', 'documentation', 'latest-news', 'ranking-list', 'standings', 'tournament', 'tournaments', 'training-group', 'training-groups', 'upcoming-events' ];
 		foreach ( $blocks as $block ) {
 			$block_dir = RC_PLUGIN_DIR . "src/Blocks/{$block}";
 			if ( file_exists( "{$block_dir}/block.json" ) ) {
@@ -216,7 +213,6 @@ register_activation_hook(
 		Rockaden\PostTypes\TrainingSession::register();
 		Rockaden\PostTypes\Tournament::register();
 		Rockaden\PostTypes\Event::register();
-		Rockaden\PostTypes\ShopItem::register();
 		flush_rewrite_rules();
 	}
 );
