@@ -27,5 +27,6 @@
     "align": ["wide", "full"]
   },
   "editorScript": "file:../../../build/blocks/latest-news/index.js",
+  "viewStyle": "file:./latest-news.css",
   "render": "file:./render.php"
 }
