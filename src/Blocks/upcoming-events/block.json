@@ -27,5 +27,6 @@
     "align": ["wide", "full"]
   },
   "editorScript": "file:../../../build/blocks/upcoming-events/index.js",
+  "viewStyle": "file:./upcoming-events.css",
   "render": "file:./render.php"
 }
