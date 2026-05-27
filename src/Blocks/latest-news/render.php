@@ -11,7 +11,7 @@ defined( 'ABSPATH' ) || exit;
 
 $count      = isset( $attributes['count'] ) ? max( 1, (int) $attributes['count'] ) : 3;
 $more_url   = (string) ( $attributes['moreUrl'] ?? '/nyheter' );
-$more_label = (string) ( $attributes['moreLabel'] ?? __( 'Mer nyheter', 'rockaden-chess' ) );
+$more_label = (string) ( $attributes['moreLabel'] ?? __( 'More news', 'rockaden-chess' ) );
 
 $news_posts = get_posts(
 	[
@@ -52,7 +52,7 @@ $wrapper_attributes = get_block_wrapper_attributes( [ 'class' => 'rockaden-lates
 							<p class="rockaden-news-card__excerpt"><?php echo esc_html( $excerpt ); ?></p>
 						<?php endif; ?>
 						<a href="<?php echo esc_url( $permalink ); ?>" class="rockaden-news-card__more">
-							<?php esc_html_e( 'Läs mer', 'rockaden-chess' ); ?>
+							<?php esc_html_e( 'Read more', 'rockaden-chess' ); ?>
 						</a>
 					</div>
 				</li>

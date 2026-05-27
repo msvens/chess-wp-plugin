@@ -13,7 +13,7 @@ use Rockaden\Services\EventExpander;
 
 $count      = isset( $attributes['count'] ) ? max( 1, (int) $attributes['count'] ) : 4;
 $more_url   = (string) ( $attributes['moreUrl'] ?? '/kalender' );
-$more_label = (string) ( $attributes['moreLabel'] ?? __( 'Se hela kalendern', 'rockaden-chess' ) );
+$more_label = (string) ( $attributes['moreLabel'] ?? __( 'See full calendar', 'rockaden-chess' ) );
 
 $occurrences = EventExpander::get_upcoming( $count );
 
@@ -47,7 +47,7 @@ $time_format = get_option( 'time_format', 'H:i' );
 						</p>
 						<?php if ( $occ['link'] ) : ?>
 							<a class="rockaden-event-card__link" href="<?php echo esc_url( $occ['link'] ); ?>">
-								<?php echo esc_html( $occ['linkLabel'] ?: __( 'Mer info', 'rockaden-chess' ) ); ?>
+								<?php echo esc_html( $occ['linkLabel'] ?: __( 'More info', 'rockaden-chess' ) ); ?>
 							</a>
 						<?php endif; ?>
 					</div>

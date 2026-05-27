@@ -1,0 +1,441 @@
+# Copyright (C) 2026 SK Rockaden
+# This file is distributed under the MIT.
+msgid ""
+msgstr ""
+"Project-Id-Version: Rockaden Chess 0.18.0\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/rockaden-chess\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2026-05-26T17:33:24+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.12.0\n"
+"X-Domain: rockaden-chess\n"
+
+#. Plugin Name of the plugin
+#: rockaden-chess.php
+msgid "Rockaden Chess"
+msgstr ""
+
+#. Plugin URI of the plugin
+#: rockaden-chess.php
+msgid "https://github.com/msvens/rockaden-wp"
+msgstr ""
+
+#. Description of the plugin
+#: rockaden-chess.php
+msgid "Training management, calendar, and SSF integration for SK Rockaden."
+msgstr ""
+
+#. Author of the plugin
+#: rockaden-chess.php
+msgid "SK Rockaden"
+msgstr ""
+
+#: build/blocks/calendar/render.php:26
+#: src/Blocks/calendar/render.php:26
+msgid "Loading calendar..."
+msgstr ""
+
+#: build/blocks/carousel/render.php:70
+#: src/Blocks/carousel/render.php:70
+msgid "Loading carousel…"
+msgstr ""
+
+#: build/blocks/latest-news/render.php:14
+#: src/Blocks/latest-news/render.php:14
+msgid "More news"
+msgstr ""
+
+#: build/blocks/latest-news/render.php:28
+#: src/Blocks/latest-news/render.php:28
+msgid "No news yet."
+msgstr ""
+
+#: build/blocks/latest-news/render.php:55
+#: src/Blocks/latest-news/render.php:55
+msgid "Read more"
+msgstr ""
+
+#: build/blocks/ranking-list/render.php:26
+#: src/Blocks/ranking-list/render.php:26
+msgid "Loading ranking list..."
+msgstr ""
+
+#: build/blocks/standings/render.php:38
+#: src/Blocks/standings/render.php:38
+msgid "Loading standings..."
+msgstr ""
+
+#: build/blocks/tournament/render.php:34
+#: src/Blocks/tournament/render.php:34
+msgid "Loading tournament..."
+msgstr ""
+
+#: build/blocks/tournaments/render.php:23
+#: src/Blocks/tournaments/render.php:23
+msgid "Loading tournaments..."
+msgstr ""
+
+#: build/blocks/training-group/render.php:34
+#: src/Blocks/training-group/render.php:34
+msgid "Loading training group..."
+msgstr ""
+
+#: build/blocks/training-groups/render.php:23
+#: src/Blocks/training-groups/render.php:23
+msgid "Loading training groups..."
+msgstr ""
+
+#: build/blocks/upcoming-events/render.php:16
+#: src/Blocks/upcoming-events/render.php:16
+msgid "See full calendar"
+msgstr ""
+
+#: build/blocks/upcoming-events/render.php:27
+#: src/Blocks/upcoming-events/render.php:27
+msgid "No upcoming events."
+msgstr ""
+
+#: build/blocks/upcoming-events/render.php:50
+#: src/Blocks/upcoming-events/render.php:50
+msgid "More info"
+msgstr ""
+
+#: rockaden-chess.php:104
+msgid "Settings"
+msgstr ""
+
+#: rockaden-chess.php:108
+#: src/Admin/HelpPage.php:24
+msgid "Help"
+msgstr ""
+
+#: src/Admin/EventMetaBoxes.php:85
+#: src/Admin/TrainingAdmin.php:20
+#: src/Admin/TrainingAdmin.php:21
+msgid "Training"
+msgstr ""
+
+#: src/Admin/EventMetaBoxes.php:86
+#: src/PostTypes/Tournament.php:26
+msgid "Tournament"
+msgstr ""
+
+#: src/Admin/EventMetaBoxes.php:87
+msgid "Junior"
+msgstr ""
+
+#: src/Admin/EventMetaBoxes.php:88
+msgid "Allsvenskan"
+msgstr ""
+
+#: src/Admin/EventMetaBoxes.php:89
+msgid "School Chess"
+msgstr ""
+
+#: src/Admin/EventMetaBoxes.php:90
+msgid "Other"
+msgstr ""
+
+#: src/Admin/EventMetaBoxes.php:99
+msgid "SSF Import"
+msgstr ""
+
+#. translators: %d: SSF group ID
+#: src/Admin/EventMetaBoxes.php:105
+#, php-format
+msgid "Linked to SSF group %d"
+msgstr ""
+
+#: src/Admin/EventMetaBoxes.php:112
+msgid "tournament"
+msgstr ""
+
+#: src/Admin/EventMetaBoxes.php:120
+msgid "SSF ID"
+msgstr ""
+
+#: src/Admin/EventMetaBoxes.php:121
+msgid "Fetch Group"
+msgstr ""
+
+#: src/Admin/EventMetaBoxes.php:122
+msgid "Fetch Tournament"
+msgstr ""
+
+#: src/Admin/EventMetaBoxes.php:130
+msgid "Date & Time"
+msgstr ""
+
+#: src/Admin/EventMetaBoxes.php:133
+msgid "Start"
+msgstr ""
+
+#: src/Admin/EventMetaBoxes.php:137
+msgid "End"
+msgstr ""
+
+#: src/Admin/EventMetaBoxes.php:144
+msgid "Recurring"
+msgstr ""
+
+#: src/Admin/EventMetaBoxes.php:148
+msgid "Weekly"
+msgstr ""
+
+#: src/Admin/EventMetaBoxes.php:149
+msgid "Biweekly"
+msgstr ""
+
+#: src/Admin/EventMetaBoxes.php:154
+msgid "Excluded Dates"
+msgstr ""
+
+#: src/Admin/EventMetaBoxes.php:156
+msgid "Comma-separated YYYY-MM-DD dates to exclude from recurrence."
+msgstr ""
+
+#: src/Admin/EventMetaBoxes.php:161
+msgid "Details"
+msgstr ""
+
+#: src/Admin/EventMetaBoxes.php:164
+msgid "Location"
+msgstr ""
+
+#: src/Admin/EventMetaBoxes.php:170
+msgid "Category"
+msgstr ""
+
+#: src/Admin/EventMetaBoxes.php:181
+msgid "Link"
+msgstr ""
+
+#: src/Admin/EventMetaBoxes.php:184
+msgid "URL"
+msgstr ""
+
+#: src/Admin/EventMetaBoxes.php:188
+msgid "Link Text"
+msgstr ""
+
+#: src/Admin/EventMetaBoxes.php:195
+msgid "Description"
+msgstr ""
+
+#: src/Admin/HelpPage.php:23
+msgid "Rockaden Help"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:24
+msgid "Rockaden Settings"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:25
+msgid "Rockaden"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:50
+msgid "SSF Integration"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:53
+msgid "Configure the connection to the Swedish Chess Federation (SSF) API."
+msgstr ""
+
+#: src/Admin/SettingsPage.php:60
+msgid "SSF Club ID"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:78
+msgid "The club ID from member.schack.se"
+msgstr ""
+
+#: src/Admin/TournamentAdmin.php:20
+#: src/Admin/TournamentAdmin.php:21
+#: src/PostTypes/Tournament.php:25
+msgid "Tournaments"
+msgstr ""
+
+#: src/PostTypes/Event.php:25
+msgid "Events"
+msgstr ""
+
+#: src/PostTypes/Event.php:26
+msgid "Event"
+msgstr ""
+
+#: src/PostTypes/Event.php:27
+msgid "Add New Event"
+msgstr ""
+
+#: src/PostTypes/Event.php:28
+msgid "Edit Event"
+msgstr ""
+
+#: src/PostTypes/Tournament.php:27
+msgid "Add New Tournament"
+msgstr ""
+
+#: src/PostTypes/Tournament.php:28
+msgid "Edit Tournament"
+msgstr ""
+
+#: src/PostTypes/TrainingGroup.php:25
+msgid "Training Groups"
+msgstr ""
+
+#: src/PostTypes/TrainingGroup.php:26
+msgid "Training Group"
+msgstr ""
+
+#: src/PostTypes/TrainingGroup.php:27
+msgid "Add New Training Group"
+msgstr ""
+
+#: src/PostTypes/TrainingGroup.php:28
+msgid "Edit Training Group"
+msgstr ""
+
+#: src/PostTypes/TrainingSession.php:25
+msgid "Training Sessions"
+msgstr ""
+
+#: src/PostTypes/TrainingSession.php:26
+msgid "Training Session"
+msgstr ""
+
+#: build/blocks/calendar/block.json
+#: src/Blocks/calendar/block.json
+msgctxt "block title"
+msgid "Calendar"
+msgstr ""
+
+#: build/blocks/calendar/block.json
+#: src/Blocks/calendar/block.json
+msgctxt "block description"
+msgid "Displays the SK Rockaden event calendar."
+msgstr ""
+
+#: build/blocks/carousel/block.json
+#: src/Blocks/carousel/block.json
+msgctxt "block title"
+msgid "Image Carousel"
+msgstr ""
+
+#: build/blocks/carousel/block.json
+#: src/Blocks/carousel/block.json
+msgctxt "block description"
+msgid "Configurable image slider or carousel."
+msgstr ""
+
+#: build/blocks/documentation/block.json
+#: src/Blocks/documentation/block.json
+msgctxt "block title"
+msgid "Documentation"
+msgstr ""
+
+#: build/blocks/documentation/block.json
+#: src/Blocks/documentation/block.json
+msgctxt "block description"
+msgid "Renders bundled plugin and theme documentation."
+msgstr ""
+
+#: build/blocks/latest-news/block.json
+#: src/Blocks/latest-news/block.json
+msgctxt "block title"
+msgid "Latest News"
+msgstr ""
+
+#: build/blocks/latest-news/block.json
+#: src/Blocks/latest-news/block.json
+msgctxt "block description"
+msgid "Displays the latest news posts as cards with a link to the full archive."
+msgstr ""
+
+#: build/blocks/ranking-list/block.json
+#: src/Blocks/ranking-list/block.json
+msgctxt "block title"
+msgid "Ranking List"
+msgstr ""
+
+#: build/blocks/ranking-list/block.json
+#: src/Blocks/ranking-list/block.json
+msgctxt "block description"
+msgid "Displays SSF club member ratings with filters for period, ELO type, and member category."
+msgstr ""
+
+#: build/blocks/standings/block.json
+#: src/Blocks/standings/block.json
+msgctxt "block title"
+msgid "Tournament Standings"
+msgstr ""
+
+#: build/blocks/standings/block.json
+#: src/Blocks/standings/block.json
+msgctxt "block description"
+msgid "Displays standings for a tournament."
+msgstr ""
+
+#: build/blocks/tournament/block.json
+#: src/Blocks/tournament/block.json
+msgctxt "block title"
+msgid "Tournament"
+msgstr ""
+
+#: build/blocks/tournament/block.json
+#: src/Blocks/tournament/block.json
+msgctxt "block description"
+msgid "Displays a single tournament page with participants, results and SSF link."
+msgstr ""
+
+#: build/blocks/tournaments/block.json
+#: src/Blocks/tournaments/block.json
+msgctxt "block title"
+msgid "Tournaments"
+msgstr ""
+
+#: build/blocks/tournaments/block.json
+#: src/Blocks/tournaments/block.json
+msgctxt "block description"
+msgid "Displays an overview grid of tournaments."
+msgstr ""
+
+#: build/blocks/training-group/block.json
+#: src/Blocks/training-group/block.json
+msgctxt "block title"
+msgid "Training Group"
+msgstr ""
+
+#: build/blocks/training-group/block.json
+#: src/Blocks/training-group/block.json
+msgctxt "block description"
+msgid "Displays a training group with participants and sessions."
+msgstr ""
+
+#: build/blocks/training-groups/block.json
+#: src/Blocks/training-groups/block.json
+msgctxt "block title"
+msgid "Training Groups"
+msgstr ""
+
+#: build/blocks/training-groups/block.json
+#: src/Blocks/training-groups/block.json
+msgctxt "block description"
+msgid "Displays an overview grid of all active training groups."
+msgstr ""
+
+#: build/blocks/upcoming-events/block.json
+#: src/Blocks/upcoming-events/block.json
+msgctxt "block title"
+msgid "Upcoming Events"
+msgstr ""
+
+#: build/blocks/upcoming-events/block.json
+#: src/Blocks/upcoming-events/block.json
+msgctxt "block description"
+msgid "Displays the next N upcoming events (recurring expanded) as a strip of cards."
+msgstr ""
