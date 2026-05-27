@@ -18,8 +18,7 @@
       "default": "/kalender"
     },
     "moreLabel": {
-      "type": "string",
-      "default": "Se hela kalendern"
+      "type": "string"
     }
   },
   "supports": {

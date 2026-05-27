@@ -57,6 +57,22 @@ spl_autoload_register(
 	}
 );
 
+// Load translations (English-source msgids; ships sv_SE.mo for Swedish).
+// Direct load_textdomain on init priority 1 — load_plugin_textdomain isn't
+// reliable in WP 6.5+ for non-global plugin language directories, and the
+// textdomain must be loaded before block patterns/render fire on init.
+add_action(
+	'init',
+	function (): void {
+		$locale = determine_locale();
+		$mofile = RC_PLUGIN_DIR . 'languages/rockaden-chess-' . $locale . '.mo';
+		if ( file_exists( $mofile ) ) {
+			load_textdomain( 'rockaden-chess', $mofile, $locale );
+		}
+	},
+	1
+);
+
 // Boot plugin.
 add_action( 'init', [ Rockaden\PostTypes\TrainingGroup::class, 'register' ] );
 add_action( 'init', [ Rockaden\PostTypes\TrainingSession::class, 'register' ] );
@@ -191,18 +207,52 @@ add_action(
 	20
 );
 
-// Register Gutenberg blocks.
+// Register Gutenberg blocks, and wire up JS translations for each block's
+// editor + view scripts so `__( 'English', 'rockaden-chess' )` calls inside
+// React resolve to Swedish under the sv_SE locale.
 add_action(
 	'init',
 	function (): void {
-		$blocks = [ 'calendar', 'carousel', 'documentation', 'latest-news', 'ranking-list', 'standings', 'tournament', 'tournaments', 'training-group', 'training-groups', 'upcoming-events' ];
+		$blocks    = [ 'calendar', 'carousel', 'documentation', 'latest-news', 'ranking-list', 'standings', 'tournament', 'tournaments', 'training-group', 'training-groups', 'upcoming-events' ];
+		$lang_path = RC_PLUGIN_DIR . 'languages';
 		foreach ( $blocks as $block ) {
 			$block_dir = RC_PLUGIN_DIR . "src/Blocks/{$block}";
-			if ( file_exists( "{$block_dir}/block.json" ) ) {
-				register_block_type( $block_dir );
+			if ( ! file_exists( "{$block_dir}/block.json" ) ) {
+				continue;
+			}
+			$block_type = register_block_type( $block_dir );
+			if ( ! $block_type instanceof WP_Block_Type ) {
+				continue;
+			}
+			$handles = array_merge( $block_type->editor_script_handles, $block_type->view_script_handles );
+			foreach ( $handles as $handle ) {
+				wp_set_script_translations( $handle, 'rockaden-chess', $lang_path );
 			}
 		}
 	}
+);
+
+// All plugin block + admin scripts use the same set of __() strings (they all
+// import plugin/js/shared/translations.ts). Rather than fan out one JSON per
+// script-file MD5 (the default convention), serve a single jed-format JSON
+// for any handle requesting the rockaden-chess domain.
+add_filter(
+	'pre_load_script_translations',
+	function ( $translations, $file, $handle, $domain ) {
+		if ( 'rockaden-chess' !== $domain ) {
+			return $translations;
+		}
+		static $cache = [];
+		$locale       = determine_locale();
+		if ( ! array_key_exists( $locale, $cache ) ) {
+			$json             = RC_PLUGIN_DIR . 'languages/rockaden-chess-' . $locale . '.json';
+			$decoded          = file_exists( $json ) ? wp_json_file_decode( $json, [ 'associative' => true ] ) : null;
+			$cache[ $locale ] = null === $decoded ? false : wp_json_encode( $decoded );
+		}
+		return false !== $cache[ $locale ] ? $cache[ $locale ] : $translations;
+	},
+	10,
+	4
 );
 
 // Flush rewrite rules on activation so CPT permalinks (e.g. /tournaments/...) start working immediately.

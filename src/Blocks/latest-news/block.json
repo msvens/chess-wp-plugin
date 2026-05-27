@@ -18,8 +18,7 @@
       "default": "/nyheter"
     },
     "moreLabel": {
-      "type": "string",
-      "default": "Mer nyheter"
+      "type": "string"
     }
   },
   "supports": {

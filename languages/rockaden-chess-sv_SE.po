@@ -1,0 +1,780 @@
+# Swedish (sv_SE) translations for the Rockaden Chess plugin.
+# The plugin's source language is English; this file provides Swedish.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Rockaden Chess\n"
+"PO-Revision-Date: 2026-05-26\n"
+"Language: sv_SE\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgid "Add New Event"
+msgstr "Lägg till evenemang"
+
+msgid "Add New Tournament"
+msgstr "Lägg till turnering"
+
+msgid "Add New Training Group"
+msgstr "Lägg till träningsgrupp"
+
+msgid "Biweekly"
+msgstr "Varannan vecka"
+
+msgid "Calendar"
+msgstr "Kalender"
+
+msgid "Category"
+msgstr "Kategori"
+
+msgid "Comma-separated YYYY-MM-DD dates to exclude from recurrence."
+msgstr "Kommaseparerade datum (ÅÅÅÅ-MM-DD) som ska uteslutas från återkommande evenemang."
+
+msgid "Configurable image slider or carousel."
+msgstr "Konfigurerbar bildvisare eller karusell."
+
+msgid "Configure the connection to the Swedish Chess Federation (SSF) API."
+msgstr "Konfigurera anslutningen till Sveriges Schackförbunds (SSF) API."
+
+msgid "Date & Time"
+msgstr "Datum och tid"
+
+msgid "Description"
+msgstr "Beskrivning"
+
+msgid "Details"
+msgstr "Detaljer"
+
+msgid "Displays SSF club member ratings with filters for period, ELO type, and member category."
+msgstr "Visar SSF:s klubbmedlemmars rating med filter för period, ELO-typ och medlemskategori."
+
+msgid "Displays a single tournament page with participants, results and SSF link."
+msgstr "Visar en turneringssida med deltagare, resultat och SSF-länk."
+
+msgid "Displays a training group with participants and sessions."
+msgstr "Visar en träningsgrupp med deltagare och tillfällen."
+
+msgid "Displays an overview grid of all active training groups."
+msgstr "Visar en översikt över alla aktiva träningsgrupper."
+
+msgid "Displays an overview grid of tournaments."
+msgstr "Visar en översikt över turneringar."
+
+msgid "Displays standings for a tournament."
+msgstr "Visar ställning för en turnering."
+
+msgid "Displays the SK Rockaden event calendar."
+msgstr "Visar SK Rockadens kalender."
+
+msgid "Displays the latest news posts as cards with a link to the full archive."
+msgstr "Visar de senaste nyheterna som kort med länk till hela arkivet."
+
+msgid "Displays the next N upcoming events (recurring expanded) as a strip of cards."
+msgstr "Visar kommande evenemang som kort (återkommande expanderade)."
+
+msgid "Documentation"
+msgstr "Dokumentation"
+
+msgid "Edit Event"
+msgstr "Redigera evenemang"
+
+msgid "Edit Tournament"
+msgstr "Redigera turnering"
+
+msgid "Edit Training Group"
+msgstr "Redigera träningsgrupp"
+
+msgid "End"
+msgstr "Slut"
+
+msgid "Event"
+msgstr "Evenemang"
+
+msgid "Events"
+msgstr "Evenemang"
+
+msgid "Excluded Dates"
+msgstr "Uteslutna datum"
+
+msgid "Fetch Group"
+msgstr "Hämta grupp"
+
+msgid "Fetch Tournament"
+msgstr "Hämta turnering"
+
+msgid "Help"
+msgstr "Hjälp"
+
+msgid "Image Carousel"
+msgstr "Bildkarusell"
+
+msgid "Latest News"
+msgstr "Senaste nytt"
+
+msgid "Link"
+msgstr "Länk"
+
+msgid "Link Text"
+msgstr "Länktext"
+
+msgid "Linked to SSF group %d"
+msgstr "Kopplad till SSF-grupp %d"
+
+msgid "Loading calendar..."
+msgstr "Laddar kalender..."
+
+msgid "Loading carousel…"
+msgstr "Laddar karusell…"
+
+msgid "Loading ranking list..."
+msgstr "Laddar ratinglista..."
+
+msgid "Loading standings..."
+msgstr "Laddar ställning..."
+
+msgid "Loading tournament..."
+msgstr "Laddar turnering..."
+
+msgid "Loading tournaments..."
+msgstr "Laddar turneringar..."
+
+msgid "Loading training group..."
+msgstr "Laddar träningsgrupp..."
+
+msgid "Loading training groups..."
+msgstr "Laddar träningsgrupper..."
+
+msgid "Location"
+msgstr "Plats"
+
+msgid "More info"
+msgstr "Mer info"
+
+msgid "More news"
+msgstr "Mer nyheter"
+
+msgid "No news yet."
+msgstr "Inga nyheter än."
+
+msgid "No upcoming events."
+msgstr "Inga kommande evenemang."
+
+msgid "Other"
+msgstr "Övrigt"
+
+msgid "Ranking List"
+msgstr "Ratinglista"
+
+msgid "Read more"
+msgstr "Läs mer"
+
+msgid "Recurring"
+msgstr "Återkommande"
+
+msgid "Renders bundled plugin and theme documentation."
+msgstr "Visar plugin- och temadokumentation."
+
+msgid "Rockaden Help"
+msgstr "Rockaden Hjälp"
+
+msgid "Rockaden Settings"
+msgstr "Rockaden Inställningar"
+
+msgid "SSF Club ID"
+msgstr "SSF Klubb-ID"
+
+msgid "SSF ID"
+msgstr "SSF-ID"
+
+msgid "SSF Import"
+msgstr "SSF-import"
+
+msgid "SSF Integration"
+msgstr "SSF-integration"
+
+msgid "School Chess"
+msgstr "Skolschack"
+
+msgid "See full calendar"
+msgstr "Se hela kalendern"
+
+msgid "Settings"
+msgstr "Inställningar"
+
+msgid "Start"
+msgstr "Start"
+
+msgid "The club ID from member.schack.se"
+msgstr "Klubb-ID från member.schack.se"
+
+msgid "Tournament"
+msgstr "Turnering"
+
+msgid "Tournament Standings"
+msgstr "Turneringsställning"
+
+msgid "Tournaments"
+msgstr "Turneringar"
+
+msgid "Training"
+msgstr "Träning"
+
+msgid "Training Group"
+msgstr "Träningsgrupp"
+
+msgid "Training Groups"
+msgstr "Träningsgrupper"
+
+msgid "Training Session"
+msgstr "Träningstillfälle"
+
+msgid "Training Sessions"
+msgstr "Träningstillfällen"
+
+msgid "Training management, calendar, and SSF integration for SK Rockaden."
+msgstr "Träningshantering, kalender och SSF-integration för SK Rockaden."
+
+msgid "URL"
+msgstr "URL"
+
+msgid "Upcoming Events"
+msgstr "Kommande evenemang"
+
+msgid "Weekly"
+msgstr "Varje vecka"
+
+msgid "tournament"
+msgstr "turnering"
+
+msgid "Training groups and round-robin tournaments."
+msgstr "Träningsgrupper och rundturneringar."
+
+msgid "Participants"
+msgstr "Deltagare"
+
+msgid "Sessions"
+msgstr "Tillfällen"
+
+msgid "Standings"
+msgstr "Ställning"
+
+msgid "Attendance"
+msgstr "Närvaro"
+
+msgid "Pairings"
+msgstr "Lottning"
+
+msgid "Round"
+msgstr "Rond"
+
+msgid "Result"
+msgstr "Resultat"
+
+msgid "Present"
+msgstr "Närvarande"
+
+msgid "Absent"
+msgstr "Frånvarande"
+
+msgid "Points"
+msgstr "Poäng"
+
+msgid "Played"
+msgstr "Spelade"
+
+msgid "W"
+msgstr "V"
+
+msgid "D"
+msgstr "R"
+
+msgid "L"
+msgstr "F"
+
+msgid "Elo"
+msgstr "Elo"
+
+msgid "Classical"
+msgstr "Klassiskt"
+
+msgid "Rapid"
+msgstr "Rapid"
+
+msgid "Blitz"
+msgstr "Blixt"
+
+msgid "Bye"
+msgstr "Bye"
+
+msgid "Semester"
+msgstr "Termin"
+
+msgid "Audience"
+msgstr "Målgrupp"
+
+msgid "Junior"
+msgstr "Junior"
+
+msgid "Adult"
+msgstr "Vuxen"
+
+msgid "Mixed"
+msgstr "Blandad"
+
+msgid "Start Session"
+msgstr "Starta tillfälle"
+
+msgid "Save Attendance"
+msgstr "Spara närvaro"
+
+msgid "Save Results"
+msgstr "Spara resultat"
+
+msgid "Add Participant"
+msgstr "Lägg till deltagare"
+
+msgid "Remove"
+msgstr "Ta bort"
+
+msgid "No training groups yet."
+msgstr "Inga träningsgrupper ännu."
+
+msgid "Active"
+msgstr "Aktiv"
+
+msgid "Inactive"
+msgstr "Inaktiv"
+
+msgid "Notes"
+msgstr "Anteckningar"
+
+msgid "Save Notes"
+msgstr "Spara anteckningar"
+
+msgid "#"
+msgstr "#"
+
+msgid "Name"
+msgstr "Namn"
+
+msgid "Search..."
+msgstr "Sök..."
+
+msgid "Back to group"
+msgstr "Tillbaka till gruppen"
+
+msgid "Back to training"
+msgstr "Tillbaka till träning"
+
+msgid "-"
+msgstr "-"
+
+msgid "Not played"
+msgstr "Ej spelat"
+
+msgid "Create Group"
+msgstr "Skapa grupp"
+
+msgid "Group Name"
+msgstr "Gruppnamn"
+
+msgid "Time Control"
+msgstr "Tidskontroll"
+
+msgid "Has Tournament"
+msgstr "Har turnering"
+
+msgid "Group Type"
+msgstr "Grupptyp"
+
+msgid "Training & Tournament"
+msgstr "Träning & turnering"
+
+msgid "Schedule"
+msgstr "Schema"
+
+msgid "Start Date"
+msgstr "Startdatum"
+
+msgid "End Date"
+msgstr "Slutdatum"
+
+msgid "New Event"
+msgstr "Ny händelse"
+
+msgid "Select event..."
+msgstr "Välj händelse..."
+
+msgid "No schedule linked."
+msgstr "Inget schema kopplat."
+
+msgid "Exclude"
+msgstr "Undanta"
+
+msgid "Cancelled"
+msgstr "Inställd"
+
+msgid "Trainers"
+msgstr "Tränare"
+
+msgid "Contact"
+msgstr "Kontakt"
+
+msgid "Tournament (schack.se)"
+msgstr "Turnering (schack.se)"
+
+msgid "Generate Rounds"
+msgstr "Generera ronder"
+
+msgid "Regenerate Rounds"
+msgstr "Generera om ronder"
+
+msgid "Board"
+msgstr "Bord"
+
+msgid "White"
+msgstr "Vit"
+
+msgid "Black"
+msgstr "Svart"
+
+msgid "—"
+msgstr "—"
+
+msgid "Every"
+msgstr "Varje"
+
+msgid "Every other"
+msgstr "Varannan"
+
+msgid "Show participants"
+msgstr "Visa deltagare"
+
+msgid "Show standings"
+msgstr "Visa ställning"
+
+msgid "SSF Group ID"
+msgstr "SSF Grupp-ID"
+
+msgid "SSF Tournament Group ID"
+msgstr "SSF Turnerings-ID"
+
+msgid "Fetch from SSF"
+msgstr "Hämta från SSF"
+
+msgid "Fetching..."
+msgstr "Hämtar..."
+
+msgid "Could not fetch SSF data"
+msgstr "Kunde inte hämta SSF-data"
+
+msgid "Apply"
+msgstr "Applicera"
+
+msgid "Results"
+msgstr "Resultat"
+
+msgid "KP"
+msgstr "KP"
+
+msgid "Loading results..."
+msgstr "Laddar resultat..."
+
+msgid "Could not load results."
+msgstr "Kunde inte ladda resultat."
+
+msgid "Tournaments at SK Rockaden — round-robin or SSF-backed."
+msgstr "Tournaments at SK Rockaden — round-robin or SSF-backed."
+
+msgid "Create Tournament"
+msgstr "Skapa turnering"
+
+msgid "No tournaments yet."
+msgstr "Inga turneringar än."
+
+msgid "Tournament name"
+msgstr "Turneringsnamn"
+
+msgid "Youth"
+msgstr "Ungdom"
+
+msgid "Senior"
+msgstr "Senior"
+
+msgid "Status"
+msgstr "Status"
+
+msgid "Planned"
+msgstr "Planerad"
+
+msgid "Completed"
+msgstr "Avslutad"
+
+msgid "Format"
+msgstr "Format"
+
+msgid "Round-robin"
+msgstr "Berger"
+
+msgid "Start date"
+msgstr "Startdatum"
+
+msgid "End date"
+msgstr "Slutdatum"
+
+msgid "External link"
+msgstr "Extern länk"
+
+msgid "Linked calendar event"
+msgstr "Kopplad kalenderhändelse"
+
+msgid "SSF tournament ID"
+msgstr "SSF turnerings-ID"
+
+msgid "Overview"
+msgstr "Översikt"
+
+msgid "Linked tournament"
+msgstr "Kopplad turnering"
+
+msgid "No tournament"
+msgstr "Ingen turnering"
+
+msgid "View tournament"
+msgstr "Visa turnering"
+
+msgid "Back to tournaments"
+msgstr "Tillbaka till turneringar"
+
+msgid "Official result"
+msgstr "Officiellt resultat"
+
+msgid "Upcoming events and activities at SK Rockaden."
+msgstr "Kommande evenemang och aktiviteter på SK Rockaden."
+
+msgid "Today"
+msgstr "Idag"
+
+msgid "No events this day."
+msgstr "Inga händelser denna dag."
+
+msgid "Time"
+msgstr "Tid"
+
+msgid "more"
+msgstr "till"
+
+msgid "Month"
+msgstr "Månad"
+
+msgid "Week"
+msgstr "Vecka"
+
+msgid "Day"
+msgstr "Dag"
+
+msgid "Mon"
+msgstr "Mån"
+
+msgid "Tue"
+msgstr "Tis"
+
+msgid "Wed"
+msgstr "Ons"
+
+msgid "Thu"
+msgstr "Tor"
+
+msgid "Fri"
+msgstr "Fre"
+
+msgid "Sat"
+msgstr "Lör"
+
+msgid "Sun"
+msgstr "Sön"
+
+msgid "Allsvenskan"
+msgstr "Allsvenskan"
+
+msgid "All"
+msgstr "Alla"
+
+msgid "Edit"
+msgstr "Redigera"
+
+msgid "Delete"
+msgstr "Ta bort"
+
+msgid "Delete this event?"
+msgstr "Ta bort detta event?"
+
+msgid "Just this one"
+msgstr "Bara denna"
+
+msgid "Whole series"
+msgstr "Hela serien"
+
+msgid "Create event"
+msgstr "Skapa event"
+
+msgid "Add images"
+msgstr "Lägg till bilder"
+
+msgid "Edit images"
+msgstr "Redigera bilder"
+
+msgid "Move up"
+msgstr "Flytta upp"
+
+msgid "Move down"
+msgstr "Flytta ned"
+
+msgid "No images selected yet."
+msgstr "Inga bilder valda ännu."
+
+msgid "Display mode"
+msgstr "Visningsläge"
+
+msgid "Auto-advance"
+msgstr "Spela automatiskt"
+
+msgid "Interval (seconds)"
+msgstr "Intervall (sekunder)"
+
+msgid "Visible items"
+msgstr "Synliga bilder"
+
+msgid "Aspect ratio"
+msgstr "Bildformat"
+
+msgid "Auto"
+msgstr "Auto"
+
+msgid "Image fit"
+msgstr "Bildanpassning"
+
+msgid "Fill (crop edges)"
+msgstr "Fyll (beskär kanter)"
+
+msgid "Fit whole image"
+msgstr "Visa hela bilden"
+
+msgid "Backdrop"
+msgstr "Bakgrund"
+
+msgid "Blurred image"
+msgstr "Suddig bild"
+
+msgid "Black bars"
+msgstr "Svarta kanter"
+
+msgid "Constrain size"
+msgstr "Begränsa storlek"
+
+msgid "No limit (fill container)"
+msgstr "Ingen gräns (fyll behållaren)"
+
+msgid "By max width"
+msgstr "Med maxbredd"
+
+msgid "By max height"
+msgstr "Med maxhöjd"
+
+msgid "Max width (px)"
+msgstr "Maxbredd (px)"
+
+msgid "Max height (px)"
+msgstr "Maxhöjd (px)"
+
+msgid "Alignment"
+msgstr "Justering"
+
+msgid "Left"
+msgstr "Vänster"
+
+msgid "Center"
+msgstr "Centrerad"
+
+msgid "Right"
+msgstr "Höger"
+
+msgid "Previous"
+msgstr "Föregående"
+
+msgid "Next"
+msgstr "Nästa"
+
+msgid "Slide {n} of {total}"
+msgstr "Bild {n} av {total}"
+
+msgid "Rating Period"
+msgstr "Rankingperiod"
+
+msgid "ELO Type"
+msgstr "Elo-typ"
+
+msgid "Member Type"
+msgstr "Medlemstyp"
+
+msgid "Standard"
+msgstr "Standard"
+
+msgid "Women"
+msgstr "Kvinnor"
+
+msgid "Juniors"
+msgstr "Juniorer"
+
+msgid "Cadets"
+msgstr "Kadetter"
+
+msgid "Veterans"
+msgstr "Veteraner"
+
+msgid "Minors"
+msgstr "Minorer"
+
+msgid "Kids"
+msgstr "Barn"
+
+msgid "Title"
+msgstr "Titel"
+
+msgid "First Name"
+msgstr "Förnamn"
+
+msgid "Last Name"
+msgstr "Efternamn"
+
+msgid "Rating"
+msgstr "Rating"
+
+msgid "Showing"
+msgstr "Visar"
+
+msgid "players"
+msgstr "spelare"
+
+msgid "No players found."
+msgstr "Inga spelare hittades."
+
+msgid "of"
+msgstr "av"
+
+msgid "Loading..."
+msgstr "Laddar..."
+
+msgid "Save"
+msgstr "Spara"
+
+msgid "Cancel"
+msgstr "Avbryt"
+
+msgid "Confirm"
+msgstr "Bekräfta"
+
+msgid "Add"
+msgstr "Lägg till"

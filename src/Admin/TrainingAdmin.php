@@ -46,6 +46,8 @@ class TrainingAdmin {
 			true
 		);
 
+		wp_set_script_translations( 'rockaden-training-manager', 'rockaden-chess', RC_PLUGIN_DIR . 'languages' );
+
 		wp_enqueue_style(
 			'rockaden-training-manager',
 			RC_PLUGIN_URL . 'build/admin/training-manager.css',

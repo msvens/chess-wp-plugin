@@ -45,6 +45,8 @@ class TournamentAdmin {
 			true
 		);
 
+		wp_set_script_translations( 'rockaden-tournament-manager', 'rockaden-chess', RC_PLUGIN_DIR . 'languages' );
+
 		wp_enqueue_style(
 			'rockaden-tournament-manager',
 			RC_PLUGIN_URL . 'build/admin/tournament-manager.css',
