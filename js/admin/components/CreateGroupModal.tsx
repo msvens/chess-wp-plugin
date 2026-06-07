@@ -38,6 +38,7 @@ export function CreateGroupModal( {
 	const [ trainers, setTrainers ] = useState( '' );
 	const [ contact, setContact ] = useState( '' );
 	const [ linkedTournamentId, setLinkedTournamentId ] = useState( '' );
+	const [ showParticipants, setShowParticipants ] = useState( true );
 	const [ saving, setSaving ] = useState( false );
 	const [ error, setError ] = useState< string | null >( null );
 
@@ -102,6 +103,7 @@ export function CreateGroupModal( {
 				linkedTournamentId: linkedTournamentId
 					? Number( linkedTournamentId )
 					: undefined,
+				showParticipants,
 			} );
 
 			onCreated();
@@ -186,6 +188,12 @@ export function CreateGroupModal( {
 				value={ linkedTournamentId }
 				options={ tournamentOptions }
 				onChange={ setLinkedTournamentId }
+			/>
+
+			<CheckboxControl
+				label={ t.training.showParticipants }
+				checked={ showParticipants }
+				onChange={ setShowParticipants }
 			/>
 
 			{ /* Event picker */ }

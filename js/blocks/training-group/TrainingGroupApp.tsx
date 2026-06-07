@@ -18,6 +18,7 @@ import SessionsTab from './SessionsTab';
 interface Props {
 	groupId: number;
 	clubId: string;
+	canEdit: boolean;
 	locale: string;
 }
 
@@ -58,7 +59,12 @@ function formatSchedule(
 	return parts.join( ', ' );
 }
 
-export default function TrainingGroupApp( { groupId, clubId, locale }: Props ) {
+export default function TrainingGroupApp( {
+	groupId,
+	clubId,
+	canEdit,
+	locale,
+}: Props ) {
 	const currentLocale = useLocale( locale );
 	const lang = toLanguage( currentLocale );
 	const t = getTranslation( lang );
@@ -148,6 +154,18 @@ export default function TrainingGroupApp( { groupId, clubId, locale }: Props ) {
 
 	const hasInfo = group.trainers || group.contact || schedule || tournament;
 
+	// Editors always see the participant list; the public respects the toggle.
+	// Sessions are always shown (the schedule/notes are useful publicly); when
+	// participants are hidden, attendance names are stripped server-side.
+	const showParticipants = canEdit || ( group.showParticipants ?? true );
+	const availableTabs: Tab[] = [
+		...( showParticipants ? ( [ 'participants' ] as Tab[] ) : [] ),
+		'sessions',
+	];
+	const effectiveTab: Tab | null = availableTabs.includes( activeTab )
+		? activeTab
+		: availableTabs[ 0 ] ?? null;
+
 	const initialSession =
 		typeof window !== 'undefined'
 			? window.location.hash.match( /^#session-(\d+)$/ )
@@ -196,29 +214,37 @@ export default function TrainingGroupApp( { groupId, clubId, locale }: Props ) {
 				</dl>
 			) }
 
-			<TabBar
-				activeTab={ activeTab }
-				onChange={ setActiveTab }
-				t={ t.training }
-			/>
+			{ availableTabs.length > 0 && effectiveTab && (
+				<>
+					<TabBar
+						tabs={ availableTabs }
+						activeTab={ effectiveTab }
+						onChange={ setActiveTab }
+						t={ t.training }
+					/>
 
-			{ activeTab === 'participants' && (
-				<ParticipantsTab
-					participants={ group.participants }
-					ratings={ ratings }
-					t={ t.training }
-				/>
-			) }
+					{ effectiveTab === 'participants' && (
+						<ParticipantsTab
+							participants={ group.participants }
+							ratings={ ratings }
+							t={ t.training }
+						/>
+					) }
 
-			{ activeTab === 'sessions' && (
-				<SessionsTab
-					sessions={ sessions }
-					participants={ group.participants }
-					initialSessionId={
-						initialSession ? Number( initialSession[ 1 ] ) : null
-					}
-					t={ t.training }
-				/>
+					{ effectiveTab === 'sessions' && (
+						<SessionsTab
+							sessions={ sessions }
+							participants={ group.participants }
+							showAttendance={ showParticipants }
+							initialSessionId={
+								initialSession
+									? Number( initialSession[ 1 ] )
+									: null
+							}
+							t={ t.training }
+						/>
+					) }
+				</>
 			) }
 		</div>
 	);

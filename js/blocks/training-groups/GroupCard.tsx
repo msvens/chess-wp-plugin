@@ -4,6 +4,7 @@ import { getTranslation } from '../../shared/translations';
 
 interface Props {
 	group: TrainingGroup;
+	canEdit: boolean;
 	lang: Language;
 }
 
@@ -37,9 +38,10 @@ function formatSchedule(
 	return `${ dayStr } ${ timeStart }–${ timeEnd }`;
 }
 
-export default function GroupCard( { group, lang }: Props ) {
+export default function GroupCard( { group, canEdit, lang }: Props ) {
 	const t = getTranslation( lang );
 	const activeParticipants = group.participants.filter( ( p ) => p.active );
+	const showParticipants = canEdit || ( group.showParticipants ?? true );
 	const schedule =
 		group.schedule && group.schedule.startDate
 			? formatSchedule( group.schedule, lang, t.training )
@@ -59,12 +61,14 @@ export default function GroupCard( { group, lang }: Props ) {
 				<p className="rc-tg__card-desc">{ group.description }</p>
 			) }
 			{ schedule && <p className="rc-tg__card-schedule">{ schedule }</p> }
-			<div className="rc-tg__card-footer">
-				<span className="rc-tg__card-meta">
-					{ activeParticipants.length }{ ' ' }
-					{ t.training.participants.toLowerCase() }
-				</span>
-			</div>
+			{ showParticipants && (
+				<div className="rc-tg__card-footer">
+					<span className="rc-tg__card-meta">
+						{ activeParticipants.length }{ ' ' }
+						{ t.training.participants.toLowerCase() }
+					</span>
+				</div>
+			) }
 		</a>
 	);
 }

@@ -45,6 +45,9 @@ export function EditGroupModal( {
 	const [ linkedTournamentId, setLinkedTournamentId ] = useState(
 		String( group.linkedTournamentId || '' )
 	);
+	const [ showParticipants, setShowParticipants ] = useState(
+		group.showParticipants ?? true
+	);
 	const [ saving, setSaving ] = useState( false );
 	const [ error, setError ] = useState< string | null >( null );
 
@@ -128,6 +131,7 @@ export function EditGroupModal( {
 				linkedTournamentId: linkedTournamentId
 					? Number( linkedTournamentId )
 					: 0,
+				showParticipants,
 				...( eventId !== undefined ? { eventId } : {} ),
 			} );
 			onUpdated();
@@ -215,6 +219,12 @@ export function EditGroupModal( {
 				value={ linkedTournamentId }
 				options={ tournamentOptions }
 				onChange={ setLinkedTournamentId }
+			/>
+
+			<CheckboxControl
+				label={ t.training.showParticipants }
+				checked={ showParticipants }
+				onChange={ setShowParticipants }
 			/>
 
 			{ /* Event section */ }

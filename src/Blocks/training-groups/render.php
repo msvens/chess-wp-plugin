@@ -19,6 +19,7 @@ $wrapper_attributes = get_block_wrapper_attributes(
 );
 ?>
 <div <?php echo wp_kses_post( $wrapper_attributes ); ?>
+	data-can-edit="<?php echo current_user_can( 'edit_posts' ) ? '1' : '0'; ?>"
 	data-locale="<?php echo esc_attr( determine_locale() ); ?>">
 	<p><?php esc_html_e( 'Loading training groups...', 'rockaden-chess' ); ?></p>
 </div>

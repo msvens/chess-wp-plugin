@@ -4,6 +4,7 @@ import type { Translations } from '../../shared/translations';
 interface Props {
 	session: TrainingSession;
 	participants: Participant[];
+	showAttendance: boolean;
 	onBack: () => void;
 	t: Translations[ 'training' ];
 }
@@ -11,6 +12,7 @@ interface Props {
 export default function SessionDetail( {
 	session,
 	participants,
+	showAttendance,
 	onBack,
 	t,
 }: Props ) {
@@ -34,7 +36,7 @@ export default function SessionDetail( {
 			<h3 className="rc-td__session-title">{ dateStr }</h3>
 
 			{ /* Attendance */ }
-			{ session.attendance.length > 0 && (
+			{ showAttendance && session.attendance.length > 0 && (
 				<div className="rc-td__section">
 					<h4 className="rc-td__section-title">
 						{ t.attendance } ({ session.attendance.length })
