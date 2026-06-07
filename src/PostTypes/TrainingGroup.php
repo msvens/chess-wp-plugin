@@ -77,6 +77,10 @@ class TrainingGroup {
 				'type'    => 'string',
 				'default' => '',
 			],
+			'rc_show_participants'    => [
+				'type'    => 'boolean',
+				'default' => true,
+			],
 		];
 
 		foreach ( $meta_fields as $key => $args ) {

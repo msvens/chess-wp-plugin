@@ -6,10 +6,11 @@ import { useLocale } from '../../shared/useLocale';
 import GroupCard from './GroupCard';
 
 interface Props {
+	canEdit: boolean;
 	locale: string;
 }
 
-export default function TrainingGroupsApp( { locale }: Props ) {
+export default function TrainingGroupsApp( { canEdit, locale }: Props ) {
 	const currentLocale = useLocale( locale );
 	const lang = toLanguage( currentLocale );
 	const t = getTranslation( lang );
@@ -55,6 +56,7 @@ export default function TrainingGroupsApp( { locale }: Props ) {
 								<GroupCard
 									key={ group.id }
 									group={ group }
+									canEdit={ canEdit }
 									lang={ lang }
 								/>
 							) ) }
@@ -71,6 +73,7 @@ export default function TrainingGroupsApp( { locale }: Props ) {
 								<GroupCard
 									key={ group.id }
 									group={ group }
+									canEdit={ canEdit }
 									lang={ lang }
 								/>
 							) ) }

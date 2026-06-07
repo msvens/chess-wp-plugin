@@ -41,6 +41,7 @@ export interface TrainingGroup {
 		recurrenceType: string;
 		location: string;
 	} | null;
+	showParticipants?: boolean;
 	createdBy: number;
 }
 
@@ -115,6 +116,7 @@ export interface CreateGroupData {
 	trainers?: string;
 	contact?: string;
 	linkedTournamentId?: number;
+	showParticipants?: boolean;
 }
 
 export type TournamentCategory =

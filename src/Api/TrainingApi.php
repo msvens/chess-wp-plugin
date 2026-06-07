@@ -220,6 +220,9 @@ class TrainingApi {
 		if ( ! empty( $body['contact'] ) ) {
 			update_post_meta( $post_id, 'rc_contact', sanitize_text_field( $body['contact'] ) );
 		}
+		if ( isset( $body['showParticipants'] ) ) {
+			update_post_meta( $post_id, 'rc_show_participants', (bool) $body['showParticipants'] ? '1' : '0' );
+		}
 
 		return new WP_REST_Response( self::format_group( get_post( $post_id ) ), 201 );
 	}
@@ -276,6 +279,9 @@ class TrainingApi {
 		}
 		if ( isset( $body['contact'] ) ) {
 			update_post_meta( $post->ID, 'rc_contact', sanitize_text_field( $body['contact'] ) );
+		}
+		if ( isset( $body['showParticipants'] ) ) {
+			update_post_meta( $post->ID, 'rc_show_participants', (bool) $body['showParticipants'] ? '1' : '0' );
 		}
 
 		return new WP_REST_Response( self::format_group( get_post( $post->ID ) ) );
@@ -375,7 +381,8 @@ class TrainingApi {
 	 * @return WP_REST_Response
 	 */
 	public static function list_sessions( WP_REST_Request $request ): WP_REST_Response {
-		$group_id = (int) $request->get_url_params()['id'];
+		$group_id  = (int) $request->get_url_params()['id'];
+		$is_editor = current_user_can( 'edit_posts' );
 
 		$posts = get_posts(
 			[
@@ -396,6 +403,18 @@ class TrainingApi {
 		);
 
 		$sessions = array_map( [ self::class, 'format_session' ], $posts );
+
+		// Attendance reveals who's in the group — strip it when participants are
+		// hidden, so the names don't leak through session details.
+		if ( ! $is_editor && ! self::show_participants( $group_id ) ) {
+			$sessions = array_map(
+				static function ( array $session ): array {
+					$session['attendance'] = [];
+					return $session;
+				},
+				$sessions
+			);
+		}
 
 		return new WP_REST_Response( $sessions );
 	}
@@ -503,7 +522,13 @@ class TrainingApi {
 	 * @return array<string, mixed>
 	 */
 	private static function format_group( \WP_Post $post ): array {
-		$participants = json_decode( get_post_meta( $post->ID, 'rc_participants', true ) ?: '[]', true );
+		$show_participants = self::show_participants( $post->ID );
+		$participants      = json_decode( get_post_meta( $post->ID, 'rc_participants', true ) ?: '[]', true );
+
+		// Non-editors don't receive the participant list when it's hidden.
+		if ( ! current_user_can( 'edit_posts' ) && ! $show_participants ) {
+			$participants = [];
+		}
 
 		// Fetch linked event schedule for overview display.
 		$schedule = null;
@@ -535,8 +560,21 @@ class TrainingApi {
 			'trainers'           => get_post_meta( $post->ID, 'rc_trainers', true ) ?: '',
 			'contact'            => get_post_meta( $post->ID, 'rc_contact', true ) ?: '',
 			'schedule'           => $schedule,
+			'showParticipants'   => $show_participants,
 			'createdBy'          => $post->post_author,
 		];
+	}
+
+	/**
+	 * Whether a group's participant list is public. Unset meta means visible
+	 * (backward compatible — existing groups stay public until toggled off).
+	 *
+	 * @param int $group_id Group post ID.
+	 * @return bool
+	 */
+	private static function show_participants( int $group_id ): bool {
+		$value = get_post_meta( $group_id, 'rc_show_participants', true );
+		return ( '' === $value ) ? true : (bool) $value;
 	}
 
 	/**

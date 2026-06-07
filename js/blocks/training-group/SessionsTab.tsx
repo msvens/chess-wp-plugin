@@ -6,6 +6,7 @@ import SessionDetail from './SessionDetail';
 interface Props {
 	sessions: TrainingSession[];
 	participants: Participant[];
+	showAttendance: boolean;
 	initialSessionId: number | null;
 	t: Translations[ 'training' ];
 }
@@ -13,6 +14,7 @@ interface Props {
 export default function SessionsTab( {
 	sessions,
 	participants,
+	showAttendance,
 	initialSessionId,
 	t,
 }: Props ) {
@@ -36,6 +38,7 @@ export default function SessionsTab( {
 			<SessionDetail
 				session={ selectedSession }
 				participants={ participants }
+				showAttendance={ showAttendance }
 				onBack={ () => setSelectedId( null ) }
 				t={ t }
 			/>
@@ -60,10 +63,12 @@ export default function SessionsTab( {
 								<span className="rc-td__session-date">
 									{ formatDate( session.sessionDate ) }
 								</span>
-								<span className="rc-td__session-meta">
-									{ attendeeCount }{ ' ' }
-									{ t.present.toLowerCase() }
-								</span>
+								{ showAttendance && (
+									<span className="rc-td__session-meta">
+										{ attendeeCount }{ ' ' }
+										{ t.present.toLowerCase() }
+									</span>
+								) }
 							</button>
 						</li>
 					);
