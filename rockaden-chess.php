@@ -202,6 +202,74 @@ add_action(
 			]
 		);
 
+		// How-Tos: task-oriented step guides.
+		Rockaden\Docs\DocsRegistry::register(
+			[
+				'slug'       => 'guide-veckotraning',
+				'title_sv'   => 'Skapa en veckoträning',
+				'title_en'   => 'Create a weekly training',
+				'section_sv' => 'How-Tos',
+				'section_en' => 'How-Tos',
+				'file'       => $docs_dir . 'guide-veckotraning.html',
+				'order'      => 10,
+			]
+		);
+		Rockaden\Docs\DocsRegistry::register(
+			[
+				'slug'       => 'guide-traningspass',
+				'title_sv'   => 'Registrera ett träningspass',
+				'title_en'   => 'Record a training session',
+				'section_sv' => 'How-Tos',
+				'section_en' => 'How-Tos',
+				'file'       => $docs_dir . 'guide-traningspass.html',
+				'order'      => 15,
+			]
+		);
+		Rockaden\Docs\DocsRegistry::register(
+			[
+				'slug'       => 'guide-ssf-turnering',
+				'title_sv'   => 'Lägg till en SSF-turnering i kalendern',
+				'title_en'   => 'Add an SSF tournament to the calendar',
+				'section_sv' => 'How-Tos',
+				'section_en' => 'How-Tos',
+				'file'       => $docs_dir . 'guide-ssf-turnering.html',
+				'order'      => 20,
+			]
+		);
+		Rockaden\Docs\DocsRegistry::register(
+			[
+				'slug'       => 'guide-turnering-resultat',
+				'title_sv'   => 'Kör en turnering: ronder och resultat',
+				'title_en'   => 'Run a tournament: rounds & results',
+				'section_sv' => 'How-Tos',
+				'section_en' => 'How-Tos',
+				'file'       => $docs_dir . 'guide-turnering-resultat.html',
+				'order'      => 25,
+			]
+		);
+		Rockaden\Docs\DocsRegistry::register(
+			[
+				'slug'       => 'guide-aterkommande-handelse',
+				'title_sv'   => 'Lägg till en återkommande händelse',
+				'title_en'   => 'Add a recurring event',
+				'section_sv' => 'How-Tos',
+				'section_en' => 'How-Tos',
+				'file'       => $docs_dir . 'guide-aterkommande-handelse.html',
+				'order'      => 30,
+			]
+		);
+		Rockaden\Docs\DocsRegistry::register(
+			[
+				'slug'       => 'guide-block-pa-sidor',
+				'title_sv'   => 'Lägg till block på en sida',
+				'title_en'   => 'Add blocks to a page',
+				'section_sv' => 'How-Tos',
+				'section_en' => 'How-Tos',
+				'file'       => $docs_dir . 'guide-block-pa-sidor.html',
+				'order'      => 50,
+			]
+		);
+
 		do_action( 'rc_register_docs' );
 	},
 	20
