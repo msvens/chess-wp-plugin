@@ -38,7 +38,11 @@ export function TournamentDetail( {
 	} = useSsfRatings( clubId );
 	const [ showAddModal, setShowAddModal ] = useState( false );
 
-	if ( loading ) {
+	// Only show the spinner on the initial load. On a background refetch (e.g.
+	// after auto-saving a round result) keep the current view mounted so the
+	// active tab and round are preserved instead of snapping back to the first
+	// tab. The brief loading:true would otherwise unmount the TabPanel.
+	if ( loading && ! tournament ) {
 		return <Spinner />;
 	}
 	if ( error ) {
