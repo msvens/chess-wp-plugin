@@ -10,7 +10,8 @@
 
 <ul>
 	<li><strong class="rc-doc-sv">Titel och beskrivning</strong><strong class="rc-doc-en">Title and description</strong> <span class="rc-doc-sv">— turneringens namn och beskrivning.</span><span class="rc-doc-en">— the tournament name and description.</span></li>
-	<li><strong class="rc-doc-sv">Status</strong><strong class="rc-doc-en">Status</strong> <span class="rc-doc-sv">— planerad, pågående eller avslutad.</span><span class="rc-doc-en">— planned, ongoing, or completed.</span></li>
+	<li><strong class="rc-doc-sv">Status</strong><strong class="rc-doc-en">Status</strong> <span class="rc-doc-sv">— planerad, pågående eller avslutad (automatiskt eller manuellt, se nedan).</span><span class="rc-doc-en">— planned, active, or completed (automatic or manual, see below).</span></li>
+	<li><strong class="rc-doc-sv">Start- och slutdatum</strong><strong class="rc-doc-en">Start and end date</strong> <span class="rc-doc-sv">— styr den automatiska statusen och visas på turneringens sida.</span><span class="rc-doc-en">— drive the automatic status and show on the tournament's page.</span></li>
 	<li><strong class="rc-doc-sv">Kategori</strong><strong class="rc-doc-en">Category</strong> <span class="rc-doc-sv">— junior, ungdom, vuxen, senior eller blandad.</span><span class="rc-doc-en">— junior, youth, adult, senior, or mixed.</span></li>
 	<li><strong class="rc-doc-sv">Tidsformat</strong><strong class="rc-doc-en">Time control</strong> <span class="rc-doc-sv">— klassisk, rapid eller blixt.</span><span class="rc-doc-en">— classical, rapid, or blitz.</span></li>
 	<li><strong class="rc-doc-sv">Format</strong><strong class="rc-doc-en">Format</strong> <span class="rc-doc-sv">— rundturnering (Berger).</span><span class="rc-doc-en">— round-robin (Berger method).</span></li>
@@ -19,14 +20,41 @@
 	<li><strong class="rc-doc-sv">Kalenderevenemang</strong><strong class="rc-doc-en">Calendar event</strong> <span class="rc-doc-sv">— valfri koppling som ger schema och plats.</span><span class="rc-doc-en">— optional link that surfaces schedule and location.</span></li>
 </ul>
 
+<h2 class="rc-doc-sv">Status, datum och livscykel</h2>
+<h2 class="rc-doc-en">Status, dates and lifecycle</h2>
+
+<p class="rc-doc-sv">
+	En turnering går igenom faserna <strong>planerad → pågående → avslutad</strong>. Statusen kan sättas på två sätt:
+</p>
+<p class="rc-doc-en">
+	A tournament moves through <strong>planned → active → completed</strong>. The status can be set in two ways:
+</p>
+
+<ul>
+	<li><strong class="rc-doc-sv">Automatisk</strong><strong class="rc-doc-en">Automatic</strong> <span class="rc-doc-sv">— härleds från datumen: planerad före startdatumet, pågående däremellan, och avslutad när slutdatumet har passerat. (Har ronder redan resultat räknas den som pågående även före startdatumet.)</span><span class="rc-doc-en">— derived from the dates: planned before the start date, active in between, and completed once the end date has passed. (If rounds already have results it counts as active even before the start date.)</span></li>
+	<li><strong class="rc-doc-sv">Manuell</strong><strong class="rc-doc-en">Manual</strong> <span class="rc-doc-sv">— välj uttryckligen planerad, pågående eller avslutad. Ett manuellt val gäller tills du ställer tillbaka till Automatisk.</span><span class="rc-doc-en">— pick planned, active or completed explicitly. A manual choice sticks until you switch it back to Automatic.</span></li>
+</ul>
+
+<div class="rc-docs-tip">
+	<span class="rc-doc-sv"><strong>Obs:</strong> Står statusen på ett manuellt värde (t.ex. planerad) ändras den <em>inte</em> automatiskt när du ändrar datumen — ställ den på <strong>Automatic</strong> för att låta datumen styra.</span>
+	<span class="rc-doc-en"><strong>Note:</strong> If the status is on a manual value (e.g. planned) it will <em>not</em> change automatically when you edit the dates — switch it to <strong>Automatic</strong> to let the dates drive it.</span>
+</div>
+
+<p class="rc-doc-sv">
+	Alla fält kan ändras i efterhand — öppna turneringen och klicka på <strong>Edit</strong>.
+</p>
+<p class="rc-doc-en">
+	Every field can be changed afterwards — open the tournament and click <strong>Edit</strong>.
+</p>
+
 <h2 class="rc-doc-sv">SSF-baserade turneringar</h2>
 <h2 class="rc-doc-en">SSF-backed tournaments</h2>
 
 <p class="rc-doc-sv">
-	När turneringen har ett <strong>SSF-grupp-ID</strong> hämtas deltagare, lottningar och resultat direkt från <code>member.schack.se</code>. Lokal redigering av deltagarlistan stängs av eftersom SSF är källan.
+	När turneringen har ett <strong>SSF-grupp-ID</strong> hämtas deltagare, lottningar och resultat direkt från <code>member.schack.se</code>. Lokal redigering av deltagarlistan stängs av eftersom SSF är källan. I redigeringsläget kan du klicka på <strong>Fetch / Refresh from SSF</strong> för att hämta turneringens datum från SSF — då styr de den automatiska statusen.
 </p>
 <p class="rc-doc-en">
-	When the tournament has an <strong>SSF Group ID</strong>, participants, pairings, and results are pulled live from <code>member.schack.se</code>. Local editing of the participants list is disabled because SSF is the source of truth.
+	When the tournament has an <strong>SSF Group ID</strong>, participants, pairings, and results are pulled live from <code>member.schack.se</code>. Local editing of the participants list is disabled because SSF is the source of truth. In the edit form you can click <strong>Fetch / Refresh from SSF</strong> to pull the tournament's dates from SSF — those then drive the automatic status.
 </p>
 
 <h2 class="rc-doc-sv">Koppling från träningsgrupp</h2>
@@ -43,8 +71,8 @@
 <h2 class="rc-doc-en">Public pages</h2>
 
 <ul>
-	<li class="rc-doc-sv"><code>/tournaments/</code> — sidan "Turneringar" som listar alla publicerade turneringar via blocket <em>Turneringar (översikt)</em>. Redigerbar — du kan lägga till intro-text, hero eller annat ovanför listan.</li>
-	<li class="rc-doc-en"><code>/tournaments/</code> — the "Tournaments" page that lists all published tournaments via the <em>Tournaments (overview)</em> block. Editable — you can add intro text, a hero, or anything else above the list.</li>
+	<li class="rc-doc-sv"><code>/tournaments/</code> — sidan "Turneringar" som listar turneringar via blocket <em>Turneringar (översikt)</em>. Pågående turneringar visas överst; avslutade samlas i en hopfällbar lista (<em>Past tournaments</em>) längst ner. Redigerbar — du kan lägga till intro-text, hero eller annat ovanför listan.</li>
+	<li class="rc-doc-en"><code>/tournaments/</code> — the "Tournaments" page that lists tournaments via the <em>Tournaments (overview)</em> block. Ongoing tournaments show on top; completed ones collect in a collapsible <em>Past tournaments</em> list at the bottom. Editable — you can add intro text, a hero, or anything else above the list.</li>
 	<li class="rc-doc-sv"><code>/tournaments/&lt;slug&gt;/</code> — turneringens egen sida med rubrik, statusbricka, schema (om kopplad till evenemang), länk till officiellt resultat och ställning.</li>
 	<li class="rc-doc-en"><code>/tournaments/&lt;slug&gt;/</code> — the tournament's own page with title, status pill, schedule (if linked to an event), Official result link, and standings.</li>
 </ul>

@@ -12,7 +12,11 @@ import type {
 	TournamentCategory,
 	TournamentStatus,
 } from './types';
-import type { SsfEndResult, SsfRoundResult } from '../shared/ssfTypes';
+import type {
+	SsfEndResult,
+	SsfRoundResult,
+	SsfTournamentGroup,
+} from '../shared/ssfTypes';
 
 const BASE = 'rockaden/v1';
 
@@ -251,6 +255,14 @@ export function fetchSsfRoundResults(
 ): Promise< SsfRoundResult[] > {
 	return apiFetch( {
 		path: `${ BASE }/ssf/tournamentresults/roundresults/id/${ groupId }`,
+	} );
+}
+
+export function fetchSsfGroup(
+	groupId: number
+): Promise< SsfTournamentGroup > {
+	return apiFetch( {
+		path: `${ BASE }/ssf/tournament/group/id/${ groupId }`,
 	} );
 }
 

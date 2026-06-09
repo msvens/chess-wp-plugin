@@ -114,6 +114,14 @@ export interface Translations {
 			active: string;
 			completed: string;
 		};
+		statusAuto: string;
+		statusAutoHint: string;
+		editTournament: string;
+		refreshFromSsf: string;
+		ssfFetchError: string;
+		viewOnSsf: string;
+		ongoing: string;
+		pastTournaments: string;
 		format: string;
 		formats: {
 			roundRobin: string;
@@ -364,6 +372,17 @@ const translations: Translations = {
 			active: __( 'Active', 'rockaden-chess' ),
 			completed: __( 'Completed', 'rockaden-chess' ),
 		},
+		statusAuto: __( 'Automatic', 'rockaden-chess' ),
+		statusAutoHint: __(
+			'Derived from the start/end dates (and results). A manual choice overrides it.',
+			'rockaden-chess'
+		),
+		editTournament: __( 'Edit tournament', 'rockaden-chess' ),
+		refreshFromSsf: __( 'Fetch / Refresh from SSF', 'rockaden-chess' ),
+		ssfFetchError: __( 'Could not fetch from SSF', 'rockaden-chess' ),
+		viewOnSsf: __( 'View on SSF', 'rockaden-chess' ),
+		ongoing: __( 'Ongoing', 'rockaden-chess' ),
+		pastTournaments: __( 'Past tournaments', 'rockaden-chess' ),
 		format: __( 'Format', 'rockaden-chess' ),
 		formats: {
 			roundRobin: __( 'Round-robin', 'rockaden-chess' ),

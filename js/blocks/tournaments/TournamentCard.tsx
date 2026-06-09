@@ -7,12 +7,33 @@ interface Props {
 	lang: Language;
 }
 
+function formatDate( value: string, lang: Language ): string {
+	if ( ! value ) {
+		return '';
+	}
+	const d = new Date( value );
+	if ( isNaN( d.getTime() ) ) {
+		return value;
+	}
+	return d.toLocaleDateString( lang === 'sv' ? 'sv-SE' : 'en-GB', {
+		year: 'numeric',
+		month: 'short',
+		day: 'numeric',
+	} );
+}
+
 export default function TournamentCard( { tournament, lang }: Props ) {
 	const t = getTranslation( lang );
 	const activeParticipants = tournament.participants.filter(
 		( p ) => p.active
 	);
 	const isSsfBacked = tournament.ssfGroupId > 0;
+	const dateRange = [
+		formatDate( tournament.startDate, lang ),
+		formatDate( tournament.endDate, lang ),
+	]
+		.filter( Boolean )
+		.join( ' – ' );
 
 	return (
 		<a
@@ -33,6 +54,7 @@ export default function TournamentCard( { tournament, lang }: Props ) {
 				) }
 			</div>
 			<h3 className="rc-tn__card-title">{ tournament.title }</h3>
+			{ dateRange && <p className="rc-tn__card-dates">{ dateRange }</p> }
 			{ tournament.description && (
 				<p className="rc-tn__card-desc">{ tournament.description }</p>
 			) }
