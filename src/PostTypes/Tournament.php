@@ -51,7 +51,7 @@ class Tournament {
 			],
 			'rc_status'            => [
 				'type'    => 'string',
-				'default' => 'planned',
+				'default' => 'auto',
 			],
 			'rc_format'            => [
 				'type'    => 'string',
@@ -96,6 +96,10 @@ class Tournament {
 			'rc_show_standings'    => [
 				'type'    => 'boolean',
 				'default' => true,
+			],
+			'rc_ssf_has_results'   => [
+				'type'    => 'boolean',
+				'default' => false,
 			],
 		];
 

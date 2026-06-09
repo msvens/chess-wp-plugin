@@ -21,7 +21,7 @@ class TournamentApi {
 
 	private const ALLOWED_CATEGORIES = [ 'junior', 'youth', 'adult', 'senior', 'mixed' ];
 
-	private const ALLOWED_STATUSES = [ 'planned', 'active', 'completed' ];
+	private const ALLOWED_STATUSES = [ 'auto', 'planned', 'active', 'completed' ];
 
 	private const ALLOWED_FORMATS = [ 'round-robin' ];
 
@@ -296,6 +296,11 @@ class TournamentApi {
 		if ( isset( $body['showStandings'] ) ) {
 			update_post_meta( $post_id, 'rc_show_standings', (bool) $body['showStandings'] ? '1' : '0' );
 		}
+		// Snapshot of whether the linked SSF tournament has any round results
+		// (the "has it started" ground truth), captured at Fetch/Refresh time.
+		if ( isset( $body['ssfHasResults'] ) ) {
+			update_post_meta( $post_id, 'rc_ssf_has_results', (bool) $body['ssfHasResults'] ? '1' : '0' );
+		}
 	}
 
 	/**
@@ -487,6 +492,22 @@ class TournamentApi {
 		$participants = json_decode( get_post_meta( $post->ID, 'rc_participants', true ) ?: '[]', true );
 		$rounds       = json_decode( get_post_meta( $post->ID, 'rc_rounds', true ) ?: '[]', true );
 
+		// Effective lifecycle status. "Has results" (the started ground truth) comes
+		// from the full rounds (local) or the snapshotted SSF flag — computed before
+		// any visibility stripping below. When rc_status is 'auto' we derive it.
+		$ssf_group_id = (int) get_post_meta( $post->ID, 'rc_ssf_group_id', true );
+		$has_results  = $ssf_group_id > 0
+			? (bool) get_post_meta( $post->ID, 'rc_ssf_has_results', true )
+			: self::rounds_have_results( is_array( $rounds ) ? $rounds : [] );
+		$raw_status   = get_post_meta( $post->ID, 'rc_status', true ) ?: 'auto';
+		$status       = ( 'auto' === $raw_status )
+			? self::derive_status(
+				get_post_meta( $post->ID, 'rc_start_date', true ) ?: '',
+				get_post_meta( $post->ID, 'rc_end_date', true ) ?: '',
+				$has_results
+			)
+			: $raw_status;
+
 		if ( ! $is_editor ) {
 			if ( ! $show_participants ) {
 				$participants = [];
@@ -502,12 +523,13 @@ class TournamentApi {
 			'title'            => $post->post_title,
 			'description'      => $post->post_content,
 			'category'         => get_post_meta( $post->ID, 'rc_category', true ) ?: 'mixed',
-			'status'           => get_post_meta( $post->ID, 'rc_status', true ) ?: 'planned',
+			'status'           => $status,
+			'statusIsAuto'     => ( 'auto' === $raw_status ),
 			'format'           => get_post_meta( $post->ID, 'rc_format', true ) ?: 'round-robin',
 			'timeControl'      => get_post_meta( $post->ID, 'rc_time_control', true ) ?: 'classical',
 			'participants'     => $participants,
 			'rounds'           => $rounds,
-			'ssfGroupId'       => (int) get_post_meta( $post->ID, 'rc_ssf_group_id', true ),
+			'ssfGroupId'       => $ssf_group_id,
 			'eventId'          => (int) get_post_meta( $post->ID, 'rc_event_id', true ),
 			'externalLink'     => get_post_meta( $post->ID, 'rc_external_link', true ) ?: '',
 			'startDate'        => get_post_meta( $post->ID, 'rc_start_date', true ) ?: '',
@@ -516,5 +538,73 @@ class TournamentApi {
 			'showStandings'    => $show_standings,
 			'createdBy'        => $post->post_author,
 		];
+	}
+
+	/**
+	 * Whether any round pairing has a recorded result.
+	 *
+	 * @param array<int, mixed> $rounds Decoded rounds (shape not guaranteed).
+	 * @return bool
+	 */
+	private static function rounds_have_results( array $rounds ): bool {
+		foreach ( $rounds as $round ) {
+			if ( ! is_array( $round ) || ! isset( $round['pairings'] ) || ! is_array( $round['pairings'] ) ) {
+				continue;
+			}
+			foreach ( $round['pairings'] as $pairing ) {
+				if ( is_array( $pairing ) && ! empty( $pairing['result'] ) ) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * Derive a tournament's lifecycle status from its dates and whether any
+	 * results exist. Mirrors the sthlmschack-reimagined rule: 'completed' is purely
+	 * date-based (today past the end date — end-date inclusive); 'planned' requires
+	 * no results yet AND no start date (or before it); otherwise 'active'. Dates compare
+	 * at local midnight in the site timezone (avoids UTC off-by-one).
+	 *
+	 * @param string $start       Start date ('' if unset).
+	 * @param string $end         End date ('' if unset).
+	 * @param bool   $has_results Whether any round result exists (the started ground truth).
+	 * @return string planned|active|completed
+	 */
+	private static function derive_status( string $start, string $end, bool $has_results ): string {
+		$tz    = wp_timezone();
+		$today = new \DateTimeImmutable( 'today', $tz );
+
+		$end_date = self::parse_local_date( $end, $tz );
+		if ( $end_date instanceof \DateTimeImmutable && $today > $end_date ) {
+			return 'completed';
+		}
+
+		// Not started (no results) and either no start date yet or still before it.
+		$start_date = self::parse_local_date( $start, $tz );
+		if ( ! $has_results && ( null === $start_date || $today < $start_date ) ) {
+			return 'planned';
+		}
+
+		return 'active';
+	}
+
+	/**
+	 * Parse a date string as local midnight in the given timezone. Accepts
+	 * 'YYYY-MM-DD' or a longer ISO string (the date part is used). Returns null
+	 * on empty/invalid input.
+	 *
+	 * @param string        $value Date string.
+	 * @param \DateTimeZone $tz    Timezone.
+	 * @return \DateTimeImmutable|null
+	 */
+	private static function parse_local_date( string $value, \DateTimeZone $tz ): ?\DateTimeImmutable {
+		$value = trim( $value );
+		if ( '' === $value ) {
+			return null;
+		}
+		$parsed = \DateTimeImmutable::createFromFormat( '!Y-m-d', substr( $value, 0, 10 ), $tz );
+		return false === $parsed ? null : $parsed;
 	}
 }

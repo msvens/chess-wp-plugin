@@ -551,6 +551,30 @@ msgstr "Tillbaka till turneringar"
 msgid "Official result"
 msgstr "Officiellt resultat"
 
+msgid "Automatic"
+msgstr "Automatiskt"
+
+msgid "Derived from the start/end dates (and results). A manual choice overrides it."
+msgstr "Härleds från start-/slutdatum (och resultat). Ett manuellt val åsidosätter det."
+
+msgid "Edit tournament"
+msgstr "Redigera turnering"
+
+msgid "Fetch / Refresh from SSF"
+msgstr "Hämta / uppdatera från SSF"
+
+msgid "Could not fetch from SSF"
+msgstr "Kunde inte hämta från SSF"
+
+msgid "View on SSF"
+msgstr "Visa på SSF"
+
+msgid "Ongoing"
+msgstr "Pågående"
+
+msgid "Past tournaments"
+msgstr "Tidigare turneringar"
+
 msgid "Upcoming events and activities at SK Rockaden."
 msgstr "Kommande evenemang och aktiviteter på SK Rockaden."
 

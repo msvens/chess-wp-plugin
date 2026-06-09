@@ -41,6 +41,8 @@ export default function TournamentsApp( { locale }: Props ) {
 			} );
 	}, [] );
 
+	const [ showPast, setShowPast ] = useState( false );
+
 	if ( loading ) {
 		return <p className="rc-tn__loading">{ t.common.loading }</p>;
 	}
@@ -49,17 +51,50 @@ export default function TournamentsApp( { locale }: Props ) {
 		return <p className="rc-tn__empty">{ t.tournament.noTournaments }</p>;
 	}
 
+	// Ongoing = planned + active; Past = completed (effective status from the API).
+	const ongoing = tournaments.filter( ( tn ) => tn.status !== 'completed' );
+	const past = tournaments.filter( ( tn ) => tn.status === 'completed' );
+	// If there's nothing ongoing, reveal the past list so the block isn't empty.
+	const pastVisible = showPast || ongoing.length === 0;
+
 	return (
 		<div className="rc-tn">
-			<div className="rc-tn__grid">
-				{ tournaments.map( ( tournament ) => (
-					<TournamentCard
-						key={ tournament.id }
-						tournament={ tournament }
-						lang={ lang }
-					/>
-				) ) }
-			</div>
+			{ ongoing.length > 0 && (
+				<div className="rc-tn__grid">
+					{ ongoing.map( ( tournament ) => (
+						<TournamentCard
+							key={ tournament.id }
+							tournament={ tournament }
+							lang={ lang }
+						/>
+					) ) }
+				</div>
+			) }
+
+			{ past.length > 0 && (
+				<div className="rc-tn__past">
+					<button
+						type="button"
+						className="rc-tn__past-toggle"
+						aria-expanded={ pastVisible }
+						onClick={ () => setShowPast( ( v ) => ! v ) }
+					>
+						{ pastVisible ? '▾' : '▸' }{ ' ' }
+						{ t.tournament.pastTournaments } ({ past.length })
+					</button>
+					{ pastVisible && (
+						<div className="rc-tn__grid">
+							{ past.map( ( tournament ) => (
+								<TournamentCard
+									key={ tournament.id }
+									tournament={ tournament }
+									lang={ lang }
+								/>
+							) ) }
+						</div>
+					) }
+				</div>
+			) }
 		</div>
 	);
 }

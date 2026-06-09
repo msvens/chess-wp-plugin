@@ -126,7 +126,12 @@ export type TournamentCategory =
 	| 'senior'
 	| 'mixed';
 
+// Effective lifecycle status (what's displayed/sorted). 'auto' is only a stored
+// mode, surfaced separately via statusIsAuto.
 export type TournamentStatus = 'planned' | 'active' | 'completed';
+
+// Status as chosen in the editor: 'auto' (derive from dates/results) or an explicit override.
+export type TournamentStatusChoice = 'auto' | TournamentStatus;
 
 export type TournamentFormat = 'round-robin';
 
@@ -137,6 +142,7 @@ export interface Tournament {
 	description: string;
 	category: TournamentCategory;
 	status: TournamentStatus;
+	statusIsAuto: boolean;
 	format: TournamentFormat;
 	timeControl: string;
 	participants: Participant[];
@@ -155,7 +161,7 @@ export interface CreateTournamentData {
 	title: string;
 	description?: string;
 	category?: TournamentCategory;
-	status?: TournamentStatus;
+	status?: TournamentStatusChoice;
 	format?: TournamentFormat;
 	timeControl?: string;
 	ssfGroupId?: number;
@@ -165,6 +171,7 @@ export interface CreateTournamentData {
 	endDate?: string;
 	showParticipants?: boolean;
 	showStandings?: boolean;
+	ssfHasResults?: boolean;
 }
 
 export type TournamentView =

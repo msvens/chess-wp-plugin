@@ -156,6 +156,38 @@ html.dark .rc-tn__card:hover {
 	color: var(--rc-tn-meta-text);
 }
 
+.rc-tn__card-dates {
+	margin: 0 0 0.5rem;
+	font-size: 0.8125rem;
+	color: var(--rc-tn-meta-text);
+}
+
+/* Past / finished tournaments archive */
+.rc-tn__past {
+	margin-top: 1.5rem;
+}
+
+.rc-tn__past-toggle {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.4rem;
+	padding: 0.4rem 0;
+	background: none;
+	border: none;
+	cursor: pointer;
+	font: inherit;
+	font-weight: 600;
+	color: var(--rc-tn-meta-text);
+}
+
+.rc-tn__past-toggle:hover {
+	color: inherit;
+}
+
+.rc-tn__past .rc-tn__grid {
+	margin-top: 0.75rem;
+}
+
 @media (max-width: 640px) {
 	.rc-tn__grid {
 		grid-template-columns: 1fr;

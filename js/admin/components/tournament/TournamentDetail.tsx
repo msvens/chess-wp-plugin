@@ -14,7 +14,32 @@ import { ParticipantList } from './ParticipantList';
 import { AddParticipantModal } from './AddParticipantModal';
 import { StandingsTable } from './StandingsTable';
 import { RoundsPanel } from './RoundsPanel';
+import { EditTournamentModal } from './EditTournamentModal';
 import { SsfTournamentView } from '../SsfTournamentView';
+
+function formatDate( value: string ): string {
+	if ( ! value ) {
+		return '';
+	}
+	const d = new Date( value );
+	if ( isNaN( d.getTime() ) ) {
+		return value;
+	}
+	return d.toLocaleDateString( 'sv-SE', {
+		year: 'numeric',
+		month: 'short',
+		day: 'numeric',
+	} );
+}
+
+function formatDateRange( start: string, end: string ): string {
+	const s = formatDate( start );
+	const e = formatDate( end );
+	if ( s && e ) {
+		return `${ s } – ${ e }`;
+	}
+	return s || e;
+}
 
 interface TournamentDetailProps {
 	tournamentId: number;
@@ -37,6 +62,7 @@ export function TournamentDetail( {
 		loading: ratingsLoading,
 	} = useSsfRatings( clubId );
 	const [ showAddModal, setShowAddModal ] = useState( false );
+	const [ showEditModal, setShowEditModal ] = useState( false );
 
 	// Only show the spinner on the initial load. On a background refetch (e.g.
 	// after auto-saving a round result) keep the current view mounted so the
@@ -84,7 +110,7 @@ export function TournamentDetail( {
 			<div
 				style={ {
 					display: 'flex',
-					alignItems: 'center',
+					alignItems: 'flex-start',
 					justifyContent: 'space-between',
 					marginBottom: 8,
 				} }
@@ -102,20 +128,50 @@ export function TournamentDetail( {
 						<span className="rc-category-pill">
 							{ t.tournament.categories[ tournament.category ] }
 						</span>
-						{ isSsfBacked && (
-							<Text
-								style={ {
-									display: 'inline',
-									fontStyle: 'italic',
-									marginLeft: 8,
-								} }
-							>
-								SSF #{ tournament.ssfGroupId }
-							</Text>
-						) }
 					</div>
+					{ ( tournament.startDate || tournament.endDate ) && (
+						<div style={ { marginTop: 6, color: '#555' } }>
+							{ formatDateRange(
+								tournament.startDate,
+								tournament.endDate
+							) }
+						</div>
+					) }
+					{ isSsfBacked && (
+						<div style={ { marginTop: 6 } }>
+							{ tournament.externalLink ? (
+								<a
+									href={ tournament.externalLink }
+									target="_blank"
+									rel="noreferrer"
+								>
+									{ t.tournament.viewOnSsf } ↗
+								</a>
+							) : (
+								<Text style={ { fontStyle: 'italic' } }>
+									SSF #{ tournament.ssfGroupId }
+								</Text>
+							) }
+						</div>
+					) }
 				</div>
+				<Button
+					variant="secondary"
+					onClick={ () => setShowEditModal( true ) }
+					size="compact"
+				>
+					{ t.common.edit }
+				</Button>
 			</div>
+
+			{ showEditModal && (
+				<EditTournamentModal
+					t={ t }
+					tournament={ tournament }
+					onClose={ () => setShowEditModal( false ) }
+					onUpdated={ refetch }
+				/>
+			) }
 
 			{ tournament.description && (
 				<Text style={ { display: 'block', marginBottom: 12 } }>
