@@ -121,6 +121,38 @@
 	aspect-ratio: auto;
 }
 
+/* Carousel mode shows several cells at once: give each slide the chosen aspect
+   ratio so the cells are uniform, and let the image fill it per the Image fit
+   setting ('cover' crops to fill — keeps mixed-size images looking consistent).
+   The viewport/track height is then driven by the slides. */
+.rc-carousel--carousel .rc-carousel__viewport {
+	aspect-ratio: auto;
+}
+
+.rc-carousel--carousel .rc-carousel__track {
+	height: auto;
+}
+
+.rc-carousel--carousel.rc-carousel--ar-16-9 .rc-carousel__slide {
+	aspect-ratio: 16 / 9;
+}
+
+.rc-carousel--carousel.rc-carousel--ar-4-3 .rc-carousel__slide {
+	aspect-ratio: 4 / 3;
+}
+
+.rc-carousel--carousel.rc-carousel--ar-1-1 .rc-carousel__slide {
+	aspect-ratio: 1 / 1;
+}
+
+.rc-carousel--carousel.rc-carousel--ar-3-4 .rc-carousel__slide {
+	aspect-ratio: 3 / 4;
+}
+
+.rc-carousel--carousel.rc-carousel--ar-9-16 .rc-carousel__slide {
+	aspect-ratio: 9 / 16;
+}
+
 /* Nav buttons: absolute over the viewport */
 .rc-carousel__nav {
 	position: absolute;
@@ -201,5 +233,137 @@
 		width: 2rem;
 		height: 2rem;
 		font-size: 1.25rem;
+	}
+}
+
+/* --- Fullscreen toggle button (top-right corner) --- */
+.rc-carousel__fullscreen-btn {
+	position: absolute;
+	top: 0.5rem;
+	right: 0.5rem;
+	width: 2.25rem;
+	height: 2.25rem;
+	border-radius: 0.375rem;
+	border: none;
+	background: rgba(0, 0, 0, 0.5);
+	color: #fff;
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	transition: background 0.15s;
+	z-index: 3;
+}
+
+.rc-carousel__fullscreen-btn:hover {
+	background: rgba(0, 0, 0, 0.75);
+}
+
+/* --- Fullscreen lightbox overlay (portaled to <body>) --- */
+.rc-carousel-fullscreen {
+	position: fixed;
+	inset: 0;
+	z-index: 100000;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background: #000;
+	padding: 1.5rem;
+	cursor: zoom-out;
+}
+
+.rc-carousel-fullscreen__backdrop {
+	position: absolute;
+	inset: 0;
+	z-index: 0;
+	border: none;
+	padding: 0;
+	background: transparent;
+	cursor: zoom-out;
+}
+
+.rc-carousel-fullscreen__image {
+	position: relative;
+	z-index: 1;
+	max-width: 100%;
+	max-height: 100%;
+	object-fit: contain;
+}
+
+.rc-carousel-fullscreen__close {
+	position: fixed;
+	top: 1rem;
+	right: 1rem;
+	z-index: 2;
+	width: 2.75rem;
+	height: 2.75rem;
+	border-radius: 50%;
+	border: none;
+	background: rgba(255, 255, 255, 0.12);
+	color: #fff;
+	font-size: 1.75rem;
+	line-height: 1;
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	transition: background 0.15s;
+}
+
+.rc-carousel-fullscreen__close:hover {
+	background: rgba(255, 255, 255, 0.25);
+}
+
+.rc-carousel-fullscreen__nav {
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+	z-index: 2;
+	width: 3rem;
+	height: 3rem;
+	border-radius: 50%;
+	border: none;
+	background: rgba(255, 255, 255, 0.12);
+	color: #fff;
+	font-size: 2rem;
+	line-height: 1;
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	transition: background 0.15s;
+}
+
+.rc-carousel-fullscreen__nav:hover {
+	background: rgba(255, 255, 255, 0.25);
+}
+
+.rc-carousel-fullscreen__nav--prev {
+	left: 1rem;
+}
+
+.rc-carousel-fullscreen__nav--next {
+	right: 1rem;
+}
+
+.rc-carousel-fullscreen__counter {
+	position: fixed;
+	bottom: 1rem;
+	left: 50%;
+	transform: translateX(-50%);
+	z-index: 2;
+	color: rgba(255, 255, 255, 0.85);
+	font-size: 0.875rem;
+}
+
+@media (max-width: 640px) {
+	.rc-carousel-fullscreen {
+		padding: 0;
+	}
+
+	.rc-carousel-fullscreen__nav {
+		width: 2.5rem;
+		height: 2.5rem;
+		font-size: 1.5rem;
 	}
 }

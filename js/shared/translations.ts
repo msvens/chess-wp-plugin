@@ -197,6 +197,9 @@ export interface Translations {
 		interval: string;
 		visibleItems: string;
 		aspectRatio: string;
+		cellSizing: string;
+		exactHeight: string;
+		cellHeight: string;
 		aspectRatios: {
 			'16:9': string;
 			'4:3': string;
@@ -218,6 +221,9 @@ export interface Translations {
 		prev: string;
 		next: string;
 		slideOf: string;
+		allowFullscreen: string;
+		enterFullscreen: string;
+		exitFullscreen: string;
 	};
 	ranking: {
 		title: string;
@@ -476,6 +482,9 @@ const translations: Translations = {
 		interval: __( 'Interval (seconds)', 'rockaden-chess' ),
 		visibleItems: __( 'Visible items', 'rockaden-chess' ),
 		aspectRatio: __( 'Aspect ratio', 'rockaden-chess' ),
+		cellSizing: __( 'Cell sizing', 'rockaden-chess' ),
+		exactHeight: __( 'Exact height', 'rockaden-chess' ),
+		cellHeight: __( 'Height (px)', 'rockaden-chess' ),
 		aspectRatios: {
 			'16:9': __( '16:9 (Landscape wide)', 'rockaden-chess' ),
 			'4:3': __( '4:3 (Landscape)', 'rockaden-chess' ),
@@ -511,6 +520,9 @@ const translations: Translations = {
 		prev: __( 'Previous', 'rockaden-chess' ),
 		next: __( 'Next', 'rockaden-chess' ),
 		slideOf: __( 'Slide {n} of {total}', 'rockaden-chess' ),
+		allowFullscreen: __( 'Allow fullscreen', 'rockaden-chess' ),
+		enterFullscreen: __( 'View fullscreen', 'rockaden-chess' ),
+		exitFullscreen: __( 'Close', 'rockaden-chess' ),
 	},
 	ranking: {
 		title: __( 'Ranking List', 'rockaden-chess' ),

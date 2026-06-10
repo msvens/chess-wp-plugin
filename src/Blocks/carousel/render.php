@@ -23,6 +23,9 @@ $backdrop_style   = in_array( $attributes['backdropStyle'] ?? '', [ 'blurred', '
 $constrain        = in_array( $attributes['constrain'] ?? '', [ 'none', 'width', 'height' ], true ) ? $attributes['constrain'] : 'none';
 $constraint_value = isset( $attributes['constraintValue'] ) ? max( 0, (int) $attributes['constraintValue'] ) : 0;
 $alignment        = in_array( $attributes['alignment'] ?? '', [ 'left', 'center', 'right' ], true ) ? $attributes['alignment'] : 'center';
+$allow_fullscreen = ! empty( $attributes['allowFullscreen'] );
+$cell_sizing      = in_array( $attributes['cellSizing'] ?? '', [ 'aspect', 'height' ], true ) ? $attributes['cellSizing'] : 'aspect';
+$cell_height      = isset( $attributes['cellHeight'] ) ? max( 0, min( 1200, (int) $attributes['cellHeight'] ) ) : 0;
 
 $images = [];
 foreach ( $image_ids as $raw_id ) {
@@ -56,6 +59,9 @@ $config = [
 	'constrain'        => $constrain,
 	'constraintValue'  => $constraint_value,
 	'alignment'        => $alignment,
+	'allowFullscreen'  => $allow_fullscreen,
+	'cellSizing'       => $cell_sizing,
+	'cellHeight'       => $cell_height,
 ];
 
 $wrapper_attributes = get_block_wrapper_attributes(

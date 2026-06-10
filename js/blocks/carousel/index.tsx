@@ -41,6 +41,9 @@ interface BlockAttrs {
 	constrain: ConstrainMode;
 	constraintValue: number;
 	alignment: Alignment;
+	allowFullscreen: boolean;
+	cellSizing: 'aspect' | 'height';
+	cellHeight: number;
 }
 
 interface EditProps {
@@ -68,6 +71,9 @@ registerBlockType( 'rockaden/carousel', {
 			constrain,
 			constraintValue,
 			alignment,
+			allowFullscreen,
+			cellSizing,
+			cellHeight,
 		} = attributes;
 
 		// Resolve image metadata from the core store for preview rendering.
@@ -128,47 +134,101 @@ registerBlockType( 'rockaden/carousel', {
 									value: 'carousel',
 								},
 							] }
-							onChange={ ( v: string ) =>
+							onChange={ ( v: string ) => {
+								const nextMode = v as 'slider' | 'carousel';
 								setAttributes( {
-									mode: v as 'slider' | 'carousel',
-								} )
-							}
+									mode: nextMode,
+									// 'auto' can't form uniform cells in carousel mode.
+									...( nextMode === 'carousel' &&
+									aspectRatio === 'auto'
+										? {
+												aspectRatio:
+													'16:9' as AspectRatio,
+										  }
+										: {} ),
+								} );
+							} }
 						/>
-						<SelectControl
-							label={ t.carousel.aspectRatio }
-							value={ aspectRatio }
-							options={ [
-								{
-									label: t.carousel.aspectRatios[ '16:9' ],
-									value: '16:9',
-								},
-								{
-									label: t.carousel.aspectRatios[ '4:3' ],
-									value: '4:3',
-								},
-								{
-									label: t.carousel.aspectRatios[ '1:1' ],
-									value: '1:1',
-								},
-								{
-									label: t.carousel.aspectRatios[ '3:4' ],
-									value: '3:4',
-								},
-								{
-									label: t.carousel.aspectRatios[ '9:16' ],
-									value: '9:16',
-								},
-								{
-									label: t.carousel.aspectRatios.auto,
-									value: 'auto',
-								},
-							] }
-							onChange={ ( v: string ) =>
-								setAttributes( {
-									aspectRatio: v as AspectRatio,
-								} )
-							}
-						/>
+						{ mode === 'carousel' && (
+							<SelectControl
+								label={ t.carousel.cellSizing }
+								value={ cellSizing }
+								options={ [
+									{
+										label: t.carousel.aspectRatio,
+										value: 'aspect',
+									},
+									{
+										label: t.carousel.exactHeight,
+										value: 'height',
+									},
+								] }
+								onChange={ ( v: string ) => {
+									const next = v as 'aspect' | 'height';
+									setAttributes( {
+										cellSizing: next,
+										...( next === 'height' &&
+										cellHeight === 0
+											? { cellHeight: 320 }
+											: {} ),
+									} );
+								} }
+							/>
+						) }
+						{ ( mode === 'slider' || cellSizing === 'aspect' ) && (
+							<SelectControl
+								label={ t.carousel.aspectRatio }
+								value={ aspectRatio }
+								options={ [
+									{
+										label: t.carousel.aspectRatios[
+											'16:9'
+										],
+										value: '16:9',
+									},
+									{
+										label: t.carousel.aspectRatios[ '4:3' ],
+										value: '4:3',
+									},
+									{
+										label: t.carousel.aspectRatios[ '1:1' ],
+										value: '1:1',
+									},
+									{
+										label: t.carousel.aspectRatios[ '3:4' ],
+										value: '3:4',
+									},
+									{
+										label: t.carousel.aspectRatios[
+											'9:16'
+										],
+										value: '9:16',
+									},
+									{
+										label: t.carousel.aspectRatios.auto,
+										value: 'auto',
+										disabled: mode === 'carousel',
+									},
+								] }
+								onChange={ ( v: string ) =>
+									setAttributes( {
+										aspectRatio: v as AspectRatio,
+									} )
+								}
+							/>
+						) }
+						{ mode === 'carousel' && cellSizing === 'height' && (
+							<RangeControl
+								label={ t.carousel.cellHeight }
+								value={ cellHeight }
+								onChange={ ( v ) =>
+									setAttributes( { cellHeight: v ?? 0 } )
+								}
+								min={ 80 }
+								max={ 800 }
+								step={ 10 }
+							/>
+						) }
 						<SelectControl
 							label={ t.carousel.imageFit }
 							value={ imageFit }
@@ -314,6 +374,13 @@ registerBlockType( 'rockaden/carousel', {
 								/>
 							</>
 						) }
+						<ToggleControl
+							label={ t.carousel.allowFullscreen }
+							checked={ allowFullscreen }
+							onChange={ ( v: boolean ) =>
+								setAttributes( { allowFullscreen: v } )
+							}
+						/>
 					</PanelBody>
 				</InspectorControls>
 				<div { ...blockProps }>

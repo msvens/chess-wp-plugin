@@ -692,6 +692,15 @@ msgstr "Synliga bilder"
 msgid "Aspect ratio"
 msgstr "Bildformat"
 
+msgid "Cell sizing"
+msgstr "Cellstorlek"
+
+msgid "Exact height"
+msgstr "Exakt höjd"
+
+msgid "Height (px)"
+msgstr "Höjd (px)"
+
 msgid "Auto"
 msgstr "Auto"
 
@@ -751,6 +760,15 @@ msgstr "Nästa"
 
 msgid "Slide {n} of {total}"
 msgstr "Bild {n} av {total}"
+
+msgid "Allow fullscreen"
+msgstr "Tillåt helskärm"
+
+msgid "View fullscreen"
+msgstr "Visa i helskärm"
+
+msgid "Close"
+msgstr "Stäng"
 
 msgid "Rating Period"
 msgstr "Rankingperiod"
