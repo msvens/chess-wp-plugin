@@ -52,6 +52,10 @@
     "alignment": {
       "type": "string",
       "default": "center"
+    },
+    "allowFullscreen": {
+      "type": "boolean",
+      "default": false
     }
   },
   "supports": {

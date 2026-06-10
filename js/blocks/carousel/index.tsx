@@ -41,6 +41,7 @@ interface BlockAttrs {
 	constrain: ConstrainMode;
 	constraintValue: number;
 	alignment: Alignment;
+	allowFullscreen: boolean;
 }
 
 interface EditProps {
@@ -68,6 +69,7 @@ registerBlockType( 'rockaden/carousel', {
 			constrain,
 			constraintValue,
 			alignment,
+			allowFullscreen,
 		} = attributes;
 
 		// Resolve image metadata from the core store for preview rendering.
@@ -314,6 +316,13 @@ registerBlockType( 'rockaden/carousel', {
 								/>
 							</>
 						) }
+						<ToggleControl
+							label={ t.carousel.allowFullscreen }
+							checked={ allowFullscreen }
+							onChange={ ( v: boolean ) =>
+								setAttributes( { allowFullscreen: v } )
+							}
+						/>
 					</PanelBody>
 				</InspectorControls>
 				<div { ...blockProps }>

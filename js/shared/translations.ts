@@ -218,6 +218,9 @@ export interface Translations {
 		prev: string;
 		next: string;
 		slideOf: string;
+		allowFullscreen: string;
+		enterFullscreen: string;
+		exitFullscreen: string;
 	};
 	ranking: {
 		title: string;
@@ -511,6 +514,9 @@ const translations: Translations = {
 		prev: __( 'Previous', 'rockaden-chess' ),
 		next: __( 'Next', 'rockaden-chess' ),
 		slideOf: __( 'Slide {n} of {total}', 'rockaden-chess' ),
+		allowFullscreen: __( 'Allow fullscreen', 'rockaden-chess' ),
+		enterFullscreen: __( 'View fullscreen', 'rockaden-chess' ),
+		exitFullscreen: __( 'Close', 'rockaden-chess' ),
 	},
 	ranking: {
 		title: __( 'Ranking List', 'rockaden-chess' ),

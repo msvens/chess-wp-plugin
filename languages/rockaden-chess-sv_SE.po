@@ -752,6 +752,15 @@ msgstr "Nästa"
 msgid "Slide {n} of {total}"
 msgstr "Bild {n} av {total}"
 
+msgid "Allow fullscreen"
+msgstr "Tillåt helskärm"
+
+msgid "View fullscreen"
+msgstr "Visa i helskärm"
+
+msgid "Close"
+msgstr "Stäng"
+
 msgid "Rating Period"
 msgstr "Rankingperiod"
 

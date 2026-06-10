@@ -1,4 +1,10 @@
-import { useState, useEffect, useRef, useCallback } from '@wordpress/element';
+import {
+	useState,
+	useEffect,
+	useRef,
+	useCallback,
+	createPortal,
+} from '@wordpress/element';
 import { getTranslation, toLanguage } from '../../shared/translations';
 import { useLocale } from '../../shared/useLocale';
 
@@ -32,6 +38,7 @@ export interface CarouselConfig {
 	constrain: ConstrainMode;
 	constraintValue: number;
 	alignment: Alignment;
+	allowFullscreen?: boolean;
 }
 
 interface Props {
@@ -134,6 +141,7 @@ export default function CarouselApp( { config, locale }: Props ) {
 	const fit = config.imageFit ?? 'contain';
 	const backdropStyle = config.backdropStyle ?? 'blurred';
 	const showBackdrop = fit === 'contain';
+	const allowFullscreen = config.allowFullscreen ?? false;
 
 	// Slider mode wraps via clone-on-each-end:
 	//   slides[0]       = clone of images[last]   (leading clone)
@@ -150,6 +158,10 @@ export default function CarouselApp( { config, locale }: Props ) {
 
 	const [ displayedIndex, setDisplayedIndex ] = useState( initialDisplayed );
 	const [ transitionsOn, setTransitionsOn ] = useState( true );
+	// null = closed; otherwise the real image index shown in the fullscreen overlay.
+	const [ fullscreenIndex, setFullscreenIndex ] = useState< number | null >(
+		null
+	);
 	const containerRef = useRef< HTMLDivElement >( null );
 	const viewportRef = useRef< HTMLDivElement >( null );
 	const pausedRef = useRef( false );
@@ -207,6 +219,39 @@ export default function CarouselApp( { config, locale }: Props ) {
 		},
 		[ total, mode, usesCloneLoop, visibleItems ]
 	);
+
+	// Move within the fullscreen overlay (wraps), independent of the track.
+	const fsGo = useCallback(
+		( delta: number ) => {
+			setFullscreenIndex( ( i ) =>
+				i === null ? i : ( ( ( i + delta ) % total ) + total ) % total
+			);
+		},
+		[ total ]
+	);
+
+	// While the fullscreen overlay is open: lock body scroll and handle Esc/arrows.
+	useEffect( () => {
+		if ( fullscreenIndex === null ) {
+			return;
+		}
+		const prevOverflow = document.body.style.overflow;
+		document.body.style.overflow = 'hidden';
+		function onKey( e: KeyboardEvent ) {
+			if ( e.key === 'Escape' ) {
+				setFullscreenIndex( null );
+			} else if ( e.key === 'ArrowLeft' ) {
+				fsGo( -1 );
+			} else if ( e.key === 'ArrowRight' ) {
+				fsGo( 1 );
+			}
+		}
+		document.addEventListener( 'keydown', onKey );
+		return () => {
+			document.removeEventListener( 'keydown', onKey );
+			document.body.style.overflow = prevOverflow;
+		};
+	}, [ fullscreenIndex, fsGo ] );
 
 	// Snap from clone positions back to the matching real slide after the
 	// slide animation completes. Disabling transitions makes the snap invisible.
@@ -415,6 +460,88 @@ export default function CarouselApp( { config, locale }: Props ) {
 					) ) }
 				</div>
 			) }
+
+			{ allowFullscreen && (
+				<button
+					type="button"
+					className="rc-carousel__fullscreen-btn"
+					onClick={ () => setFullscreenIndex( realIndex ) }
+					aria-label={ t.enterFullscreen }
+				>
+					<svg
+						width="20"
+						height="20"
+						viewBox="0 0 24 24"
+						fill="none"
+						stroke="currentColor"
+						strokeWidth="2"
+						strokeLinecap="round"
+						strokeLinejoin="round"
+						aria-hidden="true"
+					>
+						<path d="M8 3H5a2 2 0 0 0-2 2v3M16 3h3a2 2 0 0 1 2 2v3M8 21H5a2 2 0 0 1-2-2v-3M16 21h3a2 2 0 0 0 2-2v-3" />
+					</svg>
+				</button>
+			) }
+
+			{ fullscreenIndex !== null &&
+				createPortal(
+					<div
+						className="rc-carousel-fullscreen"
+						role="dialog"
+						aria-modal="true"
+					>
+						{ /* Full-area click target to close (a real button, so it's keyboard-accessible). */ }
+						<button
+							type="button"
+							className="rc-carousel-fullscreen__backdrop"
+							onClick={ () => setFullscreenIndex( null ) }
+							aria-label={ t.exitFullscreen }
+						/>
+						<button
+							type="button"
+							className="rc-carousel-fullscreen__close"
+							onClick={ () => setFullscreenIndex( null ) }
+							aria-label={ t.exitFullscreen }
+						>
+							×
+						</button>
+						<img
+							className="rc-carousel-fullscreen__image"
+							src={ images[ fullscreenIndex ].url }
+							alt={ images[ fullscreenIndex ].alt }
+						/>
+						{ total > 1 && (
+							<>
+								<button
+									type="button"
+									className="rc-carousel-fullscreen__nav rc-carousel-fullscreen__nav--prev"
+									onClick={ () => fsGo( -1 ) }
+									aria-label={ t.prev }
+								>
+									‹
+								</button>
+								<button
+									type="button"
+									className="rc-carousel-fullscreen__nav rc-carousel-fullscreen__nav--next"
+									onClick={ () => fsGo( 1 ) }
+									aria-label={ t.next }
+								>
+									›
+								</button>
+								<div className="rc-carousel-fullscreen__counter">
+									{ t.slideOf
+										.replace(
+											'{n}',
+											String( fullscreenIndex + 1 )
+										)
+										.replace( '{total}', String( total ) ) }
+								</div>
+							</>
+						) }
+					</div>,
+					document.body
+				) }
 		</div>
 	);
 }
