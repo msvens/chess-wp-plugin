@@ -39,6 +39,8 @@ export interface CarouselConfig {
 	constraintValue: number;
 	alignment: Alignment;
 	allowFullscreen?: boolean;
+	cellSizing?: 'aspect' | 'height';
+	cellHeight?: number;
 }
 
 interface Props {
@@ -142,6 +144,12 @@ export default function CarouselApp( { config, locale }: Props ) {
 	const backdropStyle = config.backdropStyle ?? 'blurred';
 	const showBackdrop = fit === 'contain';
 	const allowFullscreen = config.allowFullscreen ?? false;
+	// Carousel mode only: size cells by a fixed pixel height instead of an aspect
+	// ratio, so the strip height stays constant regardless of how many are shown.
+	const cellSizing = config.cellSizing ?? 'aspect';
+	const cellHeight = config.cellHeight ?? 0;
+	const useFixedHeight =
+		mode === 'carousel' && cellSizing === 'height' && cellHeight > 0;
 
 	// Slider mode wraps via clone-on-each-end:
 	//   slides[0]       = clone of images[last]   (leading clone)
@@ -342,7 +350,12 @@ export default function CarouselApp( { config, locale }: Props ) {
 	const slideStyle: React.CSSProperties =
 		mode === 'slider'
 			? { width: '100%' }
-			: { width: `${ 100 / visibleItems }%` };
+			: {
+					width: `${ 100 / visibleItems }%`,
+					...( useFixedHeight
+						? { height: `${ cellHeight }px` }
+						: {} ),
+			  };
 
 	const trackStyle: React.CSSProperties =
 		mode === 'slider'
@@ -365,12 +378,31 @@ export default function CarouselApp( { config, locale }: Props ) {
 		...( maxW !== null ? alignmentMargin( alignment ) : {} ),
 	};
 
+	// Open fullscreen at the image the viewer is currently looking at. In slider
+	// mode that's the active slide; in carousel mode it's the left-most image of
+	// the currently scrolled set (derived from the scroll position).
+	const openFullscreen = () => {
+		const vp = viewportRef.current;
+		if ( mode === 'carousel' && vp ) {
+			const firstSlide = vp.querySelector< HTMLElement >(
+				'.rc-carousel__slide'
+			);
+			const cellWidth =
+				firstSlide?.offsetWidth || vp.clientWidth / visibleItems;
+			const idx =
+				cellWidth > 0 ? Math.round( vp.scrollLeft / cellWidth ) : 0;
+			setFullscreenIndex( Math.max( 0, Math.min( total - 1, idx ) ) );
+		} else {
+			setFullscreenIndex( realIndex );
+		}
+	};
+
 	return (
 		<div
 			ref={ containerRef }
-			className={ `rc-carousel rc-carousel--${ mode } rc-carousel--fit-${ fit } ${ aspectClass(
-				config.aspectRatio
-			) }` }
+			className={ `rc-carousel rc-carousel--${ mode } rc-carousel--fit-${ fit } ${
+				useFixedHeight ? '' : aspectClass( config.aspectRatio )
+			}` }
 			style={ containerStyle }
 			role="region"
 			aria-roledescription="carousel"
@@ -465,7 +497,7 @@ export default function CarouselApp( { config, locale }: Props ) {
 				<button
 					type="button"
 					className="rc-carousel__fullscreen-btn"
-					onClick={ () => setFullscreenIndex( realIndex ) }
+					onClick={ openFullscreen }
 					aria-label={ t.enterFullscreen }
 				>
 					<svg

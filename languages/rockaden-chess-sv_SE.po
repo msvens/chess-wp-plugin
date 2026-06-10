@@ -692,6 +692,15 @@ msgstr "Synliga bilder"
 msgid "Aspect ratio"
 msgstr "Bildformat"
 
+msgid "Cell sizing"
+msgstr "Cellstorlek"
+
+msgid "Exact height"
+msgstr "Exakt höjd"
+
+msgid "Height (px)"
+msgstr "Höjd (px)"
+
 msgid "Auto"
 msgstr "Auto"
 

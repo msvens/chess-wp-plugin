@@ -121,6 +121,38 @@
 	aspect-ratio: auto;
 }
 
+/* Carousel mode shows several cells at once: give each slide the chosen aspect
+   ratio so the cells are uniform, and let the image fill it per the Image fit
+   setting ('cover' crops to fill — keeps mixed-size images looking consistent).
+   The viewport/track height is then driven by the slides. */
+.rc-carousel--carousel .rc-carousel__viewport {
+	aspect-ratio: auto;
+}
+
+.rc-carousel--carousel .rc-carousel__track {
+	height: auto;
+}
+
+.rc-carousel--carousel.rc-carousel--ar-16-9 .rc-carousel__slide {
+	aspect-ratio: 16 / 9;
+}
+
+.rc-carousel--carousel.rc-carousel--ar-4-3 .rc-carousel__slide {
+	aspect-ratio: 4 / 3;
+}
+
+.rc-carousel--carousel.rc-carousel--ar-1-1 .rc-carousel__slide {
+	aspect-ratio: 1 / 1;
+}
+
+.rc-carousel--carousel.rc-carousel--ar-3-4 .rc-carousel__slide {
+	aspect-ratio: 3 / 4;
+}
+
+.rc-carousel--carousel.rc-carousel--ar-9-16 .rc-carousel__slide {
+	aspect-ratio: 9 / 16;
+}
+
 /* Nav buttons: absolute over the viewport */
 .rc-carousel__nav {
 	position: absolute;

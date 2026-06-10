@@ -56,6 +56,14 @@
     "allowFullscreen": {
       "type": "boolean",
       "default": false
+    },
+    "cellSizing": {
+      "type": "string",
+      "default": "aspect"
+    },
+    "cellHeight": {
+      "type": "number",
+      "default": 0
     }
   },
   "supports": {
