@@ -9,6 +9,7 @@ namespace Rockaden\Api;
 
 use Rockaden\PostTypes\TrainingGroup;
 use Rockaden\PostTypes\TrainingSession;
+use Rockaden\Services\StatusDeriver;
 use WP_REST_Request;
 use WP_REST_Response;
 use WP_Error;
@@ -21,6 +22,9 @@ class TrainingApi {
 	private const NAMESPACE = 'rockaden/v1';
 
 	private const ALLOWED_AUDIENCES = [ 'junior', 'adult', 'mixed' ];
+
+	// 'auto' derives planned/active/completed from the linked event's dates; 'draft' hides it.
+	private const ALLOWED_STATUSES = [ 'auto', 'planned', 'active', 'completed', 'draft' ];
 
 	/**
 	 * Register REST routes.
@@ -214,6 +218,12 @@ class TrainingApi {
 		if ( isset( $body['linkedTournamentId'] ) ) {
 			update_post_meta( $post_id, 'rc_linked_tournament_id', (int) $body['linkedTournamentId'] );
 		}
+		if ( ! empty( $body['status'] ) ) {
+			$status = sanitize_text_field( $body['status'] );
+			if ( in_array( $status, self::ALLOWED_STATUSES, true ) ) {
+				update_post_meta( $post_id, 'rc_status', $status );
+			}
+		}
 		if ( ! empty( $body['trainers'] ) ) {
 			update_post_meta( $post_id, 'rc_trainers', sanitize_text_field( $body['trainers'] ) );
 		}
@@ -268,9 +278,8 @@ class TrainingApi {
 			update_post_meta( $post->ID, 'rc_linked_tournament_id', (int) $body['linkedTournamentId'] );
 		}
 		if ( isset( $body['status'] ) ) {
-			$allowed = [ 'draft', 'active', 'archived' ];
-			$status  = sanitize_text_field( $body['status'] );
-			if ( in_array( $status, $allowed, true ) ) {
+			$status = sanitize_text_field( $body['status'] );
+			if ( in_array( $status, self::ALLOWED_STATUSES, true ) ) {
 				update_post_meta( $post->ID, 'rc_status', $status );
 			}
 		}
@@ -546,12 +555,29 @@ class TrainingApi {
 			}
 		}
 
+		// Effective lifecycle status. 'auto' derives from the linked event's dates
+		// (date-based — no results signal for trainings). Legacy 'archived' maps to
+		// 'completed'. Otherwise the manual value passes through.
+		$raw_status = get_post_meta( $post->ID, 'rc_status', true ) ?: 'auto';
+		if ( 'auto' === $raw_status ) {
+			$status = StatusDeriver::derive(
+				$schedule['startDate'] ?? '',
+				$schedule['endDate'] ?? '',
+				false
+			);
+		} elseif ( 'archived' === $raw_status ) {
+			$status = 'completed';
+		} else {
+			$status = $raw_status;
+		}
+
 		return [
 			'id'                 => $post->ID,
 			'slug'               => $post->post_name,
 			'title'              => $post->post_title,
 			'description'        => $post->post_content,
-			'status'             => get_post_meta( $post->ID, 'rc_status', true ) ?: 'draft',
+			'status'             => $status,
+			'statusIsAuto'       => ( 'auto' === $raw_status ),
 			'semester'           => get_post_meta( $post->ID, 'rc_semester', true ) ?: '',
 			'audience'           => get_post_meta( $post->ID, 'rc_audience', true ) ?: 'mixed',
 			'eventId'            => $event_id,

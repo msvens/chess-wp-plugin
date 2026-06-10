@@ -9,53 +9,84 @@ import {
 	__experimentalText as Text,
 } from '@wordpress/components';
 import type { Translations } from '../../shared';
-import type { EventData, Tournament } from '../types';
+import type {
+	EventData,
+	Tournament,
+	TrainingGroup,
+	TrainingStatusChoice,
+} from '../types';
 import {
 	createGroup,
 	fetchEvents,
 	createEvent,
 	fetchTournaments,
+	addParticipant,
 } from '../api';
+import { deriveStatus } from '../../shared/deriveStatus';
 import { FlatpickrInput } from './FlatpickrInput';
 
 interface CreateGroupModalProps {
 	t: Translations;
+	// When set, the modal acts as a "copy" of this group (prefilled, no tournament link).
+	source?: TrainingGroup;
+	sourceEvent?: EventData | null;
 	onClose: () => void;
 	onCreated: () => void;
 }
 
 export function CreateGroupModal( {
 	t,
+	source,
+	sourceEvent,
 	onClose,
 	onCreated,
 }: CreateGroupModalProps ) {
-	const [ title, setTitle ] = useState( '' );
-	const [ description, setDescription ] = useState( '' );
-	const [ semester, setSemester ] = useState( '' );
-	const [ audience, setAudience ] = useState< 'junior' | 'adult' | 'mixed' >(
-		'mixed'
+	const isCopy = !! source;
+	const copyTitle = source
+		? `${ source.title } (${ t.training.copySuffix })`
+		: '';
+
+	const [ title, setTitle ] = useState( copyTitle );
+	const [ description, setDescription ] = useState(
+		source?.description ?? ''
 	);
-	const [ trainers, setTrainers ] = useState( '' );
-	const [ contact, setContact ] = useState( '' );
+	const [ semester, setSemester ] = useState( source?.semester ?? '' );
+	const [ audience, setAudience ] = useState< 'junior' | 'adult' | 'mixed' >(
+		source?.audience ?? 'mixed'
+	);
+	const [ trainers, setTrainers ] = useState( source?.trainers ?? '' );
+	const [ contact, setContact ] = useState( source?.contact ?? '' );
+	// The linked tournament is intentionally never carried over to a copy.
 	const [ linkedTournamentId, setLinkedTournamentId ] = useState( '' );
-	const [ showParticipants, setShowParticipants ] = useState( true );
+	const [ showParticipants, setShowParticipants ] = useState(
+		source?.showParticipants ?? true
+	);
+	const [ status, setStatus ] = useState< TrainingStatusChoice >( 'auto' );
+	const [ copyParticipants, setCopyParticipants ] = useState( true );
 	const [ saving, setSaving ] = useState( false );
 	const [ error, setError ] = useState< string | null >( null );
 
 	const [ events, setEvents ] = useState< EventData[] >( [] );
 	const [ tournaments, setTournaments ] = useState< Tournament[] >( [] );
 	const [ selectedEventId, setSelectedEventId ] = useState( '' );
-	const [ showNewEvent, setShowNewEvent ] = useState( false );
+	// Copy starts a fresh event (same pattern, new dates).
+	const [ showNewEvent, setShowNewEvent ] = useState( isCopy );
 
-	const [ eventTitle, setEventTitle ] = useState( '' );
+	const [ eventTitle, setEventTitle ] = useState( copyTitle );
 	const [ eventStart, setEventStart ] = useState( '' );
 	const [ eventEnd, setEventEnd ] = useState( '' );
-	const [ eventLocation, setEventLocation ] = useState( '' );
-	const [ eventCategory, setEventCategory ] = useState( 'training' );
-	const [ eventRecurring, setEventRecurring ] = useState( false );
+	const [ eventLocation, setEventLocation ] = useState(
+		sourceEvent?.location ?? ''
+	);
+	const [ eventCategory, setEventCategory ] = useState(
+		sourceEvent?.category ?? 'training'
+	);
+	const [ eventRecurring, setEventRecurring ] = useState(
+		sourceEvent?.isRecurring ?? false
+	);
 	const [ eventRecurrenceType, setEventRecurrenceType ] = useState<
 		'weekly' | 'biweekly'
-	>( 'weekly' );
+	>( sourceEvent?.recurrenceType ?? 'weekly' );
 
 	useEffect( () => {
 		fetchEvents()
@@ -92,11 +123,12 @@ export function CreateGroupModal( {
 				eventId = Number( selectedEventId );
 			}
 
-			await createGroup( {
+			const newGroup = await createGroup( {
 				title: title.trim(),
 				description: description.trim() || undefined,
 				semester: semester.trim() || undefined,
 				audience,
+				status,
 				eventId,
 				trainers: trainers.trim() || undefined,
 				contact: contact.trim() || undefined,
@@ -106,6 +138,19 @@ export function CreateGroupModal( {
 				showParticipants,
 			} );
 
+			// Clone the source roster after the group exists (participants are
+			// added via separate calls, not at create time).
+			if ( isCopy && copyParticipants && source ) {
+				for ( const p of source.participants ) {
+					// eslint-disable-next-line no-await-in-loop
+					await addParticipant( newGroup.id, {
+						id: p.id,
+						name: p.name,
+						ssfId: p.ssfId,
+					} );
+				}
+			}
+
 			onCreated();
 			onClose();
 		} catch ( err: any ) {
@@ -113,6 +158,19 @@ export function CreateGroupModal( {
 			setSaving( false );
 		}
 	}
+
+	// Live preview of the derived status from the chosen event's dates.
+	const selectedEvent = events.find(
+		( e ) => String( e.id ) === selectedEventId
+	);
+	const previewStart = showNewEvent
+		? eventStart
+		: selectedEvent?.startDate ?? '';
+	const previewEnd = showNewEvent ? eventEnd : selectedEvent?.endDate ?? '';
+	const previewStatus =
+		status === 'auto'
+			? deriveStatus( previewStart, previewEnd, false )
+			: null;
 
 	const eventOptions = [
 		{ label: t.training.selectEvent, value: '' },
@@ -129,7 +187,7 @@ export function CreateGroupModal( {
 
 	return (
 		<Modal
-			title={ t.training.createGroup }
+			title={ isCopy ? t.training.copyGroup : t.training.createGroup }
 			onRequestClose={ onClose }
 			className="rc-wide-modal"
 		>
@@ -184,6 +242,27 @@ export function CreateGroupModal( {
 			/>
 
 			<SelectControl
+				label={ t.tournament.status }
+				value={ status }
+				help={
+					previewStatus
+						? `${ t.tournament.statusAutoHint } → ${ t.tournament.statuses[ previewStatus ] }`
+						: t.tournament.statusAutoHint
+				}
+				options={ [
+					{ label: t.tournament.statusAuto, value: 'auto' },
+					{ label: t.tournament.statuses.planned, value: 'planned' },
+					{ label: t.tournament.statuses.active, value: 'active' },
+					{
+						label: t.tournament.statuses.completed,
+						value: 'completed',
+					},
+					{ label: t.training.statusHidden, value: 'draft' },
+				] }
+				onChange={ ( v ) => setStatus( v as TrainingStatusChoice ) }
+			/>
+
+			<SelectControl
 				label={ t.tournament.linkedTournament }
 				value={ linkedTournamentId }
 				options={ tournamentOptions }
@@ -195,6 +274,13 @@ export function CreateGroupModal( {
 				checked={ showParticipants }
 				onChange={ setShowParticipants }
 			/>
+			{ isCopy && (
+				<CheckboxControl
+					label={ t.training.copyParticipants }
+					checked={ copyParticipants }
+					onChange={ setCopyParticipants }
+				/>
+			) }
 
 			{ /* Event picker */ }
 			<div
