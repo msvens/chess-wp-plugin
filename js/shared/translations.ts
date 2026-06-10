@@ -37,6 +37,11 @@ export interface Translations {
 		addParticipant: string;
 		removeParticipant: string;
 		noGroups: string;
+		pastGroups: string;
+		statusHidden: string;
+		copyGroup: string;
+		copyParticipants: string;
+		copySuffix: string;
 		tournament: string;
 		active: string;
 		inactive: string;
@@ -246,6 +251,7 @@ export interface Translations {
 		confirm: string;
 		delete: string;
 		edit: string;
+		copy: string;
 		add: string;
 	};
 }
@@ -289,6 +295,11 @@ const translations: Translations = {
 		addParticipant: __( 'Add Participant', 'rockaden-chess' ),
 		removeParticipant: __( 'Remove', 'rockaden-chess' ),
 		noGroups: __( 'No training groups yet.', 'rockaden-chess' ),
+		pastGroups: __( 'Past training groups', 'rockaden-chess' ),
+		statusHidden: __( 'Hidden', 'rockaden-chess' ),
+		copyGroup: __( 'Copy training group', 'rockaden-chess' ),
+		copyParticipants: __( 'Copy participants', 'rockaden-chess' ),
+		copySuffix: __( 'copy', 'rockaden-chess' ),
 		tournament: __( 'Tournament', 'rockaden-chess' ),
 		active: __( 'Active', 'rockaden-chess' ),
 		inactive: __( 'Inactive', 'rockaden-chess' ),
@@ -533,6 +544,7 @@ const translations: Translations = {
 		confirm: __( 'Confirm', 'rockaden-chess' ),
 		delete: __( 'Delete', 'rockaden-chess' ),
 		edit: __( 'Edit', 'rockaden-chess' ),
+		copy: __( 'Copy', 'rockaden-chess' ),
 		add: __( 'Add', 'rockaden-chess' ),
 	},
 };

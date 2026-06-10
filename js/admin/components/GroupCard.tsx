@@ -73,7 +73,9 @@ export function GroupCard( { group, t, onClick, onDeleted }: GroupCardProps ) {
 							group.status === 'active' ? '#1e40af' : '#6b7280',
 					} }
 				>
-					{ group.status === 'active' ? t.training.active : 'Draft' }
+					{ group.status === 'draft'
+						? t.training.statusHidden
+						: t.tournament.statuses[ group.status ] }
 				</Text>
 				{ group.semester && (
 					<Text style={ { display: 'block' } }>

@@ -9,7 +9,12 @@ import {
 	__experimentalText as Text,
 } from '@wordpress/components';
 import type { Translations } from '../../shared';
-import type { TrainingGroup, EventData, Tournament } from '../types';
+import type {
+	TrainingGroup,
+	EventData,
+	Tournament,
+	TrainingStatusChoice,
+} from '../types';
 import {
 	updateGroup,
 	updateEvent,
@@ -17,6 +22,7 @@ import {
 	fetchEvents,
 	fetchTournaments,
 } from '../api';
+import { deriveStatus } from '../../shared/deriveStatus';
 import { FlatpickrInput } from './FlatpickrInput';
 
 interface EditGroupModalProps {
@@ -47,6 +53,9 @@ export function EditGroupModal( {
 	);
 	const [ showParticipants, setShowParticipants ] = useState(
 		group.showParticipants ?? true
+	);
+	const [ status, setStatus ] = useState< TrainingStatusChoice >(
+		group.statusIsAuto ? 'auto' : group.status
 	);
 	const [ saving, setSaving ] = useState( false );
 	const [ error, setError ] = useState< string | null >( null );
@@ -132,6 +141,7 @@ export function EditGroupModal( {
 					? Number( linkedTournamentId )
 					: 0,
 				showParticipants,
+				status,
 				...( eventId !== undefined ? { eventId } : {} ),
 			} );
 			onUpdated();
@@ -141,6 +151,9 @@ export function EditGroupModal( {
 			setSaving( false );
 		}
 	}
+
+	const previewStatus =
+		status === 'auto' ? deriveStatus( eventStart, eventEnd, false ) : null;
 
 	const eventOptions = [
 		{ label: t.training.selectEvent, value: '' },
@@ -212,6 +225,27 @@ export function EditGroupModal( {
 				onChange={ ( v ) =>
 					setAudience( v as 'junior' | 'adult' | 'mixed' )
 				}
+			/>
+
+			<SelectControl
+				label={ t.tournament.status }
+				value={ status }
+				help={
+					previewStatus
+						? `${ t.tournament.statusAutoHint } → ${ t.tournament.statuses[ previewStatus ] }`
+						: t.tournament.statusAutoHint
+				}
+				options={ [
+					{ label: t.tournament.statusAuto, value: 'auto' },
+					{ label: t.tournament.statuses.planned, value: 'planned' },
+					{ label: t.tournament.statuses.active, value: 'active' },
+					{
+						label: t.tournament.statuses.completed,
+						value: 'completed',
+					},
+					{ label: t.training.statusHidden, value: 'draft' },
+				] }
+				onChange={ ( v ) => setStatus( v as TrainingStatusChoice ) }
 			/>
 
 			<SelectControl

@@ -47,7 +47,7 @@ class TrainingGroup {
 		$meta_fields = [
 			'rc_status'               => [
 				'type'    => 'string',
-				'default' => 'draft',
+				'default' => 'auto',
 			],
 			'rc_semester'             => [
 				'type'    => 'string',

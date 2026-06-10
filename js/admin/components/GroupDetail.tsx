@@ -11,13 +11,14 @@ import type { Translations } from '../../shared';
 import type { Tournament } from '../types';
 import { useTrainingGroup } from '../hooks/useTrainingGroup';
 import { useSsfRatings } from '../hooks/useSsfRatings';
-import { updateGroup, fetchTournament } from '../api';
+import { fetchTournament } from '../api';
 import { ParticipantList } from './ParticipantList';
 import { AddParticipantModal } from './AddParticipantModal';
 import { SessionList } from './SessionList';
 import { ScheduleTimeline } from './ScheduleTimeline';
 import { ExcludedDatesPanel } from './ExcludedDatesPanel';
 import { EditGroupModal } from './EditGroupModal';
+import { CreateGroupModal } from './CreateGroupModal';
 
 interface GroupDetailProps {
 	groupId: number;
@@ -43,7 +44,7 @@ export function GroupDetail( {
 	} = useSsfRatings( clubId );
 	const [ showAddModal, setShowAddModal ] = useState( false );
 	const [ showEditModal, setShowEditModal ] = useState( false );
-	const [ updatingStatus, setUpdatingStatus ] = useState( false );
+	const [ showCopyModal, setShowCopyModal ] = useState( false );
 	const [ linkedTournament, setLinkedTournament ] =
 		useState< Tournament | null >( null );
 
@@ -56,17 +57,6 @@ export function GroupDetail( {
 			.then( setLinkedTournament )
 			.catch( () => setLinkedTournament( null ) );
 	}, [ group?.linkedTournamentId ] ); // eslint-disable-line react-hooks/exhaustive-deps
-
-	const toggleStatus = () => {
-		if ( ! group ) {
-			return;
-		}
-		const newStatus = group.status === 'active' ? 'draft' : 'active';
-		setUpdatingStatus( true );
-		updateGroup( groupId, { status: newStatus } )
-			.then( () => refetch() )
-			.finally( () => setUpdatingStatus( false ) );
-	};
 
 	if ( loading ) {
 		return <Spinner />;
@@ -137,22 +127,24 @@ export function GroupDetail( {
 				<Heading level={ 2 } style={ { margin: 0 } }>
 					{ group.title }
 				</Heading>
-				<Button
-					variant={
-						group.status === 'active' ? 'primary' : 'secondary'
-					}
-					size="compact"
-					isBusy={ updatingStatus }
-					onClick={ toggleStatus }
-				>
-					{ group.status === 'active' ? t.training.active : 'Draft' }
-				</Button>
+				<span className={ `rc-status-pill is-${ group.status }` }>
+					{ group.status === 'draft'
+						? t.training.statusHidden
+						: t.tournament.statuses[ group.status ] }
+				</span>
 				<Button
 					variant="tertiary"
 					size="compact"
 					onClick={ () => setShowEditModal( true ) }
 				>
 					{ t.common.edit }
+				</Button>
+				<Button
+					variant="tertiary"
+					size="compact"
+					onClick={ () => setShowCopyModal( true ) }
+				>
+					{ t.common.copy }
 				</Button>
 			</div>
 			{ group.semester && (
@@ -299,6 +291,16 @@ export function GroupDetail( {
 					t={ t }
 					onClose={ () => setShowEditModal( false ) }
 					onUpdated={ refetch }
+				/>
+			) }
+
+			{ showCopyModal && (
+				<CreateGroupModal
+					t={ t }
+					source={ group }
+					sourceEvent={ event }
+					onClose={ () => setShowCopyModal( false ) }
+					onCreated={ onBack }
 				/>
 			) }
 		</div>

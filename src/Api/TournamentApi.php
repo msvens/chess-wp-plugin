@@ -8,6 +8,7 @@
 namespace Rockaden\Api;
 
 use Rockaden\PostTypes\Tournament;
+use Rockaden\Services\StatusDeriver;
 use WP_REST_Request;
 use WP_REST_Response;
 use WP_Error;
@@ -501,7 +502,7 @@ class TournamentApi {
 			: self::rounds_have_results( is_array( $rounds ) ? $rounds : [] );
 		$raw_status   = get_post_meta( $post->ID, 'rc_status', true ) ?: 'auto';
 		$status       = ( 'auto' === $raw_status )
-			? self::derive_status(
+			? StatusDeriver::derive(
 				get_post_meta( $post->ID, 'rc_start_date', true ) ?: '',
 				get_post_meta( $post->ID, 'rc_end_date', true ) ?: '',
 				$has_results
@@ -558,53 +559,5 @@ class TournamentApi {
 			}
 		}
 		return false;
-	}
-
-	/**
-	 * Derive a tournament's lifecycle status from its dates and whether any
-	 * results exist. Mirrors the sthlmschack-reimagined rule: 'completed' is purely
-	 * date-based (today past the end date — end-date inclusive); 'planned' requires
-	 * no results yet AND no start date (or before it); otherwise 'active'. Dates compare
-	 * at local midnight in the site timezone (avoids UTC off-by-one).
-	 *
-	 * @param string $start       Start date ('' if unset).
-	 * @param string $end         End date ('' if unset).
-	 * @param bool   $has_results Whether any round result exists (the started ground truth).
-	 * @return string planned|active|completed
-	 */
-	private static function derive_status( string $start, string $end, bool $has_results ): string {
-		$tz    = wp_timezone();
-		$today = new \DateTimeImmutable( 'today', $tz );
-
-		$end_date = self::parse_local_date( $end, $tz );
-		if ( $end_date instanceof \DateTimeImmutable && $today > $end_date ) {
-			return 'completed';
-		}
-
-		// Not started (no results) and either no start date yet or still before it.
-		$start_date = self::parse_local_date( $start, $tz );
-		if ( ! $has_results && ( null === $start_date || $today < $start_date ) ) {
-			return 'planned';
-		}
-
-		return 'active';
-	}
-
-	/**
-	 * Parse a date string as local midnight in the given timezone. Accepts
-	 * 'YYYY-MM-DD' or a longer ISO string (the date part is used). Returns null
-	 * on empty/invalid input.
-	 *
-	 * @param string        $value Date string.
-	 * @param \DateTimeZone $tz    Timezone.
-	 * @return \DateTimeImmutable|null
-	 */
-	private static function parse_local_date( string $value, \DateTimeZone $tz ): ?\DateTimeImmutable {
-		$value = trim( $value );
-		if ( '' === $value ) {
-			return null;
-		}
-		$parsed = \DateTimeImmutable::createFromFormat( '!Y-m-d', substr( $value, 0, 10 ), $tz );
-		return false === $parsed ? null : $parsed;
 	}
 }

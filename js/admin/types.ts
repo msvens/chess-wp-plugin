@@ -21,12 +21,19 @@ export interface StoredRound {
 
 export type TrainingAudience = 'junior' | 'adult' | 'mixed';
 
+// Effective status (what the API returns): 'draft' = hidden from the public.
+export type TrainingStatus = 'planned' | 'active' | 'completed' | 'draft';
+
+// Status as chosen in the editor: 'auto' derives from the linked event's dates.
+export type TrainingStatusChoice = 'auto' | TrainingStatus;
+
 export interface TrainingGroup {
 	id: number;
 	slug: string;
 	title: string;
 	description: string;
-	status: string;
+	status: TrainingStatus;
+	statusIsAuto: boolean;
 	semester: string;
 	audience: TrainingAudience;
 	eventId: number;
@@ -112,6 +119,7 @@ export interface CreateGroupData {
 	description?: string;
 	semester?: string;
 	audience?: TrainingAudience;
+	status?: TrainingStatusChoice;
 	eventId?: number;
 	trainers?: string;
 	contact?: string;

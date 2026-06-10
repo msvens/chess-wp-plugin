@@ -167,6 +167,32 @@ html.dark .rc-tg__card:hover {
 	color: var(--rc-tg-meta-text);
 }
 
+/* --- Past / finished training groups archive --- */
+.rc-tg__past {
+	margin-top: 2rem;
+}
+
+.rc-tg__past-toggle {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.4rem;
+	padding: 0.4rem 0;
+	background: none;
+	border: none;
+	cursor: pointer;
+	font: inherit;
+	font-weight: 600;
+	color: var(--rc-tg-meta-text);
+}
+
+.rc-tg__past-toggle:hover {
+	color: inherit;
+}
+
+.rc-tg__past .rc-tg__columns {
+	margin-top: 1rem;
+}
+
 /* --- Responsive --- */
 @media (max-width: 640px) {
 	.rc-tg__grid {
