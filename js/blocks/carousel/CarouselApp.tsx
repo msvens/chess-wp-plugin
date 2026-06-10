@@ -159,8 +159,19 @@ export default function CarouselApp( { config, locale }: Props ) {
 	// clone position, after the transition we snap to the matching real slide
 	// with transitions disabled so the jump is invisible.
 	const usesCloneLoop = mode === 'slider' && total > 1;
+	// Carousel mode loops by cloning a page of images on each end and snapping the
+	// scroll position back when you cross into a clone — the scroll-based analogue
+	// of the slider's clone trick, so the last page flows into the first.
+	const carouselLoop = mode === 'carousel' && total > visibleItems;
+	const cloneCount = carouselLoop ? Math.min( visibleItems, total ) : 0;
 	const slides: CarouselImage[] = usesCloneLoop
 		? [ images[ total - 1 ], ...images, images[ 0 ] ]
+		: carouselLoop
+		? [
+				...images.slice( total - cloneCount ),
+				...images,
+				...images.slice( 0, cloneCount ),
+		  ]
 		: images;
 	const initialDisplayed = usesCloneLoop ? 1 : 0;
 
@@ -170,6 +181,10 @@ export default function CarouselApp( { config, locale }: Props ) {
 	const [ fullscreenIndex, setFullscreenIndex ] = useState< number | null >(
 		null
 	);
+	// Carousel-mode pagination, measured from the scroll container so it stays
+	// correct when the layout changes (e.g. collapses to one-per-row on mobile).
+	const [ carouselPages, setCarouselPages ] = useState( 1 );
+	const [ carouselPage, setCarouselPage ] = useState( 0 );
 	const containerRef = useRef< HTMLDivElement >( null );
 	const viewportRef = useRef< HTMLDivElement >( null );
 	const pausedRef = useRef( false );
@@ -185,6 +200,7 @@ export default function CarouselApp( { config, locale }: Props ) {
 				usesCloneLoop ? Math.max( 0, i - 1 ) : Math.max( 0, i - 1 )
 			);
 		} else if ( viewportRef.current ) {
+			// Carousel mode: page left. Cloned edges + the reset handle wrapping.
 			viewportRef.current.scrollBy( {
 				left: -viewportRef.current.clientWidth,
 				behavior: 'smooth',
@@ -200,6 +216,7 @@ export default function CarouselApp( { config, locale }: Props ) {
 				return Math.min( cap, i + 1 );
 			} );
 		} else if ( viewportRef.current ) {
+			// Carousel mode: page right. Cloned edges + the reset handle wrapping.
 			viewportRef.current.scrollBy( {
 				left: viewportRef.current.clientWidth,
 				behavior: 'smooth',
@@ -238,6 +255,42 @@ export default function CarouselApp( { config, locale }: Props ) {
 		[ total ]
 	);
 
+	// Closing fullscreen leaves the carousel/slider on the image last viewed in
+	// the overlay, so browsing in fullscreen carries back to the page.
+	const closeFullscreen = useCallback( () => {
+		if ( fullscreenIndex !== null ) {
+			if ( mode === 'slider' ) {
+				// Jump straight there (no sweep) to match carousel's instant
+				// close — reuses the clone-snap's transition-off trick.
+				setTransitionsOn( false );
+				setDisplayedIndex(
+					usesCloneLoop ? fullscreenIndex + 1 : fullscreenIndex
+				);
+			} else if ( viewportRef.current ) {
+				const vp = viewportRef.current;
+				const slide = vp.querySelector< HTMLElement >(
+					'.rc-carousel__slide'
+				);
+				const cell = slide
+					? slide.offsetWidth
+					: vp.clientWidth / Math.max( 1, visibleItems );
+				const leading = carouselLoop ? cloneCount * cell : 0;
+				vp.scrollTo( {
+					left: leading + fullscreenIndex * cell,
+					behavior: 'auto',
+				} );
+			}
+		}
+		setFullscreenIndex( null );
+	}, [
+		fullscreenIndex,
+		mode,
+		usesCloneLoop,
+		carouselLoop,
+		cloneCount,
+		visibleItems,
+	] );
+
 	// While the fullscreen overlay is open: lock body scroll and handle Esc/arrows.
 	useEffect( () => {
 		if ( fullscreenIndex === null ) {
@@ -247,7 +300,7 @@ export default function CarouselApp( { config, locale }: Props ) {
 		document.body.style.overflow = 'hidden';
 		function onKey( e: KeyboardEvent ) {
 			if ( e.key === 'Escape' ) {
-				setFullscreenIndex( null );
+				closeFullscreen();
 			} else if ( e.key === 'ArrowLeft' ) {
 				fsGo( -1 );
 			} else if ( e.key === 'ArrowRight' ) {
@@ -259,7 +312,7 @@ export default function CarouselApp( { config, locale }: Props ) {
 			document.removeEventListener( 'keydown', onKey );
 			document.body.style.overflow = prevOverflow;
 		};
-	}, [ fullscreenIndex, fsGo ] );
+	}, [ fullscreenIndex, fsGo, closeFullscreen ] );
 
 	// Snap from clone positions back to the matching real slide after the
 	// slide animation completes. Disabling transitions makes the snap invisible.
@@ -301,24 +354,30 @@ export default function CarouselApp( { config, locale }: Props ) {
 				setDisplayedIndex( ( i ) => i + 1 );
 			} else if ( viewportRef.current ) {
 				const vp = viewportRef.current;
-				const atEnd =
-					Math.abs(
-						vp.scrollLeft + vp.clientWidth - vp.scrollWidth
-					) < 2;
-				if ( atEnd ) {
-					// Instant snap back to start — avoids the "running through
-					// previous images" effect of a smooth-scroll rewind.
-					vp.scrollTo( { left: 0, behavior: 'auto' } );
-				} else {
+				if ( carouselLoop ) {
+					// Cloned edges + the reset make this wrap seamlessly.
 					vp.scrollBy( {
 						left: vp.clientWidth,
 						behavior: 'smooth',
 					} );
+				} else {
+					const atEnd =
+						Math.abs(
+							vp.scrollLeft + vp.clientWidth - vp.scrollWidth
+						) < 2;
+					if ( atEnd ) {
+						vp.scrollTo( { left: 0, behavior: 'auto' } );
+					} else {
+						vp.scrollBy( {
+							left: vp.clientWidth,
+							behavior: 'smooth',
+						} );
+					}
 				}
 			}
 		}, intervalMs );
 		return () => window.clearInterval( id );
-	}, [ autoplay, autoplayInterval, total, mode ] );
+	}, [ autoplay, autoplayInterval, total, mode, carouselLoop ] );
 
 	// Keyboard nav when focus is within the carousel
 	useEffect( () => {
@@ -338,6 +397,86 @@ export default function CarouselApp( { config, locale }: Props ) {
 		node.addEventListener( 'keydown', onKey );
 		return () => node.removeEventListener( 'keydown', onKey );
 	}, [ goPrev, goNext ] );
+
+	// Carousel pagination + seamless looping. Page count/index derive from the
+	// real images (clones excluded). When the user crosses into a cloned edge we
+	// snap the scroll position back by one real width — once scrolling settles,
+	// so the jump stays invisible (no momentum hitch).
+	useEffect( () => {
+		if ( mode !== 'carousel' ) {
+			return;
+		}
+		const vp = viewportRef.current;
+		if ( ! vp ) {
+			return;
+		}
+
+		const cellOf = () => {
+			const s = vp.querySelector< HTMLElement >( '.rc-carousel__slide' );
+			return s
+				? s.offsetWidth
+				: vp.clientWidth / Math.max( 1, visibleItems );
+		};
+
+		const updatePagination = () => {
+			const cw = vp.clientWidth;
+			const cell = cellOf();
+			if ( cw <= 0 || cell <= 0 ) {
+				return;
+			}
+			const perPage = Math.max( 1, Math.round( cw / cell ) );
+			const pages = Math.max( 1, Math.ceil( total / perPage ) );
+			const leading = carouselLoop ? cloneCount * cell : 0;
+			const realWidth = total * cell;
+			let rel = vp.scrollLeft - leading;
+			if ( realWidth > 0 ) {
+				rel = ( ( rel % realWidth ) + realWidth ) % realWidth;
+			}
+			const page = ( ( Math.round( rel / cw ) % pages ) + pages ) % pages;
+			setCarouselPages( pages );
+			setCarouselPage( page );
+		};
+
+		const resetLoop = () => {
+			if ( ! carouselLoop ) {
+				return;
+			}
+			const cell = cellOf();
+			const leading = cloneCount * cell;
+			const realWidth = total * cell;
+			if ( realWidth <= 0 ) {
+				return;
+			}
+			if ( vp.scrollLeft < leading - 1 ) {
+				vp.scrollLeft += realWidth;
+			} else if ( vp.scrollLeft > leading + realWidth - 1 ) {
+				vp.scrollLeft -= realWidth;
+			}
+		};
+
+		let settle = 0;
+		const onScroll = () => {
+			updatePagination();
+			window.clearTimeout( settle );
+			settle = window.setTimeout( resetLoop, 80 );
+		};
+
+		// Start on the first real slide (just past the leading clones).
+		if ( carouselLoop ) {
+			const cell = cellOf();
+			if ( cell > 0 ) {
+				vp.scrollLeft = cloneCount * cell;
+			}
+		}
+		updatePagination();
+		vp.addEventListener( 'scroll', onScroll, { passive: true } );
+		window.addEventListener( 'resize', updatePagination );
+		return () => {
+			window.clearTimeout( settle );
+			vp.removeEventListener( 'scroll', onScroll );
+			window.removeEventListener( 'resize', updatePagination );
+		};
+	}, [ mode, total, visibleItems, carouselLoop, cloneCount ] );
 
 	if ( total === 0 ) {
 		return null;
@@ -389,12 +528,31 @@ export default function CarouselApp( { config, locale }: Props ) {
 			);
 			const cellWidth =
 				firstSlide?.offsetWidth || vp.clientWidth / visibleItems;
+			const leading = carouselLoop ? cloneCount * cellWidth : 0;
 			const idx =
-				cellWidth > 0 ? Math.round( vp.scrollLeft / cellWidth ) : 0;
-			setFullscreenIndex( Math.max( 0, Math.min( total - 1, idx ) ) );
+				cellWidth > 0
+					? Math.round( ( vp.scrollLeft - leading ) / cellWidth )
+					: 0;
+			setFullscreenIndex( ( ( idx % total ) + total ) % total );
 		} else {
 			setFullscreenIndex( realIndex );
 		}
+	};
+
+	const goToPage = ( p: number ) => {
+		const vp = viewportRef.current;
+		if ( ! vp ) {
+			return;
+		}
+		const slide = vp.querySelector< HTMLElement >( '.rc-carousel__slide' );
+		const cell = slide
+			? slide.offsetWidth
+			: vp.clientWidth / Math.max( 1, visibleItems );
+		const leading = carouselLoop ? cloneCount * cell : 0;
+		vp.scrollTo( {
+			left: leading + p * vp.clientWidth,
+			behavior: 'smooth',
+		} );
 	};
 
 	return (
@@ -493,6 +651,28 @@ export default function CarouselApp( { config, locale }: Props ) {
 				</div>
 			) }
 
+			{ mode === 'carousel' && carouselPages > 1 && (
+				<div className="rc-carousel__dots" role="tablist">
+					{ Array.from( { length: carouselPages } ).map( ( _, p ) => (
+						<button
+							key={ p }
+							type="button"
+							className={ `rc-carousel__dot${
+								p === carouselPage
+									? ' rc-carousel__dot--active'
+									: ''
+							}` }
+							role="tab"
+							aria-selected={ p === carouselPage }
+							aria-label={ t.slideOf
+								.replace( '{n}', String( p + 1 ) )
+								.replace( '{total}', String( carouselPages ) ) }
+							onClick={ () => goToPage( p ) }
+						/>
+					) ) }
+				</div>
+			) }
+
 			{ allowFullscreen && (
 				<button
 					type="button"
@@ -527,13 +707,13 @@ export default function CarouselApp( { config, locale }: Props ) {
 						<button
 							type="button"
 							className="rc-carousel-fullscreen__backdrop"
-							onClick={ () => setFullscreenIndex( null ) }
+							onClick={ closeFullscreen }
 							aria-label={ t.exitFullscreen }
 						/>
 						<button
 							type="button"
 							className="rc-carousel-fullscreen__close"
-							onClick={ () => setFullscreenIndex( null ) }
+							onClick={ closeFullscreen }
 							aria-label={ t.exitFullscreen }
 						>
 							×

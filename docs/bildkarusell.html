@@ -10,7 +10,7 @@
 
 <ul>
 	<li><strong class="rc-doc-sv">Bildspel</strong><strong class="rc-doc-en">Slider</strong> <span class="rc-doc-sv">— en bild i taget med pilar och prickar. Bildspelet är cirkulärt: efter sista bilden kommer den första.</span><span class="rc-doc-en">— one image at a time with arrows and dots. The slider is truly circular: after the last image comes the first.</span></li>
-	<li><strong class="rc-doc-sv">Karusell</strong><strong class="rc-doc-en">Carousel</strong> <span class="rc-doc-sv">— en rullande remsa där flera bilder syns samtidigt (2–5). Antal synliga bilder ställs in per instans.</span><span class="rc-doc-en">— a scrollable strip with several images visible at once (2–5). The number of visible items is per-instance.</span></li>
+	<li><strong class="rc-doc-sv">Karusell</strong><strong class="rc-doc-en">Carousel</strong> <span class="rc-doc-sv">— en rullande remsa där flera bilder syns samtidigt (2–5, per instans), med pilar och sidprickar. Remsan är cirkulär: bläddrar du förbi sista sidan börjar den om från första.</span><span class="rc-doc-en">— a scrollable strip with several images visible at once (2–5, per-instance), with arrows and per-page dots. The strip is circular: paging past the last page returns to the first.</span></li>
 </ul>
 
 <h2 class="rc-doc-sv">Bildformat</h2>
@@ -22,6 +22,23 @@
 <p class="rc-doc-en">
 	The carousel has a fixed aspect ratio: 16:9, 4:3, 1:1, 3:4, 9:16, or <em>Auto</em> (the image's natural proportions). The height is derived automatically from the width using the chosen ratio.
 </p>
+
+<p class="rc-doc-sv">
+	I karuselläge väljer du dessutom hur cellerna storleksbestäms med <strong>Cellstorlek</strong>:
+</p>
+<p class="rc-doc-en">
+	In carousel mode you additionally choose how the cells are sized with <strong>Cell sizing</strong>:
+</p>
+
+<ul>
+	<li><strong class="rc-doc-sv">Bildformat</strong><strong class="rc-doc-en">Aspect ratio</strong> <span class="rc-doc-sv">— varje cell använder det valda formatet ovan. Remsans höjd beror då på hur många bilder som visas (fler bilder → lägre remsa).</span><span class="rc-doc-en">— each cell uses the chosen ratio above; the strip's height then depends on how many images are visible (more images → shorter strip).</span></li>
+	<li><strong class="rc-doc-sv">Exakt höjd</strong><strong class="rc-doc-en">Exact height</strong> <span class="rc-doc-sv">— ange en fast höjd i pixlar; remsan behåller den höjden oavsett antal synliga bilder, och varje bild fyller sin cell (beskärs som vid <em>Fyll</em>).</span><span class="rc-doc-en">— set a fixed pixel height; the strip keeps that height regardless of how many images are shown, and each image fills its cell (cropping, as with <em>Fill</em>).</span></li>
+</ul>
+
+<div class="rc-docs-tip">
+	<span class="rc-doc-sv"><strong>Obs:</strong> <em>Auto</em>-format finns bara i bildspelsläge — en flerbildskarusell behöver en fast cellform.</span>
+	<span class="rc-doc-en"><strong>Note:</strong> The <em>Auto</em> ratio is available in slider mode only — a multi-image carousel needs a fixed cell shape.</span>
+</div>
 
 <h2 class="rc-doc-sv">Bildanpassning</h2>
 <h2 class="rc-doc-en">Image fit</h2>
@@ -83,4 +100,14 @@
 </p>
 <p class="rc-doc-en">
 	Autoplay is off by default. When enabled, the interval can be set (2–15 seconds). The rotation pauses when the cursor is over the carousel or anything inside it has focus, and is disabled entirely if the visitor has <em>prefers-reduced-motion</em> turned on.
+</p>
+
+<h2 class="rc-doc-sv">Helskärm</h2>
+<h2 class="rc-doc-en">Fullscreen</h2>
+
+<p class="rc-doc-sv">
+	Slå på <strong>Tillåt helskärm</strong> (av som standard) så visas en liten förstoringsknapp uppe till höger. Ett klick visar den aktuella bilden i helskärm på svart bakgrund, med pilar för att bläddra och en räknare. Stäng med ×-knappen, <em>Esc</em> eller genom att klicka utanför bilden. Små bilder förstoras inte utan visas i sin verkliga storlek, centrerade. När du stänger ligger karusellen kvar på den bild du slutade på.
+</p>
+<p class="rc-doc-en">
+	Turn on <strong>Allow fullscreen</strong> (off by default) and a small expand button appears in the top-right corner. Clicking it shows the current image full-screen on a black background, with arrows to browse and a counter. Close it with the × button, <em>Esc</em>, or by clicking outside the image. Small images aren't enlarged — they show at their real size, centered. When you close, the carousel stays on the image you ended on.
 </p>
