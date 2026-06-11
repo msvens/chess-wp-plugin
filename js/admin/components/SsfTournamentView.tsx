@@ -167,7 +167,7 @@ export function SsfTournamentView( { ssfGroupId, t }: SsfTournamentViewProps ) {
 			<Notice status="info" isDismissible={ false }>
 				{ t.tournament.ssfTeamNotice }{ ' ' }
 				<a href={ link } target="_blank" rel="noreferrer">
-					{ t.tournament.viewOnSsf } ↗
+					{ t.tournament.fullResults } ↗
 				</a>
 			</Notice>
 		);

@@ -145,7 +145,7 @@ export default function TournamentApp( {
 					) }
 					{ tournament.externalLink && (
 						<div className="rc-td__info-item">
-							<dt>{ t.tournament.officialResult }</dt>
+							<dt>{ t.tournament.fullResults }</dt>
 							<dd>
 								<a
 									href={ tournament.externalLink }
@@ -153,7 +153,7 @@ export default function TournamentApp( {
 									rel="noopener noreferrer"
 									className="rc-td__info-link"
 								>
-									SSF ↗
+									{ t.common.here } ↗
 								</a>
 							</dd>
 						</div>

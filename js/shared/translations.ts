@@ -101,7 +101,7 @@ export interface Translations {
 		ssfTeamNotice: string;
 		ssfNotStarted: string;
 		registeredPlayers: string;
-		viewOnSsf: string;
+		fullResults: string;
 	};
 	tournament: {
 		title: string;
@@ -128,7 +128,7 @@ export interface Translations {
 		editTournament: string;
 		refreshFromSsf: string;
 		ssfFetchError: string;
-		viewOnSsf: string;
+		fullResults: string;
 		ongoing: string;
 		pastTournaments: string;
 		format: string;
@@ -152,7 +152,6 @@ export interface Translations {
 		noLinkedTournament: string;
 		viewTournament: string;
 		backToList: string;
-		officialResult: string;
 	};
 	calendar: {
 		title: string;
@@ -267,6 +266,7 @@ export interface Translations {
 		delete: string;
 		edit: string;
 		copy: string;
+		here: string;
 		add: string;
 	};
 }
@@ -375,7 +375,7 @@ const translations: Translations = {
 		loadingResults: __( 'Loading results…', 'rockaden-chess' ),
 		resultsFetchError: __( 'Could not load results.', 'rockaden-chess' ),
 		ssfTeamNotice: __(
-			'This is a team tournament — its results are shown on SSF, not here.',
+			'This is a team tournament — its results are not shown here.',
 			'rockaden-chess'
 		),
 		ssfNotStarted: __(
@@ -383,7 +383,7 @@ const translations: Translations = {
 			'rockaden-chess'
 		),
 		registeredPlayers: __( 'Registered players', 'rockaden-chess' ),
-		viewOnSsf: __( 'View on SSF', 'rockaden-chess' ),
+		fullResults: __( 'Full results', 'rockaden-chess' ),
 	},
 	tournament: {
 		title: __( 'Tournaments', 'rockaden-chess' ),
@@ -416,7 +416,7 @@ const translations: Translations = {
 		editTournament: __( 'Edit tournament', 'rockaden-chess' ),
 		refreshFromSsf: __( 'Fetch / Refresh from SSF', 'rockaden-chess' ),
 		ssfFetchError: __( 'Could not fetch from SSF', 'rockaden-chess' ),
-		viewOnSsf: __( 'View on SSF', 'rockaden-chess' ),
+		fullResults: __( 'Full results', 'rockaden-chess' ),
 		ongoing: __( 'Ongoing', 'rockaden-chess' ),
 		pastTournaments: __( 'Past tournaments', 'rockaden-chess' ),
 		format: __( 'Format', 'rockaden-chess' ),
@@ -439,7 +439,7 @@ const translations: Translations = {
 		ssfGroupName: __( 'Group', 'rockaden-chess' ),
 		ssfParentTournament: __( 'Tournament', 'rockaden-chess' ),
 		ssfTeamNotice: __(
-			'This is a team tournament — its results are shown on SSF, not here.',
+			'This is a team tournament — its results are not shown here.',
 			'rockaden-chess'
 		),
 		ssfNotStarted: __(
@@ -452,7 +452,6 @@ const translations: Translations = {
 		noLinkedTournament: __( 'No tournament', 'rockaden-chess' ),
 		viewTournament: __( 'View tournament', 'rockaden-chess' ),
 		backToList: __( 'Back to tournaments', 'rockaden-chess' ),
-		officialResult: __( 'Official result', 'rockaden-chess' ),
 	},
 	calendar: {
 		title: __( 'Calendar', 'rockaden-chess' ),
@@ -587,6 +586,7 @@ const translations: Translations = {
 		delete: __( 'Delete', 'rockaden-chess' ),
 		edit: __( 'Edit', 'rockaden-chess' ),
 		copy: __( 'Copy', 'rockaden-chess' ),
+		here: __( 'here', 'rockaden-chess' ),
 		add: __( 'Add', 'rockaden-chess' ),
 	},
 };

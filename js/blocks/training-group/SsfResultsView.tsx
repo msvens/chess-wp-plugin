@@ -155,7 +155,7 @@ export default function SsfResultsView( {
 			<p className="rc-ssf__notice">
 				{ t.ssfTeamNotice }{ ' ' }
 				<a href={ link } target="_blank" rel="noopener noreferrer">
-					{ t.viewOnSsf } ↗
+					{ t.fullResults } ↗
 				</a>
 			</p>
 		);

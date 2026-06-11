@@ -153,7 +153,7 @@ export function TournamentDetail( {
 									target="_blank"
 									rel="noreferrer"
 								>
-									{ t.tournament.viewOnSsf } ↗
+									{ t.tournament.fullResults } ↗
 								</a>
 							) : (
 								<Text style={ { fontStyle: 'italic' } }>
