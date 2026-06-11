@@ -1,4 +1,4 @@
-import { useState } from '@wordpress/element';
+import { useState, useEffect, useRef } from '@wordpress/element';
 import {
 	TextControl,
 	TextareaControl,
@@ -129,17 +129,26 @@ export function TournamentForm( {
 
 	const [ ssfFetching, setSsfFetching ] = useState( false );
 	const [ ssfNote, setSsfNote ] = useState< string | null >( null );
+	// SSF lifecycle state (1=registration, 2=started, 3=finished) from the last
+	// fetch — drives the status preview for SSF tournaments.
+	const [ ssfState, setSsfState ] = useState< number | undefined >(
+		undefined
+	);
+	// Guards the auto-fetch effect from re-fetching an unchanged group id.
+	const lastFetchedRef = useRef( Number( init.ssfGroupId ) || 0 );
 
 	const ssfId = Number( ssfGroupId );
 	const isSsfBacked = ssfId > 0;
 
-	// Live preview of what 'Automatic' resolves to, from the current dates.
+	// Live preview of what 'Automatic' resolves to. SSF tournaments preview from
+	// the fetched SSF state (mirrors the server); local ones from the dates.
 	const previewStatus =
 		status === 'auto'
 			? deriveStatus(
 					startDate,
 					endDate,
-					isSsfBacked ? ssfHasResults : !! initialHasResults
+					isSsfBacked ? ssfHasResults : !! initialHasResults,
+					isSsfBacked ? ssfState : undefined
 			  )
 			: null;
 
@@ -154,6 +163,7 @@ export function TournamentForm( {
 		if ( ! isSsfBacked ) {
 			return;
 		}
+		lastFetchedRef.current = ssfId;
 		setSsfFetching( true );
 		setSsfNote( null );
 		try {
@@ -162,8 +172,10 @@ export function TournamentForm( {
 				fetchSsfRoundResults( ssfId ).catch( () => [] ),
 			] );
 			const group = ssfFindGroup( tournament, ssfId );
-			const start = group?.start || tournament.start;
-			const end = group?.end || tournament.end;
+			// Tournament-level dates: a group's own start can be a registration
+			// window weeks before play (status uses the SSF state, not these).
+			const start = tournament.start || group?.start || '';
+			const end = tournament.end || group?.end || '';
 			const tname = tournament.name || '';
 			const gname = group?.name || tname;
 			const isTeam = isSsfTeamType( tournament.type );
@@ -173,6 +185,7 @@ export function TournamentForm( {
 			setTitle( gname );
 			setSsfTournamentName( tname );
 			setSsfTournamentId( tournament.id );
+			setSsfState( tournament.state );
 			if ( start ) {
 				setStartDate( start );
 			}
@@ -204,6 +217,24 @@ export function TournamentForm( {
 			setSsfFetching( false );
 		}
 	}
+
+	// Keep a ref to the latest fetch closure so the debounce effect below can
+	// call it without re-subscribing on every render.
+	const fetchRef = useRef( handleSsfFetch );
+	useEffect( () => {
+		fetchRef.current = handleSsfFetch;
+	} );
+
+	// Auto-fetch when the SSF Group ID changes to a new value (debounced), so you
+	// don't have to click Fetch. Safe because the SSF fields are read-only
+	// mirrors — a re-fetch is expected to overwrite them.
+	useEffect( () => {
+		if ( ! isSsfBacked || ssfId === lastFetchedRef.current ) {
+			return;
+		}
+		const timer = setTimeout( () => fetchRef.current(), 600 );
+		return () => clearTimeout( timer );
+	}, [ ssfId, isSsfBacked ] );
 
 	function handleSubmit() {
 		if ( ! title.trim() ) {
