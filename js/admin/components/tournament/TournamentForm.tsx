@@ -13,7 +13,8 @@ import type {
 	TournamentStatusChoice,
 	CreateTournamentData,
 } from '../../types';
-import { fetchSsfGroup, fetchSsfRoundResults } from '../../api';
+import { fetchSsfTournamentForGroup, fetchSsfRoundResults } from '../../api';
+import { ssfFindGroup, isSsfTeamType } from '../../../shared/ssfTypes';
 import { deriveStatus } from '../../../shared/deriveStatus';
 import { FlatpickrInput } from '../FlatpickrInput';
 
@@ -115,24 +116,56 @@ export function TournamentForm( {
 		setSsfFetching( true );
 		setSsfNote( null );
 		try {
-			const [ group, rounds ] = await Promise.all( [
-				fetchSsfGroup( ssfId ),
+			const [ tournament, rounds ] = await Promise.all( [
+				fetchSsfTournamentForGroup( ssfId ),
 				fetchSsfRoundResults( ssfId ).catch( () => [] ),
 			] );
-			if ( group.start ) {
-				setStartDate( group.start );
+			const group = ssfFindGroup( tournament, ssfId );
+			const start = group?.start || tournament.start;
+			const end = group?.end || tournament.end;
+			const tname = tournament.name || '';
+			const gname = group?.name || '';
+			const isTeam = isSsfTeamType( tournament.type );
+
+			if ( start ) {
+				setStartDate( start );
 			}
-			if ( group.end ) {
-				setEndDate( group.end );
+			if ( end ) {
+				setEndDate( end );
 			}
 			setSsfHasResults( Array.isArray( rounds ) && rounds.length > 0 );
-			setSsfNote(
-				group.name
-					? `${ group.name } · ${ group.start } – ${ group.end } · ${
-							group.nrofrounds
-					  } ${ t.training.round.toLowerCase() }`
-					: `${ group.start } – ${ group.end }`
-			);
+
+			// Prefill the title only if the editor hasn't typed one.
+			if ( ! title.trim() ) {
+				let label = tname;
+				if ( gname && gname !== tname ) {
+					label = gname.includes( tname )
+						? gname
+						: `${ tname } - ${ gname }`;
+				}
+				if ( label ) {
+					setTitle( label );
+				}
+			}
+
+			// Auto-fill a working SSF results link if none set.
+			if ( ! externalLink.trim() && tournament.id ) {
+				setExternalLink(
+					`https://chess.msvens.com/results/${ tournament.id }/${ ssfId }`
+				);
+			}
+
+			if ( isTeam ) {
+				setSsfNote( t.tournament.ssfTeamNotice );
+			} else {
+				const roundsN = group?.nrofrounds;
+				const roundsPart = roundsN
+					? ` · ${ roundsN } ${ t.training.round.toLowerCase() }`
+					: '';
+				setSsfNote(
+					`${ gname || tname } · ${ start } – ${ end }${ roundsPart }`
+				);
+			}
 		} catch {
 			setSsfNote( t.tournament.ssfFetchError );
 		} finally {
@@ -162,6 +195,40 @@ export function TournamentForm( {
 
 	return (
 		<>
+			{ /* SSF link first — it's the earliest decision and drives the
+			   title / dates / link prefill below. */ }
+			<TextControl
+				label={ t.tournament.ssfBacked }
+				value={ ssfGroupId }
+				onChange={ setSsfGroupId }
+				type="number"
+				help={ t.tournament.ssfBackedHint }
+			/>
+			{ isSsfBacked && (
+				<div style={ { marginBottom: 12 } }>
+					<Button
+						variant="secondary"
+						onClick={ handleSsfFetch }
+						isBusy={ ssfFetching }
+						disabled={ ssfFetching }
+						size="compact"
+					>
+						{ t.tournament.refreshFromSsf }
+					</Button>
+					{ ssfNote && (
+						<Text
+							style={ {
+								display: 'block',
+								marginTop: 6,
+								fontStyle: 'italic',
+							} }
+						>
+							{ ssfNote }
+						</Text>
+					) }
+				</div>
+			) }
+
 			<TextControl
 				label={ t.tournament.tournamentName }
 				value={ title }
@@ -264,38 +331,6 @@ export function TournamentForm( {
 					<FlatpickrInput value={ endDate } onChange={ setEndDate } />
 				</div>
 			</div>
-
-			<TextControl
-				label={ t.tournament.ssfBacked }
-				value={ ssfGroupId }
-				onChange={ setSsfGroupId }
-				type="number"
-				help={ t.tournament.ssfBackedHint }
-			/>
-			{ isSsfBacked && (
-				<div style={ { marginBottom: 12 } }>
-					<Button
-						variant="secondary"
-						onClick={ handleSsfFetch }
-						isBusy={ ssfFetching }
-						disabled={ ssfFetching }
-						size="compact"
-					>
-						{ t.tournament.refreshFromSsf }
-					</Button>
-					{ ssfNote && (
-						<Text
-							style={ {
-								display: 'block',
-								marginTop: 6,
-								fontStyle: 'italic',
-							} }
-						>
-							{ ssfNote }
-						</Text>
-					) }
-				</div>
-			) }
 
 			<TextControl
 				label={ t.tournament.externalLink }

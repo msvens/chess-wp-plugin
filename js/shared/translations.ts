@@ -98,6 +98,10 @@ export interface Translations {
 		tiebreak: string;
 		loadingResults: string;
 		resultsFetchError: string;
+		ssfTeamNotice: string;
+		ssfNotStarted: string;
+		registeredPlayers: string;
+		viewOnSsf: string;
 	};
 	tournament: {
 		title: string;
@@ -138,6 +142,9 @@ export interface Translations {
 		ssfBacked: string;
 		ssfBackedHint: string;
 		ssfBackedNote: string;
+		ssfTeamNotice: string;
+		ssfNotStarted: string;
+		registeredPlayers: string;
 		overview: string;
 		linkedTournament: string;
 		noLinkedTournament: string;
@@ -365,6 +372,16 @@ const translations: Translations = {
 		tiebreak: __( 'KP', 'rockaden-chess' ),
 		loadingResults: __( 'Loading results…', 'rockaden-chess' ),
 		resultsFetchError: __( 'Could not load results.', 'rockaden-chess' ),
+		ssfTeamNotice: __(
+			'This is a team tournament — its results are shown on SSF, not here.',
+			'rockaden-chess'
+		),
+		ssfNotStarted: __(
+			"This tournament hasn't started yet — showing the registered players.",
+			'rockaden-chess'
+		),
+		registeredPlayers: __( 'Registered players', 'rockaden-chess' ),
+		viewOnSsf: __( 'View on SSF', 'rockaden-chess' ),
 	},
 	tournament: {
 		title: __( 'Tournaments', 'rockaden-chess' ),
@@ -408,15 +425,24 @@ const translations: Translations = {
 		endDate: __( 'End date', 'rockaden-chess' ),
 		externalLink: __( 'External link', 'rockaden-chess' ),
 		linkedEvent: __( 'Linked calendar event', 'rockaden-chess' ),
-		ssfBacked: __( 'SSF tournament ID', 'rockaden-chess' ),
+		ssfBacked: __( 'SSF Group ID', 'rockaden-chess' ),
 		ssfBackedHint: __(
-			'If set, standings come from SSF (read-only). Leave empty for a Rockaden-managed tournament.',
+			'The GROUP id — a tournament can contain several groups, so enter the group id, not the tournament id. With it set, standings come from SSF. Leave empty for a Rockaden-managed tournament.',
 			'rockaden-chess'
 		),
 		ssfBackedNote: __(
 			'Standings are pulled from SSF. Local pairings/results are not used.',
 			'rockaden-chess'
 		),
+		ssfTeamNotice: __(
+			'This is a team tournament — its results are shown on SSF, not here.',
+			'rockaden-chess'
+		),
+		ssfNotStarted: __(
+			"This tournament hasn't started yet — showing the registered players.",
+			'rockaden-chess'
+		),
+		registeredPlayers: __( 'Registered players', 'rockaden-chess' ),
 		overview: __( 'Overview', 'rockaden-chess' ),
 		linkedTournament: __( 'Linked tournament', 'rockaden-chess' ),
 		noLinkedTournament: __( 'No tournament', 'rockaden-chess' ),

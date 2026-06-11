@@ -15,7 +15,7 @@ import type {
 import type {
 	SsfEndResult,
 	SsfRoundResult,
-	SsfTournamentGroup,
+	SsfTournament,
 } from '../shared/ssfTypes';
 
 const BASE = 'rockaden/v1';
@@ -258,9 +258,12 @@ export function fetchSsfRoundResults(
 	} );
 }
 
-export function fetchSsfGroup(
+// Despite the path, /ssf/tournament/group/id/{gid} returns the PARENT
+// tournament (with rootClasses[].groups[], plus type/state). Use ssfFindGroup
+// to get the specific group.
+export function fetchSsfTournamentForGroup(
 	groupId: number
-): Promise< SsfTournamentGroup > {
+): Promise< SsfTournament > {
 	return apiFetch( {
 		path: `${ BASE }/ssf/tournament/group/id/${ groupId }`,
 	} );
