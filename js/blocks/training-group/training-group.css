@@ -51,6 +51,12 @@ html.dark .rc-td {
 	line-height: 1.5;
 }
 
+.rc-td__parent-tournament {
+	margin: -0.25rem 0 1rem;
+	color: var(--rc-td-text-muted);
+	font-size: 0.9375rem;
+}
+
 /* --- Info section (trainers, contact, schedule) --- */
 .rc-td__info {
 	display: flex;

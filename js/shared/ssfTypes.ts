@@ -77,7 +77,38 @@ export interface SsfTournament {
 	state: number;
 	// Tournament format; team formats per isSsfTeamType (e.g. 2 = Allsvenskan).
 	type: number;
+	// Free-text time control, e.g. "10 min + 5 sek/drag" or "90+15 min".
+	thinkingTime: string;
 	rootClasses: SsfTournamentClass[];
+}
+
+/**
+ * Classify an SSF `thinkingTime` string into our time-control buckets. Ports
+ * schack-se-sdk's parseTimeControl with FIDE thresholds (sums all minute
+ * figures before "min"): < 10 = blitz, ≤ 60 = rapid, else classical.
+ *
+ * @param thinkingTime SSF thinkingTime string (may be empty).
+ * @return classical|rapid|blitz
+ */
+export function parseSsfTimeControl(
+	thinkingTime: string | null | undefined
+): 'classical' | 'rapid' | 'blitz' {
+	if ( ! thinkingTime ) {
+		return 'classical';
+	}
+	const m = thinkingTime.match( /(\d+)(?:\+(\d+))?\s*min/i );
+	if ( ! m ) {
+		return 'classical';
+	}
+	const total =
+		parseInt( m[ 1 ], 10 ) + ( m[ 2 ] ? parseInt( m[ 2 ], 10 ) : 0 );
+	if ( total < 10 ) {
+		return 'blitz';
+	}
+	if ( total <= 60 ) {
+		return 'rapid';
+	}
+	return 'classical';
 }
 
 // The endpoint /ssf/tournament/group/id/{gid} returns the PARENT tournament

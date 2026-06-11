@@ -134,6 +134,19 @@ export function TournamentDetail( {
 					) }
 					{ isSsfBacked && (
 						<div style={ { marginTop: 6 } }>
+							{ tournament.ssfTournamentName &&
+								tournament.ssfTournamentName !==
+									tournament.title && (
+									<div
+										style={ {
+											color: '#555',
+											marginBottom: 4,
+										} }
+									>
+										{ t.tournament.ssfParentTournament }:{ ' ' }
+										{ tournament.ssfTournamentName }
+									</div>
+								) }
 							{ tournament.externalLink ? (
 								<a
 									href={ tournament.externalLink }

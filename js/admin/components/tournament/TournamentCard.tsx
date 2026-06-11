@@ -78,7 +78,8 @@ export function TournamentCard( {
 				</div>
 				{ tournament.ssfGroupId > 0 && (
 					<Text style={ { display: 'block', fontStyle: 'italic' } }>
-						SSF #{ tournament.ssfGroupId }
+						{ tournament.ssfTournamentName ||
+							`SSF #${ tournament.ssfGroupId }` }
 					</Text>
 				) }
 				{ tournament.ssfGroupId === 0 && (

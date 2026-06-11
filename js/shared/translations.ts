@@ -142,6 +142,8 @@ export interface Translations {
 		ssfBacked: string;
 		ssfBackedHint: string;
 		ssfBackedNote: string;
+		ssfGroupName: string;
+		ssfParentTournament: string;
 		ssfTeamNotice: string;
 		ssfNotStarted: string;
 		registeredPlayers: string;
@@ -434,6 +436,8 @@ const translations: Translations = {
 			'Standings are pulled from SSF. Local pairings/results are not used.',
 			'rockaden-chess'
 		),
+		ssfGroupName: __( 'Group', 'rockaden-chess' ),
+		ssfParentTournament: __( 'Tournament', 'rockaden-chess' ),
 		ssfTeamNotice: __(
 			'This is a team tournament — its results are shown on SSF, not here.',
 			'rockaden-chess'

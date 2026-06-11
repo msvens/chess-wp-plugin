@@ -14,9 +14,33 @@ import type {
 	CreateTournamentData,
 } from '../../types';
 import { fetchSsfTournamentForGroup, fetchSsfRoundResults } from '../../api';
-import { ssfFindGroup, isSsfTeamType } from '../../../shared/ssfTypes';
+import {
+	ssfFindGroup,
+	isSsfTeamType,
+	parseSsfTimeControl,
+} from '../../../shared/ssfTypes';
 import { deriveStatus } from '../../../shared/deriveStatus';
 import { FlatpickrInput } from '../FlatpickrInput';
+
+// A labelled read-only value (SSF tournaments mirror their data from SSF).
+function ReadOnlyField( { label, value }: { label: string; value: string } ) {
+	return (
+		<div style={ { marginBottom: 12 } }>
+			<div
+				style={ {
+					fontSize: 11,
+					textTransform: 'uppercase',
+					letterSpacing: '0.05em',
+					color: '#757575',
+					marginBottom: 2,
+				} }
+			>
+				{ label }
+			</div>
+			<div>{ value || '—' }</div>
+		</div>
+	);
+}
 
 export interface TournamentFormValues {
 	title: string;
@@ -25,6 +49,8 @@ export interface TournamentFormValues {
 	status: TournamentStatusChoice;
 	timeControl: 'classical' | 'rapid' | 'blitz';
 	ssfGroupId: string;
+	ssfTournamentId: number;
+	ssfTournamentName: string;
 	startDate: string;
 	endDate: string;
 	externalLink: string;
@@ -53,6 +79,8 @@ const DEFAULTS: TournamentFormValues = {
 	status: 'auto',
 	timeControl: 'classical',
 	ssfGroupId: '',
+	ssfTournamentId: 0,
+	ssfTournamentName: '',
 	startDate: '',
 	endDate: '',
 	externalLink: '',
@@ -84,6 +112,12 @@ export function TournamentForm( {
 		init.timeControl
 	);
 	const [ ssfGroupId, setSsfGroupId ] = useState( init.ssfGroupId );
+	const [ ssfTournamentId, setSsfTournamentId ] = useState(
+		init.ssfTournamentId
+	);
+	const [ ssfTournamentName, setSsfTournamentName ] = useState(
+		init.ssfTournamentName
+	);
 	const [ startDate, setStartDate ] = useState( init.startDate );
 	const [ endDate, setEndDate ] = useState( init.endDate );
 	const [ externalLink, setExternalLink ] = useState( init.externalLink );
@@ -109,6 +143,13 @@ export function TournamentForm( {
 			  )
 			: null;
 
+	const timeControlLabel =
+		timeControl === 'rapid'
+			? t.training.rapid
+			: timeControl === 'blitz'
+			? t.training.blitz
+			: t.training.classical;
+
 	async function handleSsfFetch() {
 		if ( ! isSsfBacked ) {
 			return;
@@ -124,36 +165,27 @@ export function TournamentForm( {
 			const start = group?.start || tournament.start;
 			const end = group?.end || tournament.end;
 			const tname = tournament.name || '';
-			const gname = group?.name || '';
+			const gname = group?.name || tname;
 			const isTeam = isSsfTeamType( tournament.type );
 
+			// SSF tournaments mirror SSF: title = group name, dates/time control/
+			// link derived. (All read-only in the form — set on every fetch.)
+			setTitle( gname );
+			setSsfTournamentName( tname );
+			setSsfTournamentId( tournament.id );
 			if ( start ) {
 				setStartDate( start );
 			}
 			if ( end ) {
 				setEndDate( end );
 			}
-			setSsfHasResults( Array.isArray( rounds ) && rounds.length > 0 );
-
-			// Prefill the title only if the editor hasn't typed one.
-			if ( ! title.trim() ) {
-				let label = tname;
-				if ( gname && gname !== tname ) {
-					label = gname.includes( tname )
-						? gname
-						: `${ tname } - ${ gname }`;
-				}
-				if ( label ) {
-					setTitle( label );
-				}
-			}
-
-			// Auto-fill a working SSF results link if none set.
-			if ( ! externalLink.trim() && tournament.id ) {
+			setTimeControl( parseSsfTimeControl( tournament.thinkingTime ) );
+			if ( tournament.id ) {
 				setExternalLink(
 					`https://chess.msvens.com/results/${ tournament.id }/${ ssfId }`
 				);
 			}
+			setSsfHasResults( Array.isArray( rounds ) && rounds.length > 0 );
 
 			if ( isTeam ) {
 				setSsfNote( t.tournament.ssfTeamNotice );
@@ -184,6 +216,8 @@ export function TournamentForm( {
 			status,
 			timeControl,
 			ssfGroupId: isSsfBacked ? ssfId : 0,
+			ssfTournamentId: isSsfBacked ? ssfTournamentId : 0,
+			ssfTournamentName: isSsfBacked ? ssfTournamentName : '',
 			startDate,
 			endDate,
 			externalLink: externalLink.trim(),
@@ -229,12 +263,28 @@ export function TournamentForm( {
 				</div>
 			) }
 
-			<TextControl
-				label={ t.tournament.tournamentName }
-				value={ title }
-				onChange={ setTitle }
-				required
-			/>
+			{ isSsfBacked ? (
+				<>
+					<ReadOnlyField
+						label={ t.tournament.ssfGroupName }
+						value={ title }
+					/>
+					{ ssfTournamentName && ssfTournamentName !== title && (
+						<ReadOnlyField
+							label={ t.tournament.ssfParentTournament }
+							value={ ssfTournamentName }
+						/>
+					) }
+				</>
+			) : (
+				<TextControl
+					label={ t.tournament.tournamentName }
+					value={ title }
+					onChange={ setTitle }
+					required
+				/>
+			) }
+
 			<TextareaControl
 				label={ t.training.description }
 				value={ description }
@@ -302,53 +352,80 @@ export function TournamentForm( {
 						}
 					/>
 				</div>
-				<div style={ { flex: 1 } }>
-					<SelectControl
+				{ ! isSsfBacked && (
+					<div style={ { flex: 1 } }>
+						<SelectControl
+							label={ t.training.timeControl }
+							value={ timeControl }
+							options={ [
+								{
+									label: t.training.classical,
+									value: 'classical',
+								},
+								{ label: t.training.rapid, value: 'rapid' },
+								{ label: t.training.blitz, value: 'blitz' },
+							] }
+							onChange={ ( v ) =>
+								setTimeControl( v as typeof init.timeControl )
+							}
+						/>
+					</div>
+				) }
+			</div>
+
+			{ isSsfBacked ? (
+				<div className="rc-date-fields">
+					<ReadOnlyField
 						label={ t.training.timeControl }
-						value={ timeControl }
-						options={ [
-							{ label: t.training.classical, value: 'classical' },
-							{ label: t.training.rapid, value: 'rapid' },
-							{ label: t.training.blitz, value: 'blitz' },
-						] }
-						onChange={ ( v ) =>
-							setTimeControl( v as typeof init.timeControl )
-						}
+						value={ timeControlLabel }
 					/>
-				</div>
-			</div>
-
-			<div className="rc-date-fields">
-				<div className="rc-date-field">
-					<label>{ t.tournament.startDate }</label>
-					<FlatpickrInput
+					<ReadOnlyField
+						label={ t.tournament.startDate }
 						value={ startDate }
-						onChange={ setStartDate }
+					/>
+					<ReadOnlyField
+						label={ t.tournament.endDate }
+						value={ endDate }
 					/>
 				</div>
-				<div className="rc-date-field">
-					<label>{ t.tournament.endDate }</label>
-					<FlatpickrInput value={ endDate } onChange={ setEndDate } />
-				</div>
-			</div>
+			) : (
+				<>
+					<div className="rc-date-fields">
+						<div className="rc-date-field">
+							<label>{ t.tournament.startDate }</label>
+							<FlatpickrInput
+								value={ startDate }
+								onChange={ setStartDate }
+							/>
+						</div>
+						<div className="rc-date-field">
+							<label>{ t.tournament.endDate }</label>
+							<FlatpickrInput
+								value={ endDate }
+								onChange={ setEndDate }
+							/>
+						</div>
+					</div>
 
-			<TextControl
-				label={ t.tournament.externalLink }
-				value={ externalLink }
-				onChange={ setExternalLink }
-				type="url"
-			/>
+					<TextControl
+						label={ t.tournament.externalLink }
+						value={ externalLink }
+						onChange={ setExternalLink }
+						type="url"
+					/>
 
-			<CheckboxControl
-				label={ t.training.showParticipants }
-				checked={ showParticipants }
-				onChange={ setShowParticipants }
-			/>
-			<CheckboxControl
-				label={ t.training.showStandings }
-				checked={ showStandings }
-				onChange={ setShowStandings }
-			/>
+					<CheckboxControl
+						label={ t.training.showParticipants }
+						checked={ showParticipants }
+						onChange={ setShowParticipants }
+					/>
+					<CheckboxControl
+						label={ t.training.showStandings }
+						checked={ showStandings }
+						onChange={ setShowStandings }
+					/>
+				</>
+			) }
 
 			{ error && (
 				<Text

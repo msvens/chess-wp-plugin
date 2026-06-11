@@ -156,6 +156,8 @@ export interface Tournament {
 	participants: Participant[];
 	rounds: StoredRound[];
 	ssfGroupId: number;
+	ssfTournamentId: number;
+	ssfTournamentName: string;
 	eventId: number;
 	externalLink: string;
 	startDate: string;
@@ -173,6 +175,8 @@ export interface CreateTournamentData {
 	format?: TournamentFormat;
 	timeControl?: string;
 	ssfGroupId?: number;
+	ssfTournamentId?: number;
+	ssfTournamentName?: string;
 	eventId?: number;
 	externalLink?: string;
 	startDate?: string;

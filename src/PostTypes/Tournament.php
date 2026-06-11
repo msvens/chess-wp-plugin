@@ -45,59 +45,70 @@ class Tournament {
 	 */
 	private static function register_meta(): void {
 		$meta_fields = [
-			'rc_category'          => [
+			'rc_category'            => [
 				'type'    => 'string',
 				'default' => 'mixed',
 			],
-			'rc_status'            => [
+			'rc_status'              => [
 				'type'    => 'string',
 				'default' => 'auto',
 			],
-			'rc_format'            => [
+			'rc_format'              => [
 				'type'    => 'string',
 				'default' => 'round-robin',
 			],
-			'rc_time_control'      => [
+			'rc_time_control'        => [
 				'type'    => 'string',
 				'default' => 'classical',
 			],
-			'rc_participants'      => [
+			'rc_participants'        => [
 				'type'    => 'string', // JSON string.
 				'default' => '[]',
 			],
-			'rc_rounds'            => [
+			'rc_rounds'              => [
 				'type'    => 'string', // JSON string.
 				'default' => '[]',
 			],
-			'rc_ssf_group_id'      => [
+			'rc_ssf_group_id'        => [
 				'type'    => 'integer',
 				'default' => 0,
 			],
-			'rc_event_id'          => [
+			// Parent SSF tournament id + name (a tournament can contain several
+			// groups). Id is stored for future grouping; name is a read-only
+			// snapshot shown in lists so they aren't just a group name.
+			'rc_ssf_tournament_id'   => [
 				'type'    => 'integer',
 				'default' => 0,
 			],
-			'rc_external_link'     => [
+			'rc_ssf_tournament_name' => [
 				'type'    => 'string',
 				'default' => '',
 			],
-			'rc_start_date'        => [
+			'rc_event_id'            => [
+				'type'    => 'integer',
+				'default' => 0,
+			],
+			'rc_external_link'       => [
 				'type'    => 'string',
 				'default' => '',
 			],
-			'rc_end_date'          => [
+			'rc_start_date'          => [
 				'type'    => 'string',
 				'default' => '',
 			],
-			'rc_show_participants' => [
+			'rc_end_date'            => [
+				'type'    => 'string',
+				'default' => '',
+			],
+			'rc_show_participants'   => [
 				'type'    => 'boolean',
 				'default' => true,
 			],
-			'rc_show_standings'    => [
+			'rc_show_standings'      => [
 				'type'    => 'boolean',
 				'default' => true,
 			],
-			'rc_ssf_has_results'   => [
+			'rc_ssf_has_results'     => [
 				'type'    => 'boolean',
 				'default' => false,
 			],
