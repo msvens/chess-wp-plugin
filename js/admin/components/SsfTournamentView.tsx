@@ -9,8 +9,14 @@ import type {
 	SsfEndResult,
 	SsfRoundResult,
 	SsfPlayerInfo,
+	SsfTournament,
 } from '../../shared/ssfTypes';
-import { fetchSsfTournamentResults, fetchSsfRoundResults } from '../api';
+import { isSsfTeamType } from '../../shared/ssfTypes';
+import {
+	fetchSsfTournamentForGroup,
+	fetchSsfTournamentResults,
+	fetchSsfRoundResults,
+} from '../api';
 
 interface SsfTournamentViewProps {
 	ssfGroupId: number;
@@ -87,6 +93,9 @@ function buildDisplayRounds(
 }
 
 export function SsfTournamentView( { ssfGroupId, t }: SsfTournamentViewProps ) {
+	const [ tournament, setTournament ] = useState< SsfTournament | null >(
+		null
+	);
 	const [ endResults, setEndResults ] = useState< SsfEndResult[] | null >(
 		null
 	);
@@ -98,32 +107,70 @@ export function SsfTournamentView( { ssfGroupId, t }: SsfTournamentViewProps ) {
 	const [ activeRound, setActiveRound ] = useState( 0 );
 
 	useEffect( () => {
+		let cancelled = false;
 		setLoading( true );
 		setError( null );
+		setTournament( null );
+		setEndResults( null );
+		setDisplayRounds( [] );
 
-		Promise.all( [
-			fetchSsfTournamentResults( ssfGroupId ),
-			fetchSsfRoundResults( ssfGroupId ),
-		] )
-			.then( ( [ tableData, roundData ] ) => {
+		( async () => {
+			try {
+				// The group endpoint returns the parent tournament (type/state).
+				const meta = await fetchSsfTournamentForGroup( ssfGroupId );
+				if ( cancelled ) {
+					return;
+				}
+				setTournament( meta );
+				// Team tournaments use different result endpoints — link out
+				// instead of fetching the individual table (which 500s).
+				if ( isSsfTeamType( meta.type ) ) {
+					return;
+				}
+				const [ tableData, roundData ] = await Promise.all( [
+					fetchSsfTournamentResults( ssfGroupId ),
+					fetchSsfRoundResults( ssfGroupId ),
+				] );
+				if ( cancelled ) {
+					return;
+				}
 				setEndResults( tableData );
-
 				const playerMap = new Map< number, SsfPlayerInfo >();
 				for ( const r of tableData ) {
 					playerMap.set( r.playerInfo.id, r.playerInfo );
 				}
 				setDisplayRounds( buildDisplayRounds( roundData, playerMap ) );
-			} )
-			.catch( () => {
-				setError( t.training.resultsFetchError );
-			} )
-			.finally( () => {
-				setLoading( false );
-			} );
+			} catch {
+				if ( ! cancelled ) {
+					setError( t.training.resultsFetchError );
+				}
+			} finally {
+				if ( ! cancelled ) {
+					setLoading( false );
+				}
+			}
+		} )();
+
+		return () => {
+			cancelled = true;
+		};
 	}, [ ssfGroupId, t.training.resultsFetchError ] );
 
 	if ( loading ) {
 		return <Spinner />;
+	}
+
+	// Team tournament: not rendered inline — point to the SSF results page.
+	if ( tournament && isSsfTeamType( tournament.type ) ) {
+		const link = `https://chess.msvens.com/results/${ tournament.id }/${ ssfGroupId }`;
+		return (
+			<Notice status="info" isDismissible={ false }>
+				{ t.tournament.ssfTeamNotice }{ ' ' }
+				<a href={ link } target="_blank" rel="noreferrer">
+					{ t.tournament.fullResults } ↗
+				</a>
+			</Notice>
+		);
 	}
 
 	if ( error || ! endResults ) {
@@ -131,6 +178,46 @@ export function SsfTournamentView( { ssfGroupId, t }: SsfTournamentViewProps ) {
 			<Notice status="error" isDismissible={ false }>
 				{ error || t.training.resultsFetchError }
 			</Notice>
+		);
+	}
+
+	// Not started yet (registration) → the "table" is the registration list.
+	if ( tournament && tournament.state === 1 ) {
+		const registered = [ ...endResults ].sort(
+			( a, b ) =>
+				( b.playerInfo.elo?.rating ?? 0 ) -
+				( a.playerInfo.elo?.rating ?? 0 )
+		);
+		return (
+			<div>
+				<Notice status="info" isDismissible={ false }>
+					{ t.tournament.ssfNotStarted }
+				</Notice>
+				<Heading level={ 4 } style={ { margin: '12px 0 8px' } }>
+					{ t.tournament.registeredPlayers } ({ registered.length })
+				</Heading>
+				<table className="widefat striped">
+					<thead>
+						<tr>
+							<th>#</th>
+							<th>{ t.training.name }</th>
+							<th>{ t.training.rating }</th>
+						</tr>
+					</thead>
+					<tbody>
+						{ registered.map( ( r, idx ) => (
+							<tr key={ r.playerInfo.id }>
+								<td>{ idx + 1 }</td>
+								<td>
+									{ r.playerInfo.lastName },{ ' ' }
+									{ r.playerInfo.firstName }
+								</td>
+								<td>{ getElo( r.playerInfo ) }</td>
+							</tr>
+						) ) }
+					</tbody>
+				</table>
+			</div>
 		);
 	}
 

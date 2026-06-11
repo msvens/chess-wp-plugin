@@ -279,6 +279,12 @@ class TournamentApi {
 		if ( isset( $body['ssfGroupId'] ) ) {
 			update_post_meta( $post_id, 'rc_ssf_group_id', (int) $body['ssfGroupId'] );
 		}
+		if ( isset( $body['ssfTournamentId'] ) ) {
+			update_post_meta( $post_id, 'rc_ssf_tournament_id', (int) $body['ssfTournamentId'] );
+		}
+		if ( isset( $body['ssfTournamentName'] ) ) {
+			update_post_meta( $post_id, 'rc_ssf_tournament_name', sanitize_text_field( $body['ssfTournamentName'] ) );
+		}
 		if ( isset( $body['eventId'] ) ) {
 			update_post_meta( $post_id, 'rc_event_id', (int) $body['eventId'] );
 		}
@@ -519,25 +525,27 @@ class TournamentApi {
 		}
 
 		return [
-			'id'               => $post->ID,
-			'slug'             => $post->post_name,
-			'title'            => $post->post_title,
-			'description'      => $post->post_content,
-			'category'         => get_post_meta( $post->ID, 'rc_category', true ) ?: 'mixed',
-			'status'           => $status,
-			'statusIsAuto'     => ( 'auto' === $raw_status ),
-			'format'           => get_post_meta( $post->ID, 'rc_format', true ) ?: 'round-robin',
-			'timeControl'      => get_post_meta( $post->ID, 'rc_time_control', true ) ?: 'classical',
-			'participants'     => $participants,
-			'rounds'           => $rounds,
-			'ssfGroupId'       => $ssf_group_id,
-			'eventId'          => (int) get_post_meta( $post->ID, 'rc_event_id', true ),
-			'externalLink'     => get_post_meta( $post->ID, 'rc_external_link', true ) ?: '',
-			'startDate'        => get_post_meta( $post->ID, 'rc_start_date', true ) ?: '',
-			'endDate'          => get_post_meta( $post->ID, 'rc_end_date', true ) ?: '',
-			'showParticipants' => $show_participants,
-			'showStandings'    => $show_standings,
-			'createdBy'        => $post->post_author,
+			'id'                => $post->ID,
+			'slug'              => $post->post_name,
+			'title'             => $post->post_title,
+			'description'       => $post->post_content,
+			'category'          => get_post_meta( $post->ID, 'rc_category', true ) ?: 'mixed',
+			'status'            => $status,
+			'statusIsAuto'      => ( 'auto' === $raw_status ),
+			'format'            => get_post_meta( $post->ID, 'rc_format', true ) ?: 'round-robin',
+			'timeControl'       => get_post_meta( $post->ID, 'rc_time_control', true ) ?: 'classical',
+			'participants'      => $participants,
+			'rounds'            => $rounds,
+			'ssfGroupId'        => $ssf_group_id,
+			'ssfTournamentId'   => (int) get_post_meta( $post->ID, 'rc_ssf_tournament_id', true ),
+			'ssfTournamentName' => get_post_meta( $post->ID, 'rc_ssf_tournament_name', true ) ?: '',
+			'eventId'           => (int) get_post_meta( $post->ID, 'rc_event_id', true ),
+			'externalLink'      => get_post_meta( $post->ID, 'rc_external_link', true ) ?: '',
+			'startDate'         => get_post_meta( $post->ID, 'rc_start_date', true ) ?: '',
+			'endDate'           => get_post_meta( $post->ID, 'rc_end_date', true ) ?: '',
+			'showParticipants'  => $show_participants,
+			'showStandings'     => $show_standings,
+			'createdBy'         => $post->post_author,
 		];
 	}
 

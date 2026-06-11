@@ -98,6 +98,10 @@ export interface Translations {
 		tiebreak: string;
 		loadingResults: string;
 		resultsFetchError: string;
+		ssfTeamNotice: string;
+		ssfNotStarted: string;
+		registeredPlayers: string;
+		fullResults: string;
 	};
 	tournament: {
 		title: string;
@@ -124,7 +128,7 @@ export interface Translations {
 		editTournament: string;
 		refreshFromSsf: string;
 		ssfFetchError: string;
-		viewOnSsf: string;
+		fullResults: string;
 		ongoing: string;
 		pastTournaments: string;
 		format: string;
@@ -138,12 +142,16 @@ export interface Translations {
 		ssfBacked: string;
 		ssfBackedHint: string;
 		ssfBackedNote: string;
+		ssfGroupName: string;
+		ssfParentTournament: string;
+		ssfTeamNotice: string;
+		ssfNotStarted: string;
+		registeredPlayers: string;
 		overview: string;
 		linkedTournament: string;
 		noLinkedTournament: string;
 		viewTournament: string;
 		backToList: string;
-		officialResult: string;
 	};
 	calendar: {
 		title: string;
@@ -258,6 +266,7 @@ export interface Translations {
 		delete: string;
 		edit: string;
 		copy: string;
+		here: string;
 		add: string;
 	};
 }
@@ -365,6 +374,16 @@ const translations: Translations = {
 		tiebreak: __( 'KP', 'rockaden-chess' ),
 		loadingResults: __( 'Loading results…', 'rockaden-chess' ),
 		resultsFetchError: __( 'Could not load results.', 'rockaden-chess' ),
+		ssfTeamNotice: __(
+			'This is a team tournament — its results are not shown here.',
+			'rockaden-chess'
+		),
+		ssfNotStarted: __(
+			"This tournament hasn't started yet — showing the registered players.",
+			'rockaden-chess'
+		),
+		registeredPlayers: __( 'Registered players', 'rockaden-chess' ),
+		fullResults: __( 'Full results', 'rockaden-chess' ),
 	},
 	tournament: {
 		title: __( 'Tournaments', 'rockaden-chess' ),
@@ -397,7 +416,7 @@ const translations: Translations = {
 		editTournament: __( 'Edit tournament', 'rockaden-chess' ),
 		refreshFromSsf: __( 'Fetch / Refresh from SSF', 'rockaden-chess' ),
 		ssfFetchError: __( 'Could not fetch from SSF', 'rockaden-chess' ),
-		viewOnSsf: __( 'View on SSF', 'rockaden-chess' ),
+		fullResults: __( 'Full results', 'rockaden-chess' ),
 		ongoing: __( 'Ongoing', 'rockaden-chess' ),
 		pastTournaments: __( 'Past tournaments', 'rockaden-chess' ),
 		format: __( 'Format', 'rockaden-chess' ),
@@ -408,21 +427,31 @@ const translations: Translations = {
 		endDate: __( 'End date', 'rockaden-chess' ),
 		externalLink: __( 'External link', 'rockaden-chess' ),
 		linkedEvent: __( 'Linked calendar event', 'rockaden-chess' ),
-		ssfBacked: __( 'SSF tournament ID', 'rockaden-chess' ),
+		ssfBacked: __( 'SSF Group ID', 'rockaden-chess' ),
 		ssfBackedHint: __(
-			'If set, standings come from SSF (read-only). Leave empty for a Rockaden-managed tournament.',
+			'The GROUP id — a tournament can contain several groups, so enter the group id, not the tournament id. With it set, standings come from SSF. Leave empty for a Rockaden-managed tournament.',
 			'rockaden-chess'
 		),
 		ssfBackedNote: __(
 			'Standings are pulled from SSF. Local pairings/results are not used.',
 			'rockaden-chess'
 		),
+		ssfGroupName: __( 'Group', 'rockaden-chess' ),
+		ssfParentTournament: __( 'Tournament', 'rockaden-chess' ),
+		ssfTeamNotice: __(
+			'This is a team tournament — its results are not shown here.',
+			'rockaden-chess'
+		),
+		ssfNotStarted: __(
+			"This tournament hasn't started yet — showing the registered players.",
+			'rockaden-chess'
+		),
+		registeredPlayers: __( 'Registered players', 'rockaden-chess' ),
 		overview: __( 'Overview', 'rockaden-chess' ),
 		linkedTournament: __( 'Linked tournament', 'rockaden-chess' ),
 		noLinkedTournament: __( 'No tournament', 'rockaden-chess' ),
 		viewTournament: __( 'View tournament', 'rockaden-chess' ),
 		backToList: __( 'Back to tournaments', 'rockaden-chess' ),
-		officialResult: __( 'Official result', 'rockaden-chess' ),
 	},
 	calendar: {
 		title: __( 'Calendar', 'rockaden-chess' ),
@@ -557,6 +586,7 @@ const translations: Translations = {
 		delete: __( 'Delete', 'rockaden-chess' ),
 		edit: __( 'Edit', 'rockaden-chess' ),
 		copy: __( 'Copy', 'rockaden-chess' ),
+		here: __( 'here', 'rockaden-chess' ),
 		add: __( 'Add', 'rockaden-chess' ),
 	},
 };

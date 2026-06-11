@@ -212,6 +212,9 @@ msgstr "Klubb-ID från member.schack.se"
 msgid "Tournament"
 msgstr "Turnering"
 
+msgid "Group"
+msgstr "Grupp"
+
 msgid "Tournament Standings"
 msgstr "Turneringsställning"
 
@@ -550,6 +553,30 @@ msgstr "Kopplad kalenderhändelse"
 
 msgid "SSF tournament ID"
 msgstr "SSF turnerings-ID"
+
+msgid "SSF Group ID"
+msgstr "SSF Grupp-ID"
+
+msgid "The GROUP id — a tournament can contain several groups, so enter the group id, not the tournament id. With it set, standings come from SSF. Leave empty for a Rockaden-managed tournament."
+msgstr "GRUPP-id:t — en turnering kan innehålla flera grupper, så ange grupp-id, inte turnerings-id. När det är satt hämtas ställningen från SSF. Lämna tomt för en Rockaden-styrd turnering."
+
+msgid "This is a team tournament — its results are shown on SSF, not here."
+msgstr "Det här är en lagturnering — dess resultat visas på SSF, inte här."
+
+msgid "This is a team tournament — its results are not shown here."
+msgstr "Det här är en lagturnering — resultaten visas inte här."
+
+msgid "Full results"
+msgstr "Fullständiga resultat"
+
+msgid "here"
+msgstr "här"
+
+msgid "This tournament hasn't started yet — showing the registered players."
+msgstr "Turneringen har inte börjat än — visar anmälda spelare."
+
+msgid "Registered players"
+msgstr "Anmälda spelare"
 
 msgid "Overview"
 msgstr "Översikt"

@@ -5,7 +5,9 @@ import type {
 	SsfEndResult,
 	SsfRoundResult,
 	SsfPlayerInfo,
+	SsfTournament,
 } from '../../shared/ssfTypes';
+import { isSsfTeamType } from '../../shared/ssfTypes';
 import RoundsDisplay from './RoundsDisplay';
 import type { DisplayRound } from './RoundsDisplay';
 
@@ -77,6 +79,9 @@ export default function SsfResultsView( {
 	t,
 	showRounds = true,
 }: Props ) {
+	const [ tournament, setTournament ] = useState< SsfTournament | null >(
+		null
+	);
 	const [ endResults, setEndResults ] = useState< SsfEndResult[] | null >(
 		null
 	);
@@ -87,8 +92,27 @@ export default function SsfResultsView( {
 	const [ error, setError ] = useState( false );
 
 	useEffect( () => {
-		const fetchResults = async () => {
+		let cancelled = false;
+		setLoading( true );
+		setError( false );
+		setTournament( null );
+		setEndResults( null );
+		setRoundResults( null );
+
+		( async () => {
 			try {
+				// The group endpoint returns the parent tournament (type/state).
+				const meta = await apiFetch< SsfTournament >( {
+					path: `/rockaden/v1/ssf/tournament/group/id/${ ssfGroupId }`,
+				} );
+				if ( cancelled ) {
+					return;
+				}
+				setTournament( meta );
+				// Team tournaments use different endpoints — link out instead.
+				if ( isSsfTeamType( meta.type ) ) {
+					return;
+				}
 				const [ tableData, roundData ] = await Promise.all( [
 					apiFetch< SsfEndResult[] >( {
 						path: `/rockaden/v1/ssf/tournamentresults/table/id/${ ssfGroupId }`,
@@ -97,22 +121,44 @@ export default function SsfResultsView( {
 						? apiFetch< SsfRoundResult[] >( {
 								path: `/rockaden/v1/ssf/tournamentresults/roundresults/id/${ ssfGroupId }`,
 						  } )
-						: Promise.resolve( null ),
+						: Promise.resolve< SsfRoundResult[] >( [] ),
 				] );
+				if ( cancelled ) {
+					return;
+				}
 				setEndResults( tableData );
 				setRoundResults( roundData );
 			} catch {
-				setError( true );
+				if ( ! cancelled ) {
+					setError( true );
+				}
 			} finally {
-				setLoading( false );
+				if ( ! cancelled ) {
+					setLoading( false );
+				}
 			}
-		};
+		} )();
 
-		fetchResults();
+		return () => {
+			cancelled = true;
+		};
 	}, [ ssfGroupId, showRounds ] );
 
 	if ( loading ) {
 		return <p className="rc-ssf__loading">{ t.loadingResults }</p>;
+	}
+
+	// Team tournament: link out — its results live on SSF.
+	if ( tournament && isSsfTeamType( tournament.type ) ) {
+		const link = `https://chess.msvens.com/results/${ tournament.id }/${ ssfGroupId }`;
+		return (
+			<p className="rc-ssf__notice">
+				{ t.ssfTeamNotice }{ ' ' }
+				<a href={ link } target="_blank" rel="noopener noreferrer">
+					{ t.fullResults } ↗
+				</a>
+			</p>
+		);
 	}
 
 	if ( error || ! endResults ) {
@@ -123,6 +169,48 @@ export default function SsfResultsView( {
 	const playerMap = new Map< number, SsfPlayerInfo >();
 	for ( const r of endResults ) {
 		playerMap.set( r.playerInfo.id, r.playerInfo );
+	}
+
+	// Not started yet (registration) → show the registered players, clearly
+	// labelled, instead of an empty/placeholder standings table.
+	if ( tournament && tournament.state === 1 ) {
+		const registered = [ ...endResults ].sort(
+			( a, b ) =>
+				( b.playerInfo.elo?.rating ?? 0 ) -
+				( a.playerInfo.elo?.rating ?? 0 )
+		);
+		return (
+			<div className="rc-td__panel">
+				<p className="rc-ssf__notice">{ t.ssfNotStarted }</p>
+				<h3 className="rc-ssf__subtitle">
+					{ t.registeredPlayers } ({ registered.length })
+				</h3>
+				<table className="rc-td__table rc-td__table--standings">
+					<thead>
+						<tr>
+							<th>#</th>
+							<th>{ t.name }</th>
+							<th>{ t.rating }</th>
+						</tr>
+					</thead>
+					<tbody>
+						{ registered.map( ( r, idx ) => (
+							<tr key={ r.playerInfo.id }>
+								<td>{ idx + 1 }</td>
+								<td>
+									{ r.playerInfo.lastName },{ ' ' }
+									{ r.playerInfo.firstName }
+								</td>
+								<td className="rc-td__rating">
+									{ getElo( r.playerInfo ) ||
+										t.ratingUnavailable }
+								</td>
+							</tr>
+						) ) }
+					</tbody>
+				</table>
+			</div>
+		);
 	}
 
 	// Sort by place.

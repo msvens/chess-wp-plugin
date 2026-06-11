@@ -84,17 +84,12 @@ export function TournamentDetail( {
 
 	const isSsfBacked = tournament.ssfGroupId > 0;
 
+	// Local (non-SSF) tournaments use these tabs. SSF tournaments render the SSF
+	// view directly (no tabs) — it self-labels as standings or registered players.
 	const tabs = [
-		{
-			name: 'participants',
-			title: t.training.participants,
-		},
-		...( ! isSsfBacked
-			? [
-					{ name: 'rounds', title: t.training.round },
-					{ name: 'standings', title: t.training.standings },
-			  ]
-			: [ { name: 'results', title: t.training.results } ] ),
+		{ name: 'participants', title: t.training.participants },
+		{ name: 'rounds', title: t.training.round },
+		{ name: 'standings', title: t.training.standings },
 	];
 
 	return (
@@ -139,13 +134,26 @@ export function TournamentDetail( {
 					) }
 					{ isSsfBacked && (
 						<div style={ { marginTop: 6 } }>
+							{ tournament.ssfTournamentName &&
+								tournament.ssfTournamentName !==
+									tournament.title && (
+									<div
+										style={ {
+											color: '#555',
+											marginBottom: 4,
+										} }
+									>
+										{ t.tournament.ssfParentTournament }:{ ' ' }
+										{ tournament.ssfTournamentName }
+									</div>
+								) }
 							{ tournament.externalLink ? (
 								<a
 									href={ tournament.externalLink }
 									target="_blank"
 									rel="noreferrer"
 								>
-									{ t.tournament.viewOnSsf } ↗
+									{ t.tournament.fullResults } ↗
 								</a>
 							) : (
 								<Text style={ { fontStyle: 'italic' } }>
@@ -185,72 +193,73 @@ export function TournamentDetail( {
 				</Notice>
 			) }
 
-			<TabPanel tabs={ tabs } initialTabName="participants">
-				{ ( tab ) => {
-					if ( tab.name === 'participants' ) {
-						return (
-							<>
-								{ showAddModal && ! isSsfBacked && (
-									<AddParticipantModal
+			{ isSsfBacked ? (
+				<SsfTournamentView
+					ssfGroupId={ tournament.ssfGroupId }
+					t={ t }
+				/>
+			) : (
+				<TabPanel tabs={ tabs } initialTabName="participants">
+					{ ( tab ) => {
+						if ( tab.name === 'participants' ) {
+							return (
+								<>
+									{ showAddModal && (
+										<AddParticipantModal
+											tournamentId={ tournament.id }
+											existingParticipants={
+												tournament.participants
+											}
+											players={ players }
+											ratingsLoading={ ratingsLoading }
+											t={ t }
+											onClose={ () =>
+												setShowAddModal( false )
+											}
+											onAdded={ refetch }
+										/>
+									) }
+									<ParticipantList
 										tournamentId={ tournament.id }
-										existingParticipants={
-											tournament.participants
-										}
-										players={ players }
-										ratingsLoading={ ratingsLoading }
+										participants={ tournament.participants }
+										ratings={ ratings }
+										timeControl={ tournament.timeControl }
 										t={ t }
-										onClose={ () =>
-											setShowAddModal( false )
+										onUpdated={ refetch }
+										onAddClick={ () =>
+											setShowAddModal( true )
 										}
-										onAdded={ refetch }
+										readOnly={ false }
 									/>
-								) }
-								<ParticipantList
+								</>
+							);
+						}
+						if ( tab.name === 'rounds' ) {
+							return (
+								<RoundsPanel
 									tournamentId={ tournament.id }
+									tournament={ tournament }
+									ratings={ ratings }
+									t={ t }
+									onUpdated={ refetch }
+								/>
+							);
+						}
+						if ( tab.name === 'standings' ) {
+							return (
+								<StandingsTable
 									participants={ tournament.participants }
+									rounds={ tournament.rounds }
 									ratings={ ratings }
 									timeControl={ tournament.timeControl }
 									t={ t }
-									onUpdated={ refetch }
-									onAddClick={ () => setShowAddModal( true ) }
-									readOnly={ isSsfBacked }
 								/>
-							</>
-						);
-					}
-					if ( tab.name === 'rounds' ) {
-						return (
-							<RoundsPanel
-								tournamentId={ tournament.id }
-								tournament={ tournament }
-								ratings={ ratings }
-								t={ t }
-								onUpdated={ refetch }
-							/>
-						);
-					}
-					if ( tab.name === 'standings' ) {
-						return (
-							<StandingsTable
-								participants={ tournament.participants }
-								rounds={ tournament.rounds }
-								ratings={ ratings }
-								timeControl={ tournament.timeControl }
-								t={ t }
-							/>
-						);
-					}
-					if ( tab.name === 'results' ) {
-						return (
-							<SsfTournamentView
-								ssfGroupId={ tournament.ssfGroupId }
-								t={ t }
-							/>
-						);
-					}
-					return null;
-				} }
-			</TabPanel>
+							);
+						}
+						return null;
+					} }
+				</TabPanel>
+			) }
 		</div>
 	);
 }

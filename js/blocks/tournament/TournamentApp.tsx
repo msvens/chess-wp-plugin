@@ -124,6 +124,13 @@ export default function TournamentApp( {
 	return (
 		<div className="rc-td">
 			<h1 className="rc-td__title">{ tournament.title }</h1>
+			{ tournament.ssfTournamentName &&
+				tournament.ssfTournamentName !== tournament.title && (
+					<p className="rc-td__parent-tournament">
+						{ t.tournament.ssfParentTournament }:{ ' ' }
+						{ tournament.ssfTournamentName }
+					</p>
+				) }
 			{ tournament.description && (
 				<p className="rc-td__description">{ tournament.description }</p>
 			) }
@@ -138,7 +145,7 @@ export default function TournamentApp( {
 					) }
 					{ tournament.externalLink && (
 						<div className="rc-td__info-item">
-							<dt>{ t.tournament.officialResult }</dt>
+							<dt>{ t.tournament.fullResults }</dt>
 							<dd>
 								<a
 									href={ tournament.externalLink }
@@ -146,7 +153,7 @@ export default function TournamentApp( {
 									rel="noopener noreferrer"
 									className="rc-td__info-link"
 								>
-									SSF ↗
+									{ t.common.here } ↗
 								</a>
 							</dd>
 						</div>

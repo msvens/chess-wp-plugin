@@ -60,6 +60,8 @@ export function EditTournamentModal( {
 					ssfGroupId: tournament.ssfGroupId
 						? String( tournament.ssfGroupId )
 						: '',
+					ssfTournamentId: tournament.ssfTournamentId,
+					ssfTournamentName: tournament.ssfTournamentName,
 					startDate: tournament.startDate,
 					endDate: tournament.endDate,
 					externalLink: tournament.externalLink,

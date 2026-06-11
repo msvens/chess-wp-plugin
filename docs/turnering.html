@@ -41,20 +41,27 @@
 </div>
 
 <p class="rc-doc-sv">
-	Alla fält kan ändras i efterhand — öppna turneringen och klicka på <strong>Edit</strong>.
+	Alla fält kan ändras i efterhand — öppna turneringen och klicka på <strong>Edit</strong>. (För SSF-baserade turneringar är de fält som hämtas från SSF skrivskyddade — se nedan.)
 </p>
 <p class="rc-doc-en">
-	Every field can be changed afterwards — open the tournament and click <strong>Edit</strong>.
+	Every field can be changed afterwards — open the tournament and click <strong>Edit</strong>. (For SSF-backed tournaments the fields pulled from SSF are read-only — see below.)
 </p>
 
 <h2 class="rc-doc-sv">SSF-baserade turneringar</h2>
 <h2 class="rc-doc-en">SSF-backed tournaments</h2>
 
 <p class="rc-doc-sv">
-	När turneringen har ett <strong>SSF-grupp-ID</strong> hämtas deltagare, lottningar och resultat direkt från <code>member.schack.se</code>. Lokal redigering av deltagarlistan stängs av eftersom SSF är källan. I redigeringsläget kan du klicka på <strong>Fetch / Refresh from SSF</strong> för att hämta turneringens datum från SSF — då styr de den automatiska statusen.
+	När turneringen har ett <strong>SSF-grupp-ID</strong> blir den en spegling av SSF-datan. Titeln sätts till <strong>gruppens namn</strong> och turneringens namn visas separat (<em>Tournament: …</em>). Datum, tidsformat och länken till resultatet hämtas från <code>member.schack.se</code> och är skrivskyddade — du redigerar bara <strong>SSF-grupp-ID, kategori, status och beskrivning</strong>. Klicka på <strong>Fetch / Refresh from SSF</strong> för att uppdatera den hämtade datan (datumen styr då den automatiska statusen). Eftersom synligheten följer SSF finns inga <em>Show participants</em>/<em>Show standings</em>-reglage för SSF-turneringar.
 </p>
 <p class="rc-doc-en">
-	When the tournament has an <strong>SSF Group ID</strong>, participants, pairings, and results are pulled live from <code>member.schack.se</code>. Local editing of the participants list is disabled because SSF is the source of truth. In the edit form you can click <strong>Fetch / Refresh from SSF</strong> to pull the tournament's dates from SSF — those then drive the automatic status.
+	When the tournament has an <strong>SSF Group ID</strong> it becomes a mirror of the SSF data. The title is set to the <strong>group name</strong> and the parent tournament name is shown separately (<em>Tournament: …</em>). Dates, time control and the result link are pulled from <code>member.schack.se</code> and are read-only — you only edit the <strong>SSF Group ID, category, status and description</strong>. Click <strong>Fetch / Refresh from SSF</strong> to refresh the pulled data (the dates then drive the automatic status). Because visibility follows SSF, there are no <em>Show participants</em>/<em>Show standings</em> toggles for SSF tournaments.
+</p>
+
+<p class="rc-doc-sv">
+	Resultatet visas direkt utan flikar: <strong>ställningen</strong> för en pågående eller avslutad turnering, <strong>anmälda spelare</strong> för en turnering som inte börjat än, och för <strong>lagturneringar</strong> en länk till SSF (de visas inte här).
+</p>
+<p class="rc-doc-en">
+	Results are shown directly, without tabs: the <strong>standings</strong> for an ongoing or finished tournament, the <strong>registered players</strong> for one that hasn't started yet, and for <strong>team tournaments</strong> a link to SSF (they aren't displayed here).
 </p>
 
 <h2 class="rc-doc-sv">Koppling från träningsgrupp</h2>
@@ -73,6 +80,6 @@
 <ul>
 	<li class="rc-doc-sv"><code>/tournaments/</code> — sidan "Turneringar" som listar turneringar via blocket <em>Turneringar (översikt)</em>. Pågående turneringar visas överst; avslutade samlas i en hopfällbar lista (<em>Past tournaments</em>) längst ner. Redigerbar — du kan lägga till intro-text, hero eller annat ovanför listan.</li>
 	<li class="rc-doc-en"><code>/tournaments/</code> — the "Tournaments" page that lists tournaments via the <em>Tournaments (overview)</em> block. Ongoing tournaments show on top; completed ones collect in a collapsible <em>Past tournaments</em> list at the bottom. Editable — you can add intro text, a hero, or anything else above the list.</li>
-	<li class="rc-doc-sv"><code>/tournaments/&lt;slug&gt;/</code> — turneringens egen sida med rubrik, statusbricka, schema (om kopplad till evenemang), länk till officiellt resultat och ställning.</li>
-	<li class="rc-doc-en"><code>/tournaments/&lt;slug&gt;/</code> — the tournament's own page with title, status pill, schedule (if linked to an event), Official result link, and standings.</li>
+	<li class="rc-doc-sv"><code>/tournaments/&lt;slug&gt;/</code> — turneringens egen sida med rubrik, statusbricka, schema (om kopplad till evenemang), länk till fullständiga resultat och ställning (eller anmälda spelare innan turneringen börjat).</li>
+	<li class="rc-doc-en"><code>/tournaments/&lt;slug&gt;/</code> — the tournament's own page with title, status pill, schedule (if linked to an event), a Full results link, and standings (or registered players before the tournament starts).</li>
 </ul>
