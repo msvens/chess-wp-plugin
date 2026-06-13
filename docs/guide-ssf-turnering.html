@@ -1,15 +1,15 @@
 <p class="rc-doc-sv">
-	<em>Menynamnen nedan visas på engelska. Har du svenska som adminspråk visas de översatta (t.ex. Events → Evenemang).</em>
+	<em>Menynamnen nedan visas på engelska. Har du svenska som adminspråk visas de översatta (t.ex. Tournaments → Turneringar).</em>
 </p>
 <p class="rc-doc-en">
-	<em>Menu names below are shown in English. If your admin language is Swedish they appear translated (e.g. Events → Evenemang).</em>
+	<em>Menu names below are shown in English. If your admin language is Swedish they appear translated (e.g. Tournaments → Turneringar).</em>
 </p>
 
 <p class="rc-doc-sv">
-	Den här guiden visar hur du lägger till en turnering som spelas via SSF (member.schack.se) i klubbens kalender, så att den syns bland övriga händelser.
+	Den här guiden visar hur du lägger en turnering som spelas via SSF (member.schack.se) i klubbens kalender, så att den syns bland övriga händelser. Sedan version 0.23 skapas kalenderkopplingen från själva turneringen — du behöver inte längre skapa en separat händelse.
 </p>
 <p class="rc-doc-en">
-	This guide shows how to add a tournament that runs via SSF (member.schack.se) to the club calendar, so it appears among the other events.
+	This guide shows how to put a tournament that runs via SSF (member.schack.se) on the club calendar, so it appears among the other events. Since version 0.23 the calendar link is authored from the tournament itself — you no longer create a separate event.
 </p>
 
 <h2 class="rc-doc-sv">Innan du börjar: klubb-ID</h2>
@@ -22,47 +22,37 @@
 	Make sure the club's SSF ID is set under <strong>Settings → Rockaden</strong>. It's needed to fetch data from SSF.
 </p>
 
-<h2 class="rc-doc-sv">Steg 1: Skapa en ny händelse</h2>
-<h2 class="rc-doc-en">Step 1: Create a new event</h2>
+<h2 class="rc-doc-sv">Steg 1: Skapa turneringen</h2>
+<h2 class="rc-doc-en">Step 1: Create the tournament</h2>
 
 <p class="rc-doc-sv">
-	Gå till <strong>Events</strong> i adminmenyn och klicka på <strong>Add New</strong>.
+	Gå till <strong>Tournaments</strong> i adminmenyn och klicka på <strong>Create Tournament</strong>. Ange turneringens <strong>SSF-grupp-ID</strong> och klicka på <strong>Fetch / Refresh from SSF</strong>. Titel, datum, tidsformat och resultatlänk hämtas då från <code>member.schack.se</code>. Välj kategori och spara. (Mer om SSF-baserade turneringar finns i referensen <em>Turneringar</em>.)
 </p>
 <p class="rc-doc-en">
-	Go to <strong>Events</strong> in the admin sidebar and click <strong>Add New</strong>.
+	Go to <strong>Tournaments</strong> in the admin sidebar and click <strong>Create Tournament</strong>. Enter the tournament's <strong>SSF Group ID</strong> and click <strong>Fetch / Refresh from SSF</strong>. Title, dates, time control and the result link are then pulled from <code>member.schack.se</code>. Pick a category and save. (See the <em>Tournaments</em> reference for more on SSF-backed tournaments.)
 </p>
 
-<h2 class="rc-doc-sv">Steg 2: Hämta turneringen från SSF</h2>
-<h2 class="rc-doc-en">Step 2: Fetch the tournament from SSF</h2>
+<h2 class="rc-doc-sv">Steg 2: Lägg turneringen i kalendern</h2>
+<h2 class="rc-doc-en">Step 2: Add the tournament to the calendar</h2>
 
 <p class="rc-doc-sv">
-	Längst upp i händelseformuläret finns avsnittet <strong>SSF Import</strong>. Skriv in turneringens SSF-ID och klicka på <strong>Fetch Tournament</strong> (eller <strong>Fetch Group</strong> om det gäller en gruppspelad serie). En förhandsvisning visar den hämtade datan så att du kan kontrollera att det blev rätt.
+	Öppna turneringen och klicka på <strong>Edit</strong>. Kryssa i <strong>Add to calendar</strong>. Start- och slutdatum fylls i automatiskt från turneringens datum (de hämtade SSF-datumen). Ange en valfri <strong>plats</strong>, och om turneringen spelas återkommande (t.ex. varje vecka) kan du kryssa i <strong>Recurring</strong> och välja intervall. Kategorin är förvald till <strong>Tournament</strong>.
 </p>
 <p class="rc-doc-en">
-	At the top of the event form is the <strong>SSF Import</strong> section. Enter the tournament's SSF ID and click <strong>Fetch Tournament</strong> (or <strong>Fetch Group</strong> for a group-played series). A preview shows the fetched data so you can confirm it's correct.
+	Open the tournament and click <strong>Edit</strong>. Tick <strong>Add to calendar</strong>. The start and end dates are filled in automatically from the tournament's dates (the fetched SSF dates). Set an optional <strong>location</strong>, and if the tournament runs on a recurring schedule (e.g. weekly) you can tick <strong>Recurring</strong> and choose the interval. The category defaults to <strong>Tournament</strong>.
 </p>
 
-<h2 class="rc-doc-sv">Steg 3: Fyll i datum och detaljer</h2>
-<h2 class="rc-doc-en">Step 3: Fill in date and details</h2>
+<h2 class="rc-doc-sv">Steg 3: Spara</h2>
+<h2 class="rc-doc-en">Step 3: Save</h2>
 
 <p class="rc-doc-sv">
-	Ange <strong>startdatum</strong> och <strong>slutdatum</strong> med tid, en valfri <strong>plats</strong>, och välj kategorin <strong>Tournament</strong>. Du kan även lägga till en länk till turneringssidan och en beskrivning.
+	Klicka på <strong>Save</strong>. Turneringen dyker nu upp i kalendern (blocket <em>Calendar</em>) på sina datum. Klickar en besökare på händelsen finns en länk vidare till turneringens egen sida.
 </p>
 <p class="rc-doc-en">
-	Set the <strong>start date</strong> and <strong>end date</strong> with time, an optional <strong>location</strong>, and pick the <strong>Tournament</strong> category. You can also add a link to the tournament page and a description.
-</p>
-
-<h2 class="rc-doc-sv">Steg 4: Publicera</h2>
-<h2 class="rc-doc-en">Step 4: Publish</h2>
-
-<p class="rc-doc-sv">
-	Klicka på <strong>Publish</strong>. Händelsen dyker nu upp i kalendern (blocket <em>Calendar</em>) och bland kommande händelser.
-</p>
-<p class="rc-doc-en">
-	Click <strong>Publish</strong>. The event now appears in the calendar (the <em>Calendar</em> block) and among the upcoming events.
+	Click <strong>Save</strong>. The tournament now appears in the calendar (the <em>Calendar</em> block) on its dates. When a visitor clicks the event, there's a link through to the tournament's own page.
 </p>
 
 <div class="rc-docs-tip">
-	<span class="rc-doc-sv"><strong>Skillnaden mellan Fetch Group och Fetch Tournament:</strong> ”Group” avser en gruppspelad serie i SSF:s system, medan ”Tournament” avser en enskild turnering. Är du osäker, prova bägge och se vilken förhandsvisning som stämmer.</span>
-	<span class="rc-doc-en"><strong>Fetch Group vs Fetch Tournament:</strong> "Group" refers to a group-played series in SSF's system, while "Tournament" refers to a single tournament. If unsure, try both and see which preview matches.</span>
+	<span class="rc-doc-sv"><strong>Datumen följer SSF:</strong> Hämtar du turneringen på nytt från SSF och datumen har ändrats, uppdateras kalenderhändelsen automatiskt nästa gång du sparar turneringen. Du behöver inte röra händelsen separat.</span>
+	<span class="rc-doc-en"><strong>Dates follow SSF:</strong> If you re-fetch the tournament from SSF and the dates changed, the calendar event is updated automatically the next time you save the tournament. You never touch the event separately.</span>
 </div>

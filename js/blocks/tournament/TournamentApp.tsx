@@ -1,9 +1,8 @@
 import { useState, useEffect, useMemo } from '@wordpress/element';
 import apiFetch from '@wordpress/api-fetch';
 import type { Tournament, SsfPlayer, EventData } from '../../admin/types';
-import type { Language } from '../../shared/types';
-import type { Translations } from '../../shared/translations';
 import { getTranslation, toLanguage } from '../../shared/translations';
+import { formatSchedule } from '../../shared/formatSchedule';
 import { useLocale } from '../../shared/useLocale';
 import SsfResultsView from '../training-group/SsfResultsView';
 import StandingsTab from './StandingsTab';
@@ -12,41 +11,6 @@ interface Props {
 	tournamentId: number;
 	clubId: string;
 	locale: string;
-}
-
-function extractTime( dateStr: string ): string {
-	const match = dateStr.match( /(\d{2}):(\d{2})/ );
-	return match ? `${ match[ 1 ] }:${ match[ 2 ] }` : '';
-}
-
-function formatSchedule(
-	event: EventData,
-	lang: Language,
-	t: Translations[ 'training' ]
-): string {
-	const start = new Date( event.startDate );
-	const loc = lang === 'sv' ? 'sv-SE' : 'en-US';
-	const weekday = start.toLocaleDateString( loc, { weekday: 'long' } );
-
-	const timeStart = extractTime( event.startDate );
-	const timeEnd = extractTime( event.endDate );
-
-	const prefix =
-		event.recurrenceType === 'biweekly'
-			? t.everyOtherWeek
-			: event.isRecurring
-			? t.everyWeek
-			: '';
-
-	const dayStr = prefix
-		? `${ prefix } ${ weekday.toLowerCase() }`
-		: weekday.charAt( 0 ).toUpperCase() + weekday.slice( 1 );
-
-	const parts = [ `${ dayStr } ${ timeStart }–${ timeEnd }` ];
-	if ( event.location ) {
-		parts.push( event.location );
-	}
-	return parts.join( ', ' );
 }
 
 export default function TournamentApp( {

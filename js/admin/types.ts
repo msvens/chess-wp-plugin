@@ -37,7 +37,6 @@ export interface TrainingGroup {
 	semester: string;
 	audience: TrainingAudience;
 	eventId: number;
-	linkedTournamentId: number;
 	participants: Participant[];
 	trainers: string;
 	contact: string;
@@ -99,8 +98,6 @@ export interface EventData {
 	recurrenceType: 'weekly' | 'biweekly' | null;
 	recurrenceEndDate: string;
 	excludedDates: string[];
-	ssfGroupId: number;
-	ssfTournamentId: number;
 }
 
 export interface CreateEventData {
@@ -123,7 +120,6 @@ export interface CreateGroupData {
 	eventId?: number;
 	trainers?: string;
 	contact?: string;
-	linkedTournamentId?: number;
 	showParticipants?: boolean;
 }
 

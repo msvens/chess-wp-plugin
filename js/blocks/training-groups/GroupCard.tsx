@@ -1,41 +1,12 @@
 import type { TrainingGroup } from '../../admin/types';
 import type { Language } from '../../shared/types';
 import { getTranslation } from '../../shared/translations';
+import { formatSchedule } from '../../shared/formatSchedule';
 
 interface Props {
 	group: TrainingGroup;
 	canEdit: boolean;
 	lang: Language;
-}
-
-function formatSchedule(
-	schedule: NonNullable< TrainingGroup[ 'schedule' ] >,
-	lang: Language,
-	t: ReturnType< typeof getTranslation >[ 'training' ]
-): string {
-	const start = new Date( schedule.startDate );
-	const loc = lang === 'sv' ? 'sv-SE' : 'en-US';
-	const weekday = start.toLocaleDateString( loc, { weekday: 'long' } );
-
-	const timeMatch = ( s: string ) => {
-		const m = s.match( /(\d{2}):(\d{2})/ );
-		return m ? `${ m[ 1 ] }:${ m[ 2 ] }` : '';
-	};
-	const timeStart = timeMatch( schedule.startDate );
-	const timeEnd = timeMatch( schedule.endDate );
-
-	const prefix =
-		schedule.recurrenceType === 'biweekly'
-			? t.everyOtherWeek
-			: schedule.isRecurring
-			? t.everyWeek
-			: '';
-
-	const dayStr = prefix
-		? `${ prefix } ${ weekday.toLowerCase() }`
-		: weekday.charAt( 0 ).toUpperCase() + weekday.slice( 1 );
-
-	return `${ dayStr } ${ timeStart }–${ timeEnd }`;
 }
 
 export default function GroupCard( { group, canEdit, lang }: Props ) {
@@ -44,7 +15,7 @@ export default function GroupCard( { group, canEdit, lang }: Props ) {
 	const showParticipants = canEdit || ( group.showParticipants ?? true );
 	const schedule =
 		group.schedule && group.schedule.startDate
-			? formatSchedule( group.schedule, lang, t.training )
+			? formatSchedule( group.schedule, lang, t.training, false )
 			: null;
 
 	return (

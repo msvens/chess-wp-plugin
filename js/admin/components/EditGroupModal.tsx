@@ -9,19 +9,8 @@ import {
 	__experimentalText as Text,
 } from '@wordpress/components';
 import type { Translations } from '../../shared';
-import type {
-	TrainingGroup,
-	EventData,
-	Tournament,
-	TrainingStatusChoice,
-} from '../types';
-import {
-	updateGroup,
-	updateEvent,
-	createEvent,
-	fetchEvents,
-	fetchTournaments,
-} from '../api';
+import type { TrainingGroup, EventData, TrainingStatusChoice } from '../types';
+import { updateGroup, updateEvent, createEvent, fetchEvents } from '../api';
 import { deriveStatus } from '../../shared/deriveStatus';
 import {
 	EventSection,
@@ -52,9 +41,6 @@ export function EditGroupModal( {
 	);
 	const [ trainers, setTrainers ] = useState( group.trainers );
 	const [ contact, setContact ] = useState( group.contact );
-	const [ linkedTournamentId, setLinkedTournamentId ] = useState(
-		String( group.linkedTournamentId || '' )
-	);
 	const [ showParticipants, setShowParticipants ] = useState(
 		group.showParticipants ?? true
 	);
@@ -76,17 +62,12 @@ export function EditGroupModal( {
 	);
 	const [ existingEvents, setExistingEvents ] = useState< EventData[] >( [] );
 
-	const [ tournaments, setTournaments ] = useState< Tournament[] >( [] );
-
 	useEffect( () => {
 		if ( ! event ) {
 			fetchEvents()
 				.then( setExistingEvents )
 				.catch( () => {} );
 		}
-		fetchTournaments()
-			.then( setTournaments )
-			.catch( () => {} );
 	}, [ event ] );
 
 	async function handleSave() {
@@ -137,9 +118,6 @@ export function EditGroupModal( {
 				audience,
 				trainers: trainers.trim(),
 				contact: contact.trim(),
-				linkedTournamentId: linkedTournamentId
-					? Number( linkedTournamentId )
-					: 0,
 				showParticipants,
 				status,
 				...( eventId !== undefined ? { eventId } : {} ),
@@ -156,14 +134,6 @@ export function EditGroupModal( {
 		status === 'auto'
 			? deriveStatus( eventValue.eventStart, eventValue.eventEnd, false )
 			: null;
-
-	const tournamentOptions = [
-		{ label: t.tournament.noLinkedTournament, value: '' },
-		...tournaments.map( ( tournament ) => ( {
-			label: tournament.title,
-			value: String( tournament.id ),
-		} ) ),
-	];
 
 	return (
 		<Modal
@@ -240,13 +210,6 @@ export function EditGroupModal( {
 					{ label: t.training.statusHidden, value: 'draft' },
 				] }
 				onChange={ ( v ) => setStatus( v as TrainingStatusChoice ) }
-			/>
-
-			<SelectControl
-				label={ t.tournament.linkedTournament }
-				value={ linkedTournamentId }
-				options={ tournamentOptions }
-				onChange={ setLinkedTournamentId }
 			/>
 
 			<CheckboxControl

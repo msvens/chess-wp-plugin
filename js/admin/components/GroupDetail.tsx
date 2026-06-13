@@ -1,4 +1,4 @@
-import { useState, useEffect } from '@wordpress/element';
+import { useState } from '@wordpress/element';
 import {
 	Button,
 	Spinner,
@@ -8,10 +8,8 @@ import {
 	__experimentalText as Text,
 } from '@wordpress/components';
 import type { Translations } from '../../shared';
-import type { Tournament } from '../types';
 import { useTrainingGroup } from '../hooks/useTrainingGroup';
 import { useSsfRatings } from '../hooks/useSsfRatings';
-import { fetchTournament } from '../api';
 import { ParticipantList } from './ParticipantList';
 import { AddParticipantModal } from './AddParticipantModal';
 import { SessionList } from './SessionList';
@@ -45,18 +43,6 @@ export function GroupDetail( {
 	const [ showAddModal, setShowAddModal ] = useState( false );
 	const [ showEditModal, setShowEditModal ] = useState( false );
 	const [ showCopyModal, setShowCopyModal ] = useState( false );
-	const [ linkedTournament, setLinkedTournament ] =
-		useState< Tournament | null >( null );
-
-	useEffect( () => {
-		if ( ! group || ! group.linkedTournamentId ) {
-			setLinkedTournament( null );
-			return;
-		}
-		fetchTournament( group.linkedTournamentId )
-			.then( setLinkedTournament )
-			.catch( () => setLinkedTournament( null ) );
-	}, [ group?.linkedTournamentId ] ); // eslint-disable-line react-hooks/exhaustive-deps
 
 	if ( loading ) {
 		return <Spinner />;
@@ -172,39 +158,6 @@ export function GroupDetail( {
 				>
 					{ t.training.schedule }: { scheduleSummary }
 				</Text>
-			) }
-
-			{ linkedTournament && (
-				<div
-					style={ {
-						marginBottom: 16,
-						padding: 12,
-						background: '#f9fafb',
-						borderRadius: 4,
-						borderLeft: '3px solid #2563eb',
-					} }
-				>
-					<Text
-						style={ {
-							display: 'block',
-							fontSize: 11,
-							textTransform: 'uppercase',
-							letterSpacing: '0.05em',
-							color: '#6b7280',
-							marginBottom: 4,
-						} }
-					>
-						{ t.tournament.linkedTournament }
-					</Text>
-					<Heading level={ 4 } style={ { margin: '0 0 4px 0' } }>
-						{ linkedTournament.title }
-					</Heading>
-					<Text style={ { display: 'block', color: '#555' } }>
-						{ t.tournament.statuses[ linkedTournament.status ] }
-						{ ' — ' }
-						{ t.tournament.categories[ linkedTournament.category ] }
-					</Text>
-				</div>
 			) }
 
 			<TabPanel tabs={ tabs }>

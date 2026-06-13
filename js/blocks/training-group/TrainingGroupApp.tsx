@@ -5,11 +5,9 @@ import type {
 	TrainingSession,
 	SsfPlayer,
 	EventData,
-	Tournament,
 } from '../../admin/types';
-import type { Language } from '../../shared/types';
-import type { Translations } from '../../shared/translations';
 import { getTranslation, toLanguage } from '../../shared/translations';
+import { formatSchedule } from '../../shared/formatSchedule';
 import { useLocale } from '../../shared/useLocale';
 import TabBar from './TabBar';
 import ParticipantsTab from './ParticipantsTab';
@@ -23,41 +21,6 @@ interface Props {
 }
 
 export type Tab = 'participants' | 'sessions';
-
-function extractTime( dateStr: string ): string {
-	const match = dateStr.match( /(\d{2}):(\d{2})/ );
-	return match ? `${ match[ 1 ] }:${ match[ 2 ] }` : '';
-}
-
-function formatSchedule(
-	event: EventData,
-	lang: Language,
-	t: Translations[ 'training' ]
-): string {
-	const start = new Date( event.startDate );
-	const loc = lang === 'sv' ? 'sv-SE' : 'en-US';
-	const weekday = start.toLocaleDateString( loc, { weekday: 'long' } );
-
-	const timeStart = extractTime( event.startDate );
-	const timeEnd = extractTime( event.endDate );
-
-	const prefix =
-		event.recurrenceType === 'biweekly'
-			? t.everyOtherWeek
-			: event.isRecurring
-			? t.everyWeek
-			: '';
-
-	const dayStr = prefix
-		? `${ prefix } ${ weekday.toLowerCase() }`
-		: weekday.charAt( 0 ).toUpperCase() + weekday.slice( 1 );
-
-	const parts = [ `${ dayStr } ${ timeStart }–${ timeEnd }` ];
-	if ( event.location ) {
-		parts.push( event.location );
-	}
-	return parts.join( ', ' );
-}
 
 export default function TrainingGroupApp( {
 	groupId,
@@ -74,7 +37,6 @@ export default function TrainingGroupApp( {
 		new Map()
 	);
 	const [ event, setEvent ] = useState< EventData | null >( null );
-	const [ tournament, setTournament ] = useState< Tournament | null >( null );
 	const [ activeTab, setActiveTab ] = useState< Tab >( 'participants' );
 	const [ loading, setLoading ] = useState( true );
 
@@ -101,14 +63,6 @@ export default function TrainingGroupApp( {
 						path: `/rockaden/v1/events/${ groupData.eventId }`,
 					} )
 						.then( ( ev ) => setEvent( ev ) )
-						.catch( () => {} );
-				}
-
-				if ( groupData.linkedTournamentId ) {
-					apiFetch< Tournament >( {
-						path: `/rockaden/v1/tournaments/${ groupData.linkedTournamentId }`,
-					} )
-						.then( ( tn ) => setTournament( tn ) )
 						.catch( () => {} );
 				}
 			} catch {
@@ -152,7 +106,7 @@ export default function TrainingGroupApp( {
 		return null;
 	}
 
-	const hasInfo = group.trainers || group.contact || schedule || tournament;
+	const hasInfo = group.trainers || group.contact || schedule;
 
 	// Editors always see the participant list; the public respects the toggle.
 	// Sessions are always shown (the schedule/notes are useful publicly); when
@@ -196,19 +150,6 @@ export default function TrainingGroupApp( {
 						<div className="rc-td__info-item">
 							<dt>{ t.training.contact }</dt>
 							<dd>{ group.contact }</dd>
-						</div>
-					) }
-					{ tournament && (
-						<div className="rc-td__info-item">
-							<dt>{ t.tournament.linkedTournament }</dt>
-							<dd>
-								<a
-									href={ `/tournaments/${ tournament.slug }/` }
-									className="rc-td__info-link"
-								>
-									{ tournament.title } ↗
-								</a>
-							</dd>
 						</div>
 					) }
 				</dl>

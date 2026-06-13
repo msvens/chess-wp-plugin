@@ -150,8 +150,6 @@ export interface Translations {
 		ssfNotStarted: string;
 		registeredPlayers: string;
 		overview: string;
-		linkedTournament: string;
-		noLinkedTournament: string;
 		viewTournament: string;
 		backToList: string;
 	};
@@ -456,8 +454,6 @@ const translations: Translations = {
 		),
 		registeredPlayers: __( 'Registered players', 'rockaden-chess' ),
 		overview: __( 'Overview', 'rockaden-chess' ),
-		linkedTournament: __( 'Linked tournament', 'rockaden-chess' ),
-		noLinkedTournament: __( 'No tournament', 'rockaden-chess' ),
 		viewTournament: __( 'View tournament', 'rockaden-chess' ),
 		backToList: __( 'Back to tournaments', 'rockaden-chess' ),
 	},

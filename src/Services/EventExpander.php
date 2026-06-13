@@ -40,8 +40,6 @@ class EventExpander {
 				get_post_meta( $post->ID, 'rc_excluded_dates', true ) ?: '[]',
 				true,
 			),
-			'ssfGroupId'        => absint( get_post_meta( $post->ID, 'rc_ssf_group_id', true ) ),
-			'ssfTournamentId'   => absint( get_post_meta( $post->ID, 'rc_ssf_tournament_id', true ) ),
 			'ownerType'         => get_post_meta( $post->ID, 'rc_owner_type', true ) ?: '',
 			'ownerUrl'          => self::owner_url( $post->ID ),
 		];

@@ -9,19 +9,8 @@ import {
 	__experimentalText as Text,
 } from '@wordpress/components';
 import type { Translations } from '../../shared';
-import type {
-	EventData,
-	Tournament,
-	TrainingGroup,
-	TrainingStatusChoice,
-} from '../types';
-import {
-	createGroup,
-	fetchEvents,
-	createEvent,
-	fetchTournaments,
-	addParticipant,
-} from '../api';
+import type { EventData, TrainingGroup, TrainingStatusChoice } from '../types';
+import { createGroup, fetchEvents, createEvent, addParticipant } from '../api';
 import { deriveStatus } from '../../shared/deriveStatus';
 import {
 	EventSection,
@@ -60,8 +49,6 @@ export function CreateGroupModal( {
 	);
 	const [ trainers, setTrainers ] = useState( source?.trainers ?? '' );
 	const [ contact, setContact ] = useState( source?.contact ?? '' );
-	// The linked tournament is intentionally never carried over to a copy.
-	const [ linkedTournamentId, setLinkedTournamentId ] = useState( '' );
 	const [ showParticipants, setShowParticipants ] = useState(
 		source?.showParticipants ?? true
 	);
@@ -71,7 +58,6 @@ export function CreateGroupModal( {
 	const [ error, setError ] = useState< string | null >( null );
 
 	const [ events, setEvents ] = useState< EventData[] >( [] );
-	const [ tournaments, setTournaments ] = useState< Tournament[] >( [] );
 	const [ eventValue, setEventValue ] = useState< EventSectionValue >(
 		emptyEventValue( {
 			// Copy starts a fresh event (same pattern, new dates).
@@ -87,9 +73,6 @@ export function CreateGroupModal( {
 	useEffect( () => {
 		fetchEvents()
 			.then( setEvents )
-			.catch( () => {} );
-		fetchTournaments()
-			.then( setTournaments )
 			.catch( () => {} );
 	}, [] );
 
@@ -132,9 +115,6 @@ export function CreateGroupModal( {
 				eventId,
 				trainers: trainers.trim() || undefined,
 				contact: contact.trim() || undefined,
-				linkedTournamentId: linkedTournamentId
-					? Number( linkedTournamentId )
-					: undefined,
 				showParticipants,
 			} );
 
@@ -173,14 +153,6 @@ export function CreateGroupModal( {
 		status === 'auto'
 			? deriveStatus( previewStart, previewEnd, false )
 			: null;
-
-	const tournamentOptions = [
-		{ label: t.tournament.noLinkedTournament, value: '' },
-		...tournaments.map( ( tournament ) => ( {
-			label: tournament.title,
-			value: String( tournament.id ),
-		} ) ),
-	];
 
 	return (
 		<Modal
@@ -257,13 +229,6 @@ export function CreateGroupModal( {
 					{ label: t.training.statusHidden, value: 'draft' },
 				] }
 				onChange={ ( v ) => setStatus( v as TrainingStatusChoice ) }
-			/>
-
-			<SelectControl
-				label={ t.tournament.linkedTournament }
-				value={ linkedTournamentId }
-				options={ tournamentOptions }
-				onChange={ setLinkedTournamentId }
 			/>
 
 			<CheckboxControl

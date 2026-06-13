@@ -330,8 +330,6 @@ class TournamentApi {
 			return new WP_Error( 'not_found', 'Tournament not found', [ 'status' => 404 ] );
 		}
 
-		self::clear_linked_tournament_refs( $post->ID );
-
 		// Cascade-delete the projected calendar event we own.
 		$event_id = (int) get_post_meta( $post->ID, 'rc_event_id', true );
 		if ( $event_id && self::event_owned_by( $event_id, $post->ID ) ) {
@@ -448,33 +446,6 @@ class TournamentApi {
 			'isRecurring'    => (bool) get_post_meta( $event_id, 'rc_is_recurring', true ),
 			'recurrenceType' => (string) ( get_post_meta( $event_id, 'rc_recurrence_type', true ) ?: 'weekly' ),
 		];
-	}
-
-	/**
-	 * Clear rc_linked_tournament_id on any training group that pointed at this tournament.
-	 *
-	 * @param int $tournament_id The tournament being deleted.
-	 */
-	private static function clear_linked_tournament_refs( int $tournament_id ): void {
-		$linked = get_posts(
-			[
-				'post_type'      => \Rockaden\PostTypes\TrainingGroup::POST_TYPE,
-				'post_status'    => 'any',
-				'posts_per_page' => -1, // phpcs:ignore WordPress.WP.PostsPerPage.posts_per_page_posts_per_page -- Cleanup pass, expected count is tiny.
-				'fields'         => 'ids',
-				'meta_query'     => [ // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query -- Required to find linked groups.
-					[
-						'key'   => 'rc_linked_tournament_id',
-						'value' => $tournament_id,
-						'type'  => 'NUMERIC',
-					],
-				],
-			]
-		);
-
-		foreach ( $linked as $group_id ) {
-			update_post_meta( (int) $group_id, 'rc_linked_tournament_id', 0 );
-		}
 	}
 
 	/**
