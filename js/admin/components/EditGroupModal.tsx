@@ -23,7 +23,11 @@ import {
 	fetchTournaments,
 } from '../api';
 import { deriveStatus } from '../../shared/deriveStatus';
-import { FlatpickrInput } from './FlatpickrInput';
+import {
+	EventSection,
+	emptyEventValue,
+	type EventSectionValue,
+} from './EventSection';
 
 interface EditGroupModalProps {
 	group: TrainingGroup;
@@ -60,25 +64,17 @@ export function EditGroupModal( {
 	const [ saving, setSaving ] = useState( false );
 	const [ error, setError ] = useState< string | null >( null );
 
-	const [ eventStart, setEventStart ] = useState( event?.startDate || '' );
-	const [ eventEnd, setEventEnd ] = useState( event?.endDate || '' );
-	const [ eventLocation, setEventLocation ] = useState(
-		event?.location || ''
+	const [ eventValue, setEventValue ] = useState< EventSectionValue >(
+		emptyEventValue( {
+			eventStart: event?.startDate || '',
+			eventEnd: event?.endDate || '',
+			eventLocation: event?.location || '',
+			eventCategory: event?.category || 'training',
+			eventRecurring: event?.isRecurring || false,
+			eventRecurrenceType: event?.recurrenceType || 'weekly',
+		} )
 	);
-	const [ eventCategory, setEventCategory ] = useState(
-		event?.category || 'training'
-	);
-	const [ eventRecurring, setEventRecurring ] = useState(
-		event?.isRecurring || false
-	);
-	const [ eventRecurrenceType, setEventRecurrenceType ] = useState<
-		'weekly' | 'biweekly'
-	>( event?.recurrenceType || 'weekly' );
-
-	const [ showNewEvent, setShowNewEvent ] = useState( false );
 	const [ existingEvents, setExistingEvents ] = useState< EventData[] >( [] );
-	const [ selectedEventId, setSelectedEventId ] = useState( '' );
-	const [ eventTitle, setEventTitle ] = useState( '' );
 
 	const [ tournaments, setTournaments ] = useState< Tournament[] >( [] );
 
@@ -104,30 +100,34 @@ export function EditGroupModal( {
 
 			if ( event ) {
 				await updateEvent( event.id, {
-					startDate: eventStart,
-					endDate: eventEnd,
-					location: eventLocation.trim() || undefined,
-					category: eventCategory,
-					isRecurring: eventRecurring,
-					recurrenceType: eventRecurring
-						? eventRecurrenceType
+					startDate: eventValue.eventStart,
+					endDate: eventValue.eventEnd,
+					location: eventValue.eventLocation.trim() || undefined,
+					category: eventValue.eventCategory,
+					isRecurring: eventValue.eventRecurring,
+					recurrenceType: eventValue.eventRecurring
+						? eventValue.eventRecurrenceType
 						: undefined,
 				} );
-			} else if ( showNewEvent && eventStart && eventEnd ) {
+			} else if (
+				eventValue.showNewEvent &&
+				eventValue.eventStart &&
+				eventValue.eventEnd
+			) {
 				const created = await createEvent( {
-					title: eventTitle.trim() || title.trim(),
-					startDate: eventStart,
-					endDate: eventEnd,
-					location: eventLocation.trim() || undefined,
-					category: eventCategory,
-					isRecurring: eventRecurring,
-					recurrenceType: eventRecurring
-						? eventRecurrenceType
+					title: eventValue.eventTitle.trim() || title.trim(),
+					startDate: eventValue.eventStart,
+					endDate: eventValue.eventEnd,
+					location: eventValue.eventLocation.trim() || undefined,
+					category: eventValue.eventCategory,
+					isRecurring: eventValue.eventRecurring,
+					recurrenceType: eventValue.eventRecurring
+						? eventValue.eventRecurrenceType
 						: undefined,
 				} );
 				eventId = created.id;
-			} else if ( selectedEventId ) {
-				eventId = Number( selectedEventId );
+			} else if ( eventValue.selectedEventId ) {
+				eventId = Number( eventValue.selectedEventId );
 			}
 
 			await updateGroup( group.id, {
@@ -153,15 +153,9 @@ export function EditGroupModal( {
 	}
 
 	const previewStatus =
-		status === 'auto' ? deriveStatus( eventStart, eventEnd, false ) : null;
-
-	const eventOptions = [
-		{ label: t.training.selectEvent, value: '' },
-		...existingEvents.map( ( e ) => ( {
-			label: e.title,
-			value: String( e.id ),
-		} ) ),
-	];
+		status === 'auto'
+			? deriveStatus( eventValue.eventStart, eventValue.eventEnd, false )
+			: null;
 
 	const tournamentOptions = [
 		{ label: t.tournament.noLinkedTournament, value: '' },
@@ -261,235 +255,15 @@ export function EditGroupModal( {
 				onChange={ setShowParticipants }
 			/>
 
-			{ /* Event section */ }
-			<div
-				style={ {
-					marginTop: 16,
-					padding: 12,
-					background: '#f0f0f0',
-					borderRadius: 4,
-				} }
-			>
-				{ event ? (
-					<>
-						<Text
-							style={ {
-								display: 'block',
-								fontWeight: 600,
-								marginBottom: 8,
-								fontSize: '11px',
-								textTransform: 'uppercase' as const,
-								letterSpacing: '0.05em',
-							} }
-						>
-							{ t.training.schedule }
-						</Text>
-						<div className="rc-date-fields">
-							<div className="rc-date-field">
-								<label>{ t.training.startDate } *</label>
-								<FlatpickrInput
-									value={ eventStart }
-									onChange={ setEventStart }
-									required
-								/>
-							</div>
-							<div className="rc-date-field">
-								<label>{ t.training.endDate } *</label>
-								<FlatpickrInput
-									value={ eventEnd }
-									onChange={ setEventEnd }
-									required
-								/>
-							</div>
-						</div>
-						<div style={ { display: 'flex', gap: 12 } }>
-							<div style={ { flex: 1 } }>
-								<TextControl
-									label={ t.training.location }
-									value={ eventLocation }
-									onChange={ setEventLocation }
-								/>
-							</div>
-							<div style={ { flex: 1 } }>
-								<SelectControl
-									label={
-										t.calendar.eventCategories.training
-									}
-									value={ eventCategory }
-									options={ Object.entries(
-										t.calendar.eventCategories
-									).map( ( [ value, label ] ) => ( {
-										label,
-										value,
-									} ) ) }
-									onChange={ setEventCategory }
-								/>
-							</div>
-						</div>
-						<CheckboxControl
-							label={ t.calendar.recurring }
-							checked={ eventRecurring }
-							onChange={ setEventRecurring }
-						/>
-						{ eventRecurring && (
-							<SelectControl
-								label={ t.calendar.recurring }
-								value={ eventRecurrenceType }
-								options={ [
-									{
-										label: t.calendar.weekly,
-										value: 'weekly',
-									},
-									{
-										label: t.calendar.biweekly,
-										value: 'biweekly',
-									},
-								] }
-								onChange={ ( v ) =>
-									setEventRecurrenceType(
-										v as 'weekly' | 'biweekly'
-									)
-								}
-							/>
-						) }
-					</>
-				) : (
-					<>
-						<div
-							style={ {
-								display: 'flex',
-								alignItems: 'flex-end',
-								gap: 8,
-								marginBottom: 8,
-							} }
-						>
-							<div style={ { flex: 1 } }>
-								<SelectControl
-									label={ t.training.event }
-									value={
-										showNewEvent ? '' : selectedEventId
-									}
-									options={ eventOptions }
-									onChange={ ( val ) => {
-										setSelectedEventId( val );
-										setShowNewEvent( false );
-									} }
-									disabled={ showNewEvent }
-								/>
-							</div>
-							<Button
-								variant={
-									showNewEvent ? 'secondary' : 'tertiary'
-								}
-								onClick={ () => {
-									setShowNewEvent( ! showNewEvent );
-									if ( ! showNewEvent ) {
-										setSelectedEventId( '' );
-										setEventTitle( title );
-									}
-								} }
-								style={ { marginBottom: 8 } }
-							>
-								{ showNewEvent
-									? t.common.cancel
-									: `+ ${ t.training.newEvent }` }
-							</Button>
-						</div>
-
-						{ showNewEvent && (
-							<div
-								style={ {
-									padding: 12,
-									background: '#fff',
-									borderRadius: 4,
-								} }
-							>
-								<TextControl
-									label={
-										t.training.event +
-										' — ' +
-										t.training.groupName
-									}
-									value={ eventTitle }
-									onChange={ setEventTitle }
-									placeholder={ title }
-								/>
-								<div className="rc-date-fields">
-									<div className="rc-date-field">
-										<label>
-											{ t.training.startDate } *
-										</label>
-										<FlatpickrInput
-											value={ eventStart }
-											onChange={ setEventStart }
-											required
-										/>
-									</div>
-									<div className="rc-date-field">
-										<label>{ t.training.endDate } *</label>
-										<FlatpickrInput
-											value={ eventEnd }
-											onChange={ setEventEnd }
-											required
-										/>
-									</div>
-								</div>
-								<CheckboxControl
-									label={ t.calendar.recurring }
-									checked={ eventRecurring }
-									onChange={ setEventRecurring }
-								/>
-								{ eventRecurring && (
-									<SelectControl
-										label={ t.calendar.recurring }
-										value={ eventRecurrenceType }
-										options={ [
-											{
-												label: t.calendar.weekly,
-												value: 'weekly',
-											},
-											{
-												label: t.calendar.biweekly,
-												value: 'biweekly',
-											},
-										] }
-										onChange={ ( v ) =>
-											setEventRecurrenceType(
-												v as 'weekly' | 'biweekly'
-											)
-										}
-									/>
-								) }
-								<div style={ { display: 'flex', gap: 12 } }>
-									<div style={ { flex: 1 } }>
-										<TextControl
-											label={ t.training.location }
-											value={ eventLocation }
-											onChange={ setEventLocation }
-										/>
-									</div>
-									<div style={ { flex: 1 } }>
-										<SelectControl
-											label={
-												t.calendar.eventCategories
-													.training
-											}
-											value={ eventCategory }
-											options={ Object.entries(
-												t.calendar.eventCategories
-											).map( ( [ value, label ] ) => ( {
-												label,
-												value,
-											} ) ) }
-											onChange={ setEventCategory }
-										/>
-									</div>
-								</div>
-							</div>
-						) }
-					</>
-				) }
-			</div>
+			<EventSection
+				t={ t }
+				mode={ event ? 'create-only' : 'select-or-create' }
+				showRecurrence={ true }
+				events={ existingEvents }
+				value={ eventValue }
+				onChange={ setEventValue }
+				entityTitle={ title }
+			/>
 
 			{ error && (
 				<Text

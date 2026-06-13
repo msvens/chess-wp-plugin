@@ -189,6 +189,17 @@ export default function EventPopover( {
 				</>
 			) }
 
+			{ event.ownerType === 'tournament' && event.ownerUrl && (
+				<div className="rc-cal__event-groups">
+					<a
+						className="rc-cal__event-group-link"
+						href={ event.ownerUrl }
+					>
+						{ t.viewTournament } ↗
+					</a>
+				</div>
+			) }
+
 			{ linkedGroups.length > 0 && (
 				<ul className="rc-cal__event-groups">
 					{ linkedGroups.map( ( g ) => (

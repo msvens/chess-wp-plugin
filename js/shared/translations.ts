@@ -138,6 +138,8 @@ export interface Translations {
 		startDate: string;
 		endDate: string;
 		externalLink: string;
+		addToCalendar: string;
+		addToCalendarHint: string;
 		linkedEvent: string;
 		ssfBacked: string;
 		ssfBackedHint: string;
@@ -157,6 +159,7 @@ export interface Translations {
 		title: string;
 		subtitle: string;
 		today: string;
+		viewTournament: string;
 		noEvents: string;
 		time: string;
 		location: string;
@@ -426,6 +429,11 @@ const translations: Translations = {
 		startDate: __( 'Start date', 'rockaden-chess' ),
 		endDate: __( 'End date', 'rockaden-chess' ),
 		externalLink: __( 'External link', 'rockaden-chess' ),
+		addToCalendar: __( 'Add to calendar', 'rockaden-chess' ),
+		addToCalendarHint: __(
+			'Creates a calendar event from this tournament’s dates.',
+			'rockaden-chess'
+		),
 		linkedEvent: __( 'Linked calendar event', 'rockaden-chess' ),
 		ssfBacked: __( 'SSF Group ID', 'rockaden-chess' ),
 		ssfBackedHint: __(
@@ -460,6 +468,7 @@ const translations: Translations = {
 			'rockaden-chess'
 		),
 		today: __( 'Today', 'rockaden-chess' ),
+		viewTournament: __( 'View tournament', 'rockaden-chess' ),
 		noEvents: __( 'No events this day.', 'rockaden-chess' ),
 		time: __( 'Time', 'rockaden-chess' ),
 		location: __( 'Location', 'rockaden-chess' ),

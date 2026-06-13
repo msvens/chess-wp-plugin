@@ -8,6 +8,7 @@
 namespace Rockaden\Api;
 
 use Rockaden\PostTypes\Tournament;
+use Rockaden\PostTypes\Event;
 use Rockaden\Services\StatusDeriver;
 use Rockaden\Services\SsfClient;
 use WP_REST_Request;
@@ -209,6 +210,7 @@ class TournamentApi {
 		}
 
 		self::apply_meta_from_body( (int) $post_id, $body, true );
+		self::reconcile_calendar_event( (int) $post_id, $body );
 
 		return new WP_REST_Response( self::format_tournament( get_post( $post_id ) ), 201 );
 	}
@@ -239,6 +241,7 @@ class TournamentApi {
 		wp_update_post( $updates );
 
 		self::apply_meta_from_body( $post->ID, $body, false );
+		self::reconcile_calendar_event( $post->ID, $body );
 
 		return new WP_REST_Response( self::format_tournament( get_post( $post->ID ) ) );
 	}
@@ -329,9 +332,122 @@ class TournamentApi {
 
 		self::clear_linked_tournament_refs( $post->ID );
 
+		// Cascade-delete the projected calendar event we own.
+		$event_id = (int) get_post_meta( $post->ID, 'rc_event_id', true );
+		if ( $event_id && self::event_owned_by( $event_id, $post->ID ) ) {
+			wp_delete_post( $event_id, true );
+		}
+
 		wp_delete_post( $post->ID, true );
 
 		return new WP_REST_Response( [ 'deleted' => true ] );
+	}
+
+	/**
+	 * Create / sync / remove the projected calendar event for a tournament, from
+	 * the `calendarEvent` payload in the request body. The tournament owns the
+	 * event (back-reference) so updating and cascade-delete are safe. The event's
+	 * dates/time/recurrence are authored in the tournament form (not synced from
+	 * the tournament's lifecycle dates). A null payload removes the event; an
+	 * absent key leaves it untouched.
+	 *
+	 * @param int                  $post_id Tournament post ID.
+	 * @param array<string, mixed> $body    Request body.
+	 */
+	private static function reconcile_calendar_event( int $post_id, array $body ): void {
+		if ( ! array_key_exists( 'calendarEvent', $body ) ) {
+			return;
+		}
+		$payload  = $body['calendarEvent'];
+		$event_id = (int) get_post_meta( $post_id, 'rc_event_id', true );
+		$owned    = $event_id && self::event_owned_by( $event_id, $post_id );
+
+		if ( ! is_array( $payload ) ) {
+			if ( $owned ) {
+				wp_delete_post( $event_id, true );
+			}
+			update_post_meta( $post_id, 'rc_event_id', 0 );
+			return;
+		}
+
+		$post         = get_post( $post_id );
+		$title        = $post ? $post->post_title : '';
+		$start        = sanitize_text_field( (string) ( $payload['startDate'] ?? '' ) );
+		$end          = sanitize_text_field( (string) ( $payload['endDate'] ?? '' ) );
+		$location     = sanitize_text_field( (string) ( $payload['location'] ?? '' ) );
+		$category     = sanitize_text_field( (string) ( $payload['category'] ?? 'tournament' ) );
+		$is_recurring = ! empty( $payload['isRecurring'] );
+		$recurrence   = sanitize_text_field( (string) ( $payload['recurrenceType'] ?? 'weekly' ) );
+
+		if ( ! $owned ) {
+			$inserted = wp_insert_post(
+				[
+					'post_type'   => Event::POST_TYPE,
+					'post_title'  => $title,
+					'post_status' => 'publish',
+				]
+			);
+			if ( ! $inserted ) {
+				return;
+			}
+			$event_id = (int) $inserted;
+			update_post_meta( $event_id, 'rc_owner_type', 'tournament' );
+			update_post_meta( $event_id, 'rc_owner_id', $post_id );
+			update_post_meta( $post_id, 'rc_event_id', $event_id );
+		} else {
+			wp_update_post(
+				[
+					'ID'         => $event_id,
+					'post_title' => $title,
+				]
+			);
+		}
+
+		update_post_meta( $event_id, 'rc_start_date', $start );
+		update_post_meta( $event_id, 'rc_end_date', $end );
+		update_post_meta( $event_id, 'rc_location', $location );
+		update_post_meta( $event_id, 'rc_category', $category );
+		update_post_meta( $event_id, 'rc_is_recurring', $is_recurring ? '1' : '' );
+		update_post_meta( $event_id, 'rc_recurrence_type', $is_recurring ? $recurrence : '' );
+		// Series end derives from the end date (mirrors EventApi's save).
+		update_post_meta(
+			$event_id,
+			'rc_recurrence_end',
+			$is_recurring && $end ? gmdate( 'c', (int) strtotime( gmdate( 'Y-m-d', (int) strtotime( $end ) ) ) ) : ''
+		);
+	}
+
+	/**
+	 * Whether an event is the projection owned by the given tournament.
+	 *
+	 * @param int $event_id      Event post ID.
+	 * @param int $tournament_id Tournament post ID.
+	 * @return bool
+	 */
+	private static function event_owned_by( int $event_id, int $tournament_id ): bool {
+		return 'tournament' === get_post_meta( $event_id, 'rc_owner_type', true )
+			&& (int) get_post_meta( $event_id, 'rc_owner_id', true ) === $tournament_id;
+	}
+
+	/**
+	 * The linked calendar event's fields (null if none), for the edit form.
+	 *
+	 * @param int $tournament_id Tournament post ID.
+	 * @return array<string, mixed>|null
+	 */
+	private static function linked_calendar_event( int $tournament_id ): ?array {
+		$event_id = (int) get_post_meta( $tournament_id, 'rc_event_id', true );
+		if ( ! $event_id || ! get_post( $event_id ) ) {
+			return null;
+		}
+		return [
+			'startDate'      => (string) ( get_post_meta( $event_id, 'rc_start_date', true ) ?: '' ),
+			'endDate'        => (string) ( get_post_meta( $event_id, 'rc_end_date', true ) ?: '' ),
+			'location'       => (string) ( get_post_meta( $event_id, 'rc_location', true ) ?: '' ),
+			'category'       => (string) ( get_post_meta( $event_id, 'rc_category', true ) ?: 'tournament' ),
+			'isRecurring'    => (bool) get_post_meta( $event_id, 'rc_is_recurring', true ),
+			'recurrenceType' => (string) ( get_post_meta( $event_id, 'rc_recurrence_type', true ) ?: 'weekly' ),
+		];
 	}
 
 	/**
@@ -556,6 +672,7 @@ class TournamentApi {
 			'ssfTournamentId'   => (int) get_post_meta( $post->ID, 'rc_ssf_tournament_id', true ),
 			'ssfTournamentName' => $ssf_tournament_name,
 			'eventId'           => (int) get_post_meta( $post->ID, 'rc_event_id', true ),
+			'calendarEvent'     => self::linked_calendar_event( $post->ID ),
 			'externalLink'      => get_post_meta( $post->ID, 'rc_external_link', true ) ?: '',
 			'startDate'         => $start_date,
 			'endDate'           => $end_date,

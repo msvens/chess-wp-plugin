@@ -67,6 +67,16 @@ export function EditTournamentModal( {
 					externalLink: tournament.externalLink,
 					showParticipants: tournament.showParticipants,
 					showStandings: tournament.showStandings,
+					addToCalendar: !! tournament.calendarEvent,
+					eventStart: tournament.calendarEvent?.startDate ?? '',
+					eventEnd: tournament.calendarEvent?.endDate ?? '',
+					eventLocation: tournament.calendarEvent?.location ?? '',
+					eventCategory:
+						tournament.calendarEvent?.category ?? 'tournament',
+					eventRecurring:
+						tournament.calendarEvent?.isRecurring ?? false,
+					eventRecurrenceType:
+						tournament.calendarEvent?.recurrenceType ?? 'weekly',
 				} }
 				submitLabel={ t.common.save }
 				saving={ saving }

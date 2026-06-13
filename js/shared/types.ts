@@ -18,6 +18,9 @@ export interface CalendarEvent {
 	parentId?: string;
 	link?: string;
 	linkLabel?: string;
+	// When the event belongs to an entity (e.g. a tournament), a link to it.
+	ownerType?: string;
+	ownerUrl?: string;
 }
 
 export type Language = 'en' | 'sv';
