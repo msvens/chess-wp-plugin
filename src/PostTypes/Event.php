@@ -101,6 +101,16 @@ class Event {
 				'type'    => 'integer',
 				'default' => 0,
 			],
+			// Back-reference to the entity that owns this event (a projection):
+			// owner type 'tournament' (+ 'training_group' in future) and its id.
+			'rc_owner_type'        => [
+				'type'    => 'string',
+				'default' => '',
+			],
+			'rc_owner_id'          => [
+				'type'    => 'integer',
+				'default' => 0,
+			],
 		];
 
 		foreach ( $meta_fields as $key => $args ) {

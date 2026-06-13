@@ -21,6 +21,11 @@ import {
 } from '../../../shared/ssfTypes';
 import { deriveStatus } from '../../../shared/deriveStatus';
 import { FlatpickrInput } from '../FlatpickrInput';
+import {
+	EventSection,
+	emptyEventValue,
+	type EventSectionValue,
+} from '../EventSection';
 
 // A labelled read-only value (SSF tournaments mirror their data from SSF).
 function ReadOnlyField( { label, value }: { label: string; value: string } ) {
@@ -57,6 +62,13 @@ export interface TournamentFormValues {
 	showParticipants: boolean;
 	showStandings: boolean;
 	ssfHasResults: boolean;
+	addToCalendar: boolean;
+	eventStart: string;
+	eventEnd: string;
+	eventLocation: string;
+	eventCategory: string;
+	eventRecurring: boolean;
+	eventRecurrenceType: 'weekly' | 'biweekly';
 }
 
 interface TournamentFormProps {
@@ -87,6 +99,13 @@ const DEFAULTS: TournamentFormValues = {
 	showParticipants: true,
 	showStandings: true,
 	ssfHasResults: false,
+	addToCalendar: false,
+	eventStart: '',
+	eventEnd: '',
+	eventLocation: '',
+	eventCategory: 'tournament',
+	eventRecurring: false,
+	eventRecurrenceType: 'weekly',
 };
 
 export function TournamentForm( {
@@ -126,6 +145,17 @@ export function TournamentForm( {
 	);
 	const [ showStandings, setShowStandings ] = useState( init.showStandings );
 	const [ ssfHasResults, setSsfHasResults ] = useState( init.ssfHasResults );
+	const [ addToCalendar, setAddToCalendar ] = useState( init.addToCalendar );
+	const [ eventValue, setEventValue ] = useState< EventSectionValue >(
+		emptyEventValue( {
+			eventStart: init.eventStart,
+			eventEnd: init.eventEnd,
+			eventLocation: init.eventLocation,
+			eventCategory: init.eventCategory,
+			eventRecurring: init.eventRecurring,
+			eventRecurrenceType: init.eventRecurrenceType,
+		} )
+	);
 
 	const [ ssfFetching, setSsfFetching ] = useState( false );
 	const [ ssfNote, setSsfNote ] = useState< string | null >( null );
@@ -255,6 +285,16 @@ export function TournamentForm( {
 			showParticipants,
 			showStandings,
 			ssfHasResults: isSsfBacked ? ssfHasResults : false,
+			calendarEvent: addToCalendar
+				? {
+						startDate: eventValue.eventStart,
+						endDate: eventValue.eventEnd,
+						location: eventValue.eventLocation.trim(),
+						category: eventValue.eventCategory,
+						isRecurring: eventValue.eventRecurring,
+						recurrenceType: eventValue.eventRecurrenceType,
+				  }
+				: null,
 		} );
 	}
 
@@ -456,6 +496,40 @@ export function TournamentForm( {
 						onChange={ setShowStandings }
 					/>
 				</>
+			) }
+
+			<CheckboxControl
+				label={ t.tournament.addToCalendar }
+				checked={ addToCalendar }
+				onChange={ ( checked ) => {
+					setAddToCalendar( checked );
+					// Prefill the event dates from the tournament when first
+					// enabling, so you don't re-enter them.
+					if (
+						checked &&
+						! eventValue.eventStart &&
+						! eventValue.eventEnd
+					) {
+						setEventValue( {
+							...eventValue,
+							eventStart: startDate,
+							eventEnd: endDate,
+							eventCategory: 'tournament',
+						} );
+					}
+				} }
+				help={ t.tournament.addToCalendarHint }
+			/>
+			{ addToCalendar && (
+				<EventSection
+					t={ t }
+					mode="create-only"
+					showRecurrence={ true }
+					events={ [] }
+					value={ eventValue }
+					onChange={ setEventValue }
+					entityTitle={ title }
+				/>
 			) }
 
 			{ error && (

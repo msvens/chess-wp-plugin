@@ -1,0 +1,28 @@
+/*
+ * Admin styles shared by the training and tournament manager apps (both render
+ * the same modals, date fields, etc.). Imported by each entry point so neither
+ * bundle drifts. Component-specific styles live with their components
+ * (e.g. flatpickr z-index in FlatpickrInput.css).
+ */
+
+/* Wider create/edit modals. */
+.rc-wide-modal {
+	width: 720px;
+	max-width: 90vw;
+}
+
+/* Date picker field layout. */
+.rc-date-fields {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 12px;
+	margin-bottom: 12px;
+}
+
+.rc-date-field label {
+	display: block;
+	margin-bottom: 4px;
+	font-weight: 500;
+	font-size: 11px;
+	text-transform: uppercase;
+}

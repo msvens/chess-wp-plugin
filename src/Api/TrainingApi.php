@@ -215,9 +215,6 @@ class TrainingApi {
 		if ( ! empty( $body['eventId'] ) ) {
 			update_post_meta( $post_id, 'rc_event_id', (int) $body['eventId'] );
 		}
-		if ( isset( $body['linkedTournamentId'] ) ) {
-			update_post_meta( $post_id, 'rc_linked_tournament_id', (int) $body['linkedTournamentId'] );
-		}
 		if ( ! empty( $body['status'] ) ) {
 			$status = sanitize_text_field( $body['status'] );
 			if ( in_array( $status, self::ALLOWED_STATUSES, true ) ) {
@@ -273,9 +270,6 @@ class TrainingApi {
 		}
 		if ( isset( $body['eventId'] ) ) {
 			update_post_meta( $post->ID, 'rc_event_id', (int) $body['eventId'] );
-		}
-		if ( isset( $body['linkedTournamentId'] ) ) {
-			update_post_meta( $post->ID, 'rc_linked_tournament_id', (int) $body['linkedTournamentId'] );
 		}
 		if ( isset( $body['status'] ) ) {
 			$status = sanitize_text_field( $body['status'] );
@@ -572,22 +566,21 @@ class TrainingApi {
 		}
 
 		return [
-			'id'                 => $post->ID,
-			'slug'               => $post->post_name,
-			'title'              => $post->post_title,
-			'description'        => $post->post_content,
-			'status'             => $status,
-			'statusIsAuto'       => ( 'auto' === $raw_status ),
-			'semester'           => get_post_meta( $post->ID, 'rc_semester', true ) ?: '',
-			'audience'           => get_post_meta( $post->ID, 'rc_audience', true ) ?: 'mixed',
-			'eventId'            => $event_id,
-			'linkedTournamentId' => (int) get_post_meta( $post->ID, 'rc_linked_tournament_id', true ),
-			'participants'       => $participants,
-			'trainers'           => get_post_meta( $post->ID, 'rc_trainers', true ) ?: '',
-			'contact'            => get_post_meta( $post->ID, 'rc_contact', true ) ?: '',
-			'schedule'           => $schedule,
-			'showParticipants'   => $show_participants,
-			'createdBy'          => $post->post_author,
+			'id'               => $post->ID,
+			'slug'             => $post->post_name,
+			'title'            => $post->post_title,
+			'description'      => $post->post_content,
+			'status'           => $status,
+			'statusIsAuto'     => ( 'auto' === $raw_status ),
+			'semester'         => get_post_meta( $post->ID, 'rc_semester', true ) ?: '',
+			'audience'         => get_post_meta( $post->ID, 'rc_audience', true ) ?: 'mixed',
+			'eventId'          => $event_id,
+			'participants'     => $participants,
+			'trainers'         => get_post_meta( $post->ID, 'rc_trainers', true ) ?: '',
+			'contact'          => get_post_meta( $post->ID, 'rc_contact', true ) ?: '',
+			'schedule'         => $schedule,
+			'showParticipants' => $show_participants,
+			'createdBy'        => $post->post_author,
 		];
 	}
 

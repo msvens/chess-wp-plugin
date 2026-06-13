@@ -40,9 +40,25 @@ class EventExpander {
 				get_post_meta( $post->ID, 'rc_excluded_dates', true ) ?: '[]',
 				true,
 			),
-			'ssfGroupId'        => absint( get_post_meta( $post->ID, 'rc_ssf_group_id', true ) ),
-			'ssfTournamentId'   => absint( get_post_meta( $post->ID, 'rc_ssf_tournament_id', true ) ),
+			'ownerType'         => get_post_meta( $post->ID, 'rc_owner_type', true ) ?: '',
+			'ownerUrl'          => self::owner_url( $post->ID ),
 		];
+	}
+
+	/**
+	 * Public URL of the entity that owns this event ('' if none / not public).
+	 *
+	 * @param int $post_id Event post ID.
+	 * @return string
+	 */
+	private static function owner_url( int $post_id ): string {
+		$owner_type = get_post_meta( $post_id, 'rc_owner_type', true );
+		$owner_id   = (int) get_post_meta( $post_id, 'rc_owner_id', true );
+		if ( 'tournament' !== $owner_type || ! $owner_id ) {
+			return '';
+		}
+		$permalink = get_permalink( $owner_id );
+		return is_string( $permalink ) ? $permalink : '';
 	}
 
 	/**
@@ -63,6 +79,8 @@ class EventExpander {
 			'source'      => 'cms',
 			'link'        => $base['link'],
 			'linkLabel'   => $base['linkLabel'],
+			'ownerType'   => $base['ownerType'] ?? '',
+			'ownerUrl'    => $base['ownerUrl'] ?? '',
 		];
 	}
 
@@ -109,6 +127,8 @@ class EventExpander {
 					'source'      => 'cms',
 					'link'        => $event['link'],
 					'linkLabel'   => $event['linkLabel'],
+					'ownerType'   => $event['ownerType'] ?? '',
+					'ownerUrl'    => $event['ownerUrl'] ?? '',
 				];
 			}
 			$current->modify( "+{$step_days} days" );

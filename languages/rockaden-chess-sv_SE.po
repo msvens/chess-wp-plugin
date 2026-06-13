@@ -548,6 +548,12 @@ msgstr "Slutdatum"
 msgid "External link"
 msgstr "Extern länk"
 
+msgid "Add to calendar"
+msgstr "Lägg till i kalender"
+
+msgid "Creates a calendar event from this tournament’s dates."
+msgstr "Skapar en kalenderhändelse från turneringens datum."
+
 msgid "Linked calendar event"
 msgstr "Kopplad kalenderhändelse"
 

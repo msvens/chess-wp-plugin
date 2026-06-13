@@ -1,0 +1,11 @@
+/*
+ * flatpickr appends its calendar popup to <body>, so inside a wp-components
+ * Modal it would render behind the dialog. flatpickr's own open-state rule is
+ * `.flatpickr-calendar.open { z-index: 99999 }` — two classes, so it out-
+ * specifies a bare `.flatpickr-calendar`. We match that specificity here and win
+ * by load order: this file is imported right after flatpickr's CSS, so it comes
+ * last in the bundle (no !important needed).
+ */
+.flatpickr-calendar.open {
+	z-index: 1000001;
+}

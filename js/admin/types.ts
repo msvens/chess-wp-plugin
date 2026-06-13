@@ -37,7 +37,6 @@ export interface TrainingGroup {
 	semester: string;
 	audience: TrainingAudience;
 	eventId: number;
-	linkedTournamentId: number;
 	participants: Participant[];
 	trainers: string;
 	contact: string;
@@ -99,8 +98,6 @@ export interface EventData {
 	recurrenceType: 'weekly' | 'biweekly' | null;
 	recurrenceEndDate: string;
 	excludedDates: string[];
-	ssfGroupId: number;
-	ssfTournamentId: number;
 }
 
 export interface CreateEventData {
@@ -123,7 +120,6 @@ export interface CreateGroupData {
 	eventId?: number;
 	trainers?: string;
 	contact?: string;
-	linkedTournamentId?: number;
 	showParticipants?: boolean;
 }
 
@@ -159,6 +155,8 @@ export interface Tournament {
 	ssfTournamentId: number;
 	ssfTournamentName: string;
 	eventId: number;
+	// The linked calendar event's fields (null if none), for the edit form.
+	calendarEvent: TournamentCalendarEvent | null;
 	externalLink: string;
 	startDate: string;
 	endDate: string;
@@ -184,6 +182,20 @@ export interface CreateTournamentData {
 	showParticipants?: boolean;
 	showStandings?: boolean;
 	ssfHasResults?: boolean;
+	// Calendar projection: an object creates/updates the tournament-owned event
+	// from these fields; null removes it; omitted leaves it untouched.
+	calendarEvent?: TournamentCalendarEvent | null;
+}
+
+// The calendar-event fields authored from the tournament form (the event the
+// tournament projects onto the calendar). Title/owner come from the tournament.
+export interface TournamentCalendarEvent {
+	startDate: string;
+	endDate: string;
+	location: string;
+	category: string;
+	isRecurring: boolean;
+	recurrenceType: 'weekly' | 'biweekly';
 }
 
 export type TournamentView =

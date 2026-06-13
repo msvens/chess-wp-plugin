@@ -1,3 +1,4 @@
+import './admin-common.css';
 import './tournament-manager.css';
 import { createRoot } from '@wordpress/element';
 import type { Language } from '../shared';
