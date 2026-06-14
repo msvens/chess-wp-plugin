@@ -5,18 +5,23 @@ import {
 	getWeekDates,
 	dateKey,
 	groupEventsByDate,
+	splitEvents,
+	clipSpanToWindow,
+	packRow,
 	layoutEvents,
 	timeToPosition,
 	durationToHeight,
 	formatTime,
 	isToday,
 	categoryClassMap,
+	MONTH_LANE_H,
 	TIME_GRID_START,
 	TIME_GRID_HOURS,
 } from './utils';
-import type { LayoutSlot } from './utils';
+import type { LayoutSlot, RowSegment } from './utils';
 import { useDragSelect } from './useDragSelect';
 import type { ActiveSelection } from './useDragSelect';
+import EventBar from './EventBar';
 
 const dayKeys = [ 'mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun' ] as const;
 
@@ -173,7 +178,25 @@ export default function CalendarWeek( {
 	setActiveSelection,
 }: CalendarWeekProps ) {
 	const weekDates = useMemo( () => getWeekDates( viewDate ), [ viewDate ] );
-	const grouped = useMemo( () => groupEventsByDate( events ), [ events ] );
+	// Multi-day events go in the all-day band; the grid only sees timed events
+	// (so durationToHeight never gets a cross-day span).
+	const { spanning, timed } = useMemo(
+		() => splitEvents( events ),
+		[ events ]
+	);
+	const grouped = useMemo( () => groupEventsByDate( timed ), [ timed ] );
+
+	const bandPacked = useMemo( () => {
+		const keys = weekDates.map( dateKey );
+		const segments = spanning
+			.map( ( ev ) => clipSpanToWindow( ev, keys ) )
+			.filter( ( s ): s is RowSegment => s !== null );
+		return packRow( segments );
+	}, [ spanning, weekDates ] );
+	const bandLanes = bandPacked.reduce(
+		( max, p ) => Math.max( max, p.laneIndex + 1 ),
+		0
+	);
 
 	const handleEventClick = useCallback(
 		( evt: CalendarEvent, e: React.MouseEvent< HTMLDivElement > ) => {
@@ -245,6 +268,27 @@ export default function CalendarWeek( {
 					);
 				} ) }
 			</div>
+
+			{ /* All-day band: multi-day spanning bars above the hour grid */ }
+			{ bandLanes > 0 && (
+				<div className="rc-cal__allday">
+					<div className="rc-cal__allday-gutter">{ t.allDay }</div>
+					<div
+						className="rc-cal__allday-track"
+						style={ { height: bandLanes * MONTH_LANE_H + 4 } }
+					>
+						{ bandPacked.map( ( p ) => (
+							<EventBar
+								key={ p.event.id }
+								segment={ p }
+								baseTop="2px"
+								columns={ 7 }
+								onSelect={ onSelectEvent }
+							/>
+						) ) }
+					</div>
+				</div>
+			) }
 
 			{ /* Body: gutter + day columns */ }
 			<div className="rc-cal__timegrid-body">

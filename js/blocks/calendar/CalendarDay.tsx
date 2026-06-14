@@ -15,6 +15,9 @@ interface CalendarDayProps {
 	year: number;
 	isCurrentMonth: boolean;
 	events: CalendarEvent[];
+	// Vertical space (px) reserved at the top of the cell for the week row's
+	// spanning-bar lanes, so day-number + pills sit below the bars.
+	bandHeight: number;
 	t: Translations[ 'calendar' ];
 	onSelectEvent: ( event: CalendarEvent, rect: Rect ) => void;
 	onDaySelect: ( events: CalendarEvent[], rect: Rect ) => void;
@@ -28,6 +31,7 @@ export default function CalendarDay( {
 	year,
 	isCurrentMonth,
 	events,
+	bandHeight,
 	t,
 	onSelectEvent,
 	onDaySelect,
@@ -138,6 +142,15 @@ export default function CalendarDay( {
 			tabIndex={ hasEvents ? 0 : undefined }
 		>
 			<span className="rc-cal__day-number">{ day }</span>
+
+			{ /* Reserve space for the week row's spanning-bar lanes. */ }
+			{ bandHeight > 0 && (
+				<span
+					className="rc-cal__day-band"
+					style={ { height: bandHeight } }
+					aria-hidden="true"
+				/>
+			) }
 
 			{ /* Desktop: pills */ }
 			<span className="rc-cal__pills">

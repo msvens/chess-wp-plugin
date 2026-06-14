@@ -100,6 +100,9 @@ export function CreateGroupModal( {
 					recurrenceType: eventValue.eventRecurring
 						? eventValue.eventRecurrenceType
 						: undefined,
+					recurrenceEndDate: eventValue.eventRecurring
+						? eventValue.eventRecurrenceEnd
+						: '',
 				} );
 				eventId = created.id;
 			} else if ( eventValue.selectedEventId ) {
@@ -146,8 +149,13 @@ export function CreateGroupModal( {
 	const previewStart = eventValue.showNewEvent
 		? eventValue.eventStart
 		: selectedEvent?.startDate ?? '';
+	// A recurring event ends (for status) at its series end, not the occurrence.
 	const previewEnd = eventValue.showNewEvent
-		? eventValue.eventEnd
+		? eventValue.eventRecurring && eventValue.eventRecurrenceEnd
+			? eventValue.eventRecurrenceEnd
+			: eventValue.eventEnd
+		: selectedEvent?.isRecurring && selectedEvent?.recurrenceEndDate
+		? selectedEvent.recurrenceEndDate
 		: selectedEvent?.endDate ?? '';
 	const previewStatus =
 		status === 'auto'

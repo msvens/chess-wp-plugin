@@ -76,6 +76,8 @@ class EventMetaBoxes {
 		$link_label      = get_post_meta( $post->ID, 'rc_link_label', true );
 		$is_recurring    = (bool) get_post_meta( $post->ID, 'rc_is_recurring', true );
 		$recurrence_type = get_post_meta( $post->ID, 'rc_recurrence_type', true ) ?: 'weekly';
+		$recurrence_end  = get_post_meta( $post->ID, 'rc_recurrence_end', true ) ?: '';
+		$rec_end_local   = $recurrence_end ? gmdate( 'Y-m-d', strtotime( $recurrence_end ) ) : '';
 		$excluded_dates  = get_post_meta( $post->ID, 'rc_excluded_dates', true ) ?: '[]';
 		$excluded_str    = implode( ', ', json_decode( $excluded_dates, true ) ?: [] );
 
@@ -115,6 +117,11 @@ class EventMetaBoxes {
 							<option value="weekly" <?php selected( $recurrence_type, 'weekly' ); ?>><?php esc_html_e( 'Weekly', 'rockaden-chess' ); ?></option>
 							<option value="biweekly" <?php selected( $recurrence_type, 'biweekly' ); ?>><?php esc_html_e( 'Biweekly', 'rockaden-chess' ); ?></option>
 						</select>
+						<div class="rc-event-field">
+							<label for="rc_recurrence_end"><?php esc_html_e( 'Repeats until', 'rockaden-chess' ); ?></label>
+							<input type="text" id="rc_recurrence_end" name="rc_recurrence_end" value="<?php echo esc_attr( $rec_end_local ); ?>" class="regular-text" placeholder="<?php esc_attr_e( 'No end date', 'rockaden-chess' ); ?>" />
+							<p class="description"><?php esc_html_e( 'Leave empty to repeat with no end date.', 'rockaden-chess' ); ?></p>
+						</div>
 					</div>
 				</div>
 				<div id="rc-excluded-dates-field" style="<?php echo $is_recurring ? '' : 'display:none;'; ?>">
@@ -222,11 +229,13 @@ class EventMetaBoxes {
 		if ( $is_recurring ) {
 			update_post_meta( $post_id, 'rc_recurrence_type', sanitize_text_field( wp_unslash( $_POST['rc_recurrence_type'] ?? 'weekly' ) ) );
 
-			// Auto-derive rc_recurrence_end from rc_end_date.
-			if ( $end ) {
-				$rec_end = gmdate( 'c', strtotime( gmdate( 'Y-m-d', strtotime( $end ) ) ) );
-				update_post_meta( $post_id, 'rc_recurrence_end', $rec_end );
+			// Series end is an explicit, user-set date (date-only). Empty means
+			// the series repeats with no end — no longer derived from rc_end_date.
+			$rec_end = sanitize_text_field( wp_unslash( $_POST['rc_recurrence_end'] ?? '' ) );
+			if ( ! preg_match( '/^\d{4}-\d{2}-\d{2}$/', $rec_end ) ) {
+				$rec_end = '';
 			}
+			update_post_meta( $post_id, 'rc_recurrence_end', $rec_end );
 
 			// Parse excluded dates.
 			$excluded_raw = sanitize_text_field( wp_unslash( $_POST['rc_excluded_dates'] ?? '' ) );

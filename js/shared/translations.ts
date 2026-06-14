@@ -162,6 +162,9 @@ export interface Translations {
 		time: string;
 		location: string;
 		moreEvents: string;
+		allDay: string;
+		repeatsUntil: string;
+		noEndDate: string;
 		month: string;
 		week: string;
 		day: string;
@@ -469,6 +472,9 @@ const translations: Translations = {
 		time: __( 'Time', 'rockaden-chess' ),
 		location: __( 'Location', 'rockaden-chess' ),
 		moreEvents: __( 'more', 'rockaden-chess' ),
+		allDay: __( 'All-day', 'rockaden-chess' ),
+		repeatsUntil: __( 'Repeats until', 'rockaden-chess' ),
+		noEndDate: __( 'No end date', 'rockaden-chess' ),
 		month: __( 'Month', 'rockaden-chess' ),
 		week: __( 'Week', 'rockaden-chess' ),
 		day: __( 'Day', 'rockaden-chess' ),

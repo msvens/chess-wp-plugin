@@ -41,11 +41,7 @@ export function expandRecurringEvents( docs: EventDoc[] ): CalendarEvent[] {
 			linkLabel: doc.linkLabel ?? undefined,
 		};
 
-		if (
-			! doc.isRecurring ||
-			! doc.recurrenceType ||
-			! doc.recurrenceEndDate
-		) {
+		if ( ! doc.isRecurring || ! doc.recurrenceType ) {
 			result.push( {
 				...base,
 				id,
@@ -58,7 +54,8 @@ export function expandRecurringEvents( docs: EventDoc[] ): CalendarEvent[] {
 		const start = new Date( doc.startDate );
 		const end = new Date( doc.endDate );
 
-		// Duration = time-of-day difference only (so multi-month span doesn't inflate it)
+		// Duration = time-of-day difference only (so an overloaded multi-month
+		// endDate from legacy data doesn't inflate the occurrence length)
 		const startTimeMs =
 			( start.getHours() * 3600 +
 				start.getMinutes() * 60 +
@@ -71,15 +68,19 @@ export function expandRecurringEvents( docs: EventDoc[] ): CalendarEvent[] {
 			1000;
 		const durationMs = endTimeMs - startTimeMs;
 
-		// Series boundary = date portion of endDate
-		const seriesEnd = new Date(
-			end.getFullYear(),
-			end.getMonth(),
-			end.getDate(),
-			23,
-			59,
-			59
-		);
+		// Series boundary: the explicit recurrence-end date when set; otherwise
+		// an unbounded series is capped at a 12-month horizon from the start.
+		let seriesEnd: Date;
+		if ( doc.recurrenceEndDate ) {
+			const [ ry, rm, rd ] = doc.recurrenceEndDate
+				.substring( 0, 10 )
+				.split( '-' )
+				.map( Number );
+			seriesEnd = new Date( ry, rm - 1, rd, 23, 59, 59 );
+		} else {
+			seriesEnd = new Date( start );
+			seriesEnd.setMonth( seriesEnd.getMonth() + 12 );
+		}
 		const stepDays = doc.recurrenceType === 'biweekly' ? 14 : 7;
 		const excluded = new Set( doc.excludedDates ?? [] );
 

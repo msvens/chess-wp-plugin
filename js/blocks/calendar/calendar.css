@@ -34,6 +34,12 @@
 	--rc-highlight: #f59e0b;
 	--rc-highlight-light: #fef3c7;
 	--rc-border: #e8e8e8;
+
+	/* Multi-day spanning bars (month view). Keep --rc-month-lane-h in sync
+	   with MONTH_LANE_H in utils.ts. */
+	--rc-month-lane-h: 18px;
+	--rc-month-bar-top: 1.875rem;
+	--rc-bar-inset: 3px;
 }
 
 /* --- Category color tokens (dark) --- */
@@ -276,10 +282,93 @@ html.dark .rc-cal {
 }
 
 .rc-cal__grid {
-	display: grid;
-	grid-template-columns: repeat(7, 1fr);
+	display: flex;
+	flex-direction: column;
 	background: var(--rc-border);
 	gap: 1px;
+}
+
+/* A month week row: 7 day cells + an absolutely-positioned spanning-bar
+   overlay layered on top. */
+.rc-cal__week-row {
+	position: relative;
+	display: grid;
+	grid-template-columns: repeat(7, 1fr);
+	gap: 1px;
+}
+
+/* Spanning-bar overlay. pointer-events:none so empty-cell clicks pass through
+   to the day cell (create-event); individual bars re-enable pointer events. */
+.rc-cal__bars {
+	position: absolute;
+	inset: 0;
+	pointer-events: none;
+	z-index: 2;
+}
+
+.rc-cal__bar {
+	position: absolute;
+	height: calc(var(--rc-month-lane-h) - 3px);
+	display: flex;
+	align-items: center;
+	gap: 0.25rem;
+	padding: 0 0.3rem;
+	border: 0;
+	border-radius: 0.1875rem;
+	font-family: inherit;
+	font-size: 0.6875rem;
+	line-height: 1.2;
+	font-weight: 500;
+	white-space: nowrap;
+	overflow: hidden;
+	cursor: pointer;
+	pointer-events: auto;
+	transition: opacity 0.15s;
+}
+
+.rc-cal__bar:hover {
+	opacity: 0.8;
+}
+
+.rc-cal__bar-title {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	flex: 1;
+	min-width: 0;
+}
+
+.rc-cal__bar-time {
+	font-weight: 400;
+	opacity: 0.8;
+	flex-shrink: 0;
+}
+
+.rc-cal__bar-arrow {
+	font-size: 0.625rem;
+	flex-shrink: 0;
+	opacity: 0.7;
+}
+
+.rc-cal__bar--training { background: var(--rc-cat-training-bg); color: var(--rc-cat-training-text); }
+.rc-cal__bar--tournament { background: var(--rc-cat-tournament-bg); color: var(--rc-cat-tournament-text); }
+.rc-cal__bar--junior { background: var(--rc-cat-junior-bg); color: var(--rc-cat-junior-text); }
+.rc-cal__bar--allsvenskan { background: var(--rc-cat-allsvenskan-bg); color: var(--rc-cat-allsvenskan-text); }
+.rc-cal__bar--skolschack { background: var(--rc-cat-skolschack-bg); color: var(--rc-cat-skolschack-text); }
+.rc-cal__bar--other { background: var(--rc-cat-other-bg); color: var(--rc-cat-other-text); }
+
+.rc-cal__bars-overflow {
+	position: absolute;
+	right: var(--rc-bar-inset);
+	bottom: 0;
+	font-size: 0.625rem;
+	color: var(--wp--preset--color--on-surface-muted, #4b5563);
+	pointer-events: none;
+}
+
+/* Reserved spacer inside a day cell for the week row's bar lanes. */
+.rc-cal__day-band {
+	display: block;
+	flex-shrink: 0;
 }
 
 /* --- Day cell --- */
@@ -632,6 +721,35 @@ html.dark .rc-cal {
 	background-color: var(--rc-highlight);
 	color: #fff;
 	font-weight: 600;
+}
+
+/* --- All-day band (multi-day spanning bars above the hour grid) --- */
+.rc-cal__allday {
+	display: contents;
+}
+
+.rc-cal__allday-gutter {
+	grid-column: 1;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 2px;
+	background: var(--wp--preset--color--surface, #ffffff);
+	border-right: 1px solid var(--rc-border);
+	border-bottom: 1px solid var(--rc-border);
+	font-size: 0.5625rem;
+	font-weight: 500;
+	text-transform: uppercase;
+	letter-spacing: 0.03em;
+	color: var(--wp--preset--color--on-surface-muted, #4b5563);
+	text-align: center;
+}
+
+.rc-cal__allday-track {
+	grid-column: 2 / -1;
+	position: relative;
+	background: var(--wp--preset--color--surface, #ffffff);
+	border-bottom: 1px solid var(--rc-border);
 }
 
 /* --- Time grid body --- */

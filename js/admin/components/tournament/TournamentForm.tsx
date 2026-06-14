@@ -20,7 +20,6 @@ import {
 	parseSsfTimeControl,
 } from '../../../shared/ssfTypes';
 import { deriveStatus } from '../../../shared/deriveStatus';
-import { FlatpickrInput } from '../FlatpickrInput';
 import {
 	EventSection,
 	emptyEventValue,
@@ -47,6 +46,19 @@ function ReadOnlyField( { label, value }: { label: string; value: string } ) {
 	);
 }
 
+// Whole-day span between two date strings (date part only). 0 if unparseable.
+function daysBetween( a: string, b: string ): number {
+	const re = /^(\d{4})-(\d{2})-(\d{2})/;
+	const ma = a.match( re );
+	const mb = b.match( re );
+	if ( ! ma || ! mb ) {
+		return 0;
+	}
+	const da = new Date( +ma[ 1 ], +ma[ 2 ] - 1, +ma[ 3 ] );
+	const db = new Date( +mb[ 1 ], +mb[ 2 ] - 1, +mb[ 3 ] );
+	return Math.round( ( db.getTime() - da.getTime() ) / 86400000 );
+}
+
 export interface TournamentFormValues {
 	title: string;
 	description: string;
@@ -69,6 +81,7 @@ export interface TournamentFormValues {
 	eventCategory: string;
 	eventRecurring: boolean;
 	eventRecurrenceType: 'weekly' | 'biweekly';
+	eventRecurrenceEnd: string;
 }
 
 interface TournamentFormProps {
@@ -106,6 +119,7 @@ const DEFAULTS: TournamentFormValues = {
 	eventCategory: 'tournament',
 	eventRecurring: false,
 	eventRecurrenceType: 'weekly',
+	eventRecurrenceEnd: '',
 };
 
 export function TournamentForm( {
@@ -154,6 +168,7 @@ export function TournamentForm( {
 			eventCategory: init.eventCategory,
 			eventRecurring: init.eventRecurring,
 			eventRecurrenceType: init.eventRecurrenceType,
+			eventRecurrenceEnd: init.eventRecurrenceEnd,
 		} )
 	);
 
@@ -170,13 +185,29 @@ export function TournamentForm( {
 	const ssfId = Number( ssfGroupId );
 	const isSsfBacked = ssfId > 0;
 
+	// A home-grown tournament has no own dates — its lifecycle dates come from
+	// the linked event (start; recurring → series end, else occurrence end). SSF
+	// tournaments keep their own read-only dates.
+	const effectiveStart = isSsfBacked
+		? startDate
+		: addToCalendar
+		? eventValue.eventStart
+		: '';
+	const effectiveEnd = isSsfBacked
+		? endDate
+		: addToCalendar
+		? eventValue.eventRecurring
+			? eventValue.eventRecurrenceEnd
+			: eventValue.eventEnd
+		: '';
+
 	// Live preview of what 'Automatic' resolves to. SSF tournaments preview from
 	// the fetched SSF state (mirrors the server); local ones from the dates.
 	const previewStatus =
 		status === 'auto'
 			? deriveStatus(
-					startDate,
-					endDate,
+					effectiveStart,
+					effectiveEnd,
 					isSsfBacked ? ssfHasResults : !! initialHasResults,
 					isSsfBacked ? ssfState : undefined
 			  )
@@ -279,8 +310,8 @@ export function TournamentForm( {
 			ssfGroupId: isSsfBacked ? ssfId : 0,
 			ssfTournamentId: isSsfBacked ? ssfTournamentId : 0,
 			ssfTournamentName: isSsfBacked ? ssfTournamentName : '',
-			startDate,
-			endDate,
+			startDate: effectiveStart,
+			endDate: effectiveEnd,
 			externalLink: externalLink.trim(),
 			showParticipants,
 			showStandings,
@@ -293,6 +324,9 @@ export function TournamentForm( {
 						category: eventValue.eventCategory,
 						isRecurring: eventValue.eventRecurring,
 						recurrenceType: eventValue.eventRecurrenceType,
+						recurrenceEndDate: eventValue.eventRecurring
+							? eventValue.eventRecurrenceEnd
+							: '',
 				  }
 				: null,
 		} );
@@ -461,23 +495,10 @@ export function TournamentForm( {
 				</div>
 			) : (
 				<>
-					<div className="rc-date-fields">
-						<div className="rc-date-field">
-							<label>{ t.tournament.startDate }</label>
-							<FlatpickrInput
-								value={ startDate }
-								onChange={ setStartDate }
-							/>
-						</div>
-						<div className="rc-date-field">
-							<label>{ t.tournament.endDate }</label>
-							<FlatpickrInput
-								value={ endDate }
-								onChange={ setEndDate }
-							/>
-						</div>
-					</div>
-
+					{ /* Home-grown tournaments take their dates from the linked
+					   calendar event below (Add to calendar) — no separate date
+					   fields. Without an event the tournament has no dates and
+					   you set its status manually. */ }
 					<TextControl
 						label={ t.tournament.externalLink }
 						value={ externalLink }
@@ -503,13 +524,32 @@ export function TournamentForm( {
 				checked={ addToCalendar }
 				onChange={ ( checked ) => {
 					setAddToCalendar( checked );
-					// Prefill the event dates from the tournament when first
-					// enabling, so you don't re-enter them.
+					// Prefill the event when first enabling. For an SSF tournament
+					// we only know the day span: ≤ 7 days → one multi-day event;
+					// longer → a weekly-recurrence guess (SSF gives no time, so
+					// default 18:00–20:00) you then adjust. Home-grown starts blank.
 					if (
-						checked &&
-						! eventValue.eventStart &&
-						! eventValue.eventEnd
+						! checked ||
+						eventValue.eventStart ||
+						eventValue.eventEnd
 					) {
+						return;
+					}
+					const day = startDate.slice( 0, 10 );
+					if (
+						isSsfBacked &&
+						daysBetween( startDate, endDate ) > 7
+					) {
+						setEventValue( {
+							...eventValue,
+							eventStart: day ? `${ day }T18:00:00` : '',
+							eventEnd: day ? `${ day }T20:00:00` : '',
+							eventRecurring: true,
+							eventRecurrenceType: 'weekly',
+							eventRecurrenceEnd: endDate.slice( 0, 10 ),
+							eventCategory: 'tournament',
+						} );
+					} else {
 						setEventValue( {
 							...eventValue,
 							eventStart: startDate,

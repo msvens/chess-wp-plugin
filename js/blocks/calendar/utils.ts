@@ -310,7 +310,13 @@ export function durationToHeight( startDate: string, endDate: string ): number {
 	const start = parseTime( startDate );
 	const end = parseTime( endDate );
 	const startMin = start.hours * 60 + start.minutes;
-	const endMin = end.hours * 60 + end.minutes;
+	// An overnight timed block (end falls on a later calendar day — e.g. a
+	// 22:00–01:00 event that isn't promoted to a spanning bar) is clamped to
+	// the end of the grid day so it doesn't compute a negative height.
+	const endMin =
+		endDate.substring( 0, 10 ) > startDate.substring( 0, 10 )
+			? 24 * 60
+			: end.hours * 60 + end.minutes;
 	const durationHours = Math.max( 0, endMin - startMin ) / 60;
 	return ( durationHours / TIME_GRID_HOURS ) * 100;
 }
@@ -413,4 +419,177 @@ export function layoutEvents( events: CalendarEvent[] ): LayoutSlot[] {
 		column: a.column,
 		totalColumns,
 	} ) );
+}
+
+/* ── Multi-day spanning events ────────────────────────────── */
+
+/**
+ * Max spanning-bar lanes rendered in a month-view week row before the
+ * remainder collapses into a row-level "+N more".
+ */
+export const MONTH_MAX_LANES = 3;
+
+/** Spanning-bar lane height in px — keep in sync with CSS `--rc-month-lane-h`. */
+export const MONTH_LANE_H = 18;
+
+/**
+ * An event ending at/before this hour on the day after it starts is treated
+ * as a single-evening (overnight) block, not a multi-day spanning bar.
+ */
+export const OVERNIGHT_CUTOFF_HOUR = 6;
+
+const MS_PER_DAY = 86400000;
+
+/**
+ * Parse a "YYYY-MM-DD" key into a local-midnight Date. Uses numeric Date args
+ * (no string parsing) so there is no UTC/timezone shift.
+ * @param key
+ */
+function keyToLocalDate( key: string ): Date {
+	const [ y, m, d ] = key.split( '-' ).map( Number );
+	return new Date( y, m - 1, d );
+}
+
+/**
+ * Whole-day difference between two "YYYY-MM-DD" keys (endKey - startKey).
+ * @param startKey
+ * @param endKey
+ */
+export function dayDiff( startKey: string, endKey: string ): number {
+	return Math.round(
+		( keyToLocalDate( endKey ).getTime() -
+			keyToLocalDate( startKey ).getTime() ) /
+			MS_PER_DAY
+	);
+}
+
+/**
+ * True when an event should render as a horizontal multi-day spanning bar:
+ * it ends on a later calendar date than it starts, EXCEPT a short overnight
+ * (crosses exactly one midnight and ends at/before OVERNIGHT_CUTOFF_HOUR),
+ * which stays a single timed block.
+ * @param ev
+ */
+export function isSpanning( ev: CalendarEvent ): boolean {
+	const startKey = ev.startDate.substring( 0, 10 );
+	const endKey = ev.endDate.substring( 0, 10 );
+	if ( endKey <= startKey ) {
+		return false;
+	}
+	if ( dayDiff( startKey, endKey ) === 1 ) {
+		const { hours, minutes } = parseTime( ev.endDate );
+		if (
+			hours < OVERNIGHT_CUTOFF_HOUR ||
+			( hours === OVERNIGHT_CUTOFF_HOUR && minutes === 0 )
+		) {
+			return false;
+		}
+	}
+	return true;
+}
+
+/**
+ * Partition events into spanning (multi-day bars) and timed (single-day,
+ * positioned in the hour grid / shown as month pills).
+ * @param events
+ */
+export function splitEvents( events: CalendarEvent[] ): {
+	spanning: CalendarEvent[];
+	timed: CalendarEvent[];
+} {
+	const spanning: CalendarEvent[] = [];
+	const timed: CalendarEvent[] = [];
+	for ( const ev of events ) {
+		if ( isSpanning( ev ) ) {
+			spanning.push( ev );
+		} else {
+			timed.push( ev );
+		}
+	}
+	return { spanning, timed };
+}
+
+/**
+ * "YYYY-MM-DD" key for a grid cell (pure, no Date parsing).
+ * @param cell
+ */
+export function cellKey( cell: GridCell ): string {
+	const m = String( cell.month + 1 ).padStart( 2, '0' );
+	const d = String( cell.day ).padStart( 2, '0' );
+	return `${ cell.year }-${ m }-${ d }`;
+}
+
+/**
+ * A spanning event clipped to a contiguous window of ordered day-keys
+ * (a month week-row, or a week view's 7 days).
+ */
+export interface RowSegment {
+	event: CalendarEvent;
+	colOffset: number;
+	colSpan: number;
+	continuesLeft: boolean;
+	continuesRight: boolean;
+}
+
+/**
+ * Clip a spanning event to a window given as its ordered, contiguous day-keys.
+ * Returns null when the event does not overlap the window. colOffset/colSpan
+ * are derived from key positions — no date arithmetic.
+ * @param ev
+ * @param dayKeys Ordered contiguous "YYYY-MM-DD" keys (e.g. a 7-day week row).
+ */
+export function clipSpanToWindow(
+	ev: CalendarEvent,
+	dayKeys: string[]
+): RowSegment | null {
+	const startKey = ev.startDate.substring( 0, 10 );
+	const endKey = ev.endDate.substring( 0, 10 );
+	const windowStart = dayKeys[ 0 ];
+	const windowEnd = dayKeys[ dayKeys.length - 1 ];
+	if ( endKey < windowStart || startKey > windowEnd ) {
+		return null;
+	}
+	const clampedStart = startKey < windowStart ? windowStart : startKey;
+	const clampedEnd = endKey > windowEnd ? windowEnd : endKey;
+	const colOffset = dayKeys.indexOf( clampedStart );
+	const endIdx = dayKeys.indexOf( clampedEnd );
+	if ( colOffset === -1 || endIdx === -1 ) {
+		return null;
+	}
+	return {
+		event: ev,
+		colOffset,
+		colSpan: endIdx - colOffset + 1,
+		continuesLeft: startKey < windowStart,
+		continuesRight: endKey > windowEnd,
+	};
+}
+
+export interface PackedSegment extends RowSegment {
+	laneIndex: number;
+}
+
+/**
+ * Greedy lane-packing for a row of clipped segments: sort by start column
+ * (longer spans first on ties), assign each to the first lane whose last
+ * occupied column is before this segment's start.
+ * @param segments
+ */
+export function packRow( segments: RowSegment[] ): PackedSegment[] {
+	const sorted = [ ...segments ].sort(
+		( a, b ) => a.colOffset - b.colOffset || b.colSpan - a.colSpan
+	);
+	const laneEndCol: number[] = [];
+	const packed: PackedSegment[] = [];
+	for ( const seg of sorted ) {
+		let lane = 0;
+		for ( ; lane < laneEndCol.length; lane++ ) {
+			if ( laneEndCol[ lane ] < seg.colOffset ) {
+				break;
+			}
+		}
+		laneEndCol[ lane ] = seg.colOffset + seg.colSpan - 1;
+		packed.push( { ...seg, laneIndex: lane } );
+	}
+	return packed;
 }

@@ -77,6 +77,8 @@ export function EditTournamentModal( {
 						tournament.calendarEvent?.isRecurring ?? false,
 					eventRecurrenceType:
 						tournament.calendarEvent?.recurrenceType ?? 'weekly',
+					eventRecurrenceEnd:
+						tournament.calendarEvent?.recurrenceEndDate ?? '',
 				} }
 				submitLabel={ t.common.save }
 				saving={ saving }

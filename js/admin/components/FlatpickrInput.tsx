@@ -8,6 +8,8 @@ interface FlatpickrInputProps {
 	onChange: ( iso: string ) => void;
 	placeholder?: string;
 	required?: boolean;
+	// Date-only mode: no time picker, emits 'YYYY-MM-DD'.
+	dateOnly?: boolean;
 }
 
 // A bare 'YYYY-MM-DD' doesn't match the 'Y-m-d H:i' format, which leaves the
@@ -31,11 +33,19 @@ function toLocalIso( d: Date ): string {
 	) }T${ pad( d.getHours() ) }:${ pad( d.getMinutes() ) }:00`;
 }
 
+function toLocalDate( d: Date ): string {
+	const pad = ( n: number ) => String( n ).padStart( 2, '0' );
+	return `${ d.getFullYear() }-${ pad( d.getMonth() + 1 ) }-${ pad(
+		d.getDate()
+	) }`;
+}
+
 export function FlatpickrInput( {
 	value,
 	onChange,
 	placeholder,
 	required,
+	dateOnly = false,
 }: FlatpickrInputProps ) {
 	const inputRef = useRef< HTMLInputElement >( null );
 	const fpRef = useRef< flatpickr.Instance | null >( null );
@@ -51,15 +61,19 @@ export function FlatpickrInput( {
 
 		const emit = ( selectedDates: Date[] ) => {
 			if ( selectedDates.length > 0 ) {
-				onChangeRef.current( toLocalIso( selectedDates[ 0 ] ) );
+				onChangeRef.current(
+					dateOnly
+						? toLocalDate( selectedDates[ 0 ] )
+						: toLocalIso( selectedDates[ 0 ] )
+				);
 			}
 		};
 
 		const initial = value ? toDate( value ) : null;
 		fpRef.current = flatpickr( inputRef.current, {
-			enableTime: true,
+			enableTime: ! dateOnly,
 			time_24hr: true,
-			dateFormat: 'Y-m-d H:i',
+			dateFormat: dateOnly ? 'Y-m-d' : 'Y-m-d H:i',
 			allowInput: true,
 			defaultDate: initial ?? undefined,
 			// onChange is debounced 300ms for time edits — saving within that
@@ -98,7 +112,9 @@ export function FlatpickrInput( {
 		<input
 			ref={ inputRef }
 			type="text"
-			placeholder={ placeholder || 'YYYY-MM-DD HH:MM' }
+			placeholder={
+				placeholder || ( dateOnly ? 'YYYY-MM-DD' : 'YYYY-MM-DD HH:MM' )
+			}
 			required={ required }
 			className="regular-text"
 			style={ { width: '100%' } }
