@@ -58,6 +58,10 @@ export function EditGroupModal( {
 			eventCategory: event?.category || 'training',
 			eventRecurring: event?.isRecurring || false,
 			eventRecurrenceType: event?.recurrenceType || 'weekly',
+			eventRecurrenceEnd: ( event?.recurrenceEndDate || '' ).substring(
+				0,
+				10
+			),
 		} )
 	);
 	const [ existingEvents, setExistingEvents ] = useState< EventData[] >( [] );
@@ -89,6 +93,9 @@ export function EditGroupModal( {
 					recurrenceType: eventValue.eventRecurring
 						? eventValue.eventRecurrenceType
 						: undefined,
+					recurrenceEndDate: eventValue.eventRecurring
+						? eventValue.eventRecurrenceEnd
+						: '',
 				} );
 			} else if (
 				eventValue.showNewEvent &&
@@ -105,6 +112,9 @@ export function EditGroupModal( {
 					recurrenceType: eventValue.eventRecurring
 						? eventValue.eventRecurrenceType
 						: undefined,
+					recurrenceEndDate: eventValue.eventRecurring
+						? eventValue.eventRecurrenceEnd
+						: '',
 				} );
 				eventId = created.id;
 			} else if ( eventValue.selectedEventId ) {
@@ -130,9 +140,14 @@ export function EditGroupModal( {
 		}
 	}
 
+	// A recurring event ends (for status) at its series end, not the occurrence.
+	const previewEnd =
+		eventValue.eventRecurring && eventValue.eventRecurrenceEnd
+			? eventValue.eventRecurrenceEnd
+			: eventValue.eventEnd;
 	const previewStatus =
 		status === 'auto'
-			? deriveStatus( eventValue.eventStart, eventValue.eventEnd, false )
+			? deriveStatus( eventValue.eventStart, previewEnd, false )
 			: null;
 
 	return (

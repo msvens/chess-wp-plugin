@@ -45,6 +45,7 @@ export interface TrainingGroup {
 		endDate: string;
 		isRecurring: boolean;
 		recurrenceType: string;
+		recurrenceEndDate: string;
 		location: string;
 	} | null;
 	showParticipants?: boolean;
@@ -109,6 +110,8 @@ export interface CreateEventData {
 	category?: string;
 	isRecurring?: boolean;
 	recurrenceType?: 'weekly' | 'biweekly';
+	// Series end (date-only YYYY-MM-DD); empty = repeats with no end date.
+	recurrenceEndDate?: string;
 }
 
 export interface CreateGroupData {
@@ -196,6 +199,8 @@ export interface TournamentCalendarEvent {
 	category: string;
 	isRecurring: boolean;
 	recurrenceType: 'weekly' | 'biweekly';
+	// Series end (date-only YYYY-MM-DD); empty = repeats with no end date.
+	recurrenceEndDate: string;
 }
 
 export type TournamentView =

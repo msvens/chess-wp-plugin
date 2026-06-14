@@ -540,11 +540,12 @@ class TrainingApi {
 			$event_post = get_post( $event_id );
 			if ( $event_post && 'rc_event' === $event_post->post_type ) {
 				$schedule = [
-					'startDate'      => get_post_meta( $event_id, 'rc_start_date', true ) ?: '',
-					'endDate'        => get_post_meta( $event_id, 'rc_end_date', true ) ?: '',
-					'isRecurring'    => (bool) get_post_meta( $event_id, 'rc_is_recurring', true ),
-					'recurrenceType' => get_post_meta( $event_id, 'rc_recurrence_type', true ) ?: '',
-					'location'       => get_post_meta( $event_id, 'rc_location', true ) ?: '',
+					'startDate'         => get_post_meta( $event_id, 'rc_start_date', true ) ?: '',
+					'endDate'           => get_post_meta( $event_id, 'rc_end_date', true ) ?: '',
+					'isRecurring'       => (bool) get_post_meta( $event_id, 'rc_is_recurring', true ),
+					'recurrenceType'    => get_post_meta( $event_id, 'rc_recurrence_type', true ) ?: '',
+					'recurrenceEndDate' => get_post_meta( $event_id, 'rc_recurrence_end', true ) ?: '',
+					'location'          => get_post_meta( $event_id, 'rc_location', true ) ?: '',
 				];
 			}
 		}
@@ -554,9 +555,14 @@ class TrainingApi {
 		// 'completed'. Otherwise the manual value passes through.
 		$raw_status = get_post_meta( $post->ID, 'rc_status', true ) ?: 'auto';
 		if ( 'auto' === $raw_status ) {
-			$status = StatusDeriver::derive(
+			// A recurring event's own end date is one occurrence; the series ends
+			// at the recurrence-end date, so that drives "completed".
+			$effective_end = ! empty( $schedule['isRecurring'] ) && ! empty( $schedule['recurrenceEndDate'] )
+				? $schedule['recurrenceEndDate']
+				: ( $schedule['endDate'] ?? '' );
+			$status        = StatusDeriver::derive(
 				$schedule['startDate'] ?? '',
-				$schedule['endDate'] ?? '',
+				$effective_end,
 				false
 			);
 		} elseif ( 'archived' === $raw_status ) {

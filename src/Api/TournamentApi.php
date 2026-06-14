@@ -407,12 +407,12 @@ class TournamentApi {
 		update_post_meta( $event_id, 'rc_category', $category );
 		update_post_meta( $event_id, 'rc_is_recurring', $is_recurring ? '1' : '' );
 		update_post_meta( $event_id, 'rc_recurrence_type', $is_recurring ? $recurrence : '' );
-		// Series end derives from the end date (mirrors EventApi's save).
-		update_post_meta(
-			$event_id,
-			'rc_recurrence_end',
-			$is_recurring && $end ? gmdate( 'c', (int) strtotime( gmdate( 'Y-m-d', (int) strtotime( $end ) ) ) ) : ''
-		);
+		// Series end is authored in the form (date-only); empty = no end.
+		$rec_end = substr( sanitize_text_field( (string) ( $payload['recurrenceEndDate'] ?? '' ) ), 0, 10 );
+		if ( ! preg_match( '/^\d{4}-\d{2}-\d{2}$/', $rec_end ) ) {
+			$rec_end = '';
+		}
+		update_post_meta( $event_id, 'rc_recurrence_end', $is_recurring ? $rec_end : '' );
 	}
 
 	/**
@@ -439,12 +439,13 @@ class TournamentApi {
 			return null;
 		}
 		return [
-			'startDate'      => (string) ( get_post_meta( $event_id, 'rc_start_date', true ) ?: '' ),
-			'endDate'        => (string) ( get_post_meta( $event_id, 'rc_end_date', true ) ?: '' ),
-			'location'       => (string) ( get_post_meta( $event_id, 'rc_location', true ) ?: '' ),
-			'category'       => (string) ( get_post_meta( $event_id, 'rc_category', true ) ?: 'tournament' ),
-			'isRecurring'    => (bool) get_post_meta( $event_id, 'rc_is_recurring', true ),
-			'recurrenceType' => (string) ( get_post_meta( $event_id, 'rc_recurrence_type', true ) ?: 'weekly' ),
+			'startDate'         => (string) ( get_post_meta( $event_id, 'rc_start_date', true ) ?: '' ),
+			'endDate'           => (string) ( get_post_meta( $event_id, 'rc_end_date', true ) ?: '' ),
+			'location'          => (string) ( get_post_meta( $event_id, 'rc_location', true ) ?: '' ),
+			'category'          => (string) ( get_post_meta( $event_id, 'rc_category', true ) ?: 'tournament' ),
+			'isRecurring'       => (bool) get_post_meta( $event_id, 'rc_is_recurring', true ),
+			'recurrenceType'    => (string) ( get_post_meta( $event_id, 'rc_recurrence_type', true ) ?: 'weekly' ),
+			'recurrenceEndDate' => substr( (string) ( get_post_meta( $event_id, 'rc_recurrence_end', true ) ?: '' ), 0, 10 ),
 		];
 	}
 

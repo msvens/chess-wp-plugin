@@ -98,6 +98,9 @@ class EventApi {
 			'order'          => 'ASC',
 		];
 
+		$month_start = null;
+		$month_end   = null;
+
 		// If month is specified, filter events that could appear in that month.
 		if ( $month && preg_match( '/^\d{4}-\d{2}$/', $month ) ) {
 			$month_start = $month . '-01T00:00:00';
@@ -126,6 +129,13 @@ class EventApi {
 						'compare' => '>=',
 						'type'    => 'DATETIME',
 					],
+					// Unbounded recurring series (no recurrence-end): still a
+					// candidate for any month at/after its start.
+					[
+						'key'     => 'rc_is_recurring',
+						'value'   => '1',
+						'compare' => '=',
+					],
 				],
 			];
 		}
@@ -143,8 +153,8 @@ class EventApi {
 		foreach ( $posts as $post ) {
 			$base = EventExpander::format_event_raw( $post );
 
-			if ( $base['isRecurring'] && $base['recurrenceType'] && $base['recurrenceEndDate'] ) {
-				$expanded = EventExpander::expand_recurring( $base );
+			if ( $base['isRecurring'] && $base['recurrenceType'] ) {
+				$expanded = EventExpander::expand_recurring( $base, $month_start, $month_end );
 				array_push( $events, ...$expanded );
 			} else {
 				$events[] = EventExpander::format_occurrence( $base );
@@ -296,14 +306,21 @@ class EventApi {
 			update_post_meta( $post_id, 'rc_ssf_tournament_id', absint( $body['ssfTournamentId'] ) );
 		}
 
-		// Auto-derive rc_recurrence_end from rc_end_date for recurring events.
-		$is_recurring = get_post_meta( $post_id, 'rc_is_recurring', true );
-		$end_date     = get_post_meta( $post_id, 'rc_end_date', true );
-
-		if ( $is_recurring && $end_date ) {
-			$rec_end = gmdate( 'c', strtotime( gmdate( 'Y-m-d', strtotime( $end_date ) ) ) );
+		// Series end is an explicit, user-set date (date-only YYYY-MM-DD); empty
+		// means the series repeats with no end. It is no longer derived from the
+		// event's own end date.
+		if ( isset( $body['recurrenceEndDate'] ) ) {
+			// Accept a date-only value or the date part of a fuller datetime
+			// (e.g. legacy 'c'-format values round-tripped from the client).
+			$rec_end = substr( sanitize_text_field( (string) $body['recurrenceEndDate'] ), 0, 10 );
+			if ( ! preg_match( '/^\d{4}-\d{2}-\d{2}$/', $rec_end ) ) {
+				$rec_end = '';
+			}
 			update_post_meta( $post_id, 'rc_recurrence_end', $rec_end );
-		} elseif ( ! $is_recurring ) {
+		}
+
+		// Clear the series end when recurrence is explicitly turned off.
+		if ( isset( $body['isRecurring'] ) && ! $body['isRecurring'] ) {
 			update_post_meta( $post_id, 'rc_recurrence_end', '' );
 		}
 	}

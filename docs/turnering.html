@@ -11,7 +11,7 @@
 <ul>
 	<li><strong class="rc-doc-sv">Titel och beskrivning</strong><strong class="rc-doc-en">Title and description</strong> <span class="rc-doc-sv">— turneringens namn och beskrivning.</span><span class="rc-doc-en">— the tournament name and description.</span></li>
 	<li><strong class="rc-doc-sv">Status</strong><strong class="rc-doc-en">Status</strong> <span class="rc-doc-sv">— planerad, pågående eller avslutad (automatiskt eller manuellt, se nedan).</span><span class="rc-doc-en">— planned, active, or completed (automatic or manual, see below).</span></li>
-	<li><strong class="rc-doc-sv">Start- och slutdatum</strong><strong class="rc-doc-en">Start and end date</strong> <span class="rc-doc-sv">— styr den automatiska statusen och visas på turneringens sida.</span><span class="rc-doc-en">— drive the automatic status and show on the tournament's page.</span></li>
+	<li><strong class="rc-doc-sv">Datum</strong><strong class="rc-doc-en">Dates</strong> <span class="rc-doc-sv">— styr den automatiska statusen och visas på turneringens sida. För en egen turnering kommer datumen från det kopplade kalenderevenemanget (se nedan); för en SSF-turnering hämtas de från SSF.</span><span class="rc-doc-en">— drive the automatic status and show on the tournament's page. For a home-grown tournament the dates come from the linked calendar event (see below); for an SSF tournament they're pulled from SSF.</span></li>
 	<li><strong class="rc-doc-sv">Kategori</strong><strong class="rc-doc-en">Category</strong> <span class="rc-doc-sv">— junior, ungdom, vuxen, senior eller blandad.</span><span class="rc-doc-en">— junior, youth, adult, senior, or mixed.</span></li>
 	<li><strong class="rc-doc-sv">Tidsformat</strong><strong class="rc-doc-en">Time control</strong> <span class="rc-doc-sv">— klassisk, rapid eller blixt.</span><span class="rc-doc-en">— classical, rapid, or blitz.</span></li>
 	<li><strong class="rc-doc-sv">Format</strong><strong class="rc-doc-en">Format</strong> <span class="rc-doc-sv">— rundturnering (Berger).</span><span class="rc-doc-en">— round-robin (Berger method).</span></li>
@@ -68,10 +68,17 @@
 <h2 class="rc-doc-en">Adding the tournament to the calendar</h2>
 
 <p class="rc-doc-sv">
-	Kryssa i <strong>Add to calendar</strong> i turneringsformuläret för att skapa en kalenderhändelse för turneringen. Start- och slutdatum fylls i från turneringens datum, men du anger plats och (om det behövs) återkommande schema separat. Kategorin är förvald till <em>Tournament</em>. Händelsen ägs av turneringen: ändrar du turneringens datum följer händelsen med nästa gång du sparar, och tar du bort turneringen försvinner händelsen. I kalendern länkar händelsen vidare till turneringens egen sida.
+	Kryssa i <strong>Add to calendar</strong> i turneringsformuläret för att lägga turneringen i kalendern. Du anger då händelsens start och slut (för <em>ett</em> tillfälle), plats och eventuell upprepning (<strong>Recurring</strong> + <strong>Repeats until</strong>). Kategorin är förvald till <em>Tournament</em>. Händelsen ägs av turneringen: tar du bort turneringen försvinner händelsen, och i kalendern länkar händelsen vidare till turneringens egen sida.
 </p>
 <p class="rc-doc-en">
-	Tick <strong>Add to calendar</strong> in the tournament form to create a calendar event for the tournament. The start and end dates are filled in from the tournament's dates, while you set the location and (if needed) a recurring schedule separately. The category defaults to <em>Tournament</em>. The event is owned by the tournament: change the tournament's dates and the event follows the next time you save, and deleting the tournament removes the event. In the calendar, the event links through to the tournament's own page.
+	Tick <strong>Add to calendar</strong> in the tournament form to place the tournament on the calendar. You set the event's start and end (for <em>one</em> occurrence), location and any repetition (<strong>Recurring</strong> + <strong>Repeats until</strong>). The category defaults to <em>Tournament</em>. The event is owned by the tournament: deleting the tournament removes the event, and in the calendar the event links through to the tournament's own page.
+</p>
+
+<p class="rc-doc-sv">
+	<strong>Egna turneringar:</strong> kalenderevenemanget är turneringens enda datumkälla. Lägger du inte till något evenemang har turneringen inga datum, och då sätter du statusen manuellt. <strong>SSF-turneringar:</strong> datumen kommer alltid från SSF (för statusen), men kryssar du i <strong>Add to calendar</strong> förifylls evenemanget från SSF-datumen — spänner turneringen över högst en vecka blir det en sammanhängande flerdagarshändelse, och är den längre föreslås en veckovis upprepning som du justerar (SSF anger bara datum, så du fyller i tider själv).
+</p>
+<p class="rc-doc-en">
+	<strong>Home-grown tournaments:</strong> the calendar event is the tournament's only source of dates. If you don't add an event, the tournament has no dates and you set its status manually. <strong>SSF tournaments:</strong> dates always come from SSF (for the status), but ticking <strong>Add to calendar</strong> prefills the event from the SSF dates — a tournament spanning at most a week becomes one continuous multi-day event, and a longer one is suggested as a weekly recurrence you then adjust (SSF only gives dates, so you fill in the times).
 </p>
 
 <h2 class="rc-doc-sv">Publika sidor</h2>

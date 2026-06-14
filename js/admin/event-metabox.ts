@@ -12,6 +12,13 @@ document.addEventListener( 'DOMContentLoaded', () => {
 
 	const startInstances = flatpickr( '#rc_start_date', opts );
 	const endInstances = flatpickr( '#rc_end_date', opts );
+
+	// Recurrence-end is a date-only field (no time).
+	flatpickr( '#rc_recurrence_end', {
+		enableTime: false,
+		dateFormat: 'Y-m-d',
+		allowInput: true,
+	} );
 	const fpStart = Array.isArray( startInstances )
 		? startInstances[ 0 ]
 		: startInstances;

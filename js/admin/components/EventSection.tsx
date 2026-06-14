@@ -21,6 +21,8 @@ export interface EventSectionValue {
 	eventCategory: string;
 	eventRecurring: boolean;
 	eventRecurrenceType: 'weekly' | 'biweekly';
+	// Series end (date-only YYYY-MM-DD); empty = repeats with no end date.
+	eventRecurrenceEnd: string;
 }
 
 export function emptyEventValue(
@@ -36,6 +38,7 @@ export function emptyEventValue(
 		eventCategory: 'training',
 		eventRecurring: false,
 		eventRecurrenceType: 'weekly',
+		eventRecurrenceEnd: '',
 		...overrides,
 	};
 }
@@ -178,27 +181,49 @@ export function EventSection( {
 								}
 							/>
 							{ value.eventRecurring && (
-								<SelectControl
-									label={ t.calendar.recurring }
-									value={ value.eventRecurrenceType }
-									options={ [
-										{
-											label: t.calendar.weekly,
-											value: 'weekly',
-										},
-										{
-											label: t.calendar.biweekly,
-											value: 'biweekly',
-										},
-									] }
-									onChange={ ( v ) =>
-										set( {
-											eventRecurrenceType: v as
-												| 'weekly'
-												| 'biweekly',
-										} )
-									}
-								/>
+								<>
+									<SelectControl
+										label={ t.calendar.recurring }
+										value={ value.eventRecurrenceType }
+										options={ [
+											{
+												label: t.calendar.weekly,
+												value: 'weekly',
+											},
+											{
+												label: t.calendar.biweekly,
+												value: 'biweekly',
+											},
+										] }
+										onChange={ ( v ) =>
+											set( {
+												eventRecurrenceType: v as
+													| 'weekly'
+													| 'biweekly',
+											} )
+										}
+									/>
+									<div style={ { marginBottom: 8 } }>
+										<label
+											style={ {
+												display: 'block',
+												marginBottom: 4,
+											} }
+										>
+											{ t.calendar.repeatsUntil }
+										</label>
+										<FlatpickrInput
+											value={ value.eventRecurrenceEnd }
+											onChange={ ( v ) =>
+												set( {
+													eventRecurrenceEnd: v,
+												} )
+											}
+											dateOnly
+											placeholder={ t.calendar.noEndDate }
+										/>
+									</div>
+								</>
 							) }
 						</>
 					) }
