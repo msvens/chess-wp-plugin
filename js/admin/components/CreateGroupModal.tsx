@@ -1,4 +1,4 @@
-import { useState, useEffect } from '@wordpress/element';
+import { useState } from '@wordpress/element';
 import {
 	Modal,
 	TextControl,
@@ -10,11 +10,12 @@ import {
 } from '@wordpress/components';
 import type { Translations } from '../../shared';
 import type { EventData, TrainingGroup, TrainingStatusChoice } from '../types';
-import { createGroup, fetchEvents, createEvent, addParticipant } from '../api';
+import { createGroup, addParticipant } from '../api';
 import { deriveStatus } from '../../shared/deriveStatus';
 import {
 	EventSection,
 	emptyEventValue,
+	eventSectionToPayload,
 	type EventSectionValue,
 } from './EventSection';
 
@@ -57,24 +58,17 @@ export function CreateGroupModal( {
 	const [ saving, setSaving ] = useState( false );
 	const [ error, setError ] = useState< string | null >( null );
 
-	const [ events, setEvents ] = useState< EventData[] >( [] );
+	// A training group's schedule comes from its own calendar event, so default
+	// to creating one. Copy carries the source event's pattern (new dates).
+	const [ addToCalendar, setAddToCalendar ] = useState( true );
 	const [ eventValue, setEventValue ] = useState< EventSectionValue >(
 		emptyEventValue( {
-			// Copy starts a fresh event (same pattern, new dates).
-			showNewEvent: isCopy,
-			eventTitle: copyTitle,
 			eventLocation: sourceEvent?.location ?? '',
 			eventCategory: sourceEvent?.category ?? 'training',
 			eventRecurring: sourceEvent?.isRecurring ?? false,
 			eventRecurrenceType: sourceEvent?.recurrenceType ?? 'weekly',
 		} )
 	);
-
-	useEffect( () => {
-		fetchEvents()
-			.then( setEvents )
-			.catch( () => {} );
-	}, [] );
 
 	async function handleSave() {
 		if ( ! title.trim() ) {
@@ -83,42 +77,18 @@ export function CreateGroupModal( {
 		setSaving( true );
 		setError( null );
 		try {
-			let eventId: number | undefined;
-
-			if (
-				eventValue.showNewEvent &&
-				eventValue.eventStart &&
-				eventValue.eventEnd
-			) {
-				const created = await createEvent( {
-					title: eventValue.eventTitle.trim() || title.trim(),
-					startDate: eventValue.eventStart,
-					endDate: eventValue.eventEnd,
-					location: eventValue.eventLocation.trim() || undefined,
-					category: eventValue.eventCategory,
-					isRecurring: eventValue.eventRecurring,
-					recurrenceType: eventValue.eventRecurring
-						? eventValue.eventRecurrenceType
-						: undefined,
-					recurrenceEndDate: eventValue.eventRecurring
-						? eventValue.eventRecurrenceEnd
-						: '',
-				} );
-				eventId = created.id;
-			} else if ( eventValue.selectedEventId ) {
-				eventId = Number( eventValue.selectedEventId );
-			}
-
 			const newGroup = await createGroup( {
 				title: title.trim(),
 				description: description.trim() || undefined,
 				semester: semester.trim() || undefined,
 				audience,
 				status,
-				eventId,
 				trainers: trainers.trim() || undefined,
 				contact: contact.trim() || undefined,
 				showParticipants,
+				calendarEvent: addToCalendar
+					? eventSectionToPayload( eventValue )
+					: null,
 			} );
 
 			// Clone the source roster after the group exists (participants are
@@ -142,21 +112,14 @@ export function CreateGroupModal( {
 		}
 	}
 
-	// Live preview of the derived status from the chosen event's dates.
-	const selectedEvent = events.find(
-		( e ) => String( e.id ) === eventValue.selectedEventId
-	);
-	const previewStart = eventValue.showNewEvent
-		? eventValue.eventStart
-		: selectedEvent?.startDate ?? '';
+	// Live preview of the derived status from the new event's dates.
+	const previewStart = addToCalendar ? eventValue.eventStart : '';
 	// A recurring event ends (for status) at its series end, not the occurrence.
-	const previewEnd = eventValue.showNewEvent
+	const previewEnd = addToCalendar
 		? eventValue.eventRecurring && eventValue.eventRecurrenceEnd
 			? eventValue.eventRecurrenceEnd
 			: eventValue.eventEnd
-		: selectedEvent?.isRecurring && selectedEvent?.recurrenceEndDate
-		? selectedEvent.recurrenceEndDate
-		: selectedEvent?.endDate ?? '';
+		: '';
 	const previewStatus =
 		status === 'auto'
 			? deriveStatus( previewStart, previewEnd, false )
@@ -252,15 +215,20 @@ export function CreateGroupModal( {
 				/>
 			) }
 
-			<EventSection
-				t={ t }
-				mode="select-or-create"
-				showRecurrence={ true }
-				events={ events }
-				value={ eventValue }
-				onChange={ setEventValue }
-				entityTitle={ title }
+			<CheckboxControl
+				label={ t.tournament.addToCalendar }
+				checked={ addToCalendar }
+				onChange={ setAddToCalendar }
+				help={ t.tournament.addToCalendarHint }
 			/>
+			{ addToCalendar && (
+				<EventSection
+					t={ t }
+					showRecurrence={ true }
+					value={ eventValue }
+					onChange={ setEventValue }
+				/>
+			) }
 
 			{ error && (
 				<Text

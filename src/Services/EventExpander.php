@@ -17,6 +17,28 @@ use Rockaden\PostTypes\Event;
 class EventExpander {
 
 	/**
+	 * For a recurring event, force the occurrence end onto the start's day,
+	 * keeping the end time. Each occurrence is a single-day span (e.g. 18:00 →
+	 * 20:00); the series length is governed solely by rc_recurrence_end. Returns
+	 * the end unchanged when not recurring or when either bound is empty. This is
+	 * the data-model invariant that keeps the editor's "End date" from ever
+	 * carrying a far-future series end.
+	 *
+	 * @param string $start        Start datetime ('YYYY-MM-DDTHH:mm:ss').
+	 * @param string $end          End datetime.
+	 * @param bool   $is_recurring Whether the event recurs.
+	 * @return string Normalized end datetime.
+	 */
+	public static function occurrence_end_on_start_day( string $start, string $end, bool $is_recurring ): string {
+		if ( ! $is_recurring || '' === $start || '' === $end ) {
+			return $end;
+		}
+		$start_day = substr( $start, 0, 10 );
+		$end_time  = substr( $end, 10 );
+		return '' === $end_time ? $start_day : $start_day . $end_time;
+	}
+
+	/**
 	 * Format a post as a raw event array (no expansion).
 	 *
 	 * @param \WP_Post $post The post to format.

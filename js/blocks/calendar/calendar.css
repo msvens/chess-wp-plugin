@@ -93,11 +93,48 @@ html.dark .rc-cal {
 }
 
 /* --- Header (month nav + filter) --- */
+/* Sticky on page scroll, just below the theme's fixed site header. The toolbar
+   height is published as --rc-cal-toolbar-h (set in CalendarApp) so the column
+   headers below can stick flush against it. --rc-header-height falls back to 0
+   for themes without a fixed header. */
 .rc-cal__header {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
-	margin-bottom: 1rem;
+	padding-bottom: 1rem;
+	position: sticky;
+	top: var(--rc-header-height, 0px);
+	z-index: 20;
+	background: var(--wp--preset--color--surface, #ffffff);
+}
+
+/* When the WP admin bar is present the fixed site header is pushed down by the
+   admin-bar height, so the sticky calendar elements must clear it too (mirrors
+   the theme's .admin-bar header offset: 32px desktop / 46px ≤782px). */
+.admin-bar .rc-cal__header {
+	top: calc(var(--rc-header-height, 0px) + 32px);
+}
+
+.admin-bar .rc-cal__daynames,
+.admin-bar .rc-cal__col-header,
+.admin-bar .rc-cal__timegrid-corner {
+	top: calc(
+		var(--rc-header-height, 0px) + var(--rc-cal-toolbar-h, 0px) + 32px
+	);
+}
+
+@media screen and (max-width: 782px) {
+	.admin-bar .rc-cal__header {
+		top: calc(var(--rc-header-height, 0px) + 46px);
+	}
+
+	.admin-bar .rc-cal__daynames,
+	.admin-bar .rc-cal__col-header,
+	.admin-bar .rc-cal__timegrid-corner {
+		top: calc(
+			var(--rc-header-height, 0px) + var(--rc-cal-toolbar-h, 0px) + 46px
+		);
+	}
 }
 
 .rc-cal__header-left,
@@ -268,6 +305,9 @@ html.dark .rc-cal {
 	background: var(--rc-border);
 	gap: 1px;
 	border-bottom: 1px solid var(--rc-border);
+	position: sticky;
+	top: calc(var(--rc-header-height, 0px) + var(--rc-cal-toolbar-h, 0px));
+	z-index: 5;
 }
 
 .rc-cal__dayname {
@@ -645,7 +685,9 @@ html.dark .rc-cal {
 	display: grid;
 	border: 1px solid var(--rc-border);
 	border-radius: 0.25rem;
-	overflow: hidden;
+	/* visible (not hidden) so the sticky header row can stick to the viewport;
+	   an overflow-clipped ancestor would scope sticky to this box instead. */
+	overflow: visible;
 }
 
 /* Week layout: gutter + 7 day columns */
@@ -667,6 +709,9 @@ html.dark .rc-cal {
 	background: var(--wp--preset--color--surface, #ffffff);
 	border-bottom: 1px solid var(--rc-border);
 	border-right: 1px solid var(--rc-border);
+	position: sticky;
+	top: calc(var(--rc-header-height, 0px) + var(--rc-cal-toolbar-h, 0px));
+	z-index: 6;
 }
 
 .rc-cal__col-header {
@@ -677,6 +722,9 @@ html.dark .rc-cal {
 	border-right: 1px solid var(--rc-border);
 	cursor: pointer;
 	transition: background-color 0.15s;
+	position: sticky;
+	top: calc(var(--rc-header-height, 0px) + var(--rc-cal-toolbar-h, 0px));
+	z-index: 5;
 }
 
 .rc-cal__col-header:last-child {
@@ -1065,7 +1113,8 @@ html.dark .rc-cal {
 	.rc-cal__timegrid-corner {
 		position: sticky;
 		left: 0;
-		z-index: 4;
+		/* Above the (now sticky) column headers during horizontal scroll. */
+		z-index: 8;
 	}
 
 	/* Day view works naturally on mobile */

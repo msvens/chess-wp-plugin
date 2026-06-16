@@ -563,12 +563,9 @@ export function TournamentForm( {
 			{ addToCalendar && (
 				<EventSection
 					t={ t }
-					mode="create-only"
 					showRecurrence={ true }
-					events={ [] }
 					value={ eventValue }
 					onChange={ setEventValue }
-					entityTitle={ title }
 				/>
 			) }
 

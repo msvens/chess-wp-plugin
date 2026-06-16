@@ -10,6 +10,7 @@ namespace Rockaden\Api;
 use Rockaden\PostTypes\TrainingGroup;
 use Rockaden\PostTypes\TrainingSession;
 use Rockaden\Services\StatusDeriver;
+use Rockaden\Services\CalendarEventLink;
 use WP_REST_Request;
 use WP_REST_Response;
 use WP_Error;
@@ -212,9 +213,6 @@ class TrainingApi {
 				update_post_meta( $post_id, 'rc_audience', $audience );
 			}
 		}
-		if ( ! empty( $body['eventId'] ) ) {
-			update_post_meta( $post_id, 'rc_event_id', (int) $body['eventId'] );
-		}
 		if ( ! empty( $body['status'] ) ) {
 			$status = sanitize_text_field( $body['status'] );
 			if ( in_array( $status, self::ALLOWED_STATUSES, true ) ) {
@@ -229,6 +227,11 @@ class TrainingApi {
 		}
 		if ( isset( $body['showParticipants'] ) ) {
 			update_post_meta( $post_id, 'rc_show_participants', (bool) $body['showParticipants'] ? '1' : '0' );
+		}
+
+		if ( array_key_exists( 'calendarEvent', $body ) ) {
+			$payload = is_array( $body['calendarEvent'] ) ? $body['calendarEvent'] : null;
+			CalendarEventLink::reconcile( (int) $post_id, 'training_group', $payload, 'training' );
 		}
 
 		return new WP_REST_Response( self::format_group( get_post( $post_id ) ), 201 );
@@ -268,9 +271,6 @@ class TrainingApi {
 				update_post_meta( $post->ID, 'rc_audience', $audience );
 			}
 		}
-		if ( isset( $body['eventId'] ) ) {
-			update_post_meta( $post->ID, 'rc_event_id', (int) $body['eventId'] );
-		}
 		if ( isset( $body['status'] ) ) {
 			$status = sanitize_text_field( $body['status'] );
 			if ( in_array( $status, self::ALLOWED_STATUSES, true ) ) {
@@ -285,6 +285,11 @@ class TrainingApi {
 		}
 		if ( isset( $body['showParticipants'] ) ) {
 			update_post_meta( $post->ID, 'rc_show_participants', (bool) $body['showParticipants'] ? '1' : '0' );
+		}
+
+		if ( array_key_exists( 'calendarEvent', $body ) ) {
+			$payload = is_array( $body['calendarEvent'] ) ? $body['calendarEvent'] : null;
+			CalendarEventLink::reconcile( $post->ID, 'training_group', $payload, 'training' );
 		}
 
 		return new WP_REST_Response( self::format_group( get_post( $post->ID ) ) );
@@ -302,6 +307,9 @@ class TrainingApi {
 		if ( ! $post || TrainingGroup::POST_TYPE !== $post->post_type ) {
 			return new WP_Error( 'not_found', 'Training group not found', [ 'status' => 404 ] );
 		}
+
+		// Cascade-delete the projected calendar event we own.
+		CalendarEventLink::cascade_delete( $post->ID, 'training_group' );
 
 		wp_delete_post( $post->ID, true );
 

@@ -1,4 +1,4 @@
-import { useState, useEffect } from '@wordpress/element';
+import { useState } from '@wordpress/element';
 import {
 	Modal,
 	TextControl,
@@ -10,11 +10,12 @@ import {
 } from '@wordpress/components';
 import type { Translations } from '../../shared';
 import type { TrainingGroup, EventData, TrainingStatusChoice } from '../types';
-import { updateGroup, updateEvent, createEvent, fetchEvents } from '../api';
+import { updateGroup } from '../api';
 import { deriveStatus } from '../../shared/deriveStatus';
 import {
 	EventSection,
 	emptyEventValue,
+	eventSectionToPayload,
 	type EventSectionValue,
 } from './EventSection';
 
@@ -50,6 +51,8 @@ export function EditGroupModal( {
 	const [ saving, setSaving ] = useState( false );
 	const [ error, setError ] = useState< string | null >( null );
 
+	// Checked when the group already owns an event; unchecking on save removes it.
+	const [ addToCalendar, setAddToCalendar ] = useState( !! event );
 	const [ eventValue, setEventValue ] = useState< EventSectionValue >(
 		emptyEventValue( {
 			eventStart: event?.startDate || '',
@@ -64,15 +67,6 @@ export function EditGroupModal( {
 			),
 		} )
 	);
-	const [ existingEvents, setExistingEvents ] = useState< EventData[] >( [] );
-
-	useEffect( () => {
-		if ( ! event ) {
-			fetchEvents()
-				.then( setExistingEvents )
-				.catch( () => {} );
-		}
-	}, [ event ] );
 
 	async function handleSave() {
 		if ( ! title.trim() ) {
@@ -81,46 +75,6 @@ export function EditGroupModal( {
 		setSaving( true );
 		setError( null );
 		try {
-			let eventId: number | undefined;
-
-			if ( event ) {
-				await updateEvent( event.id, {
-					startDate: eventValue.eventStart,
-					endDate: eventValue.eventEnd,
-					location: eventValue.eventLocation.trim() || undefined,
-					category: eventValue.eventCategory,
-					isRecurring: eventValue.eventRecurring,
-					recurrenceType: eventValue.eventRecurring
-						? eventValue.eventRecurrenceType
-						: undefined,
-					recurrenceEndDate: eventValue.eventRecurring
-						? eventValue.eventRecurrenceEnd
-						: '',
-				} );
-			} else if (
-				eventValue.showNewEvent &&
-				eventValue.eventStart &&
-				eventValue.eventEnd
-			) {
-				const created = await createEvent( {
-					title: eventValue.eventTitle.trim() || title.trim(),
-					startDate: eventValue.eventStart,
-					endDate: eventValue.eventEnd,
-					location: eventValue.eventLocation.trim() || undefined,
-					category: eventValue.eventCategory,
-					isRecurring: eventValue.eventRecurring,
-					recurrenceType: eventValue.eventRecurring
-						? eventValue.eventRecurrenceType
-						: undefined,
-					recurrenceEndDate: eventValue.eventRecurring
-						? eventValue.eventRecurrenceEnd
-						: '',
-				} );
-				eventId = created.id;
-			} else if ( eventValue.selectedEventId ) {
-				eventId = Number( eventValue.selectedEventId );
-			}
-
 			await updateGroup( group.id, {
 				title: title.trim(),
 				description: description.trim(),
@@ -130,7 +84,13 @@ export function EditGroupModal( {
 				contact: contact.trim(),
 				showParticipants,
 				status,
-				...( eventId !== undefined ? { eventId } : {} ),
+				// Reconciled server-side: a payload creates/updates the
+				// group-owned event, null removes it. A group previously linked
+				// to a non-owned (legacy) event gets its own new owned event
+				// here; the shared event is left intact.
+				calendarEvent: addToCalendar
+					? eventSectionToPayload( eventValue )
+					: null,
 			} );
 			onUpdated();
 			onClose();
@@ -141,13 +101,15 @@ export function EditGroupModal( {
 	}
 
 	// A recurring event ends (for status) at its series end, not the occurrence.
-	const previewEnd =
-		eventValue.eventRecurring && eventValue.eventRecurrenceEnd
+	const previewStart = addToCalendar ? eventValue.eventStart : '';
+	const previewEnd = addToCalendar
+		? eventValue.eventRecurring && eventValue.eventRecurrenceEnd
 			? eventValue.eventRecurrenceEnd
-			: eventValue.eventEnd;
+			: eventValue.eventEnd
+		: '';
 	const previewStatus =
 		status === 'auto'
-			? deriveStatus( eventValue.eventStart, previewEnd, false )
+			? deriveStatus( previewStart, previewEnd, false )
 			: null;
 
 	return (
@@ -233,15 +195,20 @@ export function EditGroupModal( {
 				onChange={ setShowParticipants }
 			/>
 
-			<EventSection
-				t={ t }
-				mode={ event ? 'create-only' : 'select-or-create' }
-				showRecurrence={ true }
-				events={ existingEvents }
-				value={ eventValue }
-				onChange={ setEventValue }
-				entityTitle={ title }
+			<CheckboxControl
+				label={ t.tournament.addToCalendar }
+				checked={ addToCalendar }
+				onChange={ setAddToCalendar }
+				help={ t.tournament.addToCalendarHint }
 			/>
+			{ addToCalendar && (
+				<EventSection
+					t={ t }
+					showRecurrence={ true }
+					value={ eventValue }
+					onChange={ setEventValue }
+				/>
+			) }
 
 			{ error && (
 				<Text

@@ -323,5 +323,18 @@ class EventApi {
 		if ( isset( $body['isRecurring'] ) && ! $body['isRecurring'] ) {
 			update_post_meta( $post_id, 'rc_recurrence_end', '' );
 		}
+
+		// Invariant: a recurring event's occurrence end stays on the start's day
+		// (the series length is rc_recurrence_end). Re-read the final state so a
+		// partial update — and legacy bloated events — self-heal on save.
+		$is_recurring = (bool) get_post_meta( $post_id, 'rc_is_recurring', true );
+		if ( $is_recurring ) {
+			$start = (string) get_post_meta( $post_id, 'rc_start_date', true );
+			$end   = (string) get_post_meta( $post_id, 'rc_end_date', true );
+			$norm  = EventExpander::occurrence_end_on_start_day( $start, $end, true );
+			if ( $norm !== $end ) {
+				update_post_meta( $post_id, 'rc_end_date', $norm );
+			}
+		}
 	}
 }

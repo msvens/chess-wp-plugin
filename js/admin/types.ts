@@ -120,10 +120,12 @@ export interface CreateGroupData {
 	semester?: string;
 	audience?: TrainingAudience;
 	status?: TrainingStatusChoice;
-	eventId?: number;
 	trainers?: string;
 	contact?: string;
 	showParticipants?: boolean;
+	// Calendar projection: an object creates/updates the group-owned event from
+	// these fields; null removes it; omitted leaves it untouched.
+	calendarEvent?: CalendarEventPayload | null;
 }
 
 export type TournamentCategory =
@@ -159,7 +161,7 @@ export interface Tournament {
 	ssfTournamentName: string;
 	eventId: number;
 	// The linked calendar event's fields (null if none), for the edit form.
-	calendarEvent: TournamentCalendarEvent | null;
+	calendarEvent: CalendarEventPayload | null;
 	externalLink: string;
 	startDate: string;
 	endDate: string;
@@ -187,12 +189,13 @@ export interface CreateTournamentData {
 	ssfHasResults?: boolean;
 	// Calendar projection: an object creates/updates the tournament-owned event
 	// from these fields; null removes it; omitted leaves it untouched.
-	calendarEvent?: TournamentCalendarEvent | null;
+	calendarEvent?: CalendarEventPayload | null;
 }
 
-// The calendar-event fields authored from the tournament form (the event the
-// tournament projects onto the calendar). Title/owner come from the tournament.
-export interface TournamentCalendarEvent {
+// The calendar-event fields authored from a tournament or training-group form
+// (the event the owner projects onto the calendar). Title/owner come from the
+// owning tournament or group.
+export interface CalendarEventPayload {
 	startDate: string;
 	endDate: string;
 	location: string;
