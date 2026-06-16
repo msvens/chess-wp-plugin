@@ -433,6 +433,13 @@ export const MONTH_MAX_LANES = 3;
 export const MONTH_LANE_H = 18;
 
 /**
+ * Lane height (px) for the week/day all-day band — a bit taller than the month
+ * bars. Keep in sync with the `--rc-month-lane-h` override on
+ * `.rc-cal__allday-track` in calendar.css.
+ */
+export const ALLDAY_LANE_H = 24;
+
+/**
  * An event ending at/before this hour on the day after it starts is treated
  * as a single-evening (overnight) block, not a multi-day spanning bar.
  */

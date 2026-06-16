@@ -14,7 +14,7 @@ import {
 	formatTime,
 	isToday,
 	categoryClassMap,
-	MONTH_LANE_H,
+	ALLDAY_LANE_H,
 	TIME_GRID_START,
 	TIME_GRID_HOURS,
 } from './utils';
@@ -283,7 +283,7 @@ export default function CalendarWeek( {
 					<div className="rc-cal__allday-gutter">{ t.allDay }</div>
 					<div
 						className="rc-cal__allday-track"
-						style={ { height: bandLanes * MONTH_LANE_H + 4 } }
+						style={ { height: bandLanes * ALLDAY_LANE_H + 4 } }
 					>
 						{ bandPacked.map( ( p ) => (
 							<EventBar

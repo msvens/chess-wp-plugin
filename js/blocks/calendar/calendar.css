@@ -682,7 +682,7 @@ html.dark .rc-cal {
 /* --- Time grid (shared between week and day views) --- */
 .rc-cal__timegrid {
 	/* Compact rows so the whole day (07:00–22:00) needs little/no scrolling. */
-	--rc-hour-height: 2.75rem;
+	--rc-hour-height: 2.5rem;
 	display: grid;
 	border: 1px solid var(--rc-border);
 	border-radius: 0.25rem;
@@ -799,6 +799,9 @@ html.dark .rc-cal {
 	position: relative;
 	background: var(--wp--preset--color--surface, #ffffff);
 	border-bottom: 1px solid var(--rc-border);
+	/* Slightly taller lane just for all-day bars (month-view bars keep 18px).
+	   Keep in sync with ALLDAY_LANE_H in utils.ts. */
+	--rc-month-lane-h: 24px;
 }
 
 /* --- Time grid body --- */
@@ -1099,10 +1102,6 @@ html.dark .rc-cal {
 	.rc-cal__week {
 		grid-template-columns: 2.5rem repeat(7, minmax(5rem, 1fr));
 		overflow-x: auto;
-	}
-
-	.rc-cal__timegrid {
-		--rc-hour-height: 2.75rem;
 	}
 
 	.rc-cal__gutter {
