@@ -1,4 +1,4 @@
-import { useMemo, useCallback } from '@wordpress/element';
+import { useMemo, useCallback, useRef } from '@wordpress/element';
 import type { CalendarEvent } from '../../shared/types';
 import type { Translations } from '../../shared/translations';
 import {
@@ -21,6 +21,7 @@ import {
 import type { LayoutSlot, RowSegment } from './utils';
 import { useDragSelect } from './useDragSelect';
 import type { ActiveSelection } from './useDragSelect';
+import { useTimegridScroll } from './useTimegridScroll';
 import EventBar from './EventBar';
 
 const dayKeys = [ 'mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun' ] as const;
@@ -232,8 +233,15 @@ export default function CalendarWeek( {
 			( ( nowHours - TIME_GRID_START ) / TIME_GRID_HOURS ) * 100;
 	}
 
+	// On open, centre the page on "now" when today is in this week.
+	const gridRef = useRef< HTMLDivElement >( null );
+	useTimegridScroll(
+		gridRef,
+		nowInWeek && nowPosition > 0 && nowPosition < 100
+	);
+
 	return (
-		<div className="rc-cal__timegrid rc-cal__week">
+		<div className="rc-cal__timegrid rc-cal__week" ref={ gridRef }>
 			{ /* Header row */ }
 			<div className="rc-cal__timegrid-header">
 				<div className="rc-cal__timegrid-corner" />
