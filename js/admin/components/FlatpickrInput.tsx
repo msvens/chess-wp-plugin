@@ -10,6 +10,9 @@ interface FlatpickrInputProps {
 	required?: boolean;
 	// Date-only mode: no time picker, emits 'YYYY-MM-DD'.
 	dateOnly?: boolean;
+	// Show a clear (×) button so the value can be emptied (e.g. a recurrence
+	// "Repeats until" date → repeat with no end). Emits '' when cleared.
+	clearable?: boolean;
 }
 
 // A bare 'YYYY-MM-DD' doesn't match the 'Y-m-d H:i' format, which leaves the
@@ -46,6 +49,7 @@ export function FlatpickrInput( {
 	placeholder,
 	required,
 	dateOnly = false,
+	clearable = false,
 }: FlatpickrInputProps ) {
 	const inputRef = useRef< HTMLInputElement >( null );
 	const fpRef = useRef< flatpickr.Instance | null >( null );
@@ -66,6 +70,9 @@ export function FlatpickrInput( {
 						? toLocalDate( selectedDates[ 0 ] )
 						: toLocalIso( selectedDates[ 0 ] )
 				);
+			} else {
+				// Empty selection (e.g. the field was cleared) — propagate ''.
+				onChangeRef.current( '' );
 			}
 		};
 
@@ -95,7 +102,14 @@ export function FlatpickrInput( {
 	// time the user just picked.
 	useEffect( () => {
 		const fp = fpRef.current;
-		if ( ! fp || ! value ) {
+		if ( ! fp ) {
+			return;
+		}
+		// External clear: empty the picker when the value is removed.
+		if ( ! value ) {
+			if ( fp.selectedDates.length > 0 ) {
+				fp.clear( false );
+			}
 			return;
 		}
 		const next = toDate( value );
@@ -107,6 +121,39 @@ export function FlatpickrInput( {
 			fp.setDate( next, false );
 		}
 	}, [ value ] );
+
+	const handleClear = () => {
+		fpRef.current?.clear();
+		onChangeRef.current( '' );
+	};
+
+	if ( clearable ) {
+		return (
+			<div className="rc-fp-clearable">
+				<input
+					ref={ inputRef }
+					type="text"
+					placeholder={
+						placeholder ||
+						( dateOnly ? 'YYYY-MM-DD' : 'YYYY-MM-DD HH:MM' )
+					}
+					required={ required }
+					className="regular-text"
+					style={ { width: '100%' } }
+				/>
+				{ value && (
+					<button
+						type="button"
+						className="rc-fp-clear"
+						onClick={ handleClear }
+						aria-label="Clear"
+					>
+						×
+					</button>
+				) }
+			</div>
+		);
+	}
 
 	return (
 		<input

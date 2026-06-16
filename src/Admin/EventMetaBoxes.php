@@ -8,6 +8,7 @@
 namespace Rockaden\Admin;
 
 use Rockaden\PostTypes\Event;
+use Rockaden\Services\EventExpander;
 
 /**
  * Renders a focused event editor form via the edit_form_after_title hook.
@@ -227,6 +228,11 @@ class EventMetaBoxes {
 		update_post_meta( $post_id, 'rc_is_recurring', $is_recurring ? '1' : '' );
 
 		if ( $is_recurring ) {
+			// Each occurrence ends on its start day; the series length is the
+			// recurrence end below. Self-heals legacy events with a bloated end.
+			$end = EventExpander::occurrence_end_on_start_day( $start, $end, true );
+			update_post_meta( $post_id, 'rc_end_date', $end );
+
 			update_post_meta( $post_id, 'rc_recurrence_type', sanitize_text_field( wp_unslash( $_POST['rc_recurrence_type'] ?? 'weekly' ) ) );
 
 			// Series end is an explicit, user-set date (date-only). Empty means

@@ -1,6 +1,7 @@
 import {
 	useState,
 	useEffect,
+	useLayoutEffect,
 	useMemo,
 	useCallback,
 	useRef,
@@ -98,6 +99,32 @@ export default function CalendarApp( {
 	// Suppress a fresh create-popover for a short grace period after dismissing
 	// one, so a click that closes the popover doesn't immediately re-open it.
 	const justDismissedRef = useRef< number >( 0 );
+	const rootRef = useRef< HTMLDivElement >( null );
+
+	// Publish the (sticky) toolbar's height as --rc-cal-toolbar-h so the sticky
+	// column headers can stick flush beneath it. Re-measured on resize/wrap.
+	useLayoutEffect( () => {
+		const root = rootRef.current;
+		if ( ! root ) {
+			return;
+		}
+		const header = root.querySelector< HTMLElement >( '.rc-cal__header' );
+		if ( ! header ) {
+			return;
+		}
+		const apply = () =>
+			root.style.setProperty(
+				'--rc-cal-toolbar-h',
+				`${ header.offsetHeight }px`
+			);
+		apply();
+		if ( typeof ResizeObserver === 'undefined' ) {
+			return;
+		}
+		const ro = new ResizeObserver( apply );
+		ro.observe( header );
+		return () => ro.disconnect();
+	}, [] );
 
 	// Derived year/month from viewDate
 	const currentYear = viewDate.getFullYear();
@@ -122,27 +149,60 @@ export default function CalendarApp( {
 			.catch( () => {} );
 	}, [] );
 
-	// Fetch events when month changes
+	// The months the current view spans. A week view can straddle a month
+	// boundary (e.g. Mar 30–Apr 5), and events are fetched a month at a time —
+	// so we must fetch every month the week touches, else the days in the
+	// adjacent month render empty. Month and day views stay within one month
+	// (the month grid hides adjacent-month days by design).
+	const monthsToFetch = useMemo( () => {
+		const key = ( d: Date ) =>
+			`${ d.getFullYear() }-${ String( d.getMonth() + 1 ).padStart(
+				2,
+				'0'
+			) }`;
+		if ( viewMode === 'week' ) {
+			return [ ...new Set( getWeekDates( viewDate ).map( key ) ) ];
+		}
+		return [
+			`${ currentYear }-${ String( currentMonth + 1 ).padStart(
+				2,
+				'0'
+			) }`,
+		];
+	}, [ viewMode, viewDate, currentYear, currentMonth ] );
+
+	// Fetch events for every month the view spans, then merge (dedup by id).
 	useEffect( () => {
 		setLoading( true );
 		setError( null );
 
-		const monthStr = `${ currentYear }-${ String(
-			currentMonth + 1
-		).padStart( 2, '0' ) }`;
-
-		apiFetch< CalendarEvent[] >( {
-			path: `/rockaden/v1/events?month=${ monthStr }`,
-		} )
-			.then( ( data ) => {
-				setEvents( data );
+		Promise.all(
+			monthsToFetch.map( ( m ) =>
+				apiFetch< CalendarEvent[] >( {
+					path: `/rockaden/v1/events?month=${ m }`,
+				} )
+			)
+		)
+			.then( ( results ) => {
+				const merged: CalendarEvent[] = [];
+				const seen = new Set< string >();
+				for ( const arr of results ) {
+					for ( const ev of arr ) {
+						const id = String( ev.id );
+						if ( ! seen.has( id ) ) {
+							seen.add( id );
+							merged.push( ev );
+						}
+					}
+				}
+				setEvents( merged );
 				setLoading( false );
 			} )
 			.catch( () => {
 				setError( 'Failed to load events' );
 				setLoading( false );
 			} );
-	}, [ currentYear, currentMonth, refetchKey ] );
+	}, [ monthsToFetch, refetchKey ] );
 
 	const filteredEvents = useMemo(
 		() =>
@@ -342,7 +402,7 @@ export default function CalendarApp( {
 	}, [ viewMode, viewDate, currentYear, currentMonth, locale ] );
 
 	return (
-		<div className="rc-cal">
+		<div className="rc-cal" ref={ rootRef }>
 			<CalendarHeader
 				title={ headerTitle }
 				locale={ locale }
