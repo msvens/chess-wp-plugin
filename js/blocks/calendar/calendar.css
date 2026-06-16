@@ -681,7 +681,8 @@ html.dark .rc-cal {
 
 /* --- Time grid (shared between week and day views) --- */
 .rc-cal__timegrid {
-	--rc-hour-height: 3.5rem;
+	/* Compact rows so the whole day (07:00–22:00) needs little/no scrolling. */
+	--rc-hour-height: 2.75rem;
 	display: grid;
 	border: 1px solid var(--rc-border);
 	border-radius: 0.25rem;
@@ -1110,10 +1111,19 @@ html.dark .rc-cal {
 		z-index: 3;
 	}
 
-	.rc-cal__timegrid-corner {
+	/* The time-grid is a horizontal scroll container here, which would scope the
+	   page-level sticky headers and float them mid-grid. Keep the column headers
+	   at the top of the grid (static), and pin the corner only to the left. */
+	.rc-cal__col-header {
+		position: static;
+	}
+
+	.rc-cal__timegrid-corner,
+	.admin-bar .rc-cal__timegrid-corner {
 		position: sticky;
 		left: 0;
-		/* Above the (now sticky) column headers during horizontal scroll. */
+		top: 0;
+		/* Above the column headers during horizontal scroll. */
 		z-index: 8;
 	}
 

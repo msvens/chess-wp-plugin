@@ -1,4 +1,4 @@
-import { useMemo, useCallback } from '@wordpress/element';
+import { useMemo, useCallback, useRef } from '@wordpress/element';
 import type { CalendarEvent } from '../../shared/types';
 import type { Translations } from '../../shared/translations';
 import type { EventGroupLink, RowSegment } from './utils';
@@ -20,6 +20,7 @@ import {
 } from './utils';
 import { useDragSelect } from './useDragSelect';
 import type { ActiveSelection } from './useDragSelect';
+import { useTimegridScroll } from './useTimegridScroll';
 import EventBar from './EventBar';
 
 interface CalendarDayViewProps {
@@ -105,6 +106,10 @@ export default function CalendarDayView( {
 			( ( nowHours - TIME_GRID_START ) / TIME_GRID_HOURS ) * 100;
 	}
 
+	// On open, centre the page on "now" when viewing today.
+	const gridRef = useRef< HTMLDivElement >( null );
+	useTimegridScroll( gridRef, today && nowPosition > 0 && nowPosition < 100 );
+
 	const handleEventClick = useCallback(
 		( evt: CalendarEvent, e: React.MouseEvent< HTMLDivElement > ) => {
 			const rect = e.currentTarget.getBoundingClientRect();
@@ -119,7 +124,7 @@ export default function CalendarDayView( {
 	);
 
 	return (
-		<div className="rc-cal__timegrid rc-cal__dayview">
+		<div className="rc-cal__timegrid rc-cal__dayview" ref={ gridRef }>
 			{ /* All-day band: multi-day spanning bars above the hour grid */ }
 			{ bandLanes > 0 && (
 				<div className="rc-cal__allday">
