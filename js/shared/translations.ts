@@ -272,6 +272,9 @@ export interface Translations {
 		copy: string;
 		here: string;
 		add: string;
+		layout: string;
+		layoutCards: string;
+		layoutList: string;
 	};
 }
 
@@ -599,6 +602,9 @@ const translations: Translations = {
 		copy: __( 'Copy', 'rockaden-chess' ),
 		here: __( 'here', 'rockaden-chess' ),
 		add: __( 'Add', 'rockaden-chess' ),
+		layout: __( 'Layout', 'rockaden-chess' ),
+		layoutCards: __( 'Cards', 'rockaden-chess' ),
+		layoutList: __( 'List', 'rockaden-chess' ),
 	},
 };
 

@@ -8,6 +8,13 @@
   "icon": "awards",
   "description": "Displays an overview grid of tournaments.",
   "textdomain": "rockaden-chess",
+  "attributes": {
+    "layout": {
+      "type": "string",
+      "default": "cards",
+      "enum": ["cards", "list"]
+    }
+  },
   "supports": {
     "html": false,
     "align": ["wide", "full"]

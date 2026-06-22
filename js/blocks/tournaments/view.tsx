@@ -10,5 +10,8 @@ document
 	.forEach( ( el ) => {
 		const locale =
 			document.documentElement.dataset.lang || el.dataset.locale || 'sv';
-		createRoot( el ).render( <TournamentsApp locale={ locale } /> );
+		const layout = el.dataset.layout === 'list' ? 'list' : 'cards';
+		createRoot( el ).render(
+			<TournamentsApp locale={ locale } layout={ layout } />
+		);
 	} );
