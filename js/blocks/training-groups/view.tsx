@@ -11,7 +11,12 @@ document
 		const canEdit = el.dataset.canEdit === '1';
 		const locale =
 			document.documentElement.dataset.lang || el.dataset.locale || 'sv';
+		const layout = el.dataset.layout === 'list' ? 'list' : 'cards';
 		createRoot( el ).render(
-			<TrainingGroupsApp canEdit={ canEdit } locale={ locale } />
+			<TrainingGroupsApp
+				canEdit={ canEdit }
+				locale={ locale }
+				layout={ layout }
+			/>
 		);
 	} );

@@ -4,9 +4,12 @@ import type { Tournament } from '../../admin/types';
 import { getTranslation, toLanguage } from '../../shared/translations';
 import { useLocale } from '../../shared/useLocale';
 import TournamentCard from './TournamentCard';
+import TournamentRow from './TournamentRow';
+import type { Language } from '../../shared/types';
 
 interface Props {
 	locale: string;
+	layout?: 'cards' | 'list';
 }
 
 const STATUS_ORDER: Record< Tournament[ 'status' ], number > = {
@@ -15,7 +18,43 @@ const STATUS_ORDER: Record< Tournament[ 'status' ], number > = {
 	completed: 2,
 };
 
-export default function TournamentsApp( { locale }: Props ) {
+function Section( {
+	items,
+	lang,
+	showCards,
+}: {
+	items: Tournament[];
+	lang: Language;
+	showCards: boolean;
+} ) {
+	return (
+		<>
+			{ showCards && (
+				<div className="rc-tn__grid">
+					{ items.map( ( tournament ) => (
+						<TournamentCard
+							key={ tournament.id }
+							tournament={ tournament }
+							lang={ lang }
+						/>
+					) ) }
+				</div>
+			) }
+			<ul className="rc-tn__list">
+				{ items.map( ( tournament ) => (
+					<li key={ tournament.id }>
+						<TournamentRow
+							tournament={ tournament }
+							lang={ lang }
+						/>
+					</li>
+				) ) }
+			</ul>
+		</>
+	);
+}
+
+export default function TournamentsApp( { locale, layout = 'cards' }: Props ) {
 	const currentLocale = useLocale( locale );
 	const lang = toLanguage( currentLocale );
 	const t = getTranslation( lang );
@@ -56,19 +95,16 @@ export default function TournamentsApp( { locale }: Props ) {
 	const past = tournaments.filter( ( tn ) => tn.status === 'completed' );
 	// If there's nothing ongoing, reveal the past list so the block isn't empty.
 	const pastVisible = showPast || ongoing.length === 0;
+	const showCards = layout === 'cards';
 
 	return (
-		<div className="rc-tn">
+		<div className={ `rc-tn is-${ layout }` }>
 			{ ongoing.length > 0 && (
-				<div className="rc-tn__grid">
-					{ ongoing.map( ( tournament ) => (
-						<TournamentCard
-							key={ tournament.id }
-							tournament={ tournament }
-							lang={ lang }
-						/>
-					) ) }
-				</div>
+				<Section
+					items={ ongoing }
+					lang={ lang }
+					showCards={ showCards }
+				/>
 			) }
 
 			{ past.length > 0 && (
@@ -83,15 +119,11 @@ export default function TournamentsApp( { locale }: Props ) {
 						{ t.tournament.pastTournaments } ({ past.length })
 					</button>
 					{ pastVisible && (
-						<div className="rc-tn__grid">
-							{ past.map( ( tournament ) => (
-								<TournamentCard
-									key={ tournament.id }
-									tournament={ tournament }
-									lang={ lang }
-								/>
-							) ) }
-						</div>
+						<Section
+							items={ past }
+							lang={ lang }
+							showCards={ showCards }
+						/>
 					) }
 				</div>
 			) }

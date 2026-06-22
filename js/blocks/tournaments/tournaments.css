@@ -55,7 +55,9 @@ html.dark .rc-tn {
 }
 
 .rc-tn__grid {
-	display: grid;
+	/* Cards are desktop-only; mobile always falls back to the list (see the
+	   min-width rule at the bottom). */
+	display: none;
 	grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
 	gap: 1.25rem;
 }
@@ -162,6 +164,62 @@ html.dark .rc-tn__card:hover {
 	color: var(--rc-tn-meta-text);
 }
 
+/* --- List view (compact rows; also the mobile layout for both views) --- */
+.rc-tn__list {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	border-top: 1px solid var(--rc-tn-border);
+}
+
+.rc-tn__row {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	justify-content: space-between;
+	gap: 0.25rem 1rem;
+	padding: 0.75rem 0.25rem;
+	border-bottom: 1px solid var(--rc-tn-border);
+	text-decoration: none;
+	color: inherit;
+	transition: background-color 0.15s;
+}
+
+.rc-tn__row:hover {
+	background: var(--rc-tn-card-hover);
+}
+
+.rc-tn__row-main {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	gap: 0.25rem 0.75rem;
+	min-width: 0;
+}
+
+.rc-tn__row-title {
+	font-size: 1rem;
+	font-weight: 500;
+}
+
+.rc-tn__row-dates {
+	font-size: 0.8125rem;
+	color: var(--rc-tn-meta-text);
+}
+
+.rc-tn__row-meta {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 0.5rem;
+}
+
+.rc-tn__row-count {
+	font-size: 0.8125rem;
+	color: var(--rc-tn-meta-text);
+	white-space: nowrap;
+}
+
 /* Past / finished tournaments archive */
 .rc-tn__past {
 	margin-top: 1.5rem;
@@ -184,12 +242,18 @@ html.dark .rc-tn__card:hover {
 	color: inherit;
 }
 
-.rc-tn__past .rc-tn__grid {
+.rc-tn__past .rc-tn__grid,
+.rc-tn__past .rc-tn__list {
 	margin-top: 0.75rem;
 }
 
-@media (max-width: 640px) {
-	.rc-tn__grid {
-		grid-template-columns: 1fr;
+/* Cards on desktop when chosen; otherwise (and on mobile) the list is shown. */
+@media (min-width: 641px) {
+	.rc-tn.is-cards .rc-tn__grid {
+		display: grid;
+	}
+
+	.rc-tn.is-cards .rc-tn__list {
+		display: none;
 	}
 }

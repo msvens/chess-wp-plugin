@@ -8,6 +8,13 @@
   "icon": "groups",
   "description": "Displays an overview grid of all active training groups.",
   "textdomain": "rockaden-chess",
+  "attributes": {
+    "layout": {
+      "type": "string",
+      "default": "cards",
+      "enum": ["cards", "list"]
+    }
+  },
   "supports": {
     "html": false,
     "align": ["wide", "full"]

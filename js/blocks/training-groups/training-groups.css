@@ -37,9 +37,11 @@ html.dark .rc-tg {
 	color: var(--rc-tg-meta-text);
 }
 
-/* --- Audience columns: Junior | Adult+Mixed --- */
+/* --- Audience columns: Junior | Adult+Mixed (cards view) --- */
 .rc-tg__columns {
-	display: grid;
+	/* Cards are desktop-only; mobile always falls back to the list (see the
+	   min-width rule at the bottom). */
+	display: none;
 	grid-template-columns: 1fr 1fr;
 	gap: 2rem;
 }
@@ -57,13 +59,6 @@ html.dark .rc-tg {
 	letter-spacing: 0.025em;
 	text-transform: uppercase;
 	color: var(--rc-tg-meta-text);
-}
-
-@media (max-width: 640px) {
-	.rc-tg__columns {
-		grid-template-columns: 1fr;
-		gap: 2rem;
-	}
 }
 
 /* --- Card grid (inside each column) --- */
@@ -167,6 +162,66 @@ html.dark .rc-tg__card:hover {
 	color: var(--rc-tg-meta-text);
 }
 
+/* --- List view (compact rows; also the mobile layout for both views) --- */
+.rc-tg__list-section + .rc-tg__list-section {
+	margin-top: 1.5rem;
+}
+
+.rc-tg__list {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	border-top: 1px solid var(--rc-tg-border);
+}
+
+.rc-tg__row {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	justify-content: space-between;
+	gap: 0.25rem 1rem;
+	padding: 0.75rem 0.25rem;
+	border-bottom: 1px solid var(--rc-tg-border);
+	text-decoration: none;
+	color: inherit;
+	transition: background-color 0.15s;
+}
+
+.rc-tg__row:hover {
+	background: var(--rc-tg-card-hover);
+}
+
+.rc-tg__row-main {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	gap: 0.25rem 0.75rem;
+	min-width: 0;
+}
+
+.rc-tg__row-title {
+	font-size: 1rem;
+	font-weight: 500;
+}
+
+.rc-tg__row-schedule {
+	font-size: 0.8125rem;
+	color: var(--rc-tg-meta-text);
+}
+
+.rc-tg__row-meta {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 0.5rem;
+}
+
+.rc-tg__row-count {
+	font-size: 0.8125rem;
+	color: var(--rc-tg-meta-text);
+	white-space: nowrap;
+}
+
 /* --- Past / finished training groups archive --- */
 .rc-tg__past {
 	margin-top: 2rem;
@@ -189,13 +244,18 @@ html.dark .rc-tg__card:hover {
 	color: inherit;
 }
 
-.rc-tg__past .rc-tg__columns {
+.rc-tg__past .rc-tg__columns,
+.rc-tg__past .rc-tg__list-sections {
 	margin-top: 1rem;
 }
 
-/* --- Responsive --- */
-@media (max-width: 640px) {
-	.rc-tg__grid {
-		grid-template-columns: 1fr;
+/* Cards on desktop when chosen; otherwise (and on mobile) the list is shown. */
+@media (min-width: 641px) {
+	.rc-tg.is-cards .rc-tg__columns {
+		display: grid;
+	}
+
+	.rc-tg.is-cards .rc-tg__list-sections {
+		display: none;
 	}
 }
