@@ -16,6 +16,7 @@
     "typescript": "^5.7.0"
   },
   "dependencies": {
+    "@msvens/schack-se-sdk": "github:msvens/schack-se-sdk#v0.7.0",
     "@wordpress/api-fetch": "^7.0.0",
     "@wordpress/blocks": "^13.0.0",
     "@wordpress/components": "^29.0.0",

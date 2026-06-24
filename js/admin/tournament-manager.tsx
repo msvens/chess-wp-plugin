@@ -3,6 +3,7 @@ import './tournament-manager.css';
 import { createRoot } from '@wordpress/element';
 import type { Language } from '../shared';
 import type { AppConfig } from './types';
+import { configureSsf } from '../shared/ssf';
 import { TournamentApp } from './components/tournament/TournamentApp';
 
 declare global {
@@ -23,6 +24,8 @@ function deriveLanguage( locale: string ): Language {
 const rootEl = document.getElementById( 'rockaden-tournament-root' );
 if ( rootEl ) {
 	const raw = window.rockadenTournament;
+	// restUrl ends in 'rockaden/v1/'; the SSF proxy lives under it at '…/ssf'.
+	configureSsf( raw.restUrl + 'ssf' );
 	const config: AppConfig = {
 		restUrl: raw.restUrl,
 		nonce: raw.nonce,

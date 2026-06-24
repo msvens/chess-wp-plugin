@@ -1,8 +1,18 @@
 import apiFetch from '@wordpress/api-fetch';
+import {
+	RatingsService,
+	ResultsService,
+	TournamentService,
+	RatingType,
+	PlayerCategory,
+	type PlayerInfoDto,
+	type TournamentDto,
+	type TournamentEndResultDto,
+	type TournamentRoundResultDto,
+} from '@msvens/schack-se-sdk';
 import type {
 	TrainingGroup,
 	TrainingSession,
-	SsfPlayer,
 	CreateGroupData,
 	StoredRound,
 	EventData,
@@ -12,11 +22,6 @@ import type {
 	TournamentCategory,
 	TournamentStatus,
 } from './types';
-import type {
-	SsfEndResult,
-	SsfRoundResult,
-	SsfTournament,
-} from '../shared/ssfTypes';
 
 const BASE = 'rockaden/v1';
 
@@ -241,38 +246,54 @@ export function saveTournamentRoundResult(
 	} );
 }
 
-// SSF Tournament
+// SSF (via @msvens/schack-se-sdk, pointed at the WP proxy by configureSsf()).
+// These wrappers throw on failure so the admin views' try/catch error states
+// still fire (the SDK itself returns { data?, error, status } rather than
+// throwing). Services are constructed lazily so they read the configured base.
+async function ssfData< T >(
+	res: { data?: T; error?: string },
+	what: string
+): Promise< T > {
+	if ( res.data === undefined ) {
+		throw new Error( res.error || `SSF request failed: ${ what }` );
+	}
+	return res.data;
+}
+
 export function fetchSsfTournamentResults(
 	groupId: number
-): Promise< SsfEndResult[] > {
-	return apiFetch( {
-		path: `${ BASE }/ssf/tournamentresults/table/id/${ groupId }`,
-	} );
+): Promise< TournamentEndResultDto[] > {
+	return new ResultsService()
+		.getTournamentResults( groupId )
+		.then( ( res ) => ssfData( res, 'tournament results' ) );
 }
 
 export function fetchSsfRoundResults(
 	groupId: number
-): Promise< SsfRoundResult[] > {
-	return apiFetch( {
-		path: `${ BASE }/ssf/tournamentresults/roundresults/id/${ groupId }`,
-	} );
+): Promise< TournamentRoundResultDto[] > {
+	return new ResultsService()
+		.getTournamentRoundResults( groupId )
+		.then( ( res ) => ssfData( res, 'round results' ) );
 }
 
-// Despite the path, /ssf/tournament/group/id/{gid} returns the PARENT
-// tournament (with rootClasses[].groups[], plus type/state). Use ssfFindGroup
-// to get the specific group.
+// getTournamentFromGroup returns the PARENT tournament (with
+// rootClasses[].groups[], plus type/state). Use findTournamentGroup to get the
+// specific group.
 export function fetchSsfTournamentForGroup(
 	groupId: number
-): Promise< SsfTournament > {
-	return apiFetch( {
-		path: `${ BASE }/ssf/tournament/group/id/${ groupId }`,
-	} );
+): Promise< TournamentDto > {
+	return new TournamentService()
+		.getTournamentFromGroup( groupId )
+		.then( ( res ) => ssfData( res, 'tournament' ) );
 }
 
-// SSF Proxy
-export function fetchClubRatings( clubId: string ): Promise< SsfPlayer[] > {
-	const today = new Date().toISOString().split( 'T' )[ 0 ];
-	return apiFetch( {
-		path: `${ BASE }/ssf/ratinglist/club/${ clubId }/date/${ today }/ratingtype/1/category/0`,
-	} );
+export function fetchClubRatings( clubId: string ): Promise< PlayerInfoDto[] > {
+	return new RatingsService()
+		.getClubRatingList(
+			Number( clubId ),
+			new Date(),
+			RatingType.STANDARD,
+			PlayerCategory.ALL
+		)
+		.then( ( res ) => res.data ?? [] );
 }

@@ -33,6 +33,7 @@ $wrapper_attributes = get_block_wrapper_attributes(
 <div <?php echo wp_kses_post( $wrapper_attributes ); ?>
 	data-tournament-id="<?php echo esc_attr( (string) $tournament_id ); ?>"
 	data-club-id="<?php echo esc_attr( (string) $club_id ); ?>"
+	data-ssf-base="<?php echo esc_url( untrailingslashit( rest_url( 'rockaden/v1/ssf' ) ) ); ?>"
 	data-locale="<?php echo esc_attr( determine_locale() ); ?>"
 	data-show-rounds="<?php echo esc_attr( $show_rounds ); ?>">
 	<p><?php esc_html_e( 'Loading standings...', 'rockaden-chess' ); ?></p>

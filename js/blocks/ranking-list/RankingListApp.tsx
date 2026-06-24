@@ -1,13 +1,12 @@
 import { useState, useEffect } from '@wordpress/element';
-import apiFetch from '@wordpress/api-fetch';
 import type { SsfPlayer } from '../../admin/types';
 import { getTranslation, toLanguage } from '../../shared/translations';
 import { useLocale } from '../../shared/useLocale';
+import { fetchClubRatingList } from '../../shared/ssf';
 import {
 	RATING_TYPES,
 	PLAYER_CATEGORIES,
 	generateRatingPeriods,
-	buildRatingPath,
 	getRatingValue,
 } from './utils';
 import type { RatingType, PlayerCategory } from './utils';
@@ -47,9 +46,7 @@ export default function RankingListApp( { clubId, locale }: Props ) {
 		let cancelled = false;
 		setLoading( true );
 
-		apiFetch< SsfPlayer[] >( {
-			path: buildRatingPath( clubId, ratingDate, ratingType, category ),
-		} )
+		fetchClubRatingList( clubId, ratingDate, ratingType, category )
 			.then( ( data ) => {
 				if ( cancelled ) {
 					return;

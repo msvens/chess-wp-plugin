@@ -1,4 +1,5 @@
 import type { Language } from '../shared';
+import type { PlayerInfoDto } from '@msvens/schack-se-sdk';
 
 export interface Participant {
 	id: string;
@@ -67,23 +68,10 @@ export interface SsfRatingInfo {
 	blitzRating: number;
 }
 
-export interface SsfPlayer {
-	id: number;
-	firstName: string;
-	lastName: string;
-	club: string;
-	clubId: number;
-	elo: {
-		rating: number;
-		title: string;
-		date: string;
-		k: number;
-		rapidRating: number;
-		rapidk: number;
-		blitzRating: number;
-		blitzK: number;
-	} | null;
-}
+// The SSF player shape now comes from the SDK (single source of truth for the
+// schack.se API). Kept as a local alias so existing `SsfPlayer` references
+// elsewhere in the plugin stay stable.
+export type SsfPlayer = PlayerInfoDto;
 
 export interface EventData {
 	id: number;

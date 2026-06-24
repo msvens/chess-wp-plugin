@@ -5,13 +5,13 @@ import {
 	__experimentalHeading as Heading,
 } from '@wordpress/components';
 import type { Translations } from '../../shared';
-import type {
-	SsfEndResult,
-	SsfRoundResult,
-	SsfPlayerInfo,
-	SsfTournament,
-} from '../../shared/ssfTypes';
-import { isSsfTeamType } from '../../shared/ssfTypes';
+import {
+	isTeamTournament,
+	type TournamentEndResultDto,
+	type TournamentRoundResultDto,
+	type PlayerInfoDto,
+	type TournamentDto,
+} from '@msvens/schack-se-sdk';
 import {
 	fetchSsfTournamentForGroup,
 	fetchSsfTournamentResults,
@@ -33,7 +33,7 @@ function formatResult( result: number ): string {
 	return '0';
 }
 
-function getElo( playerInfo: SsfPlayerInfo ): string {
+function getElo( playerInfo: PlayerInfoDto ): string {
 	return playerInfo.elo?.rating ? String( playerInfo.elo.rating ) : '—';
 }
 
@@ -52,10 +52,10 @@ interface DisplayRound {
 }
 
 function buildDisplayRounds(
-	roundResults: SsfRoundResult[],
-	playerMap: Map< number, SsfPlayerInfo >
+	roundResults: TournamentRoundResultDto[],
+	playerMap: Map< number, PlayerInfoDto >
 ): DisplayRound[] {
-	const byRound = new Map< number, SsfRoundResult[] >();
+	const byRound = new Map< number, TournamentRoundResultDto[] >();
 	for ( const r of roundResults ) {
 		const existing = byRound.get( r.roundNr ) || [];
 		existing.push( r );
@@ -93,12 +93,12 @@ function buildDisplayRounds(
 }
 
 export function SsfTournamentView( { ssfGroupId, t }: SsfTournamentViewProps ) {
-	const [ tournament, setTournament ] = useState< SsfTournament | null >(
+	const [ tournament, setTournament ] = useState< TournamentDto | null >(
 		null
 	);
-	const [ endResults, setEndResults ] = useState< SsfEndResult[] | null >(
-		null
-	);
+	const [ endResults, setEndResults ] = useState<
+		TournamentEndResultDto[] | null
+	>( null );
 	const [ displayRounds, setDisplayRounds ] = useState< DisplayRound[] >(
 		[]
 	);
@@ -124,7 +124,7 @@ export function SsfTournamentView( { ssfGroupId, t }: SsfTournamentViewProps ) {
 				setTournament( meta );
 				// Team tournaments use different result endpoints — link out
 				// instead of fetching the individual table (which 500s).
-				if ( isSsfTeamType( meta.type ) ) {
+				if ( isTeamTournament( meta.type ) ) {
 					return;
 				}
 				const [ tableData, roundData ] = await Promise.all( [
@@ -135,7 +135,7 @@ export function SsfTournamentView( { ssfGroupId, t }: SsfTournamentViewProps ) {
 					return;
 				}
 				setEndResults( tableData );
-				const playerMap = new Map< number, SsfPlayerInfo >();
+				const playerMap = new Map< number, PlayerInfoDto >();
 				for ( const r of tableData ) {
 					playerMap.set( r.playerInfo.id, r.playerInfo );
 				}
@@ -161,7 +161,7 @@ export function SsfTournamentView( { ssfGroupId, t }: SsfTournamentViewProps ) {
 	}
 
 	// Team tournament: not rendered inline — point to the SSF results page.
-	if ( tournament && isSsfTeamType( tournament.type ) ) {
+	if ( tournament && isTeamTournament( tournament.type ) ) {
 		const link = `https://chess.msvens.com/results/${ tournament.id }/${ ssfGroupId }`;
 		return (
 			<Notice status="info" isDismissible={ false }>
@@ -222,7 +222,7 @@ export function SsfTournamentView( { ssfGroupId, t }: SsfTournamentViewProps ) {
 	}
 
 	const sorted = [ ...endResults ].sort( ( a, b ) => a.place - b.place );
-	const totalGames = ( r: SsfEndResult ) =>
+	const totalGames = ( r: TournamentEndResultDto ) =>
 		r.wonGames + r.drawGames + r.lostGames;
 
 	const round =
