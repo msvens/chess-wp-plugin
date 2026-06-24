@@ -15,10 +15,10 @@ import type {
 } from '../../types';
 import { fetchSsfTournamentForGroup, fetchSsfRoundResults } from '../../api';
 import {
-	ssfFindGroup,
-	isSsfTeamType,
-	parseSsfTimeControl,
-} from '../../../shared/ssfTypes';
+	findTournamentGroup,
+	isTeamTournament,
+	parseTimeControl,
+} from '@msvens/schack-se-sdk';
 import { deriveStatus } from '../../../shared/deriveStatus';
 import {
 	EventSection,
@@ -232,14 +232,14 @@ export function TournamentForm( {
 				fetchSsfTournamentForGroup( ssfId ),
 				fetchSsfRoundResults( ssfId ).catch( () => [] ),
 			] );
-			const group = ssfFindGroup( tournament, ssfId );
+			const group = findTournamentGroup( tournament, ssfId )?.group;
 			// Tournament-level dates: a group's own start can be a registration
 			// window weeks before play (status uses the SSF state, not these).
 			const start = tournament.start || group?.start || '';
 			const end = tournament.end || group?.end || '';
 			const tname = tournament.name || '';
 			const gname = group?.name || tname;
-			const isTeam = isSsfTeamType( tournament.type );
+			const isTeam = isTeamTournament( tournament.type );
 
 			// SSF tournaments mirror SSF: title = group name, dates/time control/
 			// link derived. (All read-only in the form — set on every fetch.)
@@ -253,7 +253,10 @@ export function TournamentForm( {
 			if ( end ) {
 				setEndDate( end );
 			}
-			setTimeControl( parseSsfTimeControl( tournament.thinkingTime ) );
+			// The SDK buckets classical time controls as 'standard'; the plugin's
+			// own vocabulary calls that 'classical'.
+			const tc = parseTimeControl( tournament.thinkingTime );
+			setTimeControl( tc === 'standard' ? 'classical' : tc );
 			if ( tournament.id ) {
 				setExternalLink(
 					`https://chess.msvens.com/results/${ tournament.id }/${ ssfId }`

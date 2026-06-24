@@ -9,7 +9,6 @@ namespace Rockaden\Api;
 
 use Rockaden\PostTypes\Tournament;
 use Rockaden\Services\StatusDeriver;
-use Rockaden\Services\SsfClient;
 use Rockaden\Services\CalendarEventLink;
 use WP_REST_Request;
 use WP_REST_Response;
@@ -527,27 +526,17 @@ class TournamentApi {
 		$time_control        = get_post_meta( $post->ID, 'rc_time_control', true ) ?: 'classical';
 		$ssf_tournament_name = get_post_meta( $post->ID, 'rc_ssf_tournament_name', true ) ?: '';
 
-		if ( $ssf_group_id > 0 ) {
-			// SSF-backed: derive status from live SSF state (cached) so the pill
-			// matches the results view, and refresh the display fields. Falls back
-			// to the stored snapshot if SSF is unreachable.
-			$ssf                 = self::resolve_ssf_status(
-				$ssf_group_id,
-				$raw_status,
-				$start_date,
-				$end_date,
-				(bool) get_post_meta( $post->ID, 'rc_ssf_has_results', true )
-			);
-			$status              = $ssf['status'];
-			$start_date          = $ssf['start'] ?? $start_date;
-			$end_date            = $ssf['end'] ?? $end_date;
-			$ssf_tournament_name = $ssf['name'] ?? $ssf_tournament_name;
-		} else {
-			$has_results = self::rounds_have_results( is_array( $rounds ) ? $rounds : [] );
-			$status      = ( 'auto' === $raw_status )
-				? StatusDeriver::derive( $start_date, $end_date, $has_results )
-				: $raw_status;
-		}
+		// Status is derived from the stored snapshot (dates + a "has started"
+		// flag): rc_ssf_has_results for SSF-backed tournaments (snapshotted when
+		// the editor fetches from SSF), or recorded local results otherwise. A
+		// manual rc_status always wins. No live SSF call — the client reads SSF
+		// directly via the SDK; the server keeps no SSF knowledge.
+		$has_results = $ssf_group_id > 0
+			? (bool) get_post_meta( $post->ID, 'rc_ssf_has_results', true )
+			: self::rounds_have_results( is_array( $rounds ) ? $rounds : [] );
+		$status      = ( 'auto' === $raw_status )
+			? StatusDeriver::derive( $start_date, $end_date, $has_results )
+			: $raw_status;
 
 		if ( ! $is_editor ) {
 			if ( ! $show_participants ) {
@@ -582,84 +571,6 @@ class TournamentApi {
 			'showStandings'     => $show_standings,
 			'createdBy'         => $post->post_author,
 		];
-	}
-
-	/**
-	 * Resolve an SSF-backed tournament's status (and refreshed display fields)
-	 * from live SSF data, cached. A manual rc_status wins. A tournament whose
-	 * stored end passed over a week ago is completed without an SSF call. On
-	 * fetch failure, falls back to the date-based snapshot (today's behaviour).
-	 *
-	 * @param int    $group_id     SSF group id.
-	 * @param string $raw_status   Stored rc_status ('auto' or an explicit value).
-	 * @param string $stored_start Stored rc_start_date (fallback only).
-	 * @param string $stored_end   Stored rc_end_date (fallback + completed gate).
-	 * @param bool   $has_results  Stored rc_ssf_has_results (fallback only).
-	 * @return array{status: string, name?: string|null, start?: string|null, end?: string}
-	 */
-	private static function resolve_ssf_status(
-		int $group_id,
-		string $raw_status,
-		string $stored_start,
-		string $stored_end,
-		bool $has_results
-	): array {
-		if ( 'auto' !== $raw_status ) {
-			return [ 'status' => $raw_status ];
-		}
-
-		// Cheap gate: a tournament whose stored end passed a week ago is finished
-		// — skip the SSF call. The margin tolerates a postponed end date.
-		if ( self::end_passed_by_days( $stored_end, 7 ) ) {
-			return [ 'status' => 'completed' ];
-		}
-
-		$tournament = SsfClient::get_tournament_for_group( $group_id );
-		if ( null === $tournament ) {
-			return [ 'status' => StatusDeriver::derive( $stored_start, $stored_end, $has_results ) ];
-		}
-
-		$state = ( isset( $tournament['state'] ) && is_numeric( $tournament['state'] ) )
-			? (int) $tournament['state']
-			: 0;
-		$end   = ( isset( $tournament['end'] ) && is_string( $tournament['end'] ) )
-			? $tournament['end']
-			: $stored_end;
-		$name  = ( isset( $tournament['name'] ) && is_string( $tournament['name'] ) )
-			? $tournament['name']
-			: null;
-		$start = ( isset( $tournament['start'] ) && is_string( $tournament['start'] ) )
-			? $tournament['start']
-			: null;
-
-		return [
-			'status' => StatusDeriver::derive_from_ssf( $end, $state ),
-			'name'   => $name,
-			'start'  => $start,
-			'end'    => $end,
-		];
-	}
-
-	/**
-	 * Whether a stored end date is more than $days days in the past (site tz).
-	 * A cheap "clearly finished" gate that needs no SSF call.
-	 *
-	 * @param string $end  End date string ('' = no gate).
-	 * @param int    $days Margin in days.
-	 * @return bool
-	 */
-	private static function end_passed_by_days( string $end, int $days ): bool {
-		$end = trim( $end );
-		if ( '' === $end ) {
-			return false;
-		}
-		$tz       = wp_timezone();
-		$end_date = \DateTimeImmutable::createFromFormat( '!Y-m-d', substr( $end, 0, 10 ), $tz );
-		if ( false === $end_date ) {
-			return false;
-		}
-		$today = new \DateTimeImmutable( 'today', $tz );
-		return $today > $end_date->modify( "+{$days} days" );
 	}
 
 	/**

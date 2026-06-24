@@ -44,33 +44,6 @@ class StatusDeriver {
 	}
 
 	/**
-	 * Derive lifecycle status from live SSF data (state + end date). Mirrors the
-	 * sthlmschack-reimagined rule: completed once today is past the end date;
-	 * planned while the SSF state is REGISTRATION (1); otherwise active. The SSF
-	 * state — not the start date — decides "not started" (group start dates can
-	 * be a registration window well before play begins).
-	 *
-	 * @param string $end   Tournament end date ('' if unset).
-	 * @param int    $state SSF state (1 = registration, 2 = started, 3 = finished).
-	 * @return string planned|active|completed
-	 */
-	public static function derive_from_ssf( string $end, int $state ): string {
-		$tz    = wp_timezone();
-		$today = new \DateTimeImmutable( 'today', $tz );
-
-		$end_date = self::parse_local_date( $end, $tz );
-		if ( $end_date instanceof \DateTimeImmutable && $today > $end_date ) {
-			return 'completed';
-		}
-
-		if ( 1 === $state ) {
-			return 'planned';
-		}
-
-		return 'active';
-	}
-
-	/**
 	 * Parse a date string as local midnight in the given timezone. Accepts
 	 * 'YYYY-MM-DD' or a longer ISO string (the date part is used). Returns null
 	 * on empty/invalid input.

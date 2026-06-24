@@ -38,23 +38,6 @@ export function generateRatingPeriods(): string[] {
 }
 
 /**
- * Build the SSF rating list API path.
- *
- * @param clubId     SSF club ID.
- * @param date       Rating period date (YYYY-MM-DD).
- * @param ratingType Rating type (1=standard, 6=rapid, 7=blitz).
- * @param category   Player category filter.
- */
-export function buildRatingPath(
-	clubId: string,
-	date: string,
-	ratingType: RatingType,
-	category: PlayerCategory
-): string {
-	return `/rockaden/v1/ssf/ratinglist/club/${ clubId }/date/${ date }/ratingtype/${ ratingType }/category/${ category }`;
-}
-
-/**
  * Extract the relevant rating value from a player's elo data.
  *
  * @param elo        Player elo object (or null).

@@ -9,6 +9,7 @@ import type {
 import { getTranslation, toLanguage } from '../../shared/translations';
 import { formatSchedule } from '../../shared/formatSchedule';
 import { useLocale } from '../../shared/useLocale';
+import { fetchClubPlayers } from '../../shared/ssf';
 import TabBar from './TabBar';
 import ParticipantsTab from './ParticipantsTab';
 import SessionsTab from './SessionsTab';
@@ -80,10 +81,12 @@ export default function TrainingGroupApp( {
 			return;
 		}
 
-		apiFetch< SsfPlayer[] >( {
-			path: `/rockaden/v1/ssf/federation/player/club/${ clubId }`,
-		} )
+		let cancelled = false;
+		fetchClubPlayers( clubId )
 			.then( ( players ) => {
+				if ( cancelled ) {
+					return;
+				}
 				const map = new Map< number, SsfPlayer >();
 				for ( const player of players ) {
 					map.set( player.id, player );
@@ -91,6 +94,9 @@ export default function TrainingGroupApp( {
 				setRatings( map );
 			} )
 			.catch( () => {} );
+		return () => {
+			cancelled = true;
+		};
 	}, [ clubId ] );
 
 	const schedule = useMemo(

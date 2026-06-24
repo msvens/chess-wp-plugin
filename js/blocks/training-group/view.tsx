@@ -2,12 +2,14 @@
  * Frontend hydration for the Training Group detail block.
  */
 import { createRoot } from '@wordpress/element';
+import { configureSsf } from '../../shared/ssf';
 import TrainingGroupApp from './TrainingGroupApp';
 import './training-group.css';
 
 document
 	.querySelectorAll< HTMLDivElement >( '.rockaden-training-group-block' )
 	.forEach( ( el ) => {
+		configureSsf( el.dataset.ssfBase || '' );
 		const groupId = Number( el.dataset.groupId ) || 0;
 		const clubId = el.dataset.clubId || '';
 		const canEdit = el.dataset.canEdit === '1';

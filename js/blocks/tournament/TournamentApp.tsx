@@ -4,6 +4,7 @@ import type { Tournament, SsfPlayer, EventData } from '../../admin/types';
 import { getTranslation, toLanguage } from '../../shared/translations';
 import { formatSchedule } from '../../shared/formatSchedule';
 import { useLocale } from '../../shared/useLocale';
+import { fetchClubPlayers } from '../../shared/ssf';
 import SsfResultsView from '../training-group/SsfResultsView';
 import StandingsTab from './StandingsTab';
 
@@ -56,10 +57,12 @@ export default function TournamentApp( {
 			return;
 		}
 
-		apiFetch< SsfPlayer[] >( {
-			path: `/rockaden/v1/ssf/federation/player/club/${ clubId }`,
-		} )
+		let cancelled = false;
+		fetchClubPlayers( clubId )
 			.then( ( players ) => {
+				if ( cancelled ) {
+					return;
+				}
 				const map = new Map< number, SsfPlayer >();
 				for ( const player of players ) {
 					map.set( player.id, player );
@@ -67,6 +70,9 @@ export default function TournamentApp( {
 				setRatings( map );
 			} )
 			.catch( () => {} );
+		return () => {
+			cancelled = true;
+		};
 	}, [ clubId ] );
 
 	const schedule = useMemo(

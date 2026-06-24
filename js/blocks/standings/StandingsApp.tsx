@@ -5,6 +5,7 @@ import type { GameResult } from '../../shared/roundRobin';
 import { computeStandings } from '../../shared/roundRobin';
 import { getTranslation, toLanguage } from '../../shared/translations';
 import { useLocale } from '../../shared/useLocale';
+import { fetchClubPlayers } from '../../shared/ssf';
 import RoundsDisplay, { formatResult } from '../training-group/RoundsDisplay';
 import type { DisplayRound } from '../training-group/RoundsDisplay';
 import SsfResultsView from '../training-group/SsfResultsView';
@@ -84,10 +85,12 @@ export default function StandingsApp( {
 			return;
 		}
 
-		apiFetch< SsfPlayer[] >( {
-			path: `/rockaden/v1/ssf/federation/player/club/${ clubId }`,
-		} )
+		let cancelled = false;
+		fetchClubPlayers( clubId )
 			.then( ( players ) => {
+				if ( cancelled ) {
+					return;
+				}
 				const map = new Map< number, SsfPlayer >();
 				for ( const player of players ) {
 					map.set( player.id, player );
@@ -95,6 +98,9 @@ export default function StandingsApp( {
 				setRatings( map );
 			} )
 			.catch( () => {} );
+		return () => {
+			cancelled = true;
+		};
 	}, [ clubId ] );
 
 	if ( loading ) {
