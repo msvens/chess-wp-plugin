@@ -64,6 +64,8 @@ export interface Translations {
 		tournamentOnly: string;
 		trainingAndTournament: string;
 		schedule: string;
+		time: string;
+		except: string;
 		startDate: string;
 		endDate: string;
 		location: string;
@@ -138,6 +140,14 @@ export interface Translations {
 		startDate: string;
 		endDate: string;
 		externalLink: string;
+		descriptionHint: string;
+		registration: string;
+		contact: string;
+		invitation: string;
+		invitationHint: string;
+		invitationLink: string;
+		scheduleText: string;
+		scheduleTextHint: string;
 		addToCalendar: string;
 		addToCalendarHint: string;
 		linkedEvent: string;
@@ -344,6 +354,8 @@ const translations: Translations = {
 		tournamentOnly: __( 'Tournament', 'rockaden-chess' ),
 		trainingAndTournament: __( 'Training & Tournament', 'rockaden-chess' ),
 		schedule: __( 'Schedule', 'rockaden-chess' ),
+		time: __( 'Time', 'rockaden-chess' ),
+		except: __( 'except', 'rockaden-chess' ),
 		startDate: __( 'Start Date', 'rockaden-chess' ),
 		endDate: __( 'End Date', 'rockaden-chess' ),
 		location: __( 'Location', 'rockaden-chess' ),
@@ -433,6 +445,23 @@ const translations: Translations = {
 		startDate: __( 'Start date', 'rockaden-chess' ),
 		endDate: __( 'End date', 'rockaden-chess' ),
 		externalLink: __( 'External link', 'rockaden-chess' ),
+		descriptionHint: __(
+			'Leave a blank line between paragraphs to break the text up on the public page.',
+			'rockaden-chess'
+		),
+		registration: __( 'Registration', 'rockaden-chess' ),
+		contact: __( 'Contact', 'rockaden-chess' ),
+		invitation: __( 'Invitation', 'rockaden-chess' ),
+		invitationHint: __(
+			'A link or a short note. Web addresses are shown as a link.',
+			'rockaden-chess'
+		),
+		invitationLink: __( 'Read the invitation', 'rockaden-chess' ),
+		scheduleText: __( 'Schedule (free text)', 'rockaden-chess' ),
+		scheduleTextHint: __(
+			'Optional. Leave empty to list the linked calendar event’s actual dates; fill it in to word the schedule yourself.',
+			'rockaden-chess'
+		),
 		addToCalendar: __( 'Add to calendar', 'rockaden-chess' ),
 		addToCalendarHint: __(
 			'Creates a calendar event from this tournament’s dates.',

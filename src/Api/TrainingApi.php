@@ -554,6 +554,9 @@ class TrainingApi {
 					'recurrenceType'    => get_post_meta( $event_id, 'rc_recurrence_type', true ) ?: '',
 					'recurrenceEndDate' => get_post_meta( $event_id, 'rc_recurrence_end', true ) ?: '',
 					'location'          => get_post_meta( $event_id, 'rc_location', true ) ?: '',
+					// Lets the client list the schedule's real occurrence dates
+					// instead of restating the recurrence rule.
+					'excludedDates'     => json_decode( get_post_meta( $event_id, 'rc_excluded_dates', true ) ?: '[]', true ),
 				];
 			}
 		}

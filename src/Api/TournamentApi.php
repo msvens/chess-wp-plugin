@@ -294,6 +294,21 @@ class TournamentApi {
 		if ( isset( $body['externalLink'] ) ) {
 			update_post_meta( $post_id, 'rc_external_link', esc_url_raw( $body['externalLink'] ) );
 		}
+		if ( isset( $body['registration'] ) ) {
+			update_post_meta( $post_id, 'rc_registration', sanitize_textarea_field( $body['registration'] ) );
+		}
+		if ( isset( $body['contact'] ) ) {
+			update_post_meta( $post_id, 'rc_contact', sanitize_textarea_field( $body['contact'] ) );
+		}
+		// Free text: editors may paste a URL or write "Se inbjudan i klubblokalen",
+		// so this is not url-sanitised. The client links it only when it parses
+		// as an http(s) URL.
+		if ( isset( $body['invitation'] ) ) {
+			update_post_meta( $post_id, 'rc_invitation', sanitize_textarea_field( $body['invitation'] ) );
+		}
+		if ( isset( $body['scheduleText'] ) ) {
+			update_post_meta( $post_id, 'rc_schedule_text', sanitize_textarea_field( $body['scheduleText'] ) );
+		}
 		if ( isset( $body['startDate'] ) ) {
 			update_post_meta( $post_id, 'rc_start_date', sanitize_text_field( $body['startDate'] ) );
 		}
@@ -375,6 +390,9 @@ class TournamentApi {
 			'isRecurring'       => (bool) get_post_meta( $event_id, 'rc_is_recurring', true ),
 			'recurrenceType'    => (string) ( get_post_meta( $event_id, 'rc_recurrence_type', true ) ?: 'weekly' ),
 			'recurrenceEndDate' => substr( (string) ( get_post_meta( $event_id, 'rc_recurrence_end', true ) ?: '' ), 0, 10 ),
+			// Needed so the client can list the schedule's real occurrence dates
+			// rather than restating the recurrence rule.
+			'excludedDates'     => json_decode( get_post_meta( $event_id, 'rc_excluded_dates', true ) ?: '[]', true ),
 		];
 	}
 
@@ -565,6 +583,10 @@ class TournamentApi {
 			'eventId'           => (int) get_post_meta( $post->ID, 'rc_event_id', true ),
 			'calendarEvent'     => self::linked_calendar_event( $post->ID ),
 			'externalLink'      => get_post_meta( $post->ID, 'rc_external_link', true ) ?: '',
+			'registration'      => get_post_meta( $post->ID, 'rc_registration', true ) ?: '',
+			'contact'           => get_post_meta( $post->ID, 'rc_contact', true ) ?: '',
+			'invitation'        => get_post_meta( $post->ID, 'rc_invitation', true ) ?: '',
+			'scheduleText'      => get_post_meta( $post->ID, 'rc_schedule_text', true ) ?: '',
 			'startDate'         => $start_date,
 			'endDate'           => $end_date,
 			'showParticipants'  => $show_participants,

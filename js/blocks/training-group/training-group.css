@@ -45,10 +45,19 @@ html.dark .rc-td {
 	letter-spacing: 0.025em;
 }
 
+/* A wrapper around one <p> per authored paragraph — see shared/Description.tsx. */
 .rc-td__description {
 	margin: 0 0 1.5rem;
 	color: var(--rc-td-text-muted);
 	line-height: 1.5;
+}
+
+.rc-td__description p {
+	margin: 0 0 0.75rem;
+}
+
+.rc-td__description p:last-child {
+	margin-bottom: 0;
 }
 
 .rc-td__parent-tournament {
@@ -87,6 +96,39 @@ html.dark .rc-td {
 
 .rc-td__info dd {
 	margin: 0;
+}
+
+/*
+ * The schedule value is two lines: the dates (or the recurrence rule), then the
+ * time and place. Keeping them as separate blocks means a long date list wraps
+ * as a unit instead of stranding "Tid …" at the end of a row of dates.
+ */
+.rc-td__schedule-primary,
+.rc-td__schedule-secondary {
+	display: block;
+}
+
+.rc-td__schedule-secondary {
+	color: var(--rc-td-text-muted);
+}
+
+/*
+ * A phone fits far fewer dates per line, so both wordings are rendered and a
+ * media query picks one — no viewport state in JS. Only emitted when the two
+ * actually differ.
+ */
+.rc-td__schedule--narrow {
+	display: none;
+}
+
+@media (max-width: 640px) {
+	.rc-td__schedule--wide {
+		display: none;
+	}
+
+	.rc-td__schedule--narrow {
+		display: block;
+	}
 }
 
 .rc-td__info-link {

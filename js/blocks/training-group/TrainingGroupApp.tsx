@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from '@wordpress/element';
+import { useState, useEffect } from '@wordpress/element';
 import apiFetch from '@wordpress/api-fetch';
 import type {
 	TrainingGroup,
@@ -7,9 +7,10 @@ import type {
 	EventData,
 } from '../../admin/types';
 import { getTranslation, toLanguage } from '../../shared/translations';
-import { formatSchedule } from '../../shared/formatSchedule';
+import ScheduleValue from '../../shared/ScheduleValue';
 import { useLocale } from '../../shared/useLocale';
 import { fetchClubPlayers } from '../../shared/ssf';
+import Description from '../../shared/Description';
 import TabBar from './TabBar';
 import ParticipantsTab from './ParticipantsTab';
 import SessionsTab from './SessionsTab';
@@ -99,11 +100,6 @@ export default function TrainingGroupApp( {
 		};
 	}, [ clubId ] );
 
-	const schedule = useMemo(
-		() => ( event ? formatSchedule( event, lang, t.training ) : null ),
-		[ event, lang, t.training ]
-	);
-
 	if ( loading ) {
 		return <p className="rc-td__loading">{ t.common.loading }</p>;
 	}
@@ -112,7 +108,7 @@ export default function TrainingGroupApp( {
 		return null;
 	}
 
-	const hasInfo = group.trainers || group.contact || schedule;
+	const hasInfo = group.trainers || group.contact || event;
 
 	// Editors always see the participant list; the public respects the toggle.
 	// Sessions are always shown (the schedule/notes are useful publicly); when
@@ -135,15 +131,24 @@ export default function TrainingGroupApp( {
 		<div className="rc-td">
 			<h1 className="rc-td__title">{ group.title }</h1>
 			{ group.description && (
-				<p className="rc-td__description">{ group.description }</p>
+				<Description
+					text={ group.description }
+					className="rc-td__description"
+				/>
 			) }
 
 			{ hasInfo && (
 				<dl className="rc-td__info">
-					{ schedule && (
+					{ event && (
 						<div className="rc-td__info-item">
 							<dt>{ t.training.schedule }</dt>
-							<dd>{ schedule }</dd>
+							<dd>
+								<ScheduleValue
+									source={ event }
+									lang={ lang }
+									t={ t.training }
+								/>
+							</dd>
 						</div>
 					) }
 					{ group.trainers && (

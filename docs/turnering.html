@@ -9,7 +9,9 @@
 <h2 class="rc-doc-en">Fields</h2>
 
 <ul>
-	<li><strong class="rc-doc-sv">Titel och beskrivning</strong><strong class="rc-doc-en">Title and description</strong> <span class="rc-doc-sv">— turneringens namn och beskrivning.</span><span class="rc-doc-en">— the tournament name and description.</span></li>
+	<li><strong class="rc-doc-sv">Titel och beskrivning</strong><strong class="rc-doc-en">Title and description</strong> <span class="rc-doc-sv">— turneringens namn och beskrivning. Lämna en <strong>tom rad</strong> mellan styckena så visas de som separata stycken på den publika sidan.</span><span class="rc-doc-en">— the tournament name and description. Leave a <strong>blank line</strong> between paragraphs and they render as separate paragraphs on the public page.</span></li>
+	<li><strong class="rc-doc-sv">Anmälan, Kontakt och Inbjudan</strong><strong class="rc-doc-en">Registration, Contact and Invitation</strong> <span class="rc-doc-sv">— fritext som visas som egna rubriker på turneringens sida, i stället för att trängas i beskrivningen. Skriver du en webbadress i <em>Inbjudan</em> visas den som en länk. För SSF-turneringar fylls <em>Inbjudan</em> i automatiskt från SSF när du hämtar, om du inte redan skrivit något själv.</span><span class="rc-doc-en">— free text shown as their own headings on the tournament page, instead of being crammed into the description. A web address in <em>Invitation</em> is shown as a link. For SSF tournaments, <em>Invitation</em> is prefilled from SSF when you fetch, unless you already wrote something yourself.</span></li>
+	<li><strong class="rc-doc-sv">Schema (fritext)</strong><strong class="rc-doc-en">Schedule (free text)</strong> <span class="rc-doc-sv">— valfritt. Lämnas det tomt listar sidan de <strong>verkliga datumen</strong> från det kopplade kalenderevenemanget, så att borttagna veckor försvinner automatiskt. Fyll i fältet för att formulera schemat själv, t.ex. för att skriva ut vilka ronder som spelas vilket datum.</span><span class="rc-doc-en">— optional. Left empty, the page lists the <strong>actual dates</strong> from the linked calendar event, so removed weeks disappear automatically. Fill it in to word the schedule yourself, e.g. to spell out which rounds are played on which date.</span></li>
 	<li><strong class="rc-doc-sv">Status</strong><strong class="rc-doc-en">Status</strong> <span class="rc-doc-sv">— planerad, pågående eller avslutad (automatiskt eller manuellt, se nedan).</span><span class="rc-doc-en">— planned, active, or completed (automatic or manual, see below).</span></li>
 	<li><strong class="rc-doc-sv">Datum</strong><strong class="rc-doc-en">Dates</strong> <span class="rc-doc-sv">— styr den automatiska statusen och visas på turneringens sida. För en egen turnering kommer datumen från det kopplade kalenderevenemanget (se nedan); för en SSF-turnering hämtas de från SSF.</span><span class="rc-doc-en">— drive the automatic status and show on the tournament's page. For a home-grown tournament the dates come from the linked calendar event (see below); for an SSF tournament they're pulled from SSF.</span></li>
 	<li><strong class="rc-doc-sv">Kategori</strong><strong class="rc-doc-en">Category</strong> <span class="rc-doc-sv">— junior, ungdom, vuxen, senior eller blandad.</span><span class="rc-doc-en">— junior, youth, adult, senior, or mixed.</span></li>
@@ -79,6 +81,20 @@
 </p>
 <p class="rc-doc-en">
 	<strong>Home-grown tournaments:</strong> the calendar event is the tournament's only source of dates. If you don't add an event, the tournament has no dates and you set its status manually. <strong>SSF tournaments:</strong> dates always come from SSF (for the status), but ticking <strong>Add to calendar</strong> prefills the event from the SSF dates — a tournament spanning at most a week becomes one continuous multi-day event, and a longer one is suggested as a weekly recurrence you then adjust (SSF only gives dates, so you fill in the times).
+</p>
+
+<p class="rc-doc-sv">
+	Turneringens sida listar de <strong>faktiska tillfällena</strong> från evenemanget, inte upprepningsregeln. Tar du bort en enstaka vecka i kalendern (<em>Delete this only</em>) försvinner det datumet också ur schemaraden.
+</p>
+<p class="rc-doc-en">
+	The tournament page lists the event's <strong>actual occurrences</strong>, not the recurrence rule. Remove a single week in the calendar (<em>Delete this only</em>) and that date drops out of the schedule row too.
+</p>
+
+<p class="rc-doc-sv">
+	Är tillfällena för många för att räknas upp (t.ex. en träning som pågår hela terminen), eller saknar upprepningen slutdatum, skrivs i stället regeln, perioden och vilka veckor som hoppas över: <em>"Varje torsdag 18:00–20:00, Klubblokalen — 20/8–17/12 (utom 15/10, 5/11)"</em>. På mobil slår sidan över till den kortare formen tidigare, eftersom raden annars blir flera rader lång. Vill du formulera schemat själv, fyll i <strong>Schedule (free text)</strong>, som då ersätter hela raden.
+</p>
+<p class="rc-doc-en">
+	When there are too many occurrences to list (a training running all term, say), or the recurrence has no end date, the rule, the span and the skipped weeks are shown instead: <em>"Every thursday 18:00–20:00, Klubblokalen — 20/8–17/12 (except 15/10, 5/11)"</em>. On a phone the page switches to the shorter form sooner, since the row would otherwise run to several lines. To word the schedule yourself, fill in <strong>Schedule (free text)</strong>, which then replaces the whole row.
 </p>
 
 <h2 class="rc-doc-sv">Publika sidor</h2>
