@@ -2,6 +2,7 @@ import type { TrainingGroup } from '../../admin/types';
 import type { Language } from '../../shared/types';
 import { getTranslation } from '../../shared/translations';
 import { formatSchedule } from '../../shared/formatSchedule';
+import { toSingleLine } from '../../shared/Description';
 
 interface Props {
 	group: TrainingGroup;
@@ -29,7 +30,9 @@ export default function GroupCard( { group, canEdit, lang }: Props ) {
 			</div>
 			<h3 className="rc-tg__card-title">{ group.title }</h3>
 			{ group.description && (
-				<p className="rc-tg__card-desc">{ group.description }</p>
+				<p className="rc-tg__card-desc">
+					{ toSingleLine( group.description ) }
+				</p>
 			) }
 			{ schedule && <p className="rc-tg__card-schedule">{ schedule }</p> }
 			{ showParticipants && (

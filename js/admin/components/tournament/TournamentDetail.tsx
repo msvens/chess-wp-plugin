@@ -16,6 +16,7 @@ import { StandingsTable } from './StandingsTable';
 import { RoundsPanel } from './RoundsPanel';
 import { EditTournamentModal } from './EditTournamentModal';
 import { SsfTournamentView } from '../SsfTournamentView';
+import Description from '../../../shared/Description';
 
 function formatDate( value: string ): string {
 	if ( ! value ) {
@@ -182,9 +183,10 @@ export function TournamentDetail( {
 			) }
 
 			{ tournament.description && (
-				<Text style={ { display: 'block', marginBottom: 12 } }>
-					{ tournament.description }
-				</Text>
+				<Description
+					text={ tournament.description }
+					className="rc-description"
+				/>
 			) }
 
 			{ isSsfBacked && (

@@ -1,10 +1,11 @@
-import { useState, useEffect, useMemo } from '@wordpress/element';
+import { useState, useEffect } from '@wordpress/element';
 import apiFetch from '@wordpress/api-fetch';
 import type { Tournament, SsfPlayer, EventData } from '../../admin/types';
 import { getTranslation, toLanguage } from '../../shared/translations';
-import { formatSchedule } from '../../shared/formatSchedule';
+import ScheduleValue from '../../shared/ScheduleValue';
 import { useLocale } from '../../shared/useLocale';
 import { fetchClubPlayers } from '../../shared/ssf';
+import Description from '../../shared/Description';
 import SsfResultsView from '../training-group/SsfResultsView';
 import StandingsTab from './StandingsTab';
 
@@ -12,6 +13,12 @@ interface Props {
 	tournamentId: number;
 	clubId: string;
 	locale: string;
+}
+
+// The invitation field is free text — editors may paste a URL or write a note.
+// Only link it when it is unambiguously a web address.
+function isUrl( value: string ): boolean {
+	return /^https?:\/\/\S+$/i.test( value.trim() );
 }
 
 export default function TournamentApp( {
@@ -75,11 +82,6 @@ export default function TournamentApp( {
 		};
 	}, [ clubId ] );
 
-	const schedule = useMemo(
-		() => ( event ? formatSchedule( event, lang, t.training ) : null ),
-		[ event, lang, t.training ]
-	);
-
 	if ( loading ) {
 		return <p className="rc-td__loading">{ t.common.loading }</p>;
 	}
@@ -89,7 +91,13 @@ export default function TournamentApp( {
 	}
 
 	const isSsfBacked = tournament.ssfGroupId > 0;
-	const hasInfo = schedule || tournament.externalLink;
+	const hasSchedule = !! ( tournament.scheduleText || event );
+	const hasInfo =
+		hasSchedule ||
+		tournament.registration ||
+		tournament.contact ||
+		tournament.invitation ||
+		tournament.externalLink;
 
 	return (
 		<div className="rc-td">
@@ -102,15 +110,56 @@ export default function TournamentApp( {
 					</p>
 				) }
 			{ tournament.description && (
-				<p className="rc-td__description">{ tournament.description }</p>
+				<Description
+					text={ tournament.description }
+					className="rc-td__description"
+				/>
 			) }
 
 			{ hasInfo && (
 				<dl className="rc-td__info">
-					{ schedule && (
+					{ hasSchedule && (
 						<div className="rc-td__info-item">
 							<dt>{ t.training.schedule }</dt>
-							<dd>{ schedule }</dd>
+							<dd>
+								<ScheduleValue
+									source={ event }
+									lang={ lang }
+									t={ t.training }
+									override={ tournament.scheduleText }
+								/>
+							</dd>
+						</div>
+					) }
+					{ tournament.registration && (
+						<div className="rc-td__info-item">
+							<dt>{ t.tournament.registration }</dt>
+							<dd>{ tournament.registration }</dd>
+						</div>
+					) }
+					{ tournament.invitation && (
+						<div className="rc-td__info-item">
+							<dt>{ t.tournament.invitation }</dt>
+							<dd>
+								{ isUrl( tournament.invitation ) ? (
+									<a
+										href={ tournament.invitation }
+										target="_blank"
+										rel="noopener noreferrer"
+										className="rc-td__info-link"
+									>
+										{ t.tournament.invitationLink } ↗
+									</a>
+								) : (
+									tournament.invitation
+								) }
+							</dd>
+						</div>
+					) }
+					{ tournament.contact && (
+						<div className="rc-td__info-item">
+							<dt>{ t.tournament.contact }</dt>
+							<dd>{ tournament.contact }</dd>
 						</div>
 					) }
 					{ tournament.externalLink && (

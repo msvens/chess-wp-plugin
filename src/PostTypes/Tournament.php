@@ -92,6 +92,25 @@ class Tournament {
 				'type'    => 'string',
 				'default' => '',
 			],
+			// Free-text info rows shown on the public detail page, mirroring the
+			// training group's rc_trainers/rc_contact pattern.
+			'rc_registration'        => [
+				'type'    => 'string',
+				'default' => '',
+			],
+			'rc_contact'             => [
+				'type'    => 'string',
+				'default' => '',
+			],
+			'rc_invitation'          => [
+				'type'    => 'string',
+				'default' => '',
+			],
+			// Overrides the schedule line derived from the linked calendar event.
+			'rc_schedule_text'       => [
+				'type'    => 'string',
+				'default' => '',
+			],
 			'rc_start_date'          => [
 				'type'    => 'string',
 				'default' => '',

@@ -151,6 +151,11 @@ export interface Tournament {
 	// The linked calendar event's fields (null if none), for the edit form.
 	calendarEvent: CalendarEventPayload | null;
 	externalLink: string;
+	registration: string;
+	contact: string;
+	invitation: string;
+	// Overrides the schedule line derived from the linked calendar event.
+	scheduleText: string;
 	startDate: string;
 	endDate: string;
 	showParticipants: boolean;
@@ -170,6 +175,10 @@ export interface CreateTournamentData {
 	ssfTournamentName?: string;
 	eventId?: number;
 	externalLink?: string;
+	registration?: string;
+	contact?: string;
+	invitation?: string;
+	scheduleText?: string;
 	startDate?: string;
 	endDate?: string;
 	showParticipants?: boolean;
@@ -192,6 +201,10 @@ export interface CalendarEventPayload {
 	recurrenceType: 'weekly' | 'biweekly';
 	// Series end (date-only YYYY-MM-DD); empty = repeats with no end date.
 	recurrenceEndDate: string;
+	// Occurrences the editor removed from the series (YYYY-MM-DD). Read-only:
+	// the server returns them so the client can list the real schedule dates,
+	// but forms never write them (the calendar UI owns exclusions).
+	excludedDates?: string[];
 }
 
 export type TournamentView =

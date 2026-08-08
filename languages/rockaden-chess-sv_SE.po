@@ -560,9 +560,6 @@ msgstr "Kopplad kalenderhändelse"
 msgid "SSF tournament ID"
 msgstr "SSF turnerings-ID"
 
-msgid "SSF Group ID"
-msgstr "SSF Grupp-ID"
-
 msgid "The GROUP id — a tournament can contain several groups, so enter the group id, not the tournament id. With it set, standings come from SSF. Leave empty for a Rockaden-managed tournament."
 msgstr "GRUPP-id:t — en turnering kan innehålla flera grupper, så ange grupp-id, inte turnerings-id. När det är satt hämtas ställningen från SSF. Lämna tomt för en Rockaden-styrd turnering."
 
@@ -871,3 +868,27 @@ msgstr "Bekräfta"
 
 msgid "Add"
 msgstr "Lägg till"
+
+msgid "Registration"
+msgstr "Anmälan"
+
+msgid "Invitation"
+msgstr "Inbjudan"
+
+msgid "Read the invitation"
+msgstr "Läs inbjudan"
+
+msgid "A link or a short note. Web addresses are shown as a link."
+msgstr "En länk eller en kort notering. Webbadresser visas som en länk."
+
+msgid "Schedule (free text)"
+msgstr "Schema (fritext)"
+
+msgid "Optional. Leave empty to list the linked calendar event’s actual dates; fill it in to word the schedule yourself."
+msgstr "Valfritt. Lämna tomt för att lista kalenderhändelsens faktiska datum, eller fyll i för att formulera schemat själv."
+
+msgid "Leave a blank line between paragraphs to break the text up on the public page."
+msgstr "Lämna en tom rad mellan styckena för att dela upp texten på den publika sidan."
+
+msgid "except"
+msgstr "utom"

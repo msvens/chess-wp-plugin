@@ -71,6 +71,10 @@ export interface TournamentFormValues {
 	startDate: string;
 	endDate: string;
 	externalLink: string;
+	registration: string;
+	contact: string;
+	invitation: string;
+	scheduleText: string;
 	showParticipants: boolean;
 	showStandings: boolean;
 	ssfHasResults: boolean;
@@ -109,6 +113,10 @@ const DEFAULTS: TournamentFormValues = {
 	startDate: '',
 	endDate: '',
 	externalLink: '',
+	registration: '',
+	contact: '',
+	invitation: '',
+	scheduleText: '',
 	showParticipants: true,
 	showStandings: true,
 	ssfHasResults: false,
@@ -154,6 +162,10 @@ export function TournamentForm( {
 	const [ startDate, setStartDate ] = useState( init.startDate );
 	const [ endDate, setEndDate ] = useState( init.endDate );
 	const [ externalLink, setExternalLink ] = useState( init.externalLink );
+	const [ registration, setRegistration ] = useState( init.registration );
+	const [ contact, setContact ] = useState( init.contact );
+	const [ invitation, setInvitation ] = useState( init.invitation );
+	const [ scheduleText, setScheduleText ] = useState( init.scheduleText );
 	const [ showParticipants, setShowParticipants ] = useState(
 		init.showParticipants
 	);
@@ -263,6 +275,11 @@ export function TournamentForm( {
 				);
 			}
 			setSsfHasResults( Array.isArray( rounds ) && rounds.length > 0 );
+			// SSF carries the invitation URL. Prefill it, but never clobber an
+			// invitation the editor already wrote by hand.
+			if ( tournament.invitationurl && ! invitation.trim() ) {
+				setInvitation( tournament.invitationurl );
+			}
 
 			if ( isTeam ) {
 				setSsfNote( t.tournament.ssfTeamNotice );
@@ -316,6 +333,10 @@ export function TournamentForm( {
 			startDate: effectiveStart,
 			endDate: effectiveEnd,
 			externalLink: externalLink.trim(),
+			registration: registration.trim(),
+			contact: contact.trim(),
+			invitation: invitation.trim(),
+			scheduleText: scheduleText.trim(),
 			showParticipants,
 			showStandings,
 			ssfHasResults: isSsfBacked ? ssfHasResults : false,
@@ -397,6 +418,26 @@ export function TournamentForm( {
 				label={ t.training.description }
 				value={ description }
 				onChange={ setDescription }
+				help={ t.tournament.descriptionHint }
+			/>
+
+			{ /* Info rows shown on the public page, mirroring the training
+			   group's Trainers/Contact fields. */ }
+			<TextareaControl
+				label={ t.tournament.registration }
+				value={ registration }
+				onChange={ setRegistration }
+			/>
+			<TextControl
+				label={ t.tournament.contact }
+				value={ contact }
+				onChange={ setContact }
+			/>
+			<TextControl
+				label={ t.tournament.invitation }
+				value={ invitation }
+				onChange={ setInvitation }
+				help={ t.tournament.invitationHint }
 			/>
 
 			<div style={ { display: 'flex', gap: 12 } }>
@@ -571,6 +612,16 @@ export function TournamentForm( {
 					onChange={ setEventValue }
 				/>
 			) }
+
+			{ /* Left empty, the public Schedule row lists the linked event's real
+			   occurrence dates. Fill this in to state the schedule in your own
+			   words instead (e.g. to annotate which rounds fall on which date). */ }
+			<TextareaControl
+				label={ t.tournament.scheduleText }
+				value={ scheduleText }
+				onChange={ setScheduleText }
+				help={ t.tournament.scheduleTextHint }
+			/>
 
 			{ error && (
 				<Text

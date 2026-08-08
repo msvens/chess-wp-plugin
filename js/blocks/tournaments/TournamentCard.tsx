@@ -1,6 +1,7 @@
 import type { Tournament } from '../../admin/types';
 import type { Language } from '../../shared/types';
 import { getTranslation } from '../../shared/translations';
+import { toSingleLine } from '../../shared/Description';
 
 interface Props {
 	tournament: Tournament;
@@ -56,7 +57,9 @@ export default function TournamentCard( { tournament, lang }: Props ) {
 			<h3 className="rc-tn__card-title">{ tournament.title }</h3>
 			{ dateRange && <p className="rc-tn__card-dates">{ dateRange }</p> }
 			{ tournament.description && (
-				<p className="rc-tn__card-desc">{ tournament.description }</p>
+				<p className="rc-tn__card-desc">
+					{ toSingleLine( tournament.description ) }
+				</p>
 			) }
 			<div className="rc-tn__card-footer">
 				<span className="rc-tn__card-meta">

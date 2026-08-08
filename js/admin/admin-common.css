@@ -5,6 +5,19 @@
  * (e.g. flatpickr z-index in FlatpickrInput.css).
  */
 
+/* Plain-text description rendered as paragraphs (see shared/Description.tsx). */
+.rc-description {
+	margin-bottom: 12px;
+}
+
+.rc-description p {
+	margin: 0 0 8px;
+}
+
+.rc-description p:last-child {
+	margin-bottom: 0;
+}
+
 /* Wider create/edit modals. */
 .rc-wide-modal {
 	width: 720px;
