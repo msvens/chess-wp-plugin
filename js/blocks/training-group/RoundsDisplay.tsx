@@ -12,6 +12,9 @@ export interface DisplayPairing {
 
 export interface DisplayRound {
 	round: number;
+	// Formatted round date shown under the round number in its tab; empty when
+	// SSF gives neither a played date nor a scheduled one.
+	date?: string;
 	pairings: DisplayPairing[];
 	byeName?: string;
 }
@@ -54,7 +57,14 @@ export default function RoundsDisplay( { rounds, t }: Props ) {
 						onClick={ () => setActiveRound( idx ) }
 						type="button"
 					>
-						{ t.round } { r.round }
+						<span className="rc-rounds__tab-label">
+							{ t.round } { r.round }
+						</span>
+						{ r.date && (
+							<span className="rc-rounds__tab-date">
+								{ r.date }
+							</span>
+						) }
 					</button>
 				) ) }
 			</div>

@@ -22,6 +22,7 @@ $wrapper_attributes = get_block_wrapper_attributes(
 ?>
 <div <?php echo wp_kses_post( $wrapper_attributes ); ?>
 	data-locale="<?php echo esc_attr( determine_locale() ); ?>"
+	data-ssf-base="<?php echo esc_url( untrailingslashit( rest_url( 'rockaden/v1/ssf' ) ) ); ?>"
 	data-layout="<?php echo esc_attr( $rc_layout ); ?>">
 	<p><?php esc_html_e( 'Loading tournaments...', 'rockaden-chess' ); ?></p>
 </div>

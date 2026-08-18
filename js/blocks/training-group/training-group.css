@@ -357,6 +357,23 @@ html.dark .rc-td {
 	font-family: inherit;
 }
 
+.rc-rounds__tab-label {
+	display: block;
+}
+
+/* Round date, under the round number — mirrors sthlmschack-reimagined. */
+.rc-rounds__tab-date {
+	display: block;
+	font-size: 0.75rem;
+	font-weight: 400;
+	color: var(--rc-td-text-muted, #6b7280);
+}
+
+.rc-rounds__tab--active .rc-rounds__tab-date {
+	color: inherit;
+	opacity: 0.8;
+}
+
 .rc-rounds__tab:hover {
 	color: var(--rc-td-tab-active, #2563eb);
 }

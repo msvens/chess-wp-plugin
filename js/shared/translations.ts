@@ -24,6 +24,8 @@ export interface Translations {
 		rapid: string;
 		blitz: string;
 		bye: string;
+		postponed: string;
+		adjudicated: string;
 		semester: string;
 		audience: string;
 		audiences: {
@@ -314,6 +316,9 @@ const translations: Translations = {
 		rapid: __( 'Rapid', 'rockaden-chess' ),
 		blitz: __( 'Blitz', 'rockaden-chess' ),
 		bye: __( 'Bye', 'rockaden-chess' ),
+		postponed: __( 'Postponed', 'rockaden-chess' ),
+		// 'adj' abbreviates adjudicated (a ruling), not adjourned.
+		adjudicated: __( 'adj', 'rockaden-chess' ),
 		semester: __( 'Semester', 'rockaden-chess' ),
 		audience: __( 'Audience', 'rockaden-chess' ),
 		audiences: {

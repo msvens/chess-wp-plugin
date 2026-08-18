@@ -121,6 +121,7 @@ export default function StandingsApp( {
 				<SsfResultsView
 					ssfGroupId={ tournament.ssfGroupId }
 					t={ t.training }
+					lang={ lang }
 					showRounds={ showRounds }
 				/>
 			</div>

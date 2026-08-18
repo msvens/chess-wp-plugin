@@ -7,11 +7,16 @@ import {
 import type { Translations } from '../../shared';
 import {
 	isTeamTournament,
+	getOpponentKind,
 	type TournamentEndResultDto,
 	type TournamentRoundResultDto,
 	type PlayerInfoDto,
 	type TournamentDto,
 } from '@msvens/schack-se-sdk';
+import {
+	formatIndividualRowResult,
+	getResultLabels,
+} from '../../shared/formatResult';
 import {
 	fetchSsfTournamentForGroup,
 	fetchSsfTournamentResults,
@@ -21,16 +26,6 @@ import {
 interface SsfTournamentViewProps {
 	ssfGroupId: number;
 	t: Translations;
-}
-
-function formatResult( result: number ): string {
-	if ( result === 1 ) {
-		return '1';
-	}
-	if ( result === 0.5 ) {
-		return '½';
-	}
-	return '0';
 }
 
 function getElo( playerInfo: PlayerInfoDto ): string {
@@ -51,10 +46,39 @@ interface DisplayRound {
 	pairings: DisplayPairing[];
 }
 
+/**
+ * The name for an opponent slot: -100 is a bye (frirond), any other negative id
+ * is a walkover slot. Neither is a player, so neither is looked up.
+ *
+ * @param id        Opponent id from the round result.
+ * @param playerMap Players from the standings.
+ * @param t         Translations.
+ */
+function opponentName(
+	id: number,
+	playerMap: Map< number, PlayerInfoDto >,
+	t: Translations
+): string {
+	const kind = getOpponentKind( id );
+	if ( kind === 'walkover' ) {
+		return 'W.O';
+	}
+	if ( kind === 'bye' ) {
+		return t.training.bye;
+	}
+	const player = playerMap.get( id );
+	return player
+		? `${ player.lastName }, ${ player.firstName }`
+		: String( id );
+}
+
 function buildDisplayRounds(
 	roundResults: TournamentRoundResultDto[],
-	playerMap: Map< number, PlayerInfoDto >
+	playerMap: Map< number, PlayerInfoDto >,
+	t: Translations
 ): DisplayRound[] {
+	const labels = getResultLabels( t.training );
+
 	const byRound = new Map< number, TournamentRoundResultDto[] >();
 	for ( const r of roundResults ) {
 		const existing = byRound.get( r.roundNr ) || [];
@@ -75,17 +99,11 @@ function buildDisplayRounds(
 				const away = playerMap.get( g.awayId );
 				return {
 					board: g.board,
-					whiteName: home
-						? `${ home.lastName }, ${ home.firstName }`
-						: String( g.homeId ),
+					whiteName: opponentName( g.homeId, playerMap, t ),
 					whiteRating: home ? getElo( home ) : '—',
-					blackName: away
-						? `${ away.lastName }, ${ away.firstName }`
-						: String( g.awayId ),
+					blackName: opponentName( g.awayId, playerMap, t ),
 					blackRating: away ? getElo( away ) : '—',
-					result: `${ formatResult(
-						g.homeResult
-					) } - ${ formatResult( g.awayResult ) }`,
+					result: formatIndividualRowResult( g, labels ),
 				};
 			} ),
 		};
@@ -99,9 +117,9 @@ export function SsfTournamentView( { ssfGroupId, t }: SsfTournamentViewProps ) {
 	const [ endResults, setEndResults ] = useState<
 		TournamentEndResultDto[] | null
 	>( null );
-	const [ displayRounds, setDisplayRounds ] = useState< DisplayRound[] >(
-		[]
-	);
+	const [ roundResults, setRoundResults ] = useState<
+		TournamentRoundResultDto[]
+	>( [] );
 	const [ loading, setLoading ] = useState( true );
 	const [ error, setError ] = useState< string | null >( null );
 	const [ activeRound, setActiveRound ] = useState( 0 );
@@ -112,7 +130,7 @@ export function SsfTournamentView( { ssfGroupId, t }: SsfTournamentViewProps ) {
 		setError( null );
 		setTournament( null );
 		setEndResults( null );
-		setDisplayRounds( [] );
+		setRoundResults( [] );
 
 		( async () => {
 			try {
@@ -135,11 +153,7 @@ export function SsfTournamentView( { ssfGroupId, t }: SsfTournamentViewProps ) {
 					return;
 				}
 				setEndResults( tableData );
-				const playerMap = new Map< number, PlayerInfoDto >();
-				for ( const r of tableData ) {
-					playerMap.set( r.playerInfo.id, r.playerInfo );
-				}
-				setDisplayRounds( buildDisplayRounds( roundData, playerMap ) );
+				setRoundResults( roundData );
 			} catch {
 				if ( ! cancelled ) {
 					setError( t.training.resultsFetchError );
@@ -222,6 +236,14 @@ export function SsfTournamentView( { ssfGroupId, t }: SsfTournamentViewProps ) {
 	}
 
 	const sorted = [ ...endResults ].sort( ( a, b ) => a.place - b.place );
+
+	// Derived, not stored: the labels must follow the current language rather
+	// than the one in effect when the fetch resolved.
+	const playerMap = new Map< number, PlayerInfoDto >();
+	for ( const r of endResults ) {
+		playerMap.set( r.playerInfo.id, r.playerInfo );
+	}
+	const displayRounds = buildDisplayRounds( roundResults, playerMap, t );
 	const totalGames = ( r: TournamentEndResultDto ) =>
 		r.wonGames + r.drawGames + r.lostGames;
 
