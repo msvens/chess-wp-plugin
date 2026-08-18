@@ -128,6 +128,16 @@ class TrainingApi {
 				'permission_callback' => [ self::class, 'can_edit' ],
 			]
 		);
+
+		register_rest_route(
+			self::NAMESPACE,
+			'/training-sessions/(?P<id>\d+)',
+			[
+				'methods'             => 'DELETE',
+				'callback'            => [ self::class, 'delete_session' ],
+				'permission_callback' => [ self::class, 'can_edit' ],
+			]
+		);
 	}
 
 	/**
@@ -311,9 +321,65 @@ class TrainingApi {
 		// Cascade-delete the projected calendar event we own.
 		CalendarEventLink::cascade_delete( $post->ID, 'training_group' );
 
+		// And the group's sessions. The session CPT is show_ui => false, so an
+		// orphaned session would be unreachable from anywhere in wp-admin.
+		$sessions = get_posts(
+			[
+				'post_type'      => TrainingSession::POST_TYPE,
+				'posts_per_page' => 500, // phpcs:ignore WordPress.WP.PostsPerPage.posts_per_page_posts_per_page -- Deleting a group must reach every session it owns.
+				'fields'         => 'ids',
+				'post_status'    => 'any',
+				'meta_query'     => [ // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query -- Required to find the sessions belonging to this group.
+					[
+						'key'   => 'rc_group_id',
+						'value' => $post->ID,
+						'type'  => 'NUMERIC',
+					],
+				],
+			]
+		);
+		foreach ( $sessions as $session_id ) {
+			wp_delete_post( (int) $session_id, true );
+		}
+
 		wp_delete_post( $post->ID, true );
 
 		return new WP_REST_Response( [ 'deleted' => true ] );
+	}
+
+	/**
+	 * Delete a training session.
+	 *
+	 * @param WP_REST_Request $request The incoming request.
+	 * @return WP_REST_Response|WP_Error
+	 */
+	public static function delete_session( WP_REST_Request $request ): WP_REST_Response|WP_Error {
+		$post = get_post( (int) $request->get_url_params()['id'] );
+
+		if ( ! $post || TrainingSession::POST_TYPE !== $post->post_type ) {
+			return new WP_Error( 'not_found', 'Training session not found', [ 'status' => 404 ] );
+		}
+
+		wp_delete_post( $post->ID, true );
+
+		return new WP_REST_Response( [ 'deleted' => true ] );
+	}
+
+	/**
+	 * Participant roles. Existing participants stored before roles existed have
+	 * no `role` key at all, which reads as the default — so no migration.
+	 */
+	private const ALLOWED_ROLES = [ 'participant', 'leader' ];
+
+	/**
+	 * Normalise a role from a request body, falling back to the default.
+	 *
+	 * @param mixed $role Raw role value.
+	 * @return string One of self::ALLOWED_ROLES.
+	 */
+	private static function sanitize_role( $role ): string {
+		$role = is_string( $role ) ? sanitize_text_field( $role ) : '';
+		return in_array( $role, self::ALLOWED_ROLES, true ) ? $role : 'participant';
 	}
 
 	/**
@@ -332,12 +398,14 @@ class TrainingApi {
 		$body         = $request->get_json_params();
 		$participants = json_decode( get_post_meta( $post->ID, 'rc_participants', true ) ?: '[]', true );
 
-		// Check if already exists (reactivate if inactive).
+		// Check if already exists (reactivate if inactive). Re-posting an existing
+		// participant is also how a role change is made — no separate route.
 		foreach ( $participants as &$p ) {
 			if ( ( $body['id'] ?? '' ) === $p['id'] ) {
 				$p['active'] = true;
 				$p['name']   = $body['name'] ?? $p['name'];
 				$p['ssfId']  = $body['ssfId'] ?? $p['ssfId'];
+				$p['role']   = self::sanitize_role( $body['role'] ?? ( $p['role'] ?? '' ) );
 				update_post_meta( $post->ID, 'rc_participants', wp_slash( wp_json_encode( $participants ) ) );
 				return new WP_REST_Response( self::format_group( get_post( $post->ID ) ) );
 			}
@@ -349,6 +417,7 @@ class TrainingApi {
 			'name'   => $body['name'] ?? '',
 			'ssfId'  => $body['ssfId'] ?? null,
 			'active' => true,
+			'role'   => self::sanitize_role( $body['role'] ?? '' ),
 		];
 
 		update_post_meta( $post->ID, 'rc_participants', wp_slash( wp_json_encode( $participants ) ) );

@@ -79,6 +79,9 @@ export interface Translations {
 		addExclusion: string;
 		cancelled: string;
 		trainers: string;
+		role: string;
+		roleLeader: string;
+		roleParticipant: string;
 		contact: string;
 		tournamentLink: string;
 		generateRounds: string;
@@ -372,6 +375,9 @@ const translations: Translations = {
 		addExclusion: __( 'Exclude', 'rockaden-chess' ),
 		cancelled: __( 'Cancelled', 'rockaden-chess' ),
 		trainers: __( 'Trainers', 'rockaden-chess' ),
+		role: __( 'Role', 'rockaden-chess' ),
+		roleLeader: __( 'Leader', 'rockaden-chess' ),
+		roleParticipant: __( 'Participant', 'rockaden-chess' ),
 		contact: __( 'Contact', 'rockaden-chess' ),
 		tournamentLink: __( 'Tournament (schack.se)', 'rockaden-chess' ),
 		generateRounds: __( 'Generate Rounds', 'rockaden-chess' ),

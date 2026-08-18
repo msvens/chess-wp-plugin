@@ -417,18 +417,29 @@ class TournamentApi {
 				$p['active'] = true;
 				$p['name']   = $body['name'] ?? $p['name'];
 				$p['ssfId']  = $body['ssfId'] ?? $p['ssfId'];
+				// Roles are a training-group feature; tournaments have no UI for
+				// them, but preserve one if a caller supplies it rather than
+				// silently dropping it (the Participant type is shared).
+				if ( isset( $body['role'] ) ) {
+					$p['role'] = sanitize_text_field( $body['role'] );
+				}
 				update_post_meta( $post->ID, 'rc_participants', wp_slash( wp_json_encode( $participants ) ) );
 				return new WP_REST_Response( self::format_tournament( get_post( $post->ID ) ) );
 			}
 		}
 		unset( $p );
 
-		$participants[] = [
-			'id'     => $body['id'] ?? wp_generate_uuid4(),
-			'name'   => $body['name'] ?? '',
-			'ssfId'  => $body['ssfId'] ?? null,
-			'active' => true,
-		];
+		$participants[] = array_filter(
+			[
+				'id'     => $body['id'] ?? wp_generate_uuid4(),
+				'name'   => $body['name'] ?? '',
+				'ssfId'  => $body['ssfId'] ?? null,
+				'active' => true,
+				'role'   => isset( $body['role'] ) ? sanitize_text_field( $body['role'] ) : null,
+			],
+			static fn ( $value, $key ) => 'role' !== $key || null !== $value,
+			ARRAY_FILTER_USE_BOTH
+		);
 
 		update_post_meta( $post->ID, 'rc_participants', wp_slash( wp_json_encode( $participants ) ) );
 

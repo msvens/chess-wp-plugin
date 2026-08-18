@@ -21,6 +21,7 @@ import type {
 	CreateTournamentData,
 	TournamentCategory,
 	TournamentStatus,
+	ParticipantRole,
 } from './types';
 
 const BASE = 'rockaden/v1';
@@ -60,9 +61,25 @@ export function deleteGroup( id: number ): Promise< { deleted: boolean } > {
 	} );
 }
 
+/**
+ * Add a participant, or update an existing one. The endpoint is idempotent on
+ * `id`, so re-posting is also how a role is changed.
+ *
+ * @param groupId    Training group post ID.
+ * @param data       Participant fields.
+ * @param data.id    Stable participant id (the SSF member id when known).
+ * @param data.name  Display name.
+ * @param data.ssfId SSF member id, or null for a non-member.
+ * @param data.role  Role in the group; omitted means participant.
+ */
 export function addParticipant(
 	groupId: number,
-	data: { id: string; name: string; ssfId: number | null }
+	data: {
+		id: string;
+		name: string;
+		ssfId: number | null;
+		role?: ParticipantRole;
+	}
 ): Promise< TrainingGroup > {
 	return apiFetch( {
 		path: `${ BASE }/training-groups/${ groupId }/participants`,
@@ -96,6 +113,18 @@ export function createSession(
 		path: `${ BASE }/training-groups/${ groupId }/sessions`,
 		method: 'POST',
 		data: { date },
+	} );
+}
+
+/**
+ * Delete a training session outright.
+ *
+ * @param sessionId Session post ID.
+ */
+export function deleteSession( sessionId: number ): Promise< void > {
+	return apiFetch( {
+		path: `${ BASE }/training-sessions/${ sessionId }`,
+		method: 'DELETE',
 	} );
 }
 

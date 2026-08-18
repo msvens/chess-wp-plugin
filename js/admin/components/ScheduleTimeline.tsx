@@ -3,6 +3,7 @@ import { Button, Notice } from '@wordpress/components';
 import type { Translations } from '../../shared';
 import type { TrainingSession } from '../types';
 import { createSession } from '../api';
+import { DeleteSessionButton } from './DeleteSessionButton';
 
 interface ScheduleTimelineProps {
 	groupId: number;
@@ -115,7 +116,13 @@ export function ScheduleTimeline( {
 										: '—' }
 								</td>
 								<td>
-									{ ! session && (
+									{ session ? (
+										<DeleteSessionButton
+											sessionId={ session.id }
+											t={ t }
+											onDeleted={ onCreated }
+										/>
+									) : (
 										<Button
 											variant="secondary"
 											size="small"

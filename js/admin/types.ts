@@ -1,11 +1,17 @@
 import type { Language } from '../shared';
 import type { PlayerInfoDto } from '@msvens/schack-se-sdk';
 
+// Roles are a training-group concept; the type is shared with tournaments, so
+// the field is optional. Participants stored before roles existed have no role
+// at all, which reads as 'participant' — hence no migration.
+export type ParticipantRole = 'participant' | 'leader';
+
 export interface Participant {
 	id: string;
 	name: string;
 	ssfId: number | null;
 	active: boolean;
+	role?: ParticipantRole;
 }
 
 export interface StoredPairing {
