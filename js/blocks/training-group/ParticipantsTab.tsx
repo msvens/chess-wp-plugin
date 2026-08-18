@@ -22,7 +22,17 @@ function getRating(
 }
 
 export default function ParticipantsTab( { participants, ratings, t }: Props ) {
-	const active = participants.filter( ( p ) => p.active );
+	// Leaders first, then by name. A participant stored before roles existed has
+	// no role at all, which reads as an ordinary participant.
+	const active = participants
+		.filter( ( p ) => p.active )
+		.sort( ( a, b ) => {
+			const rank = ( p: Participant ) => ( p.role === 'leader' ? 0 : 1 );
+			return (
+				rank( a ) - rank( b ) || a.name.localeCompare( b.name, 'sv' )
+			);
+		} );
+	const hasLeaders = active.some( ( p ) => p.role === 'leader' );
 
 	if ( active.length === 0 ) {
 		return <p className="rc-td__empty">{ t.participants } (0)</p>;
@@ -35,6 +45,7 @@ export default function ParticipantsTab( { participants, ratings, t }: Props ) {
 					<tr>
 						<th>{ t.name }</th>
 						{ ratings.size > 0 && <th>{ t.rating }</th> }
+						{ hasLeaders && <th>{ t.role }</th> }
 					</tr>
 				</thead>
 				<tbody>
@@ -46,6 +57,13 @@ export default function ParticipantsTab( { participants, ratings, t }: Props ) {
 								{ ratings.size > 0 && (
 									<td className="rc-td__rating">
 										{ rating || t.ratingUnavailable }
+									</td>
+								) }
+								{ hasLeaders && (
+									<td>
+										{ p.role === 'leader'
+											? t.roleLeader
+											: '' }
 									</td>
 								) }
 							</tr>

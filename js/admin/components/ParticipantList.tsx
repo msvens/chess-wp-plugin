@@ -1,8 +1,8 @@
 import { useState } from '@wordpress/element';
-import { Button, Notice } from '@wordpress/components';
+import { Button, Notice, SelectControl } from '@wordpress/components';
 import type { Translations } from '../../shared';
-import type { Participant, SsfRatingInfo } from '../types';
-import { removeParticipant } from '../api';
+import type { Participant, ParticipantRole, SsfRatingInfo } from '../types';
+import { addParticipant, removeParticipant } from '../api';
 import { ratingForTimeControl, ratingLabel } from './ratingUtils';
 
 interface ParticipantListProps {
@@ -27,6 +27,7 @@ export function ParticipantList( {
 	readOnly,
 }: ParticipantListProps ) {
 	const [ removing, setRemoving ] = useState< string | null >( null );
+	const [ savingRole, setSavingRole ] = useState< string | null >( null );
 	const [ error, setError ] = useState< string | null >( null );
 	const [ showInactive, setShowInactive ] = useState( false );
 
@@ -48,6 +49,32 @@ export function ParticipantList( {
 		} finally {
 			setRemoving( null );
 		}
+	}
+
+	// The add endpoint is idempotent on id, so re-posting the participant with a
+	// new role is the role change — no separate route needed.
+	async function handleRoleChange( p: Participant, role: ParticipantRole ) {
+		setSavingRole( p.id );
+		setError( null );
+		try {
+			await addParticipant( groupId, {
+				id: p.id,
+				name: p.name,
+				ssfId: p.ssfId,
+				role,
+			} );
+			onUpdated();
+		} catch ( err: any ) {
+			setError( err?.message || 'Failed to update role' );
+		} finally {
+			setSavingRole( null );
+		}
+	}
+
+	function roleLabel( role: ParticipantRole | undefined ): string {
+		return role === 'leader'
+			? t.training.roleLeader
+			: t.training.roleParticipant;
 	}
 
 	function getRating( p: Participant ): string {
@@ -87,6 +114,7 @@ export function ParticipantList( {
 					<tr>
 						<th>{ t.training.name }</th>
 						<th>{ ratingLabel( timeControl, t ) }</th>
+						<th>{ t.training.role }</th>
 						{ ! readOnly && <th></th> }
 					</tr>
 				</thead>
@@ -95,6 +123,35 @@ export function ParticipantList( {
 						<tr key={ p.id }>
 							<td>{ p.name }</td>
 							<td>{ getRating( p ) }</td>
+							<td>
+								{ readOnly ? (
+									roleLabel( p.role )
+								) : (
+									<SelectControl
+										aria-label={ t.training.role }
+										value={ p.role ?? 'participant' }
+										disabled={ savingRole === p.id }
+										options={ [
+											{
+												label: t.training
+													.roleParticipant,
+												value: 'participant',
+											},
+											{
+												label: t.training.roleLeader,
+												value: 'leader',
+											},
+										] }
+										onChange={ ( value ) =>
+											handleRoleChange(
+												p,
+												value as ParticipantRole
+											)
+										}
+										__nextHasNoMarginBottom
+									/>
+								) }
+							</td>
 							{ ! readOnly && (
 								<td>
 									<Button
@@ -113,7 +170,7 @@ export function ParticipantList( {
 					{ active.length === 0 && (
 						<tr>
 							<td
-								colSpan={ readOnly ? 2 : 3 }
+								colSpan={ readOnly ? 3 : 4 }
 								style={ {
 									textAlign: 'center',
 									fontStyle: 'italic',
@@ -144,6 +201,7 @@ export function ParticipantList( {
 									<tr key={ p.id } style={ { opacity: 0.6 } }>
 										<td>{ p.name }</td>
 										<td>{ getRating( p ) }</td>
+										<td>{ roleLabel( p.role ) }</td>
 										<td></td>
 									</tr>
 								) ) }

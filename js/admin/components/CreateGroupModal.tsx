@@ -100,6 +100,7 @@ export function CreateGroupModal( {
 						id: p.id,
 						name: p.name,
 						ssfId: p.ssfId,
+						role: p.role,
 					} );
 				}
 			}

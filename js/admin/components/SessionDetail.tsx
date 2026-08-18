@@ -9,6 +9,7 @@ import {
 import type { Translations } from '../../shared';
 import type { TrainingGroup, TrainingSession } from '../types';
 import { fetchGroup, fetchSessions, saveAttendance, saveNotes } from '../api';
+import { DeleteSessionButton } from './DeleteSessionButton';
 import { AttendanceForm } from './AttendanceForm';
 
 interface SessionDetailProps {
@@ -118,9 +119,26 @@ export function SessionDetail( {
 				&larr; { t.training.backToGroup }
 			</Button>
 
-			<Heading level={ 2 }>
-				{ group.title } &mdash; { session.sessionDate }
-			</Heading>
+			<div
+				style={ {
+					display: 'flex',
+					alignItems: 'center',
+					justifyContent: 'space-between',
+					gap: 12,
+				} }
+			>
+				<Heading level={ 2 }>
+					{ group.title } &mdash; { session.sessionDate }
+				</Heading>
+				{ /* Deleting from here has nowhere to return to, so go back to
+				   the group. */ }
+				<DeleteSessionButton
+					sessionId={ session.id }
+					t={ t }
+					onDeleted={ onBack }
+					stopPropagation={ false }
+				/>
+			</div>
 
 			{ error && (
 				<Notice

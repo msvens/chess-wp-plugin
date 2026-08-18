@@ -898,3 +898,12 @@ msgstr "Uppskjutet"
 
 msgid "adj"
 msgstr "domslut"
+
+msgid "Role"
+msgstr "Roll"
+
+msgid "Leader"
+msgstr "Ledare"
+
+msgid "Participant"
+msgstr "Deltagare"

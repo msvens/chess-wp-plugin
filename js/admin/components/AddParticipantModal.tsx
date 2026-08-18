@@ -2,12 +2,13 @@ import { useState, useMemo } from '@wordpress/element';
 import {
 	Modal,
 	SearchControl,
+	SelectControl,
 	Button,
 	Spinner,
 	__experimentalText as Text,
 } from '@wordpress/components';
 import type { Translations } from '../../shared';
-import type { Participant, SsfPlayer } from '../types';
+import type { Participant, ParticipantRole, SsfPlayer } from '../types';
 import { addParticipant } from '../api';
 
 interface AddParticipantModalProps {
@@ -32,6 +33,9 @@ export function AddParticipantModal( {
 	const [ search, setSearch ] = useState( '' );
 	const [ adding, setAdding ] = useState< number | null >( null );
 	const [ error, setError ] = useState< string | null >( null );
+	// Applies to each participant added while the modal is open, so a run of
+	// leaders can be added without switching back and forth.
+	const [ role, setRole ] = useState< ParticipantRole >( 'participant' );
 
 	const existingIds = useMemo(
 		() =>
@@ -68,6 +72,7 @@ export function AddParticipantModal( {
 				id: String( player.id ),
 				name: `${ player.firstName } ${ player.lastName }`,
 				ssfId: player.id,
+				role,
 			} );
 			onAdded();
 			onClose();
@@ -87,6 +92,25 @@ export function AddParticipantModal( {
 						value={ search }
 						onChange={ setSearch }
 						placeholder={ t.training.search }
+					/>
+
+					<SelectControl
+						label={ t.training.role }
+						value={ role }
+						options={ [
+							{
+								label: t.training.roleParticipant,
+								value: 'participant',
+							},
+							{
+								label: t.training.roleLeader,
+								value: 'leader',
+							},
+						] }
+						onChange={ ( value ) =>
+							setRole( value as ParticipantRole )
+						}
+						__nextHasNoMarginBottom
 					/>
 
 					{ error && (

@@ -3,6 +3,7 @@ import { Button, Notice } from '@wordpress/components';
 import type { Translations } from '../../shared';
 import type { TrainingSession } from '../types';
 import { createSession } from '../api';
+import { DeleteSessionButton } from './DeleteSessionButton';
 
 interface SessionListProps {
 	groupId: number;
@@ -71,6 +72,7 @@ export function SessionList( {
 								{ t.training.sessions }
 							</th>
 							<th>{ t.training.attendance }</th>
+							<th></th>
 						</tr>
 					</thead>
 					<tbody>
@@ -83,6 +85,13 @@ export function SessionList( {
 								<td>{ idx + 1 }</td>
 								<td>{ session.sessionDate }</td>
 								<td>{ session.attendance.length }</td>
+								<td>
+									<DeleteSessionButton
+										sessionId={ session.id }
+										t={ t }
+										onDeleted={ onCreated }
+									/>
+								</td>
 							</tr>
 						) ) }
 					</tbody>
