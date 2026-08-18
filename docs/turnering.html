@@ -106,3 +106,45 @@
 	<li class="rc-doc-sv"><code>/tournaments/&lt;slug&gt;/</code> — turneringens egen sida med rubrik, statusbricka, schema (om kopplad till evenemang), länk till fullständiga resultat och ställning (eller anmälda spelare innan turneringen börjat).</li>
 	<li class="rc-doc-en"><code>/tournaments/&lt;slug&gt;/</code> — the tournament's own page with title, status pill, schedule (if linked to an event), a Full results link, and standings (or registered players before the tournament starts).</li>
 </ul>
+
+<h2 class="rc-doc-sv">Så visas ronder och resultat</h2>
+<h2 class="rc-doc-en">How rounds and results are shown</h2>
+
+<p class="rc-doc-sv">
+	För SSF-turneringar hämtas ronderna direkt från <code>member.schack.se</code> — du fyller inte i något själv. Varje rond får en egen flik med <strong>ronddatum</strong> under rondnumret. Datumet är det faktiska speldatumet när ronden är spelad, annars det schemalagda. Ronder utan resultat får ingen flik ännu.
+</p>
+<p class="rc-doc-en">
+	For SSF tournaments the rounds come straight from <code>member.schack.se</code> — you don't enter anything yourself. Each round gets its own tab with the <strong>round date</strong> under the round number: the actual playing date once the round has been played, otherwise the scheduled one. Rounds with no results yet get no tab.
+</p>
+
+<p class="rc-doc-sv">
+	Resultaten visas med samma beteckningar som på SSF:s egna sidor:
+</p>
+<p class="rc-doc-en">
+	Results use the same notation as SSF's own pages:
+</p>
+
+<ul>
+	<li class="rc-doc-sv"><code>1 - 0</code>, <code>½ - ½</code>, <code>0 - 1</code> — vanliga resultat.</li>
+	<li class="rc-doc-en"><code>1 - 0</code>, <code>½ - ½</code>, <code>0 - 1</code> — ordinary results.</li>
+	<li class="rc-doc-sv"><code>1 - 0 w.o</code> — <strong>walkover</strong>. Även dubbel w.o. (<code>0 - 0 w.o</code>) syns nu, vilket tidigare inte gick att skilja från ett ospelat parti.</li>
+	<li class="rc-doc-en"><code>1 - 0 w.o</code> — <strong>walkover</strong>. A double walkover (<code>0 - 0 w.o</code>) is now shown too; it was previously indistinguishable from an unplayed game.</li>
+	<li class="rc-doc-sv"><strong>Uppskjutet</strong> — partiet är framflyttat och har inget resultat ännu.</li>
+	<li class="rc-doc-en"><strong>Postponed</strong> — the game has been moved and has no result yet.</li>
+	<li class="rc-doc-sv"><code>0 - 0 domslut</code> — resultatet är avgjort genom domslut.</li>
+	<li class="rc-doc-en"><code>0 - 0 adj</code> — the result was decided by a ruling (adjudicated).</li>
+	<li class="rc-doc-sv"><strong>Frirond</strong> — spelaren är uppsatt utan motståndare den ronden (udda antal deltagare).</li>
+	<li class="rc-doc-en"><strong>Bye</strong> — the player has no opponent that round (an odd number of participants).</li>
+</ul>
+
+<div class="rc-docs-tip">
+	<span class="rc-doc-sv"><strong>Lagturneringar:</strong> visas inte här. En lagturnering länkar i stället vidare till den officiella resultatsidan, där lagtabeller och matcher redovisas korrekt.</span>
+	<span class="rc-doc-en"><strong>Team tournaments:</strong> not shown here. A team tournament links out to the official results page instead, where team tables and matches are presented properly.</span>
+</div>
+
+<p class="rc-doc-sv">
+	I turneringslistan visar rutan <strong>antal deltagare</strong>. För SSF-turneringar räknas de i SSF, så siffran dyker upp strax efter att sidan laddats. Går SSF inte att nå visas ingen siffra alls hellre än en felaktig nolla.
+</p>
+<p class="rc-doc-en">
+	In the tournament list each card shows a <strong>participant count</strong>. For SSF tournaments they are counted in SSF, so the number appears shortly after the page loads. If SSF can't be reached, no number is shown at all rather than a misleading zero.
+</p>
