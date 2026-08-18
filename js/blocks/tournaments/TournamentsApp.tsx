@@ -3,6 +3,7 @@ import apiFetch from '@wordpress/api-fetch';
 import type { Tournament } from '../../admin/types';
 import { getTranslation, toLanguage } from '../../shared/translations';
 import { useLocale } from '../../shared/useLocale';
+import { fetchTournamentResults } from '../../shared/ssf';
 import TournamentCard from './TournamentCard';
 import TournamentRow from './TournamentRow';
 import type { Language } from '../../shared/types';
@@ -22,10 +23,12 @@ function Section( {
 	items,
 	lang,
 	showCards,
+	ssfCounts,
 }: {
 	items: Tournament[];
 	lang: Language;
 	showCards: boolean;
+	ssfCounts: Map< number, number >;
 } ) {
 	return (
 		<>
@@ -36,6 +39,7 @@ function Section( {
 							key={ tournament.id }
 							tournament={ tournament }
 							lang={ lang }
+							ssfCount={ ssfCounts.get( tournament.id ) }
 						/>
 					) ) }
 				</div>
@@ -46,6 +50,7 @@ function Section( {
 						<TournamentRow
 							tournament={ tournament }
 							lang={ lang }
+							ssfCount={ ssfCounts.get( tournament.id ) }
 						/>
 					</li>
 				) ) }
@@ -80,6 +85,41 @@ export default function TournamentsApp( { locale, layout = 'cards' }: Props ) {
 			} );
 	}, [] );
 
+	// SSF-backed tournaments keep their players in SSF, not in rc_participants,
+	// so the local list is empty and the card would read "0 deltagare". Count
+	// them from SSF after first paint; until a count resolves the card shows no
+	// counter at all, rather than a wrong zero.
+	const [ ssfCounts, setSsfCounts ] = useState< Map< number, number > >(
+		new Map()
+	);
+
+	useEffect( () => {
+		const backed = tournaments.filter( ( tn ) => tn.ssfGroupId > 0 );
+		if ( backed.length === 0 ) {
+			return;
+		}
+
+		let cancelled = false;
+		Promise.all(
+			backed.map( ( tn ) =>
+				fetchTournamentResults( tn.ssfGroupId ).then(
+					( rows ) => [ tn.id, rows.length ] as const
+				)
+			)
+		).then( ( pairs ) => {
+			if ( cancelled ) {
+				return;
+			}
+			setSsfCounts(
+				new Map( pairs.filter( ( [ , count ] ) => count > 0 ) )
+			);
+		} );
+
+		return () => {
+			cancelled = true;
+		};
+	}, [ tournaments ] );
+
 	const [ showPast, setShowPast ] = useState( false );
 
 	if ( loading ) {
@@ -104,6 +144,7 @@ export default function TournamentsApp( { locale, layout = 'cards' }: Props ) {
 					items={ ongoing }
 					lang={ lang }
 					showCards={ showCards }
+					ssfCounts={ ssfCounts }
 				/>
 			) }
 
@@ -123,6 +164,7 @@ export default function TournamentsApp( { locale, layout = 'cards' }: Props ) {
 							items={ past }
 							lang={ lang }
 							showCards={ showCards }
+							ssfCounts={ ssfCounts }
 						/>
 					) }
 				</div>

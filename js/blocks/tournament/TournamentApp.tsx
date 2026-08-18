@@ -184,6 +184,7 @@ export default function TournamentApp( {
 				<SsfResultsView
 					ssfGroupId={ tournament.ssfGroupId }
 					t={ t.training }
+					lang={ lang }
 				/>
 			) : (
 				<StandingsTab

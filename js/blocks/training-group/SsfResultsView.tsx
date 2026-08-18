@@ -1,12 +1,19 @@
 import { useState, useEffect } from '@wordpress/element';
 import type { Translations } from '../../shared/translations';
+import type { Language } from '../../shared/types';
 import {
 	isTeamTournament,
+	getOpponentKind,
+	findTournamentGroup,
 	type TournamentEndResultDto,
 	type TournamentRoundResultDto,
 	type PlayerInfoDto,
 	type TournamentDto,
 } from '@msvens/schack-se-sdk';
+import {
+	formatIndividualRowResult,
+	getResultLabels,
+} from '../../shared/formatResult';
 import {
 	fetchTournamentForGroup,
 	fetchTournamentResults,
@@ -18,27 +25,78 @@ import type { DisplayRound } from './RoundsDisplay';
 interface Props {
 	ssfGroupId: number;
 	t: Translations[ 'training' ];
+	lang: Language;
 	showRounds?: boolean;
-}
-
-function formatSsfResult( result: number ): string {
-	if ( result === 1 ) {
-		return '1';
-	}
-	if ( result === 0.5 ) {
-		return '½';
-	}
-	return '0';
 }
 
 function getElo( playerInfo: PlayerInfoDto ): string {
 	return playerInfo.elo?.rating ? String( playerInfo.elo.rating ) : '';
 }
 
+/**
+ * A round's date, formatted the way sthlmschack-reimagined shows it ("17/9/26").
+ * SSF hands back either an ISO date or an epoch-ms string.
+ *
+ * @param dateStr Raw date from SSF.
+ * @param lang    UI language.
+ */
+function formatRoundDate(
+	dateStr: string | undefined,
+	lang: Language
+): string {
+	if ( ! dateStr ) {
+		return '';
+	}
+	const asNumber = Number( dateStr );
+	const timestamp =
+		! isNaN( asNumber ) && asNumber > 0
+			? asNumber
+			: new Date( dateStr ).getTime();
+	if ( isNaN( timestamp ) || timestamp <= 0 ) {
+		return '';
+	}
+	return new Date( timestamp ).toLocaleDateString(
+		lang === 'sv' ? 'sv-SE' : 'en-GB',
+		{ day: 'numeric', month: 'numeric', year: '2-digit' }
+	);
+}
+
+/**
+ * The name to show for an opponent slot. A negative id is not a player: -100 is
+ * a bye (frirond, no game scheduled), any other negative is a walkover slot.
+ * Without this they render as the literal string "-100".
+ *
+ * @param id        Opponent id from the round result.
+ * @param playerMap Players from the standings.
+ * @param t         The `training` translation block.
+ */
+function opponentName(
+	id: number,
+	playerMap: Map< number, PlayerInfoDto >,
+	t: Translations[ 'training' ]
+): string {
+	const kind = getOpponentKind( id );
+	if ( kind === 'walkover' ) {
+		return 'W.O';
+	}
+	if ( kind === 'bye' ) {
+		return t.bye;
+	}
+	const player = playerMap.get( id );
+	return player
+		? `${ player.lastName }, ${ player.firstName }`
+		: String( id );
+}
+
 function buildSsfDisplayRounds(
 	roundResults: TournamentRoundResultDto[],
-	playerMap: Map< number, PlayerInfoDto >
+	playerMap: Map< number, PlayerInfoDto >,
+	roundDates: Map< number, string >,
+	t: Translations[ 'training' ],
+	lang: Language
 ): DisplayRound[] {
+	const labels = getResultLabels( t );
+
 	// Group by round number.
 	const byRound = new Map< number, TournamentRoundResultDto[] >();
 	for ( const r of roundResults ) {
@@ -53,25 +111,24 @@ function buildSsfDisplayRounds(
 		const games = byRound.get( roundNr ) || [];
 		games.sort( ( a, b ) => a.board - b.board );
 
+		// Prefer the actual game date; fall back to the scheduled round date.
+		const dateStr = games[ 0 ]?.date || roundDates.get( roundNr );
+
 		return {
 			round: roundNr,
+			date: formatRoundDate( dateStr, lang ),
 			pairings: games.map( ( g ) => {
 				const home = playerMap.get( g.homeId );
 				const away = playerMap.get( g.awayId );
-				const result = `${ formatSsfResult(
-					g.homeResult
-				) }-${ formatSsfResult( g.awayResult ) }`;
 				return {
 					board: g.board,
-					whiteName: home
-						? `${ home.lastName }, ${ home.firstName }`
-						: String( g.homeId ),
+					whiteName: opponentName( g.homeId, playerMap, t ),
 					whiteRating: home ? getElo( home ) || undefined : undefined,
-					blackName: away
-						? `${ away.lastName }, ${ away.firstName }`
-						: String( g.awayId ),
+					blackName: opponentName( g.awayId, playerMap, t ),
 					blackRating: away ? getElo( away ) || undefined : undefined,
-					result,
+					// The SDK owns the NOT_SET fallback, so a legitimate 0-0
+					// (double forfeit, adjudicated) is not read as "not played".
+					result: formatIndividualRowResult( g, labels ),
 				};
 			} ),
 		};
@@ -81,6 +138,7 @@ function buildSsfDisplayRounds(
 export default function SsfResultsView( {
 	ssfGroupId,
 	t,
+	lang,
 	showRounds = true,
 }: Props ) {
 	const [ tournament, setTournament ] = useState< TournamentDto | null >(
@@ -220,9 +278,25 @@ export default function SsfResultsView( {
 	const totalGames = ( r: TournamentEndResultDto ) =>
 		r.wonGames + r.drawGames + r.lostGames;
 
+	// Scheduled round dates are already inside the tournament payload we fetch.
+	// SSF returns tournamentRounds unsorted, so key them by round number.
+	const roundDates = new Map< number, string >();
+	const group = tournament
+		? findTournamentGroup( tournament, ssfGroupId )?.group
+		: null;
+	for ( const r of group?.tournamentRounds ?? [] ) {
+		roundDates.set( r.roundNumber, r.roundDate );
+	}
+
 	const displayRounds =
 		showRounds && roundResults
-			? buildSsfDisplayRounds( roundResults, playerMap )
+			? buildSsfDisplayRounds(
+					roundResults,
+					playerMap,
+					roundDates,
+					t,
+					lang
+			  )
 			: [];
 
 	return (

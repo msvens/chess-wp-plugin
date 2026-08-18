@@ -24,6 +24,11 @@ import {
 	type TournamentRoundResultDto,
 } from '@msvens/schack-se-sdk';
 
+// Match the proxy's own upstream timeout (SsfProxy::SSF_TIMEOUT, 15s). The SDK
+// defaults to 10s, which would abort in the browser while the server was still
+// willing to wait — so a slow-but-successful SSF response looked like a failure.
+const SSF_TIMEOUT_MS = 15000;
+
 /**
  * Point the SDK at the plugin's SSF proxy. Call once per bundle entry.
  *
@@ -31,7 +36,7 @@ import {
  */
 export function configureSsf( baseUrl: string ): void {
 	if ( baseUrl ) {
-		configure( { baseUrl } );
+		configure( { baseUrl, timeoutMs: SSF_TIMEOUT_MS } );
 	}
 }
 

@@ -892,3 +892,9 @@ msgstr "Lämna en tom rad mellan styckena för att dela upp texten på den publi
 
 msgid "except"
 msgstr "utom"
+
+msgid "Postponed"
+msgstr "Uppskjutet"
+
+msgid "adj"
+msgstr "domslut"

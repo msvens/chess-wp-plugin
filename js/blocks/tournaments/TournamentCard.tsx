@@ -6,6 +6,8 @@ import { toSingleLine } from '../../shared/Description';
 interface Props {
 	tournament: Tournament;
 	lang: Language;
+	// Participant count from SSF, for SSF-backed tournaments.
+	ssfCount?: number;
 }
 
 function formatDate( value: string, lang: Language ): string {
@@ -23,11 +25,37 @@ function formatDate( value: string, lang: Language ): string {
 	} );
 }
 
-export default function TournamentCard( { tournament, lang }: Props ) {
+/**
+ * The participant count to display, or null to show no counter.
+ *
+ * SSF-backed tournaments keep their players in SSF, so the local list is empty;
+ * their count arrives asynchronously and is simply absent until it does — better
+ * than rendering a confident "0". Also honours the show-participants toggle, the
+ * way the training-group cards do.
+ *
+ * @param tournament The tournament.
+ * @param ssfCount   Count resolved from SSF, when available.
+ */
+function participantCount(
+	tournament: Tournament,
+	ssfCount: number | undefined
+): number | null {
+	if ( ! ( tournament.showParticipants ?? true ) ) {
+		return null;
+	}
+	if ( tournament.ssfGroupId > 0 ) {
+		return ssfCount ?? null;
+	}
+	return tournament.participants.filter( ( p ) => p.active ).length;
+}
+
+export default function TournamentCard( {
+	tournament,
+	lang,
+	ssfCount,
+}: Props ) {
 	const t = getTranslation( lang );
-	const activeParticipants = tournament.participants.filter(
-		( p ) => p.active
-	);
+	const count = participantCount( tournament, ssfCount );
 	const isSsfBacked = tournament.ssfGroupId > 0;
 	const dateRange = [
 		formatDate( tournament.startDate, lang ),
@@ -61,12 +89,13 @@ export default function TournamentCard( { tournament, lang }: Props ) {
 					{ toSingleLine( tournament.description ) }
 				</p>
 			) }
-			<div className="rc-tn__card-footer">
-				<span className="rc-tn__card-meta">
-					{ activeParticipants.length }{ ' ' }
-					{ t.training.participants.toLowerCase() }
-				</span>
-			</div>
+			{ count !== null && (
+				<div className="rc-tn__card-footer">
+					<span className="rc-tn__card-meta">
+						{ count } { t.training.participants.toLowerCase() }
+					</span>
+				</div>
+			) }
 		</a>
 	);
 }
