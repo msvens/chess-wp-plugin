@@ -37,7 +37,7 @@ export function EditGroupModal( {
 	const [ title, setTitle ] = useState( group.title );
 	const [ description, setDescription ] = useState( group.description );
 	const [ semester, setSemester ] = useState( group.semester );
-	const [ audience, setAudience ] = useState< 'junior' | 'adult' | 'mixed' >(
+	const [ audience, setAudience ] = useState< 'junior' | 'mixed' >(
 		group.audience || 'mixed'
 	);
 	const [ trainers, setTrainers ] = useState( group.trainers );
@@ -155,17 +155,11 @@ export function EditGroupModal( {
 						value: 'junior',
 					},
 					{
-						label: t.training.audiences.adult,
-						value: 'adult',
-					},
-					{
 						label: t.training.audiences.mixed,
 						value: 'mixed',
 					},
 				] }
-				onChange={ ( v ) =>
-					setAudience( v as 'junior' | 'adult' | 'mixed' )
-				}
+				onChange={ ( v ) => setAudience( v as 'junior' | 'mixed' ) }
 			/>
 
 			<SelectControl

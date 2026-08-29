@@ -22,7 +22,10 @@ class TrainingApi {
 
 	private const NAMESPACE = 'rockaden/v1';
 
-	private const ALLOWED_AUDIENCES = [ 'junior', 'adult', 'mixed' ];
+	// 'adult' was dropped — no training has a minimum age, so the only real
+	// distinction is junior-only vs open to everyone. Legacy 'adult' values are
+	// mapped to 'mixed' on read (see format_group), so nothing needs migrating.
+	private const ALLOWED_AUDIENCES = [ 'junior', 'mixed' ];
 
 	// 'auto' derives planned/active/completed from the linked event's dates; 'draft' hides it.
 	private const ALLOWED_STATUSES = [ 'auto', 'planned', 'active', 'completed', 'draft' ];
@@ -659,7 +662,7 @@ class TrainingApi {
 			'status'           => $status,
 			'statusIsAuto'     => ( 'auto' === $raw_status ),
 			'semester'         => get_post_meta( $post->ID, 'rc_semester', true ) ?: '',
-			'audience'         => get_post_meta( $post->ID, 'rc_audience', true ) ?: 'mixed',
+			'audience'         => self::audience( $post->ID ),
 			'eventId'          => $event_id,
 			'participants'     => $participants,
 			'trainers'         => get_post_meta( $post->ID, 'rc_trainers', true ) ?: '',
@@ -668,6 +671,19 @@ class TrainingApi {
 			'showParticipants' => $show_participants,
 			'createdBy'        => $post->post_author,
 		];
+	}
+
+	/**
+	 * A group's audience. Unset means 'mixed', and the retired 'adult' value
+	 * reads as 'mixed' too — mirroring how 'archived' reads as 'completed' for
+	 * status, so old data keeps working without a migration.
+	 *
+	 * @param int $group_id Group post ID.
+	 * @return string
+	 */
+	private static function audience( int $group_id ): string {
+		$value = get_post_meta( $group_id, 'rc_audience', true );
+		return in_array( $value, self::ALLOWED_AUDIENCES, true ) ? $value : 'mixed';
 	}
 
 	/**

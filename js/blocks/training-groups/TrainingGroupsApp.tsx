@@ -34,12 +34,10 @@ export default function TrainingGroupsApp( {
 			} );
 	}, [] );
 
-	// Junior on the left, Adult + Mixed on the right — reused for ongoing and past.
+	// Junior on the left, everything else on the right — reused for ongoing and past.
 	const columns = ( list: TrainingGroup[] ) => {
 		const junior = list.filter( ( g ) => g.audience === 'junior' );
-		const adult = list.filter(
-			( g ) => g.audience === 'adult' || g.audience === 'mixed'
-		);
+		const allAges = list.filter( ( g ) => g.audience !== 'junior' );
 		return (
 			<div className="rc-tg__columns">
 				{ junior.length > 0 && (
@@ -58,13 +56,13 @@ export default function TrainingGroupsApp( {
 						</div>
 					</section>
 				) }
-				{ adult.length > 0 && (
+				{ allAges.length > 0 && (
 					<section className="rc-tg__column">
 						<h2 className="rc-tg__column-title">
-							{ t.training.audiences.adult }
+							{ t.training.audiences.mixed }
 						</h2>
 						<div className="rc-tg__grid">
-							{ adult.map( ( group ) => (
+							{ allAges.map( ( group ) => (
 								<GroupCard
 									key={ group.id }
 									group={ group }
@@ -82,9 +80,7 @@ export default function TrainingGroupsApp( {
 	// than the side-by-side card columns; also the mobile layout).
 	const listSections = ( list: TrainingGroup[] ) => {
 		const junior = list.filter( ( g ) => g.audience === 'junior' );
-		const adult = list.filter(
-			( g ) => g.audience === 'adult' || g.audience === 'mixed'
-		);
+		const allAges = list.filter( ( g ) => g.audience !== 'junior' );
 		const section = ( title: string, items: TrainingGroup[] ) =>
 			items.length > 0 && (
 				<section className="rc-tg__list-section">
@@ -101,7 +97,7 @@ export default function TrainingGroupsApp( {
 		return (
 			<div className="rc-tg__list-sections">
 				{ section( t.training.audiences.junior, junior ) }
-				{ section( t.training.audiences.adult, adult ) }
+				{ section( t.training.audiences.mixed, allAges ) }
 			</div>
 		);
 	};
