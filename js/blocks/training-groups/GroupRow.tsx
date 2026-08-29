@@ -2,10 +2,10 @@ import type { TrainingGroup } from '../../admin/types';
 import type { Language } from '../../shared/types';
 import { getTranslation } from '../../shared/translations';
 import { formatSchedule } from '../../shared/formatSchedule';
+import { participantsVisible } from '../../shared/participantsVisible';
 
 interface Props {
 	group: TrainingGroup;
-	canEdit: boolean;
 	lang: Language;
 }
 
@@ -15,13 +15,15 @@ interface Props {
  * participant count on the right).
  * @param root0
  * @param root0.group
- * @param root0.canEdit
  * @param root0.lang
  */
-export default function GroupRow( { group, canEdit, lang }: Props ) {
+export default function GroupRow( { group, lang }: Props ) {
 	const t = getTranslation( lang );
 	const activeParticipants = group.participants.filter( ( p ) => p.active );
-	const showParticipants = canEdit || ( group.showParticipants ?? true );
+	const showCount = participantsVisible(
+		group.showParticipants,
+		activeParticipants.length
+	);
 	const schedule =
 		group.schedule && group.schedule.startDate
 			? formatSchedule( group.schedule, lang, t.training, false )
@@ -41,7 +43,7 @@ export default function GroupRow( { group, canEdit, lang }: Props ) {
 						{ group.semester }
 					</span>
 				) }
-				{ showParticipants && (
+				{ showCount && (
 					<span className="rc-tg__row-count">
 						{ activeParticipants.length }{ ' ' }
 						{ t.training.participants.toLowerCase() }

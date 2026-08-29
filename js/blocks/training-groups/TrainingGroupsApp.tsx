@@ -7,13 +7,11 @@ import GroupCard from './GroupCard';
 import GroupRow from './GroupRow';
 
 interface Props {
-	canEdit: boolean;
 	locale: string;
 	layout?: 'cards' | 'list';
 }
 
 export default function TrainingGroupsApp( {
-	canEdit,
 	locale,
 	layout = 'cards',
 }: Props ) {
@@ -54,7 +52,6 @@ export default function TrainingGroupsApp( {
 								<GroupCard
 									key={ group.id }
 									group={ group }
-									canEdit={ canEdit }
 									lang={ lang }
 								/>
 							) ) }
@@ -71,7 +68,6 @@ export default function TrainingGroupsApp( {
 								<GroupCard
 									key={ group.id }
 									group={ group }
-									canEdit={ canEdit }
 									lang={ lang }
 								/>
 							) ) }
@@ -96,11 +92,7 @@ export default function TrainingGroupsApp( {
 					<ul className="rc-tg__list">
 						{ items.map( ( group ) => (
 							<li key={ group.id }>
-								<GroupRow
-									group={ group }
-									canEdit={ canEdit }
-									lang={ lang }
-								/>
+								<GroupRow group={ group } lang={ lang } />
 							</li>
 						) ) }
 					</ul>

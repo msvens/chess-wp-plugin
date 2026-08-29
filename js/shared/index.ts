@@ -6,3 +6,4 @@ export type { Translations } from './translations';
 export { generateRoundRobin, computeStandings } from './roundRobin';
 export { expandRecurringEvents } from './expandRecurringEvents';
 export { getTranslation, toLanguage } from './translations';
+export { participantsVisible } from './participantsVisible';

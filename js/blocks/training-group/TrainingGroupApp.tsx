@@ -11,6 +11,7 @@ import ScheduleValue from '../../shared/ScheduleValue';
 import { useLocale } from '../../shared/useLocale';
 import { fetchClubPlayers } from '../../shared/ssf';
 import Description from '../../shared/Description';
+import { participantsVisible } from '../../shared/participantsVisible';
 import TabBar from './TabBar';
 import ParticipantsTab from './ParticipantsTab';
 import SessionsTab from './SessionsTab';
@@ -18,18 +19,12 @@ import SessionsTab from './SessionsTab';
 interface Props {
 	groupId: number;
 	clubId: string;
-	canEdit: boolean;
 	locale: string;
 }
 
 export type Tab = 'participants' | 'sessions';
 
-export default function TrainingGroupApp( {
-	groupId,
-	clubId,
-	canEdit,
-	locale,
-}: Props ) {
+export default function TrainingGroupApp( { groupId, clubId, locale }: Props ) {
 	const currentLocale = useLocale( locale );
 	const lang = toLanguage( currentLocale );
 	const t = getTranslation( lang );
@@ -110,12 +105,23 @@ export default function TrainingGroupApp( {
 
 	const hasInfo = group.trainers || group.contact || event;
 
-	// Editors always see the participant list; the public respects the toggle.
-	// Sessions are always shown (the schedule/notes are useful publicly); when
-	// participants are hidden, attendance names are stripped server-side.
-	const showParticipants = canEdit || ( group.showParticipants ?? true );
+	// Two different questions, deliberately kept apart:
+	//
+	//  - participantsPublic is the privacy toggle. It drives attendance names in
+	//    the sessions tab, and must NOT go false just because the list happens to
+	//    be empty right now — the group may gain participants mid-season.
+	//  - showParticipantsTab additionally requires someone to actually be in the
+	//    list, so an empty group doesn't offer a tab onto nothing.
+	//
+	// Sessions are always shown; their schedule and notes are useful publicly,
+	// and attendance names are stripped server-side when participants are hidden.
+	const participantsPublic = group.showParticipants ?? true;
+	const showParticipantsTab = participantsVisible(
+		group.showParticipants,
+		group.participants.filter( ( p ) => p.active ).length
+	);
 	const availableTabs: Tab[] = [
-		...( showParticipants ? ( [ 'participants' ] as Tab[] ) : [] ),
+		...( showParticipantsTab ? ( [ 'participants' ] as Tab[] ) : [] ),
 		'sessions',
 	];
 	const effectiveTab: Tab | null = availableTabs.includes( activeTab )
@@ -187,7 +193,7 @@ export default function TrainingGroupApp( {
 						<SessionsTab
 							sessions={ sessions }
 							participants={ group.participants }
-							showAttendance={ showParticipants }
+							showAttendance={ participantsPublic }
 							initialSessionId={
 								initialSession
 									? Number( initialSession[ 1 ] )
