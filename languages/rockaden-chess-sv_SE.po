@@ -907,3 +907,24 @@ msgstr "Ledare"
 
 msgid "Participant"
 msgstr "Deltagare"
+
+msgid "All ages"
+msgstr "Alla åldrar"
+
+msgid "All-day"
+msgstr "Heldag"
+
+msgid "Cards"
+msgstr "Kort"
+
+msgid "Layout"
+msgstr "Layout"
+
+msgid "List"
+msgstr "Lista"
+
+msgid "No end date"
+msgstr "Inget slutdatum"
+
+msgid "Repeats until"
+msgstr "Upprepas till"

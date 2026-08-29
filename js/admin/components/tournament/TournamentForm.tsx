@@ -455,10 +455,6 @@ export function TournamentForm( {
 								value: 'youth',
 							},
 							{
-								label: t.tournament.categories.adult,
-								value: 'adult',
-							},
-							{
 								label: t.tournament.categories.senior,
 								value: 'senior',
 							},

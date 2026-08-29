@@ -21,7 +21,12 @@ class TournamentApi {
 
 	private const NAMESPACE = 'rockaden/v1';
 
-	private const ALLOWED_CATEGORIES = [ 'junior', 'youth', 'adult', 'senior', 'mixed' ];
+	// No 'adult': SSF's own PlayerCategory enum has juniors, cadets, veterans,
+	// women and minors — nothing that means "adult", which only ever said "not
+	// junior", i.e. what 'mixed' already says. Legacy values read as 'mixed'
+	// (see category()), so nothing needs migrating. 'youth' maps loosely to
+	// cadets/minors and 'senior' to veterans, so both stay.
+	private const ALLOWED_CATEGORIES = [ 'junior', 'youth', 'senior', 'mixed' ];
 
 	private const ALLOWED_STATUSES = [ 'auto', 'planned', 'active', 'completed' ];
 
@@ -529,6 +534,19 @@ class TournamentApi {
 	}
 
 	/**
+	 * A tournament's category. Unset, or the retired 'adult' value, reads as
+	 * 'mixed' — mirroring how 'archived' reads as 'completed' for status, so old
+	 * data keeps working without a migration.
+	 *
+	 * @param int $post_id Tournament post ID.
+	 * @return string
+	 */
+	private static function category( int $post_id ): string {
+		$value = get_post_meta( $post_id, 'rc_category', true );
+		return in_array( $value, self::ALLOWED_CATEGORIES, true ) ? $value : 'mixed';
+	}
+
+	/**
 	 * Format a tournament post as an array.
 	 *
 	 * @param \WP_Post $post The post to format.
@@ -581,7 +599,7 @@ class TournamentApi {
 			'slug'              => $post->post_name,
 			'title'             => $post->post_title,
 			'description'       => $post->post_content,
-			'category'          => get_post_meta( $post->ID, 'rc_category', true ) ?: 'mixed',
+			'category'          => self::category( $post->ID ),
 			'status'            => $status,
 			'statusIsAuto'      => ( 'auto' === $raw_status ),
 			'format'            => get_post_meta( $post->ID, 'rc_format', true ) ?: 'round-robin',

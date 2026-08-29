@@ -30,7 +30,6 @@ export interface Translations {
 		audience: string;
 		audiences: {
 			junior: string;
-			adult: string;
 			mixed: string;
 		};
 		startSession: string;
@@ -120,7 +119,6 @@ export interface Translations {
 		categories: {
 			junior: string;
 			youth: string;
-			adult: string;
 			senior: string;
 			mixed: string;
 		};
@@ -326,8 +324,9 @@ const translations: Translations = {
 		audience: __( 'Audience', 'rockaden-chess' ),
 		audiences: {
 			junior: __( 'Junior', 'rockaden-chess' ),
-			adult: __( 'Adult', 'rockaden-chess' ),
-			mixed: __( 'Mixed', 'rockaden-chess' ),
+			// Not "Mixed" — this is the public column heading for groups with no
+			// age restriction, so it says what a visitor needs to know.
+			mixed: __( 'All ages', 'rockaden-chess' ),
 		},
 		startSession: __( 'Start Session', 'rockaden-chess' ),
 		saveAttendance: __( 'Save Attendance', 'rockaden-chess' ),
@@ -428,7 +427,6 @@ const translations: Translations = {
 		categories: {
 			junior: __( 'Junior', 'rockaden-chess' ),
 			youth: __( 'Youth', 'rockaden-chess' ),
-			adult: __( 'Adult', 'rockaden-chess' ),
 			senior: __( 'Senior', 'rockaden-chess' ),
 			mixed: __( 'Mixed', 'rockaden-chess' ),
 		},

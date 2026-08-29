@@ -26,7 +26,10 @@ export interface StoredRound {
 	bye?: string;
 }
 
-export type TrainingAudience = 'junior' | 'adult' | 'mixed';
+// 'adult' was retired — no training has a minimum age, so the only meaningful
+// distinction is junior-only vs open to everyone. TrainingApi maps any legacy
+// 'adult' value to 'mixed' on read, so no migration was needed.
+export type TrainingAudience = 'junior' | 'mixed';
 
 // Effective status (what the API returns): 'draft' = hidden from the public.
 export type TrainingStatus = 'planned' | 'active' | 'completed' | 'draft';
@@ -122,12 +125,9 @@ export interface CreateGroupData {
 	calendarEvent?: CalendarEventPayload | null;
 }
 
-export type TournamentCategory =
-	| 'junior'
-	| 'youth'
-	| 'adult'
-	| 'senior'
-	| 'mixed';
+// No 'adult' — SSF has no such category, and it only ever meant "not junior",
+// which is what 'mixed' says. TournamentApi maps legacy values to 'mixed'.
+export type TournamentCategory = 'junior' | 'youth' | 'senior' | 'mixed';
 
 // Effective lifecycle status (what's displayed/sorted). 'auto' is only a stored
 // mode, surfaced separately via statusIsAuto.

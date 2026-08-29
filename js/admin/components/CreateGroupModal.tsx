@@ -45,7 +45,7 @@ export function CreateGroupModal( {
 		source?.description ?? ''
 	);
 	const [ semester, setSemester ] = useState( source?.semester ?? '' );
-	const [ audience, setAudience ] = useState< 'junior' | 'adult' | 'mixed' >(
+	const [ audience, setAudience ] = useState< 'junior' | 'mixed' >(
 		source?.audience ?? 'mixed'
 	);
 	const [ trainers, setTrainers ] = useState( source?.trainers ?? '' );
@@ -169,17 +169,11 @@ export function CreateGroupModal( {
 						value: 'junior',
 					},
 					{
-						label: t.training.audiences.adult,
-						value: 'adult',
-					},
-					{
 						label: t.training.audiences.mixed,
 						value: 'mixed',
 					},
 				] }
-				onChange={ ( v ) =>
-					setAudience( v as 'junior' | 'adult' | 'mixed' )
-				}
+				onChange={ ( v ) => setAudience( v as 'junior' | 'mixed' ) }
 			/>
 
 			<SelectControl
