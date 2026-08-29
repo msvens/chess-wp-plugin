@@ -2,6 +2,7 @@ import type { Tournament } from '../../admin/types';
 import type { Language } from '../../shared/types';
 import { getTranslation } from '../../shared/translations';
 import { toSingleLine } from '../../shared/Description';
+import { participantsVisible } from '../../shared/participantsVisible';
 
 interface Props {
 	tournament: Tournament;
@@ -40,13 +41,19 @@ function participantCount(
 	tournament: Tournament,
 	ssfCount: number | undefined
 ): number | null {
-	if ( ! ( tournament.showParticipants ?? true ) ) {
+	const count =
+		tournament.ssfGroupId > 0
+			? ssfCount
+			: tournament.participants.filter( ( p ) => p.active ).length;
+
+	// undefined means an SSF count that hasn't resolved yet — nothing to show.
+	if ( count === undefined ) {
 		return null;
 	}
-	if ( tournament.ssfGroupId > 0 ) {
-		return ssfCount ?? null;
-	}
-	return tournament.participants.filter( ( p ) => p.active ).length;
+
+	return participantsVisible( tournament.showParticipants, count )
+		? count
+		: null;
 }
 
 export default function TournamentCard( {

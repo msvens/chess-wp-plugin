@@ -8,15 +8,10 @@ import './training-groups.css';
 document
 	.querySelectorAll< HTMLDivElement >( '.rockaden-training-groups-block' )
 	.forEach( ( el ) => {
-		const canEdit = el.dataset.canEdit === '1';
 		const locale =
 			document.documentElement.dataset.lang || el.dataset.locale || 'sv';
 		const layout = el.dataset.layout === 'list' ? 'list' : 'cards';
 		createRoot( el ).render(
-			<TrainingGroupsApp
-				canEdit={ canEdit }
-				locale={ locale }
-				layout={ layout }
-			/>
+			<TrainingGroupsApp locale={ locale } layout={ layout } />
 		);
 	} );

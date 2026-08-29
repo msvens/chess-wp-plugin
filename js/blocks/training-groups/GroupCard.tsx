@@ -3,17 +3,20 @@ import type { Language } from '../../shared/types';
 import { getTranslation } from '../../shared/translations';
 import { formatSchedule } from '../../shared/formatSchedule';
 import { toSingleLine } from '../../shared/Description';
+import { participantsVisible } from '../../shared/participantsVisible';
 
 interface Props {
 	group: TrainingGroup;
-	canEdit: boolean;
 	lang: Language;
 }
 
-export default function GroupCard( { group, canEdit, lang }: Props ) {
+export default function GroupCard( { group, lang }: Props ) {
 	const t = getTranslation( lang );
 	const activeParticipants = group.participants.filter( ( p ) => p.active );
-	const showParticipants = canEdit || ( group.showParticipants ?? true );
+	const showCount = participantsVisible(
+		group.showParticipants,
+		activeParticipants.length
+	);
 	const schedule =
 		group.schedule && group.schedule.startDate
 			? formatSchedule( group.schedule, lang, t.training, false )
@@ -35,7 +38,7 @@ export default function GroupCard( { group, canEdit, lang }: Props ) {
 				</p>
 			) }
 			{ schedule && <p className="rc-tg__card-schedule">{ schedule }</p> }
-			{ showParticipants && (
+			{ showCount && (
 				<div className="rc-tg__card-footer">
 					<span className="rc-tg__card-meta">
 						{ activeParticipants.length }{ ' ' }
