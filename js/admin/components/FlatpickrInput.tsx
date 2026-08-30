@@ -1,6 +1,7 @@
 import { useRef, useEffect } from '@wordpress/element';
 import flatpickr from 'flatpickr';
 import 'flatpickr/dist/flatpickr.min.css';
+import '../flatpickr-overrides.css';
 import './FlatpickrInput.css';
 
 interface FlatpickrInputProps {
