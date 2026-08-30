@@ -1,0 +1,47 @@
+/*
+ * flatpickr fixes shared by every admin entry point that renders a picker
+ * (the React modals via FlatpickrInput, and the event meta box). Both import
+ * this immediately after flatpickr's own stylesheet.
+ */
+
+/*
+ * flatpickr appends its calendar popup to <body>, so inside a wp-components
+ * Modal it would render behind the dialog. flatpickr's own open-state rule is
+ * `.flatpickr-calendar.open { z-index: 99999 }` — two classes, so it out-
+ * specifies a bare `.flatpickr-calendar`. We match that specificity here and win
+ * by load order: this file is imported right after flatpickr's CSS, so it comes
+ * last in the bundle (no !important needed).
+ */
+.flatpickr-calendar.open {
+	z-index: 1000001;
+}
+
+/*
+ * The month header clipped its descenders ("August" lost the tail of the g,
+ * and the weekday row sat flush against it).
+ *
+ * flatpickr gives .flatpickr-month a fixed 34px with overflow:hidden, and
+ * expects the month <select> and year <input> inside it to collapse to the
+ * line box — hence its own `height:auto`. wp-admin styles form controls with
+ * their own height, padding and border, so they render ~33px tall instead;
+ * with the header's 7.48px top padding that makes .flatpickr-current-month
+ * 41px inside a 34px box. The text is then centred inside those tall controls,
+ * dropping the baseline far enough for descenders to cross the clip line.
+ *
+ * Measured before the fix: .flatpickr-current-month 41px, .flatpickr-month 34px.
+ *
+ * Restoring flatpickr's intended metrics fixes it without resizing the header,
+ * which matters because the prev/next arrows are absolutely positioned against
+ * that same fixed 34px.
+ */
+.flatpickr-calendar .flatpickr-current-month .flatpickr-monthDropdown-months,
+.flatpickr-calendar .flatpickr-current-month .numInputWrapper input.cur-year {
+	height: auto;
+	min-height: 0;
+	margin: 0;
+	border: 0;
+	box-shadow: none;
+	background: transparent;
+	line-height: inherit;
+	vertical-align: baseline;
+}

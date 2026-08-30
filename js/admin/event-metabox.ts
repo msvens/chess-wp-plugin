@@ -1,5 +1,6 @@
 import flatpickr from 'flatpickr';
 import 'flatpickr/dist/flatpickr.min.css';
+import './flatpickr-overrides.css';
 import './event-metabox.css';
 
 document.addEventListener( 'DOMContentLoaded', () => {
