@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-09-04T08:15:04+00:00\n"
+"POT-Creation-Date: 2026-09-04T09:34:35+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: rockaden-chess\n"
@@ -34,11 +34,11 @@ msgstr ""
 msgid "SK Rockaden"
 msgstr ""
 
-#: rockaden-chess.php:104
+#: rockaden-chess.php:105
 msgid "Settings"
 msgstr ""
 
-#: rockaden-chess.php:108 src/Admin/HelpPage.php:24
+#: rockaden-chess.php:109 src/Admin/HelpPage.php:24
 msgid "Help"
 msgstr ""
 
