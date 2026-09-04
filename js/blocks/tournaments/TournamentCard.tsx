@@ -2,28 +2,13 @@ import type { Tournament } from '../../admin/types';
 import type { Language } from '../../shared/types';
 import { getTranslation } from '../../shared/translations';
 import { toSingleLine } from '../../shared/Description';
-import { participantsVisible } from '../../shared/participantsVisible';
+import { formatDate, participantCount } from './tournamentDisplay';
 
 interface Props {
 	tournament: Tournament;
 	lang: Language;
 	// Participant count from SSF, for SSF-backed tournaments.
 	ssfCount?: number;
-}
-
-function formatDate( value: string, lang: Language ): string {
-	if ( ! value ) {
-		return '';
-	}
-	const d = new Date( value );
-	if ( isNaN( d.getTime() ) ) {
-		return value;
-	}
-	return d.toLocaleDateString( lang === 'sv' ? 'sv-SE' : 'en-GB', {
-		year: 'numeric',
-		month: 'short',
-		day: 'numeric',
-	} );
 }
 
 /**
@@ -37,24 +22,6 @@ function formatDate( value: string, lang: Language ): string {
  * @param tournament The tournament.
  * @param ssfCount   Count resolved from SSF, when available.
  */
-function participantCount(
-	tournament: Tournament,
-	ssfCount: number | undefined
-): number | null {
-	const count =
-		tournament.ssfGroupId > 0
-			? ssfCount
-			: tournament.participants.filter( ( p ) => p.active ).length;
-
-	// undefined means an SSF count that hasn't resolved yet — nothing to show.
-	if ( count === undefined ) {
-		return null;
-	}
-
-	return participantsVisible( tournament.showParticipants, count )
-		? count
-		: null;
-}
 
 export default function TournamentCard( {
 	tournament,
