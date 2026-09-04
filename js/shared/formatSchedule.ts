@@ -226,7 +226,8 @@ export function formatScheduleTime(
 }
 
 /**
- * Render a human schedule string, e.g. "Every week tuesday 18:30–21:00, Klubblokalen".
+ * Render a human schedule string, e.g. "Every Tuesday 18:30–21:00, Klubblokalen"
+ * ("Varje tisdag …" in Swedish, which lowercases weekdays).
  *
  * @param source          The event/schedule to format.
  * @param lang            UI language (drives the weekday locale).
@@ -253,8 +254,11 @@ export function formatSchedule(
 			? t.everyWeek
 			: '';
 
+	// Don't case-fold the weekday: the locale data already has it right. Swedish
+	// returns "onsdag" lowercase, English "Wednesday" capitalised — forcing
+	// lowercase was a no-op in Swedish and wrong everywhere else.
 	const dayStr = prefix
-		? `${ prefix } ${ weekday.toLowerCase() }`
+		? `${ prefix } ${ weekday }`
 		: weekday.charAt( 0 ).toUpperCase() + weekday.slice( 1 );
 
 	const parts = [ `${ dayStr } ${ timeStart }–${ timeEnd }` ];
