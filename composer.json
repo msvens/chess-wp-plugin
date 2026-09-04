@@ -14,7 +14,8 @@
         "squizlabs/php_codesniffer": "*",
         "wp-coding-standards/wpcs": "*",
         "phpcompatibility/phpcompatibility-wp": "*",
-        "dealerdirect/phpcodesniffer-composer-installer": "*"
+        "dealerdirect/phpcodesniffer-composer-installer": "*",
+        "wp-cli/i18n-command": "^2.7"
     },
     "scripts": {
         "phpstan": "phpstan analyse --memory-limit=1G",
