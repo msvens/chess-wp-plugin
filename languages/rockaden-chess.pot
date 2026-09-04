@@ -2,227 +2,140 @@
 # This file is distributed under the MIT.
 msgid ""
 msgstr ""
-"Project-Id-Version: Rockaden Chess 0.18.0\n"
-"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/rockaden-chess\n"
+"Project-Id-Version: Rockaden Chess 0.38.0\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/plugin\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-05-26T17:33:24+00:00\n"
+"POT-Creation-Date: 2026-09-04T08:15:04+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: rockaden-chess\n"
 
 #. Plugin Name of the plugin
-#: rockaden-chess.php
+#: rockaden-chess.php:3
 msgid "Rockaden Chess"
 msgstr ""
 
 #. Plugin URI of the plugin
-#: rockaden-chess.php
+#: rockaden-chess.php:4
 msgid "https://github.com/msvens/rockaden-wp"
 msgstr ""
 
 #. Description of the plugin
-#: rockaden-chess.php
+#: rockaden-chess.php:5
 msgid "Training management, calendar, and SSF integration for SK Rockaden."
 msgstr ""
 
 #. Author of the plugin
-#: rockaden-chess.php
+#: rockaden-chess.php:7
 msgid "SK Rockaden"
-msgstr ""
-
-#: build/blocks/calendar/render.php:26
-#: src/Blocks/calendar/render.php:26
-msgid "Loading calendar..."
-msgstr ""
-
-#: build/blocks/carousel/render.php:70
-#: src/Blocks/carousel/render.php:70
-msgid "Loading carousel…"
-msgstr ""
-
-#: build/blocks/latest-news/render.php:14
-#: src/Blocks/latest-news/render.php:14
-msgid "More news"
-msgstr ""
-
-#: build/blocks/latest-news/render.php:28
-#: src/Blocks/latest-news/render.php:28
-msgid "No news yet."
-msgstr ""
-
-#: build/blocks/latest-news/render.php:55
-#: src/Blocks/latest-news/render.php:55
-msgid "Read more"
-msgstr ""
-
-#: build/blocks/ranking-list/render.php:26
-#: src/Blocks/ranking-list/render.php:26
-msgid "Loading ranking list..."
-msgstr ""
-
-#: build/blocks/standings/render.php:38
-#: src/Blocks/standings/render.php:38
-msgid "Loading standings..."
-msgstr ""
-
-#: build/blocks/tournament/render.php:34
-#: src/Blocks/tournament/render.php:34
-msgid "Loading tournament..."
-msgstr ""
-
-#: build/blocks/tournaments/render.php:23
-#: src/Blocks/tournaments/render.php:23
-msgid "Loading tournaments..."
-msgstr ""
-
-#: build/blocks/training-group/render.php:34
-#: src/Blocks/training-group/render.php:34
-msgid "Loading training group..."
-msgstr ""
-
-#: build/blocks/training-groups/render.php:23
-#: src/Blocks/training-groups/render.php:23
-msgid "Loading training groups..."
-msgstr ""
-
-#: build/blocks/upcoming-events/render.php:16
-#: src/Blocks/upcoming-events/render.php:16
-msgid "See full calendar"
-msgstr ""
-
-#: build/blocks/upcoming-events/render.php:27
-#: src/Blocks/upcoming-events/render.php:27
-msgid "No upcoming events."
-msgstr ""
-
-#: build/blocks/upcoming-events/render.php:50
-#: src/Blocks/upcoming-events/render.php:50
-msgid "More info"
 msgstr ""
 
 #: rockaden-chess.php:104
 msgid "Settings"
 msgstr ""
 
-#: rockaden-chess.php:108
-#: src/Admin/HelpPage.php:24
+#: rockaden-chess.php:108 src/Admin/HelpPage.php:24
 msgid "Help"
 msgstr ""
 
-#: src/Admin/EventMetaBoxes.php:85
-#: src/Admin/TrainingAdmin.php:20
+#: src/Admin/EventMetaBoxes.php:86 src/Admin/TrainingAdmin.php:20
 #: src/Admin/TrainingAdmin.php:21
 msgid "Training"
 msgstr ""
 
-#: src/Admin/EventMetaBoxes.php:86
-#: src/PostTypes/Tournament.php:26
+#: src/Admin/EventMetaBoxes.php:87 src/PostTypes/Tournament.php:26
 msgid "Tournament"
 msgstr ""
 
-#: src/Admin/EventMetaBoxes.php:87
+#: src/Admin/EventMetaBoxes.php:88
 msgid "Junior"
 msgstr ""
 
-#: src/Admin/EventMetaBoxes.php:88
+#: src/Admin/EventMetaBoxes.php:89
 msgid "Allsvenskan"
 msgstr ""
 
-#: src/Admin/EventMetaBoxes.php:89
+#: src/Admin/EventMetaBoxes.php:90
 msgid "School Chess"
 msgstr ""
 
-#: src/Admin/EventMetaBoxes.php:90
+#: src/Admin/EventMetaBoxes.php:91
 msgid "Other"
 msgstr ""
 
-#: src/Admin/EventMetaBoxes.php:99
-msgid "SSF Import"
-msgstr ""
-
-#. translators: %d: SSF group ID
-#: src/Admin/EventMetaBoxes.php:105
-#, php-format
-msgid "Linked to SSF group %d"
-msgstr ""
-
-#: src/Admin/EventMetaBoxes.php:112
-msgid "tournament"
-msgstr ""
-
-#: src/Admin/EventMetaBoxes.php:120
-msgid "SSF ID"
-msgstr ""
-
-#: src/Admin/EventMetaBoxes.php:121
-msgid "Fetch Group"
-msgstr ""
-
-#: src/Admin/EventMetaBoxes.php:122
-msgid "Fetch Tournament"
-msgstr ""
-
-#: src/Admin/EventMetaBoxes.php:130
+#: src/Admin/EventMetaBoxes.php:100
 msgid "Date & Time"
 msgstr ""
 
-#: src/Admin/EventMetaBoxes.php:133
+#: src/Admin/EventMetaBoxes.php:103
 msgid "Start"
 msgstr ""
 
-#: src/Admin/EventMetaBoxes.php:137
+#: src/Admin/EventMetaBoxes.php:107
 msgid "End"
 msgstr ""
 
-#: src/Admin/EventMetaBoxes.php:144
+#: src/Admin/EventMetaBoxes.php:114
 msgid "Recurring"
 msgstr ""
 
-#: src/Admin/EventMetaBoxes.php:148
+#: src/Admin/EventMetaBoxes.php:118
 msgid "Weekly"
 msgstr ""
 
-#: src/Admin/EventMetaBoxes.php:149
+#: src/Admin/EventMetaBoxes.php:119
 msgid "Biweekly"
 msgstr ""
 
-#: src/Admin/EventMetaBoxes.php:154
+#: src/Admin/EventMetaBoxes.php:122
+msgid "Repeats until"
+msgstr ""
+
+#: src/Admin/EventMetaBoxes.php:123
+msgid "No end date"
+msgstr ""
+
+#: src/Admin/EventMetaBoxes.php:124
+msgid "Leave empty to repeat with no end date."
+msgstr ""
+
+#: src/Admin/EventMetaBoxes.php:129
 msgid "Excluded Dates"
 msgstr ""
 
-#: src/Admin/EventMetaBoxes.php:156
+#: src/Admin/EventMetaBoxes.php:131
 msgid "Comma-separated YYYY-MM-DD dates to exclude from recurrence."
 msgstr ""
 
-#: src/Admin/EventMetaBoxes.php:161
+#: src/Admin/EventMetaBoxes.php:136
 msgid "Details"
 msgstr ""
 
-#: src/Admin/EventMetaBoxes.php:164
+#: src/Admin/EventMetaBoxes.php:139
 msgid "Location"
 msgstr ""
 
-#: src/Admin/EventMetaBoxes.php:170
+#: src/Admin/EventMetaBoxes.php:145
 msgid "Category"
 msgstr ""
 
-#: src/Admin/EventMetaBoxes.php:181
+#: src/Admin/EventMetaBoxes.php:156
 msgid "Link"
 msgstr ""
 
-#: src/Admin/EventMetaBoxes.php:184
+#: src/Admin/EventMetaBoxes.php:159
 msgid "URL"
 msgstr ""
 
-#: src/Admin/EventMetaBoxes.php:188
+#: src/Admin/EventMetaBoxes.php:163
 msgid "Link Text"
 msgstr ""
 
-#: src/Admin/EventMetaBoxes.php:195
+#: src/Admin/EventMetaBoxes.php:170
 msgid "Description"
 msgstr ""
 
@@ -254,10 +167,65 @@ msgstr ""
 msgid "The club ID from member.schack.se"
 msgstr ""
 
-#: src/Admin/TournamentAdmin.php:20
-#: src/Admin/TournamentAdmin.php:21
+#: src/Admin/TournamentAdmin.php:20 src/Admin/TournamentAdmin.php:21
 #: src/PostTypes/Tournament.php:25
 msgid "Tournaments"
+msgstr ""
+
+#: src/Blocks/calendar/render.php:26
+msgid "Loading calendar..."
+msgstr ""
+
+#: src/Blocks/carousel/render.php:76
+msgid "Loading carousel…"
+msgstr ""
+
+#: src/Blocks/latest-news/render.php:14
+msgid "More news"
+msgstr ""
+
+#: src/Blocks/latest-news/render.php:28
+msgid "No news yet."
+msgstr ""
+
+#: src/Blocks/latest-news/render.php:55
+msgid "Read more"
+msgstr ""
+
+#: src/Blocks/ranking-list/render.php:27
+msgid "Loading ranking list..."
+msgstr ""
+
+#: src/Blocks/standings/render.php:39
+msgid "Loading standings..."
+msgstr ""
+
+#: src/Blocks/tournament/render.php:35
+msgid "Loading tournament..."
+msgstr ""
+
+#: src/Blocks/tournaments/render.php:27
+msgid "Loading tournaments..."
+msgstr ""
+
+#: src/Blocks/training-group/render.php:35
+msgid "Loading training group..."
+msgstr ""
+
+#: src/Blocks/training-groups/render.php:26
+msgid "Loading training groups..."
+msgstr ""
+
+#: src/Blocks/upcoming-events/render.php:16
+msgid "See full calendar"
+msgstr ""
+
+#: src/Blocks/upcoming-events/render.php:27
+msgid "No upcoming events."
+msgstr ""
+
+#: src/Blocks/upcoming-events/render.php:50
+msgid "More info"
 msgstr ""
 
 #: src/PostTypes/Event.php:25
@@ -308,134 +276,1033 @@ msgstr ""
 msgid "Training Session"
 msgstr ""
 
-#: build/blocks/calendar/block.json
 #: src/Blocks/calendar/block.json
 msgctxt "block title"
 msgid "Calendar"
 msgstr ""
 
-#: build/blocks/calendar/block.json
 #: src/Blocks/calendar/block.json
 msgctxt "block description"
 msgid "Displays the SK Rockaden event calendar."
 msgstr ""
 
-#: build/blocks/carousel/block.json
 #: src/Blocks/carousel/block.json
 msgctxt "block title"
 msgid "Image Carousel"
 msgstr ""
 
-#: build/blocks/carousel/block.json
 #: src/Blocks/carousel/block.json
 msgctxt "block description"
 msgid "Configurable image slider or carousel."
 msgstr ""
 
-#: build/blocks/documentation/block.json
 #: src/Blocks/documentation/block.json
 msgctxt "block title"
 msgid "Documentation"
 msgstr ""
 
-#: build/blocks/documentation/block.json
 #: src/Blocks/documentation/block.json
 msgctxt "block description"
 msgid "Renders bundled plugin and theme documentation."
 msgstr ""
 
-#: build/blocks/latest-news/block.json
 #: src/Blocks/latest-news/block.json
 msgctxt "block title"
 msgid "Latest News"
 msgstr ""
 
-#: build/blocks/latest-news/block.json
 #: src/Blocks/latest-news/block.json
 msgctxt "block description"
-msgid "Displays the latest news posts as cards with a link to the full archive."
+msgid ""
+"Displays the latest news posts as cards with a link to the full archive."
 msgstr ""
 
-#: build/blocks/ranking-list/block.json
 #: src/Blocks/ranking-list/block.json
 msgctxt "block title"
 msgid "Ranking List"
 msgstr ""
 
-#: build/blocks/ranking-list/block.json
 #: src/Blocks/ranking-list/block.json
 msgctxt "block description"
-msgid "Displays SSF club member ratings with filters for period, ELO type, and member category."
+msgid ""
+"Displays SSF club member ratings with filters for period, ELO type, and "
+"member category."
 msgstr ""
 
-#: build/blocks/standings/block.json
 #: src/Blocks/standings/block.json
 msgctxt "block title"
 msgid "Tournament Standings"
 msgstr ""
 
-#: build/blocks/standings/block.json
 #: src/Blocks/standings/block.json
 msgctxt "block description"
 msgid "Displays standings for a tournament."
 msgstr ""
 
-#: build/blocks/tournament/block.json
 #: src/Blocks/tournament/block.json
 msgctxt "block title"
 msgid "Tournament"
 msgstr ""
 
-#: build/blocks/tournament/block.json
 #: src/Blocks/tournament/block.json
 msgctxt "block description"
-msgid "Displays a single tournament page with participants, results and SSF link."
+msgid ""
+"Displays a single tournament page with participants, results and SSF link."
 msgstr ""
 
-#: build/blocks/tournaments/block.json
 #: src/Blocks/tournaments/block.json
 msgctxt "block title"
 msgid "Tournaments"
 msgstr ""
 
-#: build/blocks/tournaments/block.json
 #: src/Blocks/tournaments/block.json
 msgctxt "block description"
 msgid "Displays an overview grid of tournaments."
 msgstr ""
 
-#: build/blocks/training-group/block.json
 #: src/Blocks/training-group/block.json
 msgctxt "block title"
 msgid "Training Group"
 msgstr ""
 
-#: build/blocks/training-group/block.json
 #: src/Blocks/training-group/block.json
 msgctxt "block description"
 msgid "Displays a training group with participants and sessions."
 msgstr ""
 
-#: build/blocks/training-groups/block.json
 #: src/Blocks/training-groups/block.json
 msgctxt "block title"
 msgid "Training Groups"
 msgstr ""
 
-#: build/blocks/training-groups/block.json
 #: src/Blocks/training-groups/block.json
 msgctxt "block description"
 msgid "Displays an overview grid of all active training groups."
 msgstr ""
 
-#: build/blocks/upcoming-events/block.json
 #: src/Blocks/upcoming-events/block.json
 msgctxt "block title"
 msgid "Upcoming Events"
 msgstr ""
 
-#: build/blocks/upcoming-events/block.json
 #: src/Blocks/upcoming-events/block.json
 msgctxt "block description"
-msgid "Displays the next N upcoming events (recurring expanded) as a strip of cards."
+msgid ""
+"Displays the next N upcoming events (recurring expanded) as a strip of cards."
+msgstr ""
+
+#: js/shared/translations.ts:298
+msgid "Training groups and round-robin tournaments."
+msgstr ""
+
+#: js/shared/translations.ts:301
+msgid "Participants"
+msgstr ""
+
+#: js/shared/translations.ts:302
+msgid "Sessions"
+msgstr ""
+
+#: js/shared/translations.ts:303
+msgid "Standings"
+msgstr ""
+
+#: js/shared/translations.ts:304
+msgid "Attendance"
+msgstr ""
+
+#: js/shared/translations.ts:305
+msgid "Pairings"
+msgstr ""
+
+#: js/shared/translations.ts:306
+msgid "Round"
+msgstr ""
+
+#: js/shared/translations.ts:307
+msgid "Result"
+msgstr ""
+
+#: js/shared/translations.ts:308
+msgid "Present"
+msgstr ""
+
+#: js/shared/translations.ts:309
+msgid "Absent"
+msgstr ""
+
+#: js/shared/translations.ts:310
+msgid "Points"
+msgstr ""
+
+#: js/shared/translations.ts:311
+msgid "Played"
+msgstr ""
+
+#: js/shared/translations.ts:312
+msgid "W"
+msgstr ""
+
+#: js/shared/translations.ts:313
+msgid "D"
+msgstr ""
+
+#: js/shared/translations.ts:314
+msgid "L"
+msgstr ""
+
+#: js/shared/translations.ts:315
+msgid "Elo"
+msgstr ""
+
+#: js/shared/translations.ts:316
+msgid "Classical"
+msgstr ""
+
+#: js/shared/translations.ts:317 js/shared/translations.ts:614
+msgid "Rapid"
+msgstr ""
+
+#: js/shared/translations.ts:318 js/shared/translations.ts:615
+msgid "Blitz"
+msgstr ""
+
+#: js/shared/translations.ts:319
+msgid "Bye"
+msgstr ""
+
+#: js/shared/translations.ts:320
+msgid "Postponed"
+msgstr ""
+
+#: js/shared/translations.ts:322
+msgid "adj"
+msgstr ""
+
+#: js/shared/translations.ts:323
+msgid "Semester"
+msgstr ""
+
+#: js/shared/translations.ts:324
+msgid "Audience"
+msgstr ""
+
+#: js/shared/translations.ts:329
+msgid "All ages"
+msgstr ""
+
+#: js/shared/translations.ts:331
+msgid "Start Session"
+msgstr ""
+
+#: js/shared/translations.ts:332
+msgid "Save Attendance"
+msgstr ""
+
+#: js/shared/translations.ts:333
+msgid "Save Results"
+msgstr ""
+
+#: js/shared/translations.ts:334
+msgid "Add Participant"
+msgstr ""
+
+#: js/shared/translations.ts:335 js/shared/translations.ts:553
+msgid "Remove"
+msgstr ""
+
+#: js/shared/translations.ts:336
+msgid "No training groups yet."
+msgstr ""
+
+#: js/shared/translations.ts:337
+msgid "Past training groups"
+msgstr ""
+
+#: js/shared/translations.ts:338
+msgid "Hidden"
+msgstr ""
+
+#: js/shared/translations.ts:339
+msgid "Copy training group"
+msgstr ""
+
+#: js/shared/translations.ts:340
+msgid "Copy participants"
+msgstr ""
+
+#: js/shared/translations.ts:341
+msgid "copy"
+msgstr ""
+
+#: js/shared/translations.ts:343 js/shared/translations.ts:436
+msgid "Active"
+msgstr ""
+
+#: js/shared/translations.ts:344
+msgid "Inactive"
+msgstr ""
+
+#: js/shared/translations.ts:345
+msgid "Notes"
+msgstr ""
+
+#: js/shared/translations.ts:346
+msgid "Save Notes"
+msgstr ""
+
+#: js/shared/translations.ts:347 js/shared/translations.ts:623
+msgid "#"
+msgstr ""
+
+#: js/shared/translations.ts:348
+msgid "Name"
+msgstr ""
+
+#: js/shared/translations.ts:349
+msgid "Search…"
+msgstr ""
+
+#: js/shared/translations.ts:350
+msgid "Back to group"
+msgstr ""
+
+#: js/shared/translations.ts:351
+msgid "Back to training"
+msgstr ""
+
+#: js/shared/translations.ts:352
+msgid "-"
+msgstr ""
+
+#: js/shared/translations.ts:353
+msgid "Not played"
+msgstr ""
+
+#: js/shared/translations.ts:354
+msgid "Create Group"
+msgstr ""
+
+#: js/shared/translations.ts:355
+msgid "Group Name"
+msgstr ""
+
+#: js/shared/translations.ts:357
+msgid "Time Control"
+msgstr ""
+
+#: js/shared/translations.ts:358
+msgid "Has Tournament"
+msgstr ""
+
+#: js/shared/translations.ts:359
+msgid "Group Type"
+msgstr ""
+
+#: js/shared/translations.ts:362
+msgid "Training & Tournament"
+msgstr ""
+
+#: js/shared/translations.ts:363
+msgid "Schedule"
+msgstr ""
+
+#: js/shared/translations.ts:364 js/shared/translations.ts:513
+msgid "Time"
+msgstr ""
+
+#: js/shared/translations.ts:365
+msgid "except"
+msgstr ""
+
+#: js/shared/translations.ts:366
+msgid "Start Date"
+msgstr ""
+
+#: js/shared/translations.ts:367
+msgid "End Date"
+msgstr ""
+
+#: js/shared/translations.ts:370
+msgid "New Event"
+msgstr ""
+
+#: js/shared/translations.ts:371
+msgid "Select event…"
+msgstr ""
+
+#: js/shared/translations.ts:372
+msgid "No schedule linked."
+msgstr ""
+
+#: js/shared/translations.ts:374
+msgid "Exclude"
+msgstr ""
+
+#: js/shared/translations.ts:375
+msgid "Cancelled"
+msgstr ""
+
+#: js/shared/translations.ts:376
+msgid "Trainers"
+msgstr ""
+
+#: js/shared/translations.ts:377
+msgid "Role"
+msgstr ""
+
+#: js/shared/translations.ts:378
+msgid "Leader"
+msgstr ""
+
+#: js/shared/translations.ts:379
+msgid "Participant"
+msgstr ""
+
+#: js/shared/translations.ts:380 js/shared/translations.ts:462
+msgid "Contact"
+msgstr ""
+
+#: js/shared/translations.ts:381
+msgid "Tournament (schack.se)"
+msgstr ""
+
+#: js/shared/translations.ts:382
+msgid "Generate Rounds"
+msgstr ""
+
+#: js/shared/translations.ts:383
+msgid "Regenerate Rounds"
+msgstr ""
+
+#: js/shared/translations.ts:385
+msgid "Regenerating rounds will erase existing results. Continue?"
+msgstr ""
+
+#: js/shared/translations.ts:388
+msgid "Board"
+msgstr ""
+
+#: js/shared/translations.ts:389
+msgid "White"
+msgstr ""
+
+#: js/shared/translations.ts:390
+msgid "Black"
+msgstr ""
+
+#: js/shared/translations.ts:391
+msgid "—"
+msgstr ""
+
+#: js/shared/translations.ts:392
+msgid "Every"
+msgstr ""
+
+#: js/shared/translations.ts:393
+msgid "Every other"
+msgstr ""
+
+#: js/shared/translations.ts:394
+msgid "Show participants"
+msgstr ""
+
+#: js/shared/translations.ts:395
+msgid "Show standings"
+msgstr ""
+
+#: js/shared/translations.ts:396 js/shared/translations.ts:480
+msgid "SSF Group ID"
+msgstr ""
+
+#: js/shared/translations.ts:397
+msgid "SSF Tournament Group ID"
+msgstr ""
+
+#: js/shared/translations.ts:398
+msgid "Fetch from SSF"
+msgstr ""
+
+#: js/shared/translations.ts:399
+msgid "Fetching…"
+msgstr ""
+
+#: js/shared/translations.ts:400
+msgid "Could not fetch SSF data"
+msgstr ""
+
+#: js/shared/translations.ts:401
+msgid "Apply"
+msgstr ""
+
+#: js/shared/translations.ts:402
+msgid "Results"
+msgstr ""
+
+#: js/shared/translations.ts:403
+msgid "KP"
+msgstr ""
+
+#: js/shared/translations.ts:404
+msgid "Loading results…"
+msgstr ""
+
+#: js/shared/translations.ts:405
+msgid "Could not load results."
+msgstr ""
+
+#: js/shared/translations.ts:407 js/shared/translations.ts:492
+msgid "This is a team tournament — its results are not shown here."
+msgstr ""
+
+#: js/shared/translations.ts:411 js/shared/translations.ts:496
+msgid "This tournament hasn't started yet — showing the registered players."
+msgstr ""
+
+#: js/shared/translations.ts:414 js/shared/translations.ts:499
+msgid "Registered players"
+msgstr ""
+
+#: js/shared/translations.ts:415 js/shared/translations.ts:447
+msgid "Full results"
+msgstr ""
+
+#: js/shared/translations.ts:420
+msgid "Tournaments at SK Rockaden — round-robin or SSF-backed."
+msgstr ""
+
+#: js/shared/translations.ts:423
+msgid "Create Tournament"
+msgstr ""
+
+#: js/shared/translations.ts:424
+msgid "No tournaments yet."
+msgstr ""
+
+#: js/shared/translations.ts:425
+msgid "Tournament name"
+msgstr ""
+
+#: js/shared/translations.ts:429
+msgid "Youth"
+msgstr ""
+
+#: js/shared/translations.ts:430
+msgid "Senior"
+msgstr ""
+
+#: js/shared/translations.ts:431
+msgid "Mixed"
+msgstr ""
+
+#: js/shared/translations.ts:433
+msgid "Status"
+msgstr ""
+
+#: js/shared/translations.ts:435
+msgid "Planned"
+msgstr ""
+
+#: js/shared/translations.ts:437
+msgid "Completed"
+msgstr ""
+
+#: js/shared/translations.ts:439
+msgid "Automatic"
+msgstr ""
+
+#: js/shared/translations.ts:441
+msgid ""
+"Derived from the start/end dates (and results). A manual choice overrides it."
+msgstr ""
+
+#: js/shared/translations.ts:444
+msgid "Edit tournament"
+msgstr ""
+
+#: js/shared/translations.ts:445
+msgid "Fetch / Refresh from SSF"
+msgstr ""
+
+#: js/shared/translations.ts:446
+msgid "Could not fetch from SSF"
+msgstr ""
+
+#: js/shared/translations.ts:448
+msgid "Ongoing"
+msgstr ""
+
+#: js/shared/translations.ts:449
+msgid "Past tournaments"
+msgstr ""
+
+#: js/shared/translations.ts:450
+msgid "Format"
+msgstr ""
+
+#: js/shared/translations.ts:452
+msgid "Round-robin"
+msgstr ""
+
+#: js/shared/translations.ts:454
+msgid "Start date"
+msgstr ""
+
+#: js/shared/translations.ts:455
+msgid "End date"
+msgstr ""
+
+#: js/shared/translations.ts:456
+msgid "External link"
+msgstr ""
+
+#: js/shared/translations.ts:458
+msgid ""
+"Leave a blank line between paragraphs to break the text up on the public "
+"page."
+msgstr ""
+
+#: js/shared/translations.ts:461
+msgid "Registration"
+msgstr ""
+
+#: js/shared/translations.ts:463
+msgid "Invitation"
+msgstr ""
+
+#: js/shared/translations.ts:465
+msgid "A link or a short note. Web addresses are shown as a link."
+msgstr ""
+
+#: js/shared/translations.ts:468
+msgid "Read the invitation"
+msgstr ""
+
+#: js/shared/translations.ts:469
+msgid "Schedule (free text)"
+msgstr ""
+
+#: js/shared/translations.ts:471
+msgid ""
+"Optional. Leave empty to list the linked calendar event’s actual dates; fill "
+"it in to word the schedule yourself."
+msgstr ""
+
+#: js/shared/translations.ts:474
+msgid "Add to calendar"
+msgstr ""
+
+#: js/shared/translations.ts:476
+msgid "Creates a calendar event from this tournament’s dates."
+msgstr ""
+
+#: js/shared/translations.ts:479
+msgid "Linked calendar event"
+msgstr ""
+
+#: js/shared/translations.ts:482
+msgid ""
+"The GROUP id — a tournament can contain several groups, so enter the group "
+"id, not the tournament id. With it set, standings come from SSF. Leave empty "
+"for a Rockaden-managed tournament."
+msgstr ""
+
+#: js/shared/translations.ts:486
+msgid "Standings are pulled from SSF. Local pairings/results are not used."
+msgstr ""
+
+#: js/shared/translations.ts:489
+msgid "Group"
+msgstr ""
+
+#: js/shared/translations.ts:500
+msgid "Overview"
+msgstr ""
+
+#: js/shared/translations.ts:501 js/shared/translations.ts:511
+msgid "View tournament"
+msgstr ""
+
+#: js/shared/translations.ts:502
+msgid "Back to tournaments"
+msgstr ""
+
+#: js/shared/translations.ts:505
+msgid "Calendar"
+msgstr ""
+
+#: js/shared/translations.ts:507
+msgid "Upcoming events and activities at SK Rockaden."
+msgstr ""
+
+#: js/shared/translations.ts:510
+msgid "Today"
+msgstr ""
+
+#: js/shared/translations.ts:512
+msgid "No events this day."
+msgstr ""
+
+#: js/shared/translations.ts:515
+msgid "more"
+msgstr ""
+
+#: js/shared/translations.ts:516
+msgid "All-day"
+msgstr ""
+
+#: js/shared/translations.ts:519
+msgid "Month"
+msgstr ""
+
+#: js/shared/translations.ts:520
+msgid "Week"
+msgstr ""
+
+#: js/shared/translations.ts:521
+msgid "Day"
+msgstr ""
+
+#: js/shared/translations.ts:523
+msgid "Mon"
+msgstr ""
+
+#: js/shared/translations.ts:524
+msgid "Tue"
+msgstr ""
+
+#: js/shared/translations.ts:525
+msgid "Wed"
+msgstr ""
+
+#: js/shared/translations.ts:526
+msgid "Thu"
+msgstr ""
+
+#: js/shared/translations.ts:527
+msgid "Fri"
+msgstr ""
+
+#: js/shared/translations.ts:528
+msgid "Sat"
+msgstr ""
+
+#: js/shared/translations.ts:529
+msgid "Sun"
+msgstr ""
+
+#: js/shared/translations.ts:539 js/shared/translations.ts:616
+msgid "All"
+msgstr ""
+
+#: js/shared/translations.ts:543 js/shared/translations.ts:639
+msgid "Edit"
+msgstr ""
+
+#: js/shared/translations.ts:544 js/shared/translations.ts:638
+msgid "Delete"
+msgstr ""
+
+#: js/shared/translations.ts:545
+msgid "Delete this event?"
+msgstr ""
+
+#: js/shared/translations.ts:546
+msgid "Just this one"
+msgstr ""
+
+#: js/shared/translations.ts:547
+msgid "Whole series"
+msgstr ""
+
+#: js/shared/translations.ts:548
+msgid "Create event"
+msgstr ""
+
+#: js/shared/translations.ts:551
+msgid "Add images"
+msgstr ""
+
+#: js/shared/translations.ts:552
+msgid "Edit images"
+msgstr ""
+
+#: js/shared/translations.ts:554
+msgid "Move up"
+msgstr ""
+
+#: js/shared/translations.ts:555
+msgid "Move down"
+msgstr ""
+
+#: js/shared/translations.ts:556
+msgid "No images selected yet."
+msgstr ""
+
+#: js/shared/translations.ts:557
+msgid "Display mode"
+msgstr ""
+
+#: js/shared/translations.ts:559
+msgid "Slider"
+msgstr ""
+
+#: js/shared/translations.ts:560
+msgid "Carousel"
+msgstr ""
+
+#: js/shared/translations.ts:562
+msgid "Auto-advance"
+msgstr ""
+
+#: js/shared/translations.ts:563
+msgid "Interval (seconds)"
+msgstr ""
+
+#: js/shared/translations.ts:564
+msgid "Visible items"
+msgstr ""
+
+#: js/shared/translations.ts:565
+msgid "Aspect ratio"
+msgstr ""
+
+#: js/shared/translations.ts:566
+msgid "Cell sizing"
+msgstr ""
+
+#: js/shared/translations.ts:567
+msgid "Exact height"
+msgstr ""
+
+#: js/shared/translations.ts:568
+msgid "Height (px)"
+msgstr ""
+
+#: js/shared/translations.ts:570
+msgid "16:9 (Landscape wide)"
+msgstr ""
+
+#: js/shared/translations.ts:571
+msgid "4:3 (Landscape)"
+msgstr ""
+
+#: js/shared/translations.ts:572
+msgid "1:1 (Square)"
+msgstr ""
+
+#: js/shared/translations.ts:573
+msgid "3:4 (Portrait)"
+msgstr ""
+
+#: js/shared/translations.ts:574
+msgid "9:16 (Portrait tall)"
+msgstr ""
+
+#: js/shared/translations.ts:575
+msgid "Auto"
+msgstr ""
+
+#: js/shared/translations.ts:577
+msgid "Image fit"
+msgstr ""
+
+#: js/shared/translations.ts:579
+msgid "Fill (crop edges)"
+msgstr ""
+
+#: js/shared/translations.ts:580
+msgid "Fit whole image"
+msgstr ""
+
+#: js/shared/translations.ts:582
+msgid "Backdrop"
+msgstr ""
+
+#: js/shared/translations.ts:584
+msgid "Blurred image"
+msgstr ""
+
+#: js/shared/translations.ts:585
+msgid "Black bars"
+msgstr ""
+
+#: js/shared/translations.ts:587
+msgid "Constrain size"
+msgstr ""
+
+#: js/shared/translations.ts:589
+msgid "No limit (fill container)"
+msgstr ""
+
+#: js/shared/translations.ts:590
+msgid "By max width"
+msgstr ""
+
+#: js/shared/translations.ts:591
+msgid "By max height"
+msgstr ""
+
+#: js/shared/translations.ts:593
+msgid "Max width (px)"
+msgstr ""
+
+#: js/shared/translations.ts:594
+msgid "Max height (px)"
+msgstr ""
+
+#: js/shared/translations.ts:595
+msgid "Alignment"
+msgstr ""
+
+#: js/shared/translations.ts:597
+msgid "Left"
+msgstr ""
+
+#: js/shared/translations.ts:598
+msgid "Center"
+msgstr ""
+
+#: js/shared/translations.ts:599
+msgid "Right"
+msgstr ""
+
+#: js/shared/translations.ts:601
+msgid "Previous"
+msgstr ""
+
+#: js/shared/translations.ts:602
+msgid "Next"
+msgstr ""
+
+#: js/shared/translations.ts:603
+msgid "Slide {n} of {total}"
+msgstr ""
+
+#: js/shared/translations.ts:604
+msgid "Allow fullscreen"
+msgstr ""
+
+#: js/shared/translations.ts:605
+msgid "View fullscreen"
+msgstr ""
+
+#: js/shared/translations.ts:606
+msgid "Close"
+msgstr ""
+
+#: js/shared/translations.ts:609
+msgid "Ranking List"
+msgstr ""
+
+#: js/shared/translations.ts:610
+msgid "Rating Period"
+msgstr ""
+
+#: js/shared/translations.ts:611
+msgid "ELO Type"
+msgstr ""
+
+#: js/shared/translations.ts:612
+msgid "Member Type"
+msgstr ""
+
+#: js/shared/translations.ts:613
+msgid "Standard"
+msgstr ""
+
+#: js/shared/translations.ts:617
+msgid "Women"
+msgstr ""
+
+#: js/shared/translations.ts:618
+msgid "Juniors"
+msgstr ""
+
+#: js/shared/translations.ts:619
+msgid "Cadets"
+msgstr ""
+
+#: js/shared/translations.ts:620
+msgid "Veterans"
+msgstr ""
+
+#: js/shared/translations.ts:621
+msgid "Minors"
+msgstr ""
+
+#: js/shared/translations.ts:622
+msgid "Kids"
+msgstr ""
+
+#: js/shared/translations.ts:624
+msgid "Title"
+msgstr ""
+
+#: js/shared/translations.ts:625
+msgid "First Name"
+msgstr ""
+
+#: js/shared/translations.ts:626
+msgid "Last Name"
+msgstr ""
+
+#: js/shared/translations.ts:627
+msgid "Rating"
+msgstr ""
+
+#: js/shared/translations.ts:628
+msgid "Showing"
+msgstr ""
+
+#: js/shared/translations.ts:629
+msgid "players"
+msgstr ""
+
+#: js/shared/translations.ts:630
+msgid "No players found."
+msgstr ""
+
+#: js/shared/translations.ts:631
+msgid "of"
+msgstr ""
+
+#: js/shared/translations.ts:634
+msgid "Loading…"
+msgstr ""
+
+#: js/shared/translations.ts:635
+msgid "Save"
+msgstr ""
+
+#: js/shared/translations.ts:636
+msgid "Cancel"
+msgstr ""
+
+#: js/shared/translations.ts:637
+msgid "Confirm"
+msgstr ""
+
+#: js/shared/translations.ts:640
+msgid "Copy"
+msgstr ""
+
+#: js/shared/translations.ts:641
+msgid "here"
+msgstr ""
+
+#: js/shared/translations.ts:642
+msgid "Add"
+msgstr ""
+
+#: js/shared/translations.ts:643
+msgid "Layout"
+msgstr ""
+
+#: js/shared/translations.ts:644
+msgid "Cards"
+msgstr ""
+
+#: js/shared/translations.ts:645
+msgid "List"
 msgstr ""

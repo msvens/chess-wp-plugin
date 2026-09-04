@@ -4,6 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Rockaden Chess\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/plugin\n"
+"POT-Creation-Date: 2026-09-04T08:10:31+00:00\n"
 "PO-Revision-Date: 2026-05-26\n"
 "Language: sv_SE\n"
 "MIME-Version: 1.0\n"
@@ -11,920 +13,1347 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-msgid "Add New Event"
-msgstr "Lägg till evenemang"
-
-msgid "Add New Tournament"
-msgstr "Lägg till turnering"
-
-msgid "Add New Training Group"
-msgstr "Lägg till träningsgrupp"
-
-msgid "Biweekly"
-msgstr "Varannan vecka"
-
-msgid "Calendar"
-msgstr "Kalender"
-
-msgid "Category"
-msgstr "Kategori"
-
-msgid "Comma-separated YYYY-MM-DD dates to exclude from recurrence."
-msgstr "Kommaseparerade datum (ÅÅÅÅ-MM-DD) som ska uteslutas från återkommande evenemang."
-
-msgid "Configurable image slider or carousel."
-msgstr "Konfigurerbar bildvisare eller karusell."
-
-msgid "Configure the connection to the Swedish Chess Federation (SSF) API."
-msgstr "Konfigurera anslutningen till Sveriges Schackförbunds (SSF) API."
-
-msgid "Date & Time"
-msgstr "Datum och tid"
-
-msgid "Description"
-msgstr "Beskrivning"
-
-msgid "Details"
-msgstr "Detaljer"
-
-msgid "Displays SSF club member ratings with filters for period, ELO type, and member category."
-msgstr "Visar SSF:s klubbmedlemmars rating med filter för period, ELO-typ och medlemskategori."
-
-msgid "Displays a single tournament page with participants, results and SSF link."
-msgstr "Visar en turneringssida med deltagare, resultat och SSF-länk."
-
-msgid "Displays a training group with participants and sessions."
-msgstr "Visar en träningsgrupp med deltagare och tillfällen."
-
-msgid "Displays an overview grid of all active training groups."
-msgstr "Visar en översikt över alla aktiva träningsgrupper."
-
-msgid "Displays an overview grid of tournaments."
-msgstr "Visar en översikt över turneringar."
-
-msgid "Displays standings for a tournament."
-msgstr "Visar ställning för en turnering."
-
-msgid "Displays the SK Rockaden event calendar."
-msgstr "Visar SK Rockadens kalender."
-
-msgid "Displays the latest news posts as cards with a link to the full archive."
-msgstr "Visar de senaste nyheterna som kort med länk till hela arkivet."
-
-msgid "Displays the next N upcoming events (recurring expanded) as a strip of cards."
-msgstr "Visar kommande evenemang som kort (återkommande expanderade)."
-
-msgid "Documentation"
-msgstr "Dokumentation"
-
-msgid "Edit Event"
-msgstr "Redigera evenemang"
-
-msgid "Edit Tournament"
-msgstr "Redigera turnering"
-
-msgid "Edit Training Group"
-msgstr "Redigera träningsgrupp"
-
-msgid "End"
-msgstr "Slut"
-
-msgid "Event"
-msgstr "Evenemang"
-
-msgid "Events"
-msgstr "Evenemang"
-
-msgid "Excluded Dates"
-msgstr "Uteslutna datum"
-
-msgid "Fetch Group"
-msgstr "Hämta grupp"
-
-msgid "Fetch Tournament"
-msgstr "Hämta turnering"
-
-msgid "Help"
-msgstr "Hjälp"
-
-msgid "Image Carousel"
-msgstr "Bildkarusell"
-
-msgid "Latest News"
-msgstr "Senaste nytt"
-
-msgid "Link"
-msgstr "Länk"
-
-msgid "Link Text"
-msgstr "Länktext"
-
-msgid "Linked to SSF group %d"
-msgstr "Kopplad till SSF-grupp %d"
-
-msgid "Loading calendar..."
-msgstr "Laddar kalender..."
-
-msgid "Loading carousel…"
-msgstr "Laddar karusell…"
-
-msgid "Loading ranking list..."
-msgstr "Laddar ratinglista..."
-
-msgid "Loading standings..."
-msgstr "Laddar ställning..."
-
-msgid "Loading tournament..."
-msgstr "Laddar turnering..."
-
-msgid "Loading tournaments..."
-msgstr "Laddar turneringar..."
-
-msgid "Loading training group..."
-msgstr "Laddar träningsgrupp..."
-
-msgid "Loading training groups..."
-msgstr "Laddar träningsgrupper..."
-
-msgid "Location"
-msgstr "Plats"
-
-msgid "More info"
-msgstr "Mer info"
-
-msgid "More news"
-msgstr "Mer nyheter"
-
-msgid "No news yet."
-msgstr "Inga nyheter än."
-
-msgid "No upcoming events."
-msgstr "Inga kommande evenemang."
-
-msgid "Other"
-msgstr "Övrigt"
-
-msgid "Ranking List"
-msgstr "Ratinglista"
-
-msgid "Read more"
-msgstr "Läs mer"
-
-msgid "Recurring"
-msgstr "Återkommande"
-
-msgid "Renders bundled plugin and theme documentation."
-msgstr "Visar plugin- och temadokumentation."
-
-msgid "Rockaden Help"
-msgstr "Rockaden Hjälp"
-
-msgid "Rockaden Settings"
-msgstr "Rockaden Inställningar"
-
-msgid "SSF Club ID"
-msgstr "SSF Klubb-ID"
-
-msgid "SSF ID"
-msgstr "SSF-ID"
-
-msgid "SSF Import"
-msgstr "SSF-import"
-
-msgid "SSF Integration"
-msgstr "SSF-integration"
-
-msgid "School Chess"
-msgstr "Skolschack"
-
-msgid "See full calendar"
-msgstr "Se hela kalendern"
-
-msgid "Settings"
-msgstr "Inställningar"
-
-msgid "Start"
-msgstr "Start"
-
-msgid "The club ID from member.schack.se"
-msgstr "Klubb-ID från member.schack.se"
-
-msgid "Tournament"
-msgstr "Turnering"
-
-msgid "Group"
-msgstr "Grupp"
-
-msgid "Tournament Standings"
-msgstr "Turneringsställning"
-
-msgid "Tournaments"
-msgstr "Turneringar"
-
-msgid "Training"
-msgstr "Träning"
-
-msgid "Training Group"
-msgstr "Träningsgrupp"
-
-msgid "Training Groups"
-msgstr "Träningsgrupper"
-
-msgid "Training Session"
-msgstr "Träningstillfälle"
-
-msgid "Training Sessions"
-msgstr "Träningstillfällen"
-
+#. Plugin Name of the plugin
+#: rockaden-chess.php:3
+msgid "Rockaden Chess"
+msgstr "Rockaden Chess"
+
+#. Plugin URI of the plugin
+#: rockaden-chess.php:4
+msgid "https://github.com/msvens/rockaden-wp"
+msgstr "https://github.com/msvens/rockaden-wp"
+
+#. Description of the plugin
+#: rockaden-chess.php:5
 msgid "Training management, calendar, and SSF integration for SK Rockaden."
 msgstr "Träningshantering, kalender och SSF-integration för SK Rockaden."
 
-msgid "URL"
-msgstr "URL"
+#. Author of the plugin
+#: rockaden-chess.php:7
+msgid "SK Rockaden"
+msgstr "SK Rockaden"
 
-msgid "Upcoming Events"
-msgstr "Kommande evenemang"
+#: rockaden-chess.php:104
+msgid "Settings"
+msgstr "Inställningar"
 
-msgid "Weekly"
-msgstr "Varje vecka"
+#: rockaden-chess.php:108 src/Admin/HelpPage.php:24
+msgid "Help"
+msgstr "Hjälp"
 
-msgid "tournament"
-msgstr "turnering"
+#: src/Admin/EventMetaBoxes.php:86 src/Admin/TrainingAdmin.php:20
+#: src/Admin/TrainingAdmin.php:21
+msgid "Training"
+msgstr "Träning"
 
-msgid "Training groups and round-robin tournaments."
-msgstr "Träningsgrupper och rundturneringar."
+#: src/Admin/EventMetaBoxes.php:87 src/PostTypes/Tournament.php:26
+msgid "Tournament"
+msgstr "Turnering"
 
-msgid "Participants"
-msgstr "Deltagare"
-
-msgid "Sessions"
-msgstr "Tillfällen"
-
-msgid "Standings"
-msgstr "Ställning"
-
-msgid "Attendance"
-msgstr "Närvaro"
-
-msgid "Pairings"
-msgstr "Lottning"
-
-msgid "Round"
-msgstr "Rond"
-
-msgid "Result"
-msgstr "Resultat"
-
-msgid "Present"
-msgstr "Närvarande"
-
-msgid "Absent"
-msgstr "Frånvarande"
-
-msgid "Points"
-msgstr "Poäng"
-
-msgid "Played"
-msgstr "Spelade"
-
-msgid "W"
-msgstr "V"
-
-msgid "D"
-msgstr "R"
-
-msgid "L"
-msgstr "F"
-
-msgid "Elo"
-msgstr "Elo"
-
-msgid "Classical"
-msgstr "Klassiskt"
-
-msgid "Rapid"
-msgstr "Rapid"
-
-msgid "Blitz"
-msgstr "Blixt"
-
-msgid "Bye"
-msgstr "Bye"
-
-msgid "Semester"
-msgstr "Termin"
-
-msgid "Audience"
-msgstr "Målgrupp"
-
+#: src/Admin/EventMetaBoxes.php:88
 msgid "Junior"
 msgstr "Junior"
 
-msgid "Adult"
-msgstr "Vuxen"
-
-msgid "Mixed"
-msgstr "Blandad"
-
-msgid "Start Session"
-msgstr "Starta tillfälle"
-
-msgid "Save Attendance"
-msgstr "Spara närvaro"
-
-msgid "Save Results"
-msgstr "Spara resultat"
-
-msgid "Add Participant"
-msgstr "Lägg till deltagare"
-
-msgid "Remove"
-msgstr "Ta bort"
-
-msgid "No training groups yet."
-msgstr "Inga träningsgrupper ännu."
-
-msgid "Past training groups"
-msgstr "Tidigare träningsgrupper"
-
-msgid "Hidden"
-msgstr "Dold"
-
-msgid "Copy training group"
-msgstr "Kopiera träningsgrupp"
-
-msgid "Copy participants"
-msgstr "Kopiera deltagare"
-
-msgid "copy"
-msgstr "kopia"
-
-msgid "Copy"
-msgstr "Kopiera"
-
-msgid "Active"
-msgstr "Aktiv"
-
-msgid "Inactive"
-msgstr "Inaktiv"
-
-msgid "Notes"
-msgstr "Anteckningar"
-
-msgid "Save Notes"
-msgstr "Spara anteckningar"
-
-msgid "#"
-msgstr "#"
-
-msgid "Name"
-msgstr "Namn"
-
-msgid "Search..."
-msgstr "Sök..."
-
-msgid "Back to group"
-msgstr "Tillbaka till gruppen"
-
-msgid "Back to training"
-msgstr "Tillbaka till träning"
-
-msgid "-"
-msgstr "-"
-
-msgid "Not played"
-msgstr "Ej spelat"
-
-msgid "Create Group"
-msgstr "Skapa grupp"
-
-msgid "Group Name"
-msgstr "Gruppnamn"
-
-msgid "Time Control"
-msgstr "Tidskontroll"
-
-msgid "Has Tournament"
-msgstr "Har turnering"
-
-msgid "Group Type"
-msgstr "Grupptyp"
-
-msgid "Training & Tournament"
-msgstr "Träning & turnering"
-
-msgid "Schedule"
-msgstr "Schema"
-
-msgid "Start Date"
-msgstr "Startdatum"
-
-msgid "End Date"
-msgstr "Slutdatum"
-
-msgid "New Event"
-msgstr "Ny händelse"
-
-msgid "Select event..."
-msgstr "Välj händelse..."
-
-msgid "No schedule linked."
-msgstr "Inget schema kopplat."
-
-msgid "Exclude"
-msgstr "Undanta"
-
-msgid "Cancelled"
-msgstr "Inställd"
-
-msgid "Trainers"
-msgstr "Tränare"
-
-msgid "Contact"
-msgstr "Kontakt"
-
-msgid "Tournament (schack.se)"
-msgstr "Turnering (schack.se)"
-
-msgid "Generate Rounds"
-msgstr "Generera ronder"
-
-msgid "Regenerate Rounds"
-msgstr "Generera om ronder"
-
-msgid "Board"
-msgstr "Bord"
-
-msgid "White"
-msgstr "Vit"
-
-msgid "Black"
-msgstr "Svart"
-
-msgid "—"
-msgstr "—"
-
-msgid "Every"
-msgstr "Varje"
-
-msgid "Every other"
-msgstr "Varannan"
-
-msgid "Show participants"
-msgstr "Visa deltagare"
-
-msgid "Show standings"
-msgstr "Visa ställning"
-
-msgid "SSF Group ID"
-msgstr "SSF Grupp-ID"
-
-msgid "SSF Tournament Group ID"
-msgstr "SSF Turnerings-ID"
-
-msgid "Fetch from SSF"
-msgstr "Hämta från SSF"
-
-msgid "Fetching..."
-msgstr "Hämtar..."
-
-msgid "Could not fetch SSF data"
-msgstr "Kunde inte hämta SSF-data"
-
-msgid "Apply"
-msgstr "Applicera"
-
-msgid "Results"
-msgstr "Resultat"
-
-msgid "KP"
-msgstr "KP"
-
-msgid "Loading results..."
-msgstr "Laddar resultat..."
-
-msgid "Could not load results."
-msgstr "Kunde inte ladda resultat."
-
-msgid "Tournaments at SK Rockaden — round-robin or SSF-backed."
-msgstr "Tournaments at SK Rockaden — round-robin or SSF-backed."
-
-msgid "Create Tournament"
-msgstr "Skapa turnering"
-
-msgid "No tournaments yet."
-msgstr "Inga turneringar än."
-
-msgid "Tournament name"
-msgstr "Turneringsnamn"
-
-msgid "Youth"
-msgstr "Ungdom"
-
-msgid "Senior"
-msgstr "Senior"
-
-msgid "Status"
-msgstr "Status"
-
-msgid "Planned"
-msgstr "Planerad"
-
-msgid "Completed"
-msgstr "Avslutad"
-
-msgid "Format"
-msgstr "Format"
-
-msgid "Round-robin"
-msgstr "Berger"
-
-msgid "Start date"
-msgstr "Startdatum"
-
-msgid "End date"
-msgstr "Slutdatum"
-
-msgid "External link"
-msgstr "Extern länk"
-
-msgid "Add to calendar"
-msgstr "Lägg till i kalender"
-
-msgid "Creates a calendar event from this tournament’s dates."
-msgstr "Skapar en kalenderhändelse från turneringens datum."
-
-msgid "Linked calendar event"
-msgstr "Kopplad kalenderhändelse"
-
-msgid "SSF tournament ID"
-msgstr "SSF turnerings-ID"
-
-msgid "The GROUP id — a tournament can contain several groups, so enter the group id, not the tournament id. With it set, standings come from SSF. Leave empty for a Rockaden-managed tournament."
-msgstr "GRUPP-id:t — en turnering kan innehålla flera grupper, så ange grupp-id, inte turnerings-id. När det är satt hämtas ställningen från SSF. Lämna tomt för en Rockaden-styrd turnering."
-
-msgid "This is a team tournament — its results are shown on SSF, not here."
-msgstr "Det här är en lagturnering — dess resultat visas på SSF, inte här."
-
-msgid "This is a team tournament — its results are not shown here."
-msgstr "Det här är en lagturnering — resultaten visas inte här."
-
-msgid "Full results"
-msgstr "Fullständiga resultat"
-
-msgid "here"
-msgstr "här"
-
-msgid "This tournament hasn't started yet — showing the registered players."
-msgstr "Turneringen har inte börjat än — visar anmälda spelare."
-
-msgid "Registered players"
-msgstr "Anmälda spelare"
-
-msgid "Overview"
-msgstr "Översikt"
-
-msgid "Linked tournament"
-msgstr "Kopplad turnering"
-
-msgid "No tournament"
-msgstr "Ingen turnering"
-
-msgid "View tournament"
-msgstr "Visa turnering"
-
-msgid "Back to tournaments"
-msgstr "Tillbaka till turneringar"
-
-msgid "Official result"
-msgstr "Officiellt resultat"
-
-msgid "Automatic"
-msgstr "Automatiskt"
-
-msgid "Derived from the start/end dates (and results). A manual choice overrides it."
-msgstr "Härleds från start-/slutdatum (och resultat). Ett manuellt val åsidosätter det."
-
-msgid "Edit tournament"
-msgstr "Redigera turnering"
-
-msgid "Fetch / Refresh from SSF"
-msgstr "Hämta / uppdatera från SSF"
-
-msgid "Could not fetch from SSF"
-msgstr "Kunde inte hämta från SSF"
-
-msgid "View on SSF"
-msgstr "Visa på SSF"
-
-msgid "Ongoing"
-msgstr "Pågående"
-
-msgid "Past tournaments"
-msgstr "Tidigare turneringar"
-
-msgid "Upcoming events and activities at SK Rockaden."
-msgstr "Kommande evenemang och aktiviteter på SK Rockaden."
-
-msgid "Today"
-msgstr "Idag"
-
-msgid "No events this day."
-msgstr "Inga händelser denna dag."
-
-msgid "Time"
-msgstr "Tid"
-
-msgid "more"
-msgstr "till"
-
-msgid "Month"
-msgstr "Månad"
-
-msgid "Week"
-msgstr "Vecka"
-
-msgid "Day"
-msgstr "Dag"
-
-msgid "Mon"
-msgstr "Mån"
-
-msgid "Tue"
-msgstr "Tis"
-
-msgid "Wed"
-msgstr "Ons"
-
-msgid "Thu"
-msgstr "Tor"
-
-msgid "Fri"
-msgstr "Fre"
-
-msgid "Sat"
-msgstr "Lör"
-
-msgid "Sun"
-msgstr "Sön"
-
+#: src/Admin/EventMetaBoxes.php:89
 msgid "Allsvenskan"
 msgstr "Allsvenskan"
 
-msgid "All"
-msgstr "Alla"
-
-msgid "Edit"
-msgstr "Redigera"
-
-msgid "Delete"
-msgstr "Ta bort"
-
-msgid "Delete this event?"
-msgstr "Ta bort detta event?"
-
-msgid "Just this one"
-msgstr "Bara denna"
-
-msgid "Whole series"
-msgstr "Hela serien"
-
-msgid "Create event"
-msgstr "Skapa event"
-
-msgid "Add images"
-msgstr "Lägg till bilder"
-
-msgid "Edit images"
-msgstr "Redigera bilder"
-
-msgid "Move up"
-msgstr "Flytta upp"
-
-msgid "Move down"
-msgstr "Flytta ned"
-
-msgid "No images selected yet."
-msgstr "Inga bilder valda ännu."
-
-msgid "Display mode"
-msgstr "Visningsläge"
-
-msgid "Auto-advance"
-msgstr "Spela automatiskt"
-
-msgid "Interval (seconds)"
-msgstr "Intervall (sekunder)"
-
-msgid "Visible items"
-msgstr "Synliga bilder"
-
-msgid "Aspect ratio"
-msgstr "Bildformat"
-
-msgid "Cell sizing"
-msgstr "Cellstorlek"
-
-msgid "Exact height"
-msgstr "Exakt höjd"
-
-msgid "Height (px)"
-msgstr "Höjd (px)"
-
-msgid "Auto"
-msgstr "Auto"
-
-msgid "Image fit"
-msgstr "Bildanpassning"
-
-msgid "Fill (crop edges)"
-msgstr "Fyll (beskär kanter)"
-
-msgid "Fit whole image"
-msgstr "Visa hela bilden"
-
-msgid "Backdrop"
-msgstr "Bakgrund"
-
-msgid "Blurred image"
-msgstr "Suddig bild"
-
-msgid "Black bars"
-msgstr "Svarta kanter"
-
-msgid "Constrain size"
-msgstr "Begränsa storlek"
-
-msgid "No limit (fill container)"
-msgstr "Ingen gräns (fyll behållaren)"
-
-msgid "By max width"
-msgstr "Med maxbredd"
-
-msgid "By max height"
-msgstr "Med maxhöjd"
-
-msgid "Max width (px)"
-msgstr "Maxbredd (px)"
-
-msgid "Max height (px)"
-msgstr "Maxhöjd (px)"
-
-msgid "Alignment"
-msgstr "Justering"
-
-msgid "Left"
-msgstr "Vänster"
-
-msgid "Center"
-msgstr "Centrerad"
-
-msgid "Right"
-msgstr "Höger"
-
-msgid "Previous"
-msgstr "Föregående"
-
-msgid "Next"
-msgstr "Nästa"
-
-msgid "Slide {n} of {total}"
-msgstr "Bild {n} av {total}"
-
-msgid "Allow fullscreen"
-msgstr "Tillåt helskärm"
-
-msgid "View fullscreen"
-msgstr "Visa i helskärm"
-
-msgid "Close"
-msgstr "Stäng"
-
-msgid "Rating Period"
-msgstr "Rankingperiod"
-
-msgid "ELO Type"
-msgstr "Elo-typ"
-
-msgid "Member Type"
-msgstr "Medlemstyp"
-
-msgid "Standard"
-msgstr "Standard"
-
-msgid "Women"
-msgstr "Kvinnor"
-
-msgid "Juniors"
-msgstr "Juniorer"
-
-msgid "Cadets"
-msgstr "Kadetter"
-
-msgid "Veterans"
-msgstr "Veteraner"
-
-msgid "Minors"
-msgstr "Minorer"
-
-msgid "Kids"
-msgstr "Barn"
-
-msgid "Title"
-msgstr "Titel"
-
-msgid "First Name"
-msgstr "Förnamn"
-
-msgid "Last Name"
-msgstr "Efternamn"
-
-msgid "Rating"
-msgstr "Rating"
-
-msgid "Showing"
-msgstr "Visar"
-
-msgid "players"
-msgstr "spelare"
-
-msgid "No players found."
-msgstr "Inga spelare hittades."
-
-msgid "of"
-msgstr "av"
-
-msgid "Loading..."
-msgstr "Laddar..."
-
-msgid "Save"
-msgstr "Spara"
-
-msgid "Cancel"
-msgstr "Avbryt"
-
-msgid "Confirm"
-msgstr "Bekräfta"
-
-msgid "Add"
-msgstr "Lägg till"
-
-msgid "Registration"
-msgstr "Anmälan"
-
-msgid "Invitation"
-msgstr "Inbjudan"
-
-msgid "Read the invitation"
-msgstr "Läs inbjudan"
-
-msgid "A link or a short note. Web addresses are shown as a link."
-msgstr "En länk eller en kort notering. Webbadresser visas som en länk."
-
-msgid "Schedule (free text)"
-msgstr "Schema (fritext)"
-
-msgid "Optional. Leave empty to list the linked calendar event’s actual dates; fill it in to word the schedule yourself."
-msgstr "Valfritt. Lämna tomt för att lista kalenderhändelsens faktiska datum, eller fyll i för att formulera schemat själv."
-
-msgid "Leave a blank line between paragraphs to break the text up on the public page."
-msgstr "Lämna en tom rad mellan styckena för att dela upp texten på den publika sidan."
-
-msgid "except"
-msgstr "utom"
-
-msgid "Postponed"
-msgstr "Uppskjutet"
-
-msgid "adj"
-msgstr "domslut"
-
-msgid "Role"
-msgstr "Roll"
-
-msgid "Leader"
-msgstr "Ledare"
-
-msgid "Participant"
-msgstr "Deltagare"
-
-msgid "All ages"
-msgstr "Alla åldrar"
-
-msgid "All-day"
-msgstr "Heldag"
-
-msgid "Cards"
-msgstr "Kort"
-
-msgid "Layout"
-msgstr "Layout"
-
-msgid "List"
-msgstr "Lista"
-
+#: src/Admin/EventMetaBoxes.php:90
+msgid "School Chess"
+msgstr "Skolschack"
+
+#: src/Admin/EventMetaBoxes.php:91
+msgid "Other"
+msgstr "Övrigt"
+
+#: src/Admin/EventMetaBoxes.php:100
+msgid "Date & Time"
+msgstr "Datum och tid"
+
+#: src/Admin/EventMetaBoxes.php:103
+msgid "Start"
+msgstr "Start"
+
+#: src/Admin/EventMetaBoxes.php:107
+msgid "End"
+msgstr "Slut"
+
+#: src/Admin/EventMetaBoxes.php:114
+msgid "Recurring"
+msgstr "Återkommande"
+
+#: src/Admin/EventMetaBoxes.php:118
+msgid "Weekly"
+msgstr "Varje vecka"
+
+#: src/Admin/EventMetaBoxes.php:119
+msgid "Biweekly"
+msgstr "Varannan vecka"
+
+#: src/Admin/EventMetaBoxes.php:122
+msgid "Repeats until"
+msgstr "Upprepas till"
+
+#: src/Admin/EventMetaBoxes.php:123
 msgid "No end date"
 msgstr "Inget slutdatum"
 
-msgid "Repeats until"
-msgstr "Upprepas till"
+#: src/Admin/EventMetaBoxes.php:124
+msgid "Leave empty to repeat with no end date."
+msgstr "Lämna tomt för att upprepa utan slutdatum."
+
+#: src/Admin/EventMetaBoxes.php:129
+msgid "Excluded Dates"
+msgstr "Uteslutna datum"
+
+#: src/Admin/EventMetaBoxes.php:131
+msgid "Comma-separated YYYY-MM-DD dates to exclude from recurrence."
+msgstr ""
+"Kommaseparerade datum (ÅÅÅÅ-MM-DD) som ska uteslutas från återkommande "
+"evenemang."
+
+#: src/Admin/EventMetaBoxes.php:136
+msgid "Details"
+msgstr "Detaljer"
+
+#: src/Admin/EventMetaBoxes.php:139
+msgid "Location"
+msgstr "Plats"
+
+#: src/Admin/EventMetaBoxes.php:145
+msgid "Category"
+msgstr "Kategori"
+
+#: src/Admin/EventMetaBoxes.php:156
+msgid "Link"
+msgstr "Länk"
+
+#: src/Admin/EventMetaBoxes.php:159
+msgid "URL"
+msgstr "URL"
+
+#: src/Admin/EventMetaBoxes.php:163
+msgid "Link Text"
+msgstr "Länktext"
+
+#: src/Admin/EventMetaBoxes.php:170
+msgid "Description"
+msgstr "Beskrivning"
+
+#: src/Admin/HelpPage.php:23
+msgid "Rockaden Help"
+msgstr "Rockaden Hjälp"
+
+#: src/Admin/SettingsPage.php:24
+msgid "Rockaden Settings"
+msgstr "Rockaden Inställningar"
+
+#: src/Admin/SettingsPage.php:25
+msgid "Rockaden"
+msgstr "Rockaden"
+
+#: src/Admin/SettingsPage.php:50
+msgid "SSF Integration"
+msgstr "SSF-integration"
+
+#: src/Admin/SettingsPage.php:53
+msgid "Configure the connection to the Swedish Chess Federation (SSF) API."
+msgstr "Konfigurera anslutningen till Sveriges Schackförbunds (SSF) API."
+
+#: src/Admin/SettingsPage.php:60
+msgid "SSF Club ID"
+msgstr "SSF Klubb-ID"
+
+#: src/Admin/SettingsPage.php:78
+msgid "The club ID from member.schack.se"
+msgstr "Klubb-ID från member.schack.se"
+
+#: src/Admin/TournamentAdmin.php:20 src/Admin/TournamentAdmin.php:21
+#: src/PostTypes/Tournament.php:25
+msgid "Tournaments"
+msgstr "Turneringar"
+
+#: src/Blocks/calendar/render.php:26
+msgid "Loading calendar..."
+msgstr "Laddar kalender..."
+
+#: src/Blocks/carousel/render.php:76
+msgid "Loading carousel…"
+msgstr "Laddar karusell…"
+
+#: src/Blocks/latest-news/render.php:14
+msgid "More news"
+msgstr "Mer nyheter"
+
+#: src/Blocks/latest-news/render.php:28
+msgid "No news yet."
+msgstr "Inga nyheter än."
+
+#: src/Blocks/latest-news/render.php:55
+msgid "Read more"
+msgstr "Läs mer"
+
+#: src/Blocks/ranking-list/render.php:27
+msgid "Loading ranking list..."
+msgstr "Laddar ratinglista..."
+
+#: src/Blocks/standings/render.php:39
+msgid "Loading standings..."
+msgstr "Laddar ställning..."
+
+#: src/Blocks/tournament/render.php:35
+msgid "Loading tournament..."
+msgstr "Laddar turnering..."
+
+#: src/Blocks/tournaments/render.php:27
+msgid "Loading tournaments..."
+msgstr "Laddar turneringar..."
+
+#: src/Blocks/training-group/render.php:35
+msgid "Loading training group..."
+msgstr "Laddar träningsgrupp..."
+
+#: src/Blocks/training-groups/render.php:26
+msgid "Loading training groups..."
+msgstr "Laddar träningsgrupper..."
+
+#: src/Blocks/upcoming-events/render.php:16
+msgid "See full calendar"
+msgstr "Se hela kalendern"
+
+#: src/Blocks/upcoming-events/render.php:27
+msgid "No upcoming events."
+msgstr "Inga kommande evenemang."
+
+#: src/Blocks/upcoming-events/render.php:50
+msgid "More info"
+msgstr "Mer info"
+
+#: src/PostTypes/Event.php:25
+msgid "Events"
+msgstr "Evenemang"
+
+#: src/PostTypes/Event.php:26
+msgid "Event"
+msgstr "Evenemang"
+
+#: src/PostTypes/Event.php:27
+msgid "Add New Event"
+msgstr "Lägg till evenemang"
+
+#: src/PostTypes/Event.php:28
+msgid "Edit Event"
+msgstr "Redigera evenemang"
+
+#: src/PostTypes/Tournament.php:27
+msgid "Add New Tournament"
+msgstr "Lägg till turnering"
+
+#: src/PostTypes/Tournament.php:28
+msgid "Edit Tournament"
+msgstr "Redigera turnering"
+
+#: src/PostTypes/TrainingGroup.php:25
+msgid "Training Groups"
+msgstr "Träningsgrupper"
+
+#: src/PostTypes/TrainingGroup.php:26
+msgid "Training Group"
+msgstr "Träningsgrupp"
+
+#: src/PostTypes/TrainingGroup.php:27
+msgid "Add New Training Group"
+msgstr "Lägg till träningsgrupp"
+
+#: src/PostTypes/TrainingGroup.php:28
+msgid "Edit Training Group"
+msgstr "Redigera träningsgrupp"
+
+#: src/PostTypes/TrainingSession.php:25
+msgid "Training Sessions"
+msgstr "Träningstillfällen"
+
+#: src/PostTypes/TrainingSession.php:26
+msgid "Training Session"
+msgstr "Träningstillfälle"
+
+#: src/Blocks/calendar/block.json
+msgctxt "block title"
+msgid "Calendar"
+msgstr "Kalender"
+
+#: src/Blocks/calendar/block.json
+msgctxt "block description"
+msgid "Displays the SK Rockaden event calendar."
+msgstr "Visar SK Rockadens kalender."
+
+#: src/Blocks/carousel/block.json
+msgctxt "block title"
+msgid "Image Carousel"
+msgstr "Bildkarusell"
+
+#: src/Blocks/carousel/block.json
+msgctxt "block description"
+msgid "Configurable image slider or carousel."
+msgstr "Konfigurerbar bildvisare eller karusell."
+
+#: src/Blocks/documentation/block.json
+msgctxt "block title"
+msgid "Documentation"
+msgstr "Dokumentation"
+
+#: src/Blocks/documentation/block.json
+msgctxt "block description"
+msgid "Renders bundled plugin and theme documentation."
+msgstr "Visar plugin- och temadokumentation."
+
+#: src/Blocks/latest-news/block.json
+msgctxt "block title"
+msgid "Latest News"
+msgstr "Senaste nytt"
+
+#: src/Blocks/latest-news/block.json
+msgctxt "block description"
+msgid ""
+"Displays the latest news posts as cards with a link to the full archive."
+msgstr "Visar de senaste nyheterna som kort med länk till hela arkivet."
+
+#: src/Blocks/ranking-list/block.json
+msgctxt "block title"
+msgid "Ranking List"
+msgstr "Ratinglista"
+
+#: src/Blocks/ranking-list/block.json
+msgctxt "block description"
+msgid ""
+"Displays SSF club member ratings with filters for period, ELO type, and "
+"member category."
+msgstr ""
+"Visar SSF:s klubbmedlemmars rating med filter för period, ELO-typ och "
+"medlemskategori."
+
+#: src/Blocks/standings/block.json
+msgctxt "block title"
+msgid "Tournament Standings"
+msgstr "Turneringsställning"
+
+#: src/Blocks/standings/block.json
+msgctxt "block description"
+msgid "Displays standings for a tournament."
+msgstr "Visar ställning för en turnering."
+
+#: src/Blocks/tournament/block.json
+msgctxt "block title"
+msgid "Tournament"
+msgstr "Turnering"
+
+#: src/Blocks/tournament/block.json
+msgctxt "block description"
+msgid ""
+"Displays a single tournament page with participants, results and SSF link."
+msgstr "Visar en turneringssida med deltagare, resultat och SSF-länk."
+
+#: src/Blocks/tournaments/block.json
+msgctxt "block title"
+msgid "Tournaments"
+msgstr "Turneringar"
+
+#: src/Blocks/tournaments/block.json
+msgctxt "block description"
+msgid "Displays an overview grid of tournaments."
+msgstr "Visar en översikt över turneringar."
+
+#: src/Blocks/training-group/block.json
+msgctxt "block title"
+msgid "Training Group"
+msgstr "Träningsgrupp"
+
+#: src/Blocks/training-group/block.json
+msgctxt "block description"
+msgid "Displays a training group with participants and sessions."
+msgstr "Visar en träningsgrupp med deltagare och tillfällen."
+
+#: src/Blocks/training-groups/block.json
+msgctxt "block title"
+msgid "Training Groups"
+msgstr "Träningsgrupper"
+
+#: src/Blocks/training-groups/block.json
+msgctxt "block description"
+msgid "Displays an overview grid of all active training groups."
+msgstr "Visar en översikt över alla aktiva träningsgrupper."
+
+#: src/Blocks/upcoming-events/block.json
+msgctxt "block title"
+msgid "Upcoming Events"
+msgstr "Kommande evenemang"
+
+#: src/Blocks/upcoming-events/block.json
+msgctxt "block description"
+msgid ""
+"Displays the next N upcoming events (recurring expanded) as a strip of cards."
+msgstr "Visar kommande evenemang som kort (återkommande expanderade)."
+
+#: js/shared/translations.ts:298
+msgid "Training groups and round-robin tournaments."
+msgstr "Träningsgrupper och rundturneringar."
+
+#: js/shared/translations.ts:301
+msgid "Participants"
+msgstr "Deltagare"
+
+#: js/shared/translations.ts:302
+msgid "Sessions"
+msgstr "Tillfällen"
+
+#: js/shared/translations.ts:303
+msgid "Standings"
+msgstr "Ställning"
+
+#: js/shared/translations.ts:304
+msgid "Attendance"
+msgstr "Närvaro"
+
+#: js/shared/translations.ts:305
+msgid "Pairings"
+msgstr "Lottning"
+
+#: js/shared/translations.ts:306
+msgid "Round"
+msgstr "Rond"
+
+#: js/shared/translations.ts:307
+msgid "Result"
+msgstr "Resultat"
+
+#: js/shared/translations.ts:308
+msgid "Present"
+msgstr "Närvarande"
+
+#: js/shared/translations.ts:309
+msgid "Absent"
+msgstr "Frånvarande"
+
+#: js/shared/translations.ts:310
+msgid "Points"
+msgstr "Poäng"
+
+#: js/shared/translations.ts:311
+msgid "Played"
+msgstr "Spelade"
+
+#: js/shared/translations.ts:312
+msgid "W"
+msgstr "V"
+
+#: js/shared/translations.ts:313
+msgid "D"
+msgstr "R"
+
+#: js/shared/translations.ts:314
+msgid "L"
+msgstr "F"
+
+#: js/shared/translations.ts:315
+msgid "Elo"
+msgstr "Elo"
+
+#: js/shared/translations.ts:316
+msgid "Classical"
+msgstr "Klassiskt"
+
+#: js/shared/translations.ts:317 js/shared/translations.ts:614
+msgid "Rapid"
+msgstr "Rapid"
+
+#: js/shared/translations.ts:318 js/shared/translations.ts:615
+msgid "Blitz"
+msgstr "Blixt"
+
+#: js/shared/translations.ts:319
+msgid "Bye"
+msgstr "Bye"
+
+#: js/shared/translations.ts:320
+msgid "Postponed"
+msgstr "Uppskjutet"
+
+#: js/shared/translations.ts:322
+msgid "adj"
+msgstr "domslut"
+
+#: js/shared/translations.ts:323
+msgid "Semester"
+msgstr "Termin"
+
+#: js/shared/translations.ts:324
+msgid "Audience"
+msgstr "Målgrupp"
+
+#: js/shared/translations.ts:329
+msgid "All ages"
+msgstr "Alla åldrar"
+
+#: js/shared/translations.ts:331
+msgid "Start Session"
+msgstr "Starta tillfälle"
+
+#: js/shared/translations.ts:332
+msgid "Save Attendance"
+msgstr "Spara närvaro"
+
+#: js/shared/translations.ts:333
+msgid "Save Results"
+msgstr "Spara resultat"
+
+#: js/shared/translations.ts:334
+msgid "Add Participant"
+msgstr "Lägg till deltagare"
+
+#: js/shared/translations.ts:335 js/shared/translations.ts:553
+msgid "Remove"
+msgstr "Ta bort"
+
+#: js/shared/translations.ts:336
+msgid "No training groups yet."
+msgstr "Inga träningsgrupper ännu."
+
+#: js/shared/translations.ts:337
+msgid "Past training groups"
+msgstr "Tidigare träningsgrupper"
+
+#: js/shared/translations.ts:338
+msgid "Hidden"
+msgstr "Dold"
+
+#: js/shared/translations.ts:339
+msgid "Copy training group"
+msgstr "Kopiera träningsgrupp"
+
+#: js/shared/translations.ts:340
+msgid "Copy participants"
+msgstr "Kopiera deltagare"
+
+#: js/shared/translations.ts:341
+msgid "copy"
+msgstr "kopia"
+
+#: js/shared/translations.ts:343 js/shared/translations.ts:436
+msgid "Active"
+msgstr "Aktiv"
+
+#: js/shared/translations.ts:344
+msgid "Inactive"
+msgstr "Inaktiv"
+
+#: js/shared/translations.ts:345
+msgid "Notes"
+msgstr "Anteckningar"
+
+#: js/shared/translations.ts:346
+msgid "Save Notes"
+msgstr "Spara anteckningar"
+
+#: js/shared/translations.ts:347 js/shared/translations.ts:623
+msgid "#"
+msgstr "#"
+
+#: js/shared/translations.ts:348
+msgid "Name"
+msgstr "Namn"
+
+#: js/shared/translations.ts:349
+msgid "Search…"
+msgstr "Sök…"
+
+#: js/shared/translations.ts:350
+msgid "Back to group"
+msgstr "Tillbaka till gruppen"
+
+#: js/shared/translations.ts:351
+msgid "Back to training"
+msgstr "Tillbaka till träning"
+
+#: js/shared/translations.ts:352
+msgid "-"
+msgstr "-"
+
+#: js/shared/translations.ts:353
+msgid "Not played"
+msgstr "Ej spelat"
+
+#: js/shared/translations.ts:354
+msgid "Create Group"
+msgstr "Skapa grupp"
+
+#: js/shared/translations.ts:355
+msgid "Group Name"
+msgstr "Gruppnamn"
+
+#: js/shared/translations.ts:357
+msgid "Time Control"
+msgstr "Tidskontroll"
+
+#: js/shared/translations.ts:358
+msgid "Has Tournament"
+msgstr "Har turnering"
+
+#: js/shared/translations.ts:359
+msgid "Group Type"
+msgstr "Grupptyp"
+
+#: js/shared/translations.ts:362
+msgid "Training & Tournament"
+msgstr "Träning & turnering"
+
+#: js/shared/translations.ts:363
+msgid "Schedule"
+msgstr "Schema"
+
+#: js/shared/translations.ts:364 js/shared/translations.ts:513
+msgid "Time"
+msgstr "Tid"
+
+#: js/shared/translations.ts:365
+msgid "except"
+msgstr "utom"
+
+#: js/shared/translations.ts:366
+msgid "Start Date"
+msgstr "Startdatum"
+
+#: js/shared/translations.ts:367
+msgid "End Date"
+msgstr "Slutdatum"
+
+#: js/shared/translations.ts:370
+msgid "New Event"
+msgstr "Ny händelse"
+
+#: js/shared/translations.ts:371
+msgid "Select event…"
+msgstr "Välj händelse…"
+
+#: js/shared/translations.ts:372
+msgid "No schedule linked."
+msgstr "Inget schema kopplat."
+
+#: js/shared/translations.ts:374
+msgid "Exclude"
+msgstr "Undanta"
+
+#: js/shared/translations.ts:375
+msgid "Cancelled"
+msgstr "Inställd"
+
+#: js/shared/translations.ts:376
+msgid "Trainers"
+msgstr "Tränare"
+
+#: js/shared/translations.ts:377
+msgid "Role"
+msgstr "Roll"
+
+#: js/shared/translations.ts:378
+msgid "Leader"
+msgstr "Ledare"
+
+#: js/shared/translations.ts:379
+msgid "Participant"
+msgstr "Deltagare"
+
+#: js/shared/translations.ts:380 js/shared/translations.ts:462
+msgid "Contact"
+msgstr "Kontakt"
+
+#: js/shared/translations.ts:381
+msgid "Tournament (schack.se)"
+msgstr "Turnering (schack.se)"
+
+#: js/shared/translations.ts:382
+msgid "Generate Rounds"
+msgstr "Generera ronder"
+
+#: js/shared/translations.ts:383
+msgid "Regenerate Rounds"
+msgstr "Generera om ronder"
+
+#: js/shared/translations.ts:385
+msgid "Regenerating rounds will erase existing results. Continue?"
+msgstr "Att generera om ronder raderar befintliga resultat. Fortsätta?"
+
+#: js/shared/translations.ts:388
+msgid "Board"
+msgstr "Bord"
+
+#: js/shared/translations.ts:389
+msgid "White"
+msgstr "Vit"
+
+#: js/shared/translations.ts:390
+msgid "Black"
+msgstr "Svart"
+
+#: js/shared/translations.ts:391
+msgid "—"
+msgstr "—"
+
+#: js/shared/translations.ts:392
+msgid "Every"
+msgstr "Varje"
+
+#: js/shared/translations.ts:393
+msgid "Every other"
+msgstr "Varannan"
+
+#: js/shared/translations.ts:394
+msgid "Show participants"
+msgstr "Visa deltagare"
+
+#: js/shared/translations.ts:395
+msgid "Show standings"
+msgstr "Visa ställning"
+
+#: js/shared/translations.ts:396 js/shared/translations.ts:480
+msgid "SSF Group ID"
+msgstr "SSF Grupp-ID"
+
+#: js/shared/translations.ts:397
+msgid "SSF Tournament Group ID"
+msgstr "SSF Turnerings-ID"
+
+#: js/shared/translations.ts:398
+msgid "Fetch from SSF"
+msgstr "Hämta från SSF"
+
+#: js/shared/translations.ts:399
+msgid "Fetching…"
+msgstr "Hämtar…"
+
+#: js/shared/translations.ts:400
+msgid "Could not fetch SSF data"
+msgstr "Kunde inte hämta SSF-data"
+
+#: js/shared/translations.ts:401
+msgid "Apply"
+msgstr "Applicera"
+
+#: js/shared/translations.ts:402
+msgid "Results"
+msgstr "Resultat"
+
+#: js/shared/translations.ts:403
+msgid "KP"
+msgstr "KP"
+
+#: js/shared/translations.ts:404
+msgid "Loading results…"
+msgstr "Laddar resultat…"
+
+#: js/shared/translations.ts:405
+msgid "Could not load results."
+msgstr "Kunde inte ladda resultat."
+
+#: js/shared/translations.ts:407 js/shared/translations.ts:492
+msgid "This is a team tournament — its results are not shown here."
+msgstr "Det här är en lagturnering — resultaten visas inte här."
+
+#: js/shared/translations.ts:411 js/shared/translations.ts:496
+msgid "This tournament hasn't started yet — showing the registered players."
+msgstr "Turneringen har inte börjat än — visar anmälda spelare."
+
+#: js/shared/translations.ts:414 js/shared/translations.ts:499
+msgid "Registered players"
+msgstr "Anmälda spelare"
+
+#: js/shared/translations.ts:415 js/shared/translations.ts:447
+msgid "Full results"
+msgstr "Fullständiga resultat"
+
+#: js/shared/translations.ts:420
+msgid "Tournaments at SK Rockaden — round-robin or SSF-backed."
+msgstr "Tournaments at SK Rockaden — round-robin or SSF-backed."
+
+#: js/shared/translations.ts:423
+msgid "Create Tournament"
+msgstr "Skapa turnering"
+
+#: js/shared/translations.ts:424
+msgid "No tournaments yet."
+msgstr "Inga turneringar än."
+
+#: js/shared/translations.ts:425
+msgid "Tournament name"
+msgstr "Turneringsnamn"
+
+#: js/shared/translations.ts:429
+msgid "Youth"
+msgstr "Ungdom"
+
+#: js/shared/translations.ts:430
+msgid "Senior"
+msgstr "Senior"
+
+#: js/shared/translations.ts:431
+msgid "Mixed"
+msgstr "Blandad"
+
+#: js/shared/translations.ts:433
+msgid "Status"
+msgstr "Status"
+
+#: js/shared/translations.ts:435
+msgid "Planned"
+msgstr "Planerad"
+
+#: js/shared/translations.ts:437
+msgid "Completed"
+msgstr "Avslutad"
+
+#: js/shared/translations.ts:439
+msgid "Automatic"
+msgstr "Automatiskt"
+
+#: js/shared/translations.ts:441
+msgid ""
+"Derived from the start/end dates (and results). A manual choice overrides it."
+msgstr ""
+"Härleds från start-/slutdatum (och resultat). Ett manuellt val åsidosätter "
+"det."
+
+#: js/shared/translations.ts:444
+msgid "Edit tournament"
+msgstr "Redigera turnering"
+
+#: js/shared/translations.ts:445
+msgid "Fetch / Refresh from SSF"
+msgstr "Hämta / uppdatera från SSF"
+
+#: js/shared/translations.ts:446
+msgid "Could not fetch from SSF"
+msgstr "Kunde inte hämta från SSF"
+
+#: js/shared/translations.ts:448
+msgid "Ongoing"
+msgstr "Pågående"
+
+#: js/shared/translations.ts:449
+msgid "Past tournaments"
+msgstr "Tidigare turneringar"
+
+#: js/shared/translations.ts:450
+msgid "Format"
+msgstr "Format"
+
+#: js/shared/translations.ts:452
+msgid "Round-robin"
+msgstr "Berger"
+
+#: js/shared/translations.ts:454
+msgid "Start date"
+msgstr "Startdatum"
+
+#: js/shared/translations.ts:455
+msgid "End date"
+msgstr "Slutdatum"
+
+#: js/shared/translations.ts:456
+msgid "External link"
+msgstr "Extern länk"
+
+#: js/shared/translations.ts:458
+msgid ""
+"Leave a blank line between paragraphs to break the text up on the public "
+"page."
+msgstr ""
+"Lämna en tom rad mellan styckena för att dela upp texten på den publika "
+"sidan."
+
+#: js/shared/translations.ts:461
+msgid "Registration"
+msgstr "Anmälan"
+
+#: js/shared/translations.ts:463
+msgid "Invitation"
+msgstr "Inbjudan"
+
+#: js/shared/translations.ts:465
+msgid "A link or a short note. Web addresses are shown as a link."
+msgstr "En länk eller en kort notering. Webbadresser visas som en länk."
+
+#: js/shared/translations.ts:468
+msgid "Read the invitation"
+msgstr "Läs inbjudan"
+
+#: js/shared/translations.ts:469
+msgid "Schedule (free text)"
+msgstr "Schema (fritext)"
+
+#: js/shared/translations.ts:471
+msgid ""
+"Optional. Leave empty to list the linked calendar event’s actual dates; fill "
+"it in to word the schedule yourself."
+msgstr ""
+"Valfritt. Lämna tomt för att lista kalenderhändelsens faktiska datum, eller "
+"fyll i för att formulera schemat själv."
+
+#: js/shared/translations.ts:474
+msgid "Add to calendar"
+msgstr "Lägg till i kalender"
+
+#: js/shared/translations.ts:476
+msgid "Creates a calendar event from this tournament’s dates."
+msgstr "Skapar en kalenderhändelse från turneringens datum."
+
+#: js/shared/translations.ts:479
+msgid "Linked calendar event"
+msgstr "Kopplad kalenderhändelse"
+
+#: js/shared/translations.ts:482
+msgid ""
+"The GROUP id — a tournament can contain several groups, so enter the group "
+"id, not the tournament id. With it set, standings come from SSF. Leave empty "
+"for a Rockaden-managed tournament."
+msgstr ""
+"GRUPP-id:t — en turnering kan innehålla flera grupper, så ange grupp-id, "
+"inte turnerings-id. När det är satt hämtas ställningen från SSF. Lämna tomt "
+"för en Rockaden-styrd turnering."
+
+#: js/shared/translations.ts:486
+msgid "Standings are pulled from SSF. Local pairings/results are not used."
+msgstr "Ställning hämtas från SSF. Lokala lottningar/resultat används inte."
+
+#: js/shared/translations.ts:489
+msgid "Group"
+msgstr "Grupp"
+
+#: js/shared/translations.ts:500
+msgid "Overview"
+msgstr "Översikt"
+
+#: js/shared/translations.ts:501 js/shared/translations.ts:511
+msgid "View tournament"
+msgstr "Visa turnering"
+
+#: js/shared/translations.ts:502
+msgid "Back to tournaments"
+msgstr "Tillbaka till turneringar"
+
+#: js/shared/translations.ts:505
+msgid "Calendar"
+msgstr "Kalender"
+
+#: js/shared/translations.ts:507
+msgid "Upcoming events and activities at SK Rockaden."
+msgstr "Kommande evenemang och aktiviteter på SK Rockaden."
+
+#: js/shared/translations.ts:510
+msgid "Today"
+msgstr "Idag"
+
+#: js/shared/translations.ts:512
+msgid "No events this day."
+msgstr "Inga händelser denna dag."
+
+#: js/shared/translations.ts:515
+msgid "more"
+msgstr "till"
+
+#: js/shared/translations.ts:516
+msgid "All-day"
+msgstr "Heldag"
+
+#: js/shared/translations.ts:519
+msgid "Month"
+msgstr "Månad"
+
+#: js/shared/translations.ts:520
+msgid "Week"
+msgstr "Vecka"
+
+#: js/shared/translations.ts:521
+msgid "Day"
+msgstr "Dag"
+
+#: js/shared/translations.ts:523
+msgid "Mon"
+msgstr "Mån"
+
+#: js/shared/translations.ts:524
+msgid "Tue"
+msgstr "Tis"
+
+#: js/shared/translations.ts:525
+msgid "Wed"
+msgstr "Ons"
+
+#: js/shared/translations.ts:526
+msgid "Thu"
+msgstr "Tor"
+
+#: js/shared/translations.ts:527
+msgid "Fri"
+msgstr "Fre"
+
+#: js/shared/translations.ts:528
+msgid "Sat"
+msgstr "Lör"
+
+#: js/shared/translations.ts:529
+msgid "Sun"
+msgstr "Sön"
+
+#: js/shared/translations.ts:539 js/shared/translations.ts:616
+msgid "All"
+msgstr "Alla"
+
+#: js/shared/translations.ts:543 js/shared/translations.ts:639
+msgid "Edit"
+msgstr "Redigera"
+
+#: js/shared/translations.ts:544 js/shared/translations.ts:638
+msgid "Delete"
+msgstr "Ta bort"
+
+#: js/shared/translations.ts:545
+msgid "Delete this event?"
+msgstr "Ta bort detta event?"
+
+#: js/shared/translations.ts:546
+msgid "Just this one"
+msgstr "Bara denna"
+
+#: js/shared/translations.ts:547
+msgid "Whole series"
+msgstr "Hela serien"
+
+#: js/shared/translations.ts:548
+msgid "Create event"
+msgstr "Skapa event"
+
+#: js/shared/translations.ts:551
+msgid "Add images"
+msgstr "Lägg till bilder"
+
+#: js/shared/translations.ts:552
+msgid "Edit images"
+msgstr "Redigera bilder"
+
+#: js/shared/translations.ts:554
+msgid "Move up"
+msgstr "Flytta upp"
+
+#: js/shared/translations.ts:555
+msgid "Move down"
+msgstr "Flytta ned"
+
+#: js/shared/translations.ts:556
+msgid "No images selected yet."
+msgstr "Inga bilder valda ännu."
+
+#: js/shared/translations.ts:557
+msgid "Display mode"
+msgstr "Visningsläge"
+
+#: js/shared/translations.ts:559
+msgid "Slider"
+msgstr "Bildspel"
+
+#: js/shared/translations.ts:560
+msgid "Carousel"
+msgstr "Karusell"
+
+#: js/shared/translations.ts:562
+msgid "Auto-advance"
+msgstr "Spela automatiskt"
+
+#: js/shared/translations.ts:563
+msgid "Interval (seconds)"
+msgstr "Intervall (sekunder)"
+
+#: js/shared/translations.ts:564
+msgid "Visible items"
+msgstr "Synliga bilder"
+
+#: js/shared/translations.ts:565
+msgid "Aspect ratio"
+msgstr "Bildformat"
+
+#: js/shared/translations.ts:566
+msgid "Cell sizing"
+msgstr "Cellstorlek"
+
+#: js/shared/translations.ts:567
+msgid "Exact height"
+msgstr "Exakt höjd"
+
+#: js/shared/translations.ts:568
+msgid "Height (px)"
+msgstr "Höjd (px)"
+
+#: js/shared/translations.ts:570
+msgid "16:9 (Landscape wide)"
+msgstr "16:9 (Bred landskap)"
+
+#: js/shared/translations.ts:571
+msgid "4:3 (Landscape)"
+msgstr "4:3 (Landskap)"
+
+#: js/shared/translations.ts:572
+msgid "1:1 (Square)"
+msgstr "1:1 (Kvadrat)"
+
+#: js/shared/translations.ts:573
+msgid "3:4 (Portrait)"
+msgstr "3:4 (Porträtt)"
+
+#: js/shared/translations.ts:574
+msgid "9:16 (Portrait tall)"
+msgstr "9:16 (Högt porträtt)"
+
+#: js/shared/translations.ts:575
+msgid "Auto"
+msgstr "Auto"
+
+#: js/shared/translations.ts:577
+msgid "Image fit"
+msgstr "Bildanpassning"
+
+#: js/shared/translations.ts:579
+msgid "Fill (crop edges)"
+msgstr "Fyll (beskär kanter)"
+
+#: js/shared/translations.ts:580
+msgid "Fit whole image"
+msgstr "Visa hela bilden"
+
+#: js/shared/translations.ts:582
+msgid "Backdrop"
+msgstr "Bakgrund"
+
+#: js/shared/translations.ts:584
+msgid "Blurred image"
+msgstr "Suddig bild"
+
+#: js/shared/translations.ts:585
+msgid "Black bars"
+msgstr "Svarta kanter"
+
+#: js/shared/translations.ts:587
+msgid "Constrain size"
+msgstr "Begränsa storlek"
+
+#: js/shared/translations.ts:589
+msgid "No limit (fill container)"
+msgstr "Ingen gräns (fyll behållaren)"
+
+#: js/shared/translations.ts:590
+msgid "By max width"
+msgstr "Med maxbredd"
+
+#: js/shared/translations.ts:591
+msgid "By max height"
+msgstr "Med maxhöjd"
+
+#: js/shared/translations.ts:593
+msgid "Max width (px)"
+msgstr "Maxbredd (px)"
+
+#: js/shared/translations.ts:594
+msgid "Max height (px)"
+msgstr "Maxhöjd (px)"
+
+#: js/shared/translations.ts:595
+msgid "Alignment"
+msgstr "Justering"
+
+#: js/shared/translations.ts:597
+msgid "Left"
+msgstr "Vänster"
+
+#: js/shared/translations.ts:598
+msgid "Center"
+msgstr "Centrerad"
+
+#: js/shared/translations.ts:599
+msgid "Right"
+msgstr "Höger"
+
+#: js/shared/translations.ts:601
+msgid "Previous"
+msgstr "Föregående"
+
+#: js/shared/translations.ts:602
+msgid "Next"
+msgstr "Nästa"
+
+#: js/shared/translations.ts:603
+msgid "Slide {n} of {total}"
+msgstr "Bild {n} av {total}"
+
+#: js/shared/translations.ts:604
+msgid "Allow fullscreen"
+msgstr "Tillåt helskärm"
+
+#: js/shared/translations.ts:605
+msgid "View fullscreen"
+msgstr "Visa i helskärm"
+
+#: js/shared/translations.ts:606
+msgid "Close"
+msgstr "Stäng"
+
+#: js/shared/translations.ts:609
+msgid "Ranking List"
+msgstr "Ratinglista"
+
+#: js/shared/translations.ts:610
+msgid "Rating Period"
+msgstr "Rankingperiod"
+
+#: js/shared/translations.ts:611
+msgid "ELO Type"
+msgstr "Elo-typ"
+
+#: js/shared/translations.ts:612
+msgid "Member Type"
+msgstr "Medlemstyp"
+
+#: js/shared/translations.ts:613
+msgid "Standard"
+msgstr "Standard"
+
+#: js/shared/translations.ts:617
+msgid "Women"
+msgstr "Kvinnor"
+
+#: js/shared/translations.ts:618
+msgid "Juniors"
+msgstr "Juniorer"
+
+#: js/shared/translations.ts:619
+msgid "Cadets"
+msgstr "Kadetter"
+
+#: js/shared/translations.ts:620
+msgid "Veterans"
+msgstr "Veteraner"
+
+#: js/shared/translations.ts:621
+msgid "Minors"
+msgstr "Minorer"
+
+#: js/shared/translations.ts:622
+msgid "Kids"
+msgstr "Barn"
+
+#: js/shared/translations.ts:624
+msgid "Title"
+msgstr "Titel"
+
+#: js/shared/translations.ts:625
+msgid "First Name"
+msgstr "Förnamn"
+
+#: js/shared/translations.ts:626
+msgid "Last Name"
+msgstr "Efternamn"
+
+#: js/shared/translations.ts:627
+msgid "Rating"
+msgstr "Rating"
+
+#: js/shared/translations.ts:628
+msgid "Showing"
+msgstr "Visar"
+
+#: js/shared/translations.ts:629
+msgid "players"
+msgstr "spelare"
+
+#: js/shared/translations.ts:630
+msgid "No players found."
+msgstr "Inga spelare hittades."
+
+#: js/shared/translations.ts:631
+msgid "of"
+msgstr "av"
+
+#: js/shared/translations.ts:634
+msgid "Loading…"
+msgstr "Laddar…"
+
+#: js/shared/translations.ts:635
+msgid "Save"
+msgstr "Spara"
+
+#: js/shared/translations.ts:636
+msgid "Cancel"
+msgstr "Avbryt"
+
+#: js/shared/translations.ts:637
+msgid "Confirm"
+msgstr "Bekräfta"
+
+#: js/shared/translations.ts:640
+msgid "Copy"
+msgstr "Kopiera"
+
+#: js/shared/translations.ts:641
+msgid "here"
+msgstr "här"
+
+#: js/shared/translations.ts:642
+msgid "Add"
+msgstr "Lägg till"
+
+#: js/shared/translations.ts:643
+msgid "Layout"
+msgstr "Layout"
+
+#: js/shared/translations.ts:644
+msgid "Cards"
+msgstr "Kort"
+
+#: js/shared/translations.ts:645
+msgid "List"
+msgstr "Lista"
+
+#~ msgid "Fetch Group"
+#~ msgstr "Hämta grupp"
+
+#~ msgid "Fetch Tournament"
+#~ msgstr "Hämta turnering"
+
+#~ msgid "Linked to SSF group %d"
+#~ msgstr "Kopplad till SSF-grupp %d"
+
+#~ msgid "SSF ID"
+#~ msgstr "SSF-ID"
+
+#~ msgid "SSF Import"
+#~ msgstr "SSF-import"
+
+#~ msgid "tournament"
+#~ msgstr "turnering"
+
+#~ msgid "Adult"
+#~ msgstr "Vuxen"
+
+#~ msgid "SSF tournament ID"
+#~ msgstr "SSF turnerings-ID"
+
+#~ msgid "This is a team tournament — its results are shown on SSF, not here."
+#~ msgstr "Det här är en lagturnering — dess resultat visas på SSF, inte här."
+
+#~ msgid "Linked tournament"
+#~ msgstr "Kopplad turnering"
+
+#~ msgid "No tournament"
+#~ msgstr "Ingen turnering"
+
+#~ msgid "Official result"
+#~ msgstr "Officiellt resultat"
+
+#~ msgid "View on SSF"
+#~ msgstr "Visa på SSF"

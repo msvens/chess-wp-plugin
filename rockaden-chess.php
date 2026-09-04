@@ -31,13 +31,14 @@ if ( file_exists( RC_PLUGIN_DIR . 'vendor/autoload.php' ) ) {
 		__FILE__,
 		'rockaden-chess'
 	);
-	/**
-	 * Narrow the VCS API type so static analysis can see the GitHub-specific methods.
-	 *
-	 * @var \YahnisElsts\PluginUpdateChecker\v5p6\Vcs\GitHubApi $rc_vcs_api
-	 */
+	// enableReleaseAssets() lives on the GitHub API subclass, not on the base
+	// Vcs\Api that getVcsApi() is typed to return. Checked by method rather than
+	// by class: the library namespaces its classes by version (v5p6, v5p7, …),
+	// so naming one means a routine dependency bump silently stops matching.
 	$rc_vcs_api = $rc_update_checker->getVcsApi();
-	$rc_vcs_api->enableReleaseAssets( '/rockaden-chess\.zip$/' );
+	if ( method_exists( $rc_vcs_api, 'enableReleaseAssets' ) ) {
+		$rc_vcs_api->enableReleaseAssets( '/rockaden-chess\.zip$/' );
+	}
 }
 
 // PSR-4-style autoloader for plugin classes.
