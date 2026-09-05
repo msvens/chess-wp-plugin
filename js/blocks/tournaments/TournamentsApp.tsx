@@ -4,6 +4,8 @@ import type { Tournament } from '../../admin/types';
 import { getTranslation, toLanguage } from '../../shared/translations';
 import { useLocale } from '../../shared/useLocale';
 import { fetchTournamentResults } from '../../shared/ssf';
+import type { TournamentFields } from '../../shared/overviewFields';
+import { TOURNAMENT_FIELD_DEFAULTS } from '../../shared/overviewFields';
 import TournamentCard from './TournamentCard';
 import TournamentRow from './TournamentRow';
 import type { Language } from '../../shared/types';
@@ -11,6 +13,9 @@ import type { Language } from '../../shared/types';
 interface Props {
 	locale: string;
 	layout?: 'cards' | 'list';
+	// Which fields the cards and rows render. Both are always mounted — CSS
+	// picks the visible one — so one set drives both.
+	fields?: TournamentFields;
 }
 
 const STATUS_ORDER: Record< Tournament[ 'status' ], number > = {
@@ -24,11 +29,13 @@ function Section( {
 	lang,
 	showCards,
 	ssfCounts,
+	fields,
 }: {
 	items: Tournament[];
 	lang: Language;
 	showCards: boolean;
 	ssfCounts: Map< number, number >;
+	fields: TournamentFields;
 } ) {
 	return (
 		<>
@@ -40,6 +47,7 @@ function Section( {
 							tournament={ tournament }
 							lang={ lang }
 							ssfCount={ ssfCounts.get( tournament.id ) }
+							fields={ fields }
 						/>
 					) ) }
 				</div>
@@ -51,6 +59,7 @@ function Section( {
 							tournament={ tournament }
 							lang={ lang }
 							ssfCount={ ssfCounts.get( tournament.id ) }
+							fields={ fields }
 						/>
 					</li>
 				) ) }
@@ -59,7 +68,11 @@ function Section( {
 	);
 }
 
-export default function TournamentsApp( { locale, layout = 'cards' }: Props ) {
+export default function TournamentsApp( {
+	locale,
+	layout = 'cards',
+	fields = TOURNAMENT_FIELD_DEFAULTS,
+}: Props ) {
 	const currentLocale = useLocale( locale );
 	const lang = toLanguage( currentLocale );
 	const t = getTranslation( lang );
@@ -94,6 +107,11 @@ export default function TournamentsApp( { locale, layout = 'cards' }: Props ) {
 	);
 
 	useEffect( () => {
+		// Nothing renders the count, so don't pay for the round-trips.
+		if ( ! fields.showParticipantCount ) {
+			return;
+		}
+
 		const backed = tournaments.filter( ( tn ) => tn.ssfGroupId > 0 );
 		if ( backed.length === 0 ) {
 			return;
@@ -118,7 +136,7 @@ export default function TournamentsApp( { locale, layout = 'cards' }: Props ) {
 		return () => {
 			cancelled = true;
 		};
-	}, [ tournaments ] );
+	}, [ tournaments, fields.showParticipantCount ] );
 
 	const [ showPast, setShowPast ] = useState( false );
 
@@ -145,6 +163,7 @@ export default function TournamentsApp( { locale, layout = 'cards' }: Props ) {
 					lang={ lang }
 					showCards={ showCards }
 					ssfCounts={ ssfCounts }
+					fields={ fields }
 				/>
 			) }
 
@@ -165,6 +184,7 @@ export default function TournamentsApp( { locale, layout = 'cards' }: Props ) {
 							lang={ lang }
 							showCards={ showCards }
 							ssfCounts={ ssfCounts }
+							fields={ fields }
 						/>
 					) }
 				</div>

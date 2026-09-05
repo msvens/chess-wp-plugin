@@ -3,17 +3,23 @@ import apiFetch from '@wordpress/api-fetch';
 import type { TrainingGroup } from '../../admin/types';
 import { getTranslation, toLanguage } from '../../shared/translations';
 import { useLocale } from '../../shared/useLocale';
+import type { TrainingGroupFields } from '../../shared/overviewFields';
+import { TRAINING_GROUP_FIELD_DEFAULTS } from '../../shared/overviewFields';
 import GroupCard from './GroupCard';
 import GroupRow from './GroupRow';
 
 interface Props {
 	locale: string;
 	layout?: 'cards' | 'list';
+	// Which fields the cards and rows render. Both are always mounted — CSS
+	// picks the visible one — so one set drives both.
+	fields?: TrainingGroupFields;
 }
 
 export default function TrainingGroupsApp( {
 	locale,
 	layout = 'cards',
+	fields = TRAINING_GROUP_FIELD_DEFAULTS,
 }: Props ) {
 	const currentLocale = useLocale( locale );
 	const lang = toLanguage( currentLocale );
@@ -51,6 +57,7 @@ export default function TrainingGroupsApp( {
 									key={ group.id }
 									group={ group }
 									lang={ lang }
+									fields={ fields }
 								/>
 							) ) }
 						</div>
@@ -67,6 +74,7 @@ export default function TrainingGroupsApp( {
 									key={ group.id }
 									group={ group }
 									lang={ lang }
+									fields={ fields }
 								/>
 							) ) }
 						</div>
@@ -88,7 +96,11 @@ export default function TrainingGroupsApp( {
 					<ul className="rc-tg__list">
 						{ items.map( ( group ) => (
 							<li key={ group.id }>
-								<GroupRow group={ group } lang={ lang } />
+								<GroupRow
+									group={ group }
+									lang={ lang }
+									fields={ fields }
+								/>
 							</li>
 						) ) }
 					</ul>

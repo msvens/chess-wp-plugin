@@ -6,6 +6,7 @@ export interface Translations {
 		title: string;
 		subtitle: string;
 		participants: string;
+		participantCount: string;
 		sessions: string;
 		standings: string;
 		attendance: string;
@@ -288,6 +289,8 @@ export interface Translations {
 		layout: string;
 		layoutCards: string;
 		layoutList: string;
+		// Inspector panel listing which fields an overview block renders.
+		fields: string;
 	};
 }
 
@@ -299,6 +302,7 @@ const translations: Translations = {
 			'rockaden-chess'
 		),
 		participants: __( 'Participants', 'rockaden-chess' ),
+		participantCount: __( 'Participant count', 'rockaden-chess' ),
 		sessions: __( 'Sessions', 'rockaden-chess' ),
 		standings: __( 'Standings', 'rockaden-chess' ),
 		attendance: __( 'Attendance', 'rockaden-chess' ),
@@ -643,6 +647,7 @@ const translations: Translations = {
 		layout: __( 'Layout', 'rockaden-chess' ),
 		layoutCards: __( 'Cards', 'rockaden-chess' ),
 		layoutList: __( 'List', 'rockaden-chess' ),
+		fields: __( 'Fields', 'rockaden-chess' ),
 	},
 };
 
