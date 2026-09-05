@@ -12,12 +12,50 @@
     "layout": {
       "type": "string",
       "default": "cards",
-      "enum": ["cards", "list"]
+      "enum": [
+        "cards",
+        "list"
+      ]
+    },
+    "showDescription": {
+      "type": "boolean",
+      "default": true
+    },
+    "showSchedule": {
+      "type": "boolean",
+      "default": true
+    },
+    "showSemester": {
+      "type": "boolean",
+      "default": true
+    },
+    "showLocation": {
+      "type": "boolean",
+      "default": false
+    },
+    "showTrainers": {
+      "type": "boolean",
+      "default": false
+    },
+    "showContact": {
+      "type": "boolean",
+      "default": false
+    },
+    "showStatus": {
+      "type": "boolean",
+      "default": false
+    },
+    "showParticipantCount": {
+      "type": "boolean",
+      "default": true
     }
   },
   "supports": {
     "html": false,
-    "align": ["wide", "full"]
+    "align": [
+      "wide",
+      "full"
+    ]
   },
   "editorScript": "file:../../../build/blocks/training-groups/index.js",
   "viewScript": "file:../../../build/blocks/training-groups/view.js",

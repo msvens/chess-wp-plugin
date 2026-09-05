@@ -2,74 +2,57 @@ import type { Tournament } from '../../admin/types';
 import type { Language } from '../../shared/types';
 import { getTranslation } from '../../shared/translations';
 import { toSingleLine } from '../../shared/Description';
-import { participantsVisible } from '../../shared/participantsVisible';
+import type { TournamentFields } from '../../shared/overviewFields';
+import { formatDate, participantCount } from './tournamentDisplay';
 
 interface Props {
 	tournament: Tournament;
 	lang: Language;
 	// Participant count from SSF, for SSF-backed tournaments.
 	ssfCount?: number;
-}
-
-function formatDate( value: string, lang: Language ): string {
-	if ( ! value ) {
-		return '';
-	}
-	const d = new Date( value );
-	if ( isNaN( d.getTime() ) ) {
-		return value;
-	}
-	return d.toLocaleDateString( lang === 'sv' ? 'sv-SE' : 'en-GB', {
-		year: 'numeric',
-		month: 'short',
-		day: 'numeric',
-	} );
-}
-
-/**
- * The participant count to display, or null to show no counter.
- *
- * SSF-backed tournaments keep their players in SSF, so the local list is empty;
- * their count arrives asynchronously and is simply absent until it does — better
- * than rendering a confident "0". Also honours the show-participants toggle, the
- * way the training-group cards do.
- *
- * @param tournament The tournament.
- * @param ssfCount   Count resolved from SSF, when available.
- */
-function participantCount(
-	tournament: Tournament,
-	ssfCount: number | undefined
-): number | null {
-	const count =
-		tournament.ssfGroupId > 0
-			? ssfCount
-			: tournament.participants.filter( ( p ) => p.active ).length;
-
-	// undefined means an SSF count that hasn't resolved yet — nothing to show.
-	if ( count === undefined ) {
-		return null;
-	}
-
-	return participantsVisible( tournament.showParticipants, count )
-		? count
-		: null;
+	fields: TournamentFields;
 }
 
 export default function TournamentCard( {
 	tournament,
 	lang,
 	ssfCount,
+	fields,
 }: Props ) {
 	const t = getTranslation( lang );
-	const count = participantCount( tournament, ssfCount );
+
+	// ANDed, never ORed: the block toggle can only hide a count, never reveal one
+	// the tournament itself has hidden. Privacy is the owner's call; this toggle
+	// only lets a page author drop the count from a crowded overview.
+	const count = fields.showParticipantCount
+		? participantCount( tournament, ssfCount )
+		: null;
+
 	const isSsfBacked = tournament.ssfGroupId > 0;
-	const dateRange = [
-		formatDate( tournament.startDate, lang ),
-		formatDate( tournament.endDate, lang ),
-	]
-		.filter( Boolean )
-		.join( ' – ' );
+	const dateRange = fields.showDates
+		? [
+				formatDate( tournament.startDate, lang ),
+				formatDate( tournament.endDate, lang ),
+		  ]
+				.filter( Boolean )
+				.join( ' – ' )
+		: '';
+
+	const location = fields.showLocation
+		? tournament.calendarEvent?.location || ''
+		: '';
+
+	const timeControl =
+		fields.showTimeControl && tournament.timeControl
+			? t.training[
+					tournament.timeControl as 'classical' | 'rapid' | 'blitz'
+			  ] || tournament.timeControl
+			: '';
+
+	const details = [
+		{ label: t.calendar.location, value: location },
+		{ label: t.training.timeControl, value: timeControl },
+	].filter( ( d ) => d.value );
 
 	return (
 		<a
@@ -77,25 +60,35 @@ export default function TournamentCard( {
 			className="rc-tn__card"
 		>
 			<div className="rc-tn__card-header">
-				<span
-					className={ `rc-tn__badge rc-tn__badge--status is-${ tournament.status }` }
-				>
-					{ t.tournament.statuses[ tournament.status ] }
-				</span>
-				<span className="rc-tn__badge rc-tn__badge--category">
-					{ t.tournament.categories[ tournament.category ] }
-				</span>
-				{ isSsfBacked && (
+				{ fields.showStatus && (
+					<span
+						className={ `rc-tn__badge rc-tn__badge--status is-${ tournament.status }` }
+					>
+						{ t.tournament.statuses[ tournament.status ] }
+					</span>
+				) }
+				{ fields.showCategory && (
+					<span className="rc-tn__badge rc-tn__badge--category">
+						{ t.tournament.categories[ tournament.category ] }
+					</span>
+				) }
+				{ fields.showSsfBadge && isSsfBacked && (
 					<span className="rc-tn__badge rc-tn__badge--ssf">SSF</span>
 				) }
 			</div>
 			<h3 className="rc-tn__card-title">{ tournament.title }</h3>
 			{ dateRange && <p className="rc-tn__card-dates">{ dateRange }</p> }
-			{ tournament.description && (
+			{ fields.showDescription && tournament.description && (
 				<p className="rc-tn__card-desc">
 					{ toSingleLine( tournament.description ) }
 				</p>
 			) }
+			{ details.map( ( d ) => (
+				<p className="rc-tn__card-detail" key={ d.label }>
+					<span className="rc-tn__card-label">{ d.label }</span>{ ' ' }
+					{ d.value }
+				</p>
+			) ) }
 			{ count !== null && (
 				<div className="rc-tn__card-footer">
 					<span className="rc-tn__card-meta">

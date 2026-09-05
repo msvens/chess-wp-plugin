@@ -164,6 +164,25 @@ html.dark .rc-tn__card:hover {
 	color: var(--rc-tn-meta-text);
 }
 
+/* Optional detail lines (location / time control), off by default and enabled
+   per block in the editor. */
+.rc-tn__card-detail {
+	margin: 0 0 0.35rem;
+	font-size: 0.8125rem;
+	color: var(--rc-tn-meta-text);
+	line-height: 1.4;
+}
+
+.rc-tn__card-label {
+	font-weight: 600;
+}
+
+.rc-tn__row-desc,
+.rc-tn__row-detail {
+	font-size: 0.8125rem;
+	color: var(--rc-tn-meta-text);
+}
+
 /* --- List view (compact rows; also the mobile layout for both views) --- */
 .rc-tn__list {
 	list-style: none;

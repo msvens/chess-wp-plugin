@@ -12,12 +12,50 @@
     "layout": {
       "type": "string",
       "default": "cards",
-      "enum": ["cards", "list"]
+      "enum": [
+        "cards",
+        "list"
+      ]
+    },
+    "showStatus": {
+      "type": "boolean",
+      "default": true
+    },
+    "showCategory": {
+      "type": "boolean",
+      "default": true
+    },
+    "showDates": {
+      "type": "boolean",
+      "default": true
+    },
+    "showDescription": {
+      "type": "boolean",
+      "default": true
+    },
+    "showSsfBadge": {
+      "type": "boolean",
+      "default": true
+    },
+    "showLocation": {
+      "type": "boolean",
+      "default": false
+    },
+    "showTimeControl": {
+      "type": "boolean",
+      "default": false
+    },
+    "showParticipantCount": {
+      "type": "boolean",
+      "default": true
     }
   },
   "supports": {
     "html": false,
-    "align": ["wide", "full"]
+    "align": [
+      "wide",
+      "full"
+    ]
   },
   "editorScript": "file:../../../build/blocks/tournaments/index.js",
   "viewScript": "file:../../../build/blocks/tournaments/view.js",
