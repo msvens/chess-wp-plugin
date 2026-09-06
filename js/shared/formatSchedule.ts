@@ -1,4 +1,10 @@
 import type { Language } from './types';
+import {
+	extractDateKey,
+	extractTime,
+	keyToUtcMs,
+	seriesDateKeys,
+} from './recurrence';
 import type { Translations } from './translations';
 
 /**
@@ -25,31 +31,6 @@ export interface ScheduleSource {
 // so they cut over sooner.
 export const MAX_LISTED_DATES = 12;
 export const MAX_LISTED_DATES_NARROW = 8;
-
-// Runaway guard: a bounded series is inherently finite, but a misconfigured
-// recurrence-end decades out shouldn't spin.
-const SERIES_CAP = 500;
-
-// Extract a literal HH:mm from a naive site-local datetime string. We read the
-// digits directly (no `new Date()`) so a stored local time is never shifted by
-// the browser's timezone.
-function extractTime( dateStr: string ): string {
-	const match = dateStr.match( /(\d{2}):(\d{2})/ );
-	return match ? `${ match[ 1 ] }:${ match[ 2 ] }` : '';
-}
-
-// Same reasoning as extractTime: read the site-local date off the string rather
-// than through `new Date()`, which would resolve it in the visitor's timezone
-// and could shift every occurrence by a day.
-function extractDateKey( dateStr: string ): string {
-	const match = dateStr.match( /^(\d{4})-(\d{2})-(\d{2})/ );
-	return match ? `${ match[ 1 ] }-${ match[ 2 ] }-${ match[ 3 ] }` : '';
-}
-
-function keyToUtcMs( key: string ): number {
-	const [ y, m, d ] = key.split( '-' ).map( Number );
-	return Date.UTC( y, m - 1, d );
-}
 
 /**
  * The schedule's real occurrence dates (YYYY-MM-DD), with removed weeks left out.
@@ -83,17 +64,8 @@ function seriesDates( source: ScheduleSource ): string[] {
 		return [];
 	}
 
-	const stepMs = ( source.recurrenceType === 'biweekly' ? 14 : 7 ) * 86400000;
-	const endMs = keyToUtcMs( endKey );
-	const dates: string[] = [];
-
-	// Step in UTC so a daylight-saving transition mid-series can't shift a date.
-	let cursor = keyToUtcMs( startKey );
-	while ( cursor <= endMs && dates.length < SERIES_CAP ) {
-		dates.push( new Date( cursor ).toISOString().substring( 0, 10 ) );
-		cursor += stepMs;
-	}
-	return dates;
+	const stepDays = source.recurrenceType === 'biweekly' ? 14 : 7;
+	return seriesDateKeys( startKey, stepDays, endKey );
 }
 
 /**
