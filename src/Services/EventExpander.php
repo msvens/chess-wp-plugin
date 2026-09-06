@@ -62,6 +62,10 @@ class EventExpander {
 				get_post_meta( $post->ID, 'rc_excluded_dates', true ) ?: '[]',
 				true,
 			),
+			'includedDates'     => json_decode(
+				get_post_meta( $post->ID, 'rc_included_dates', true ) ?: '[]',
+				true,
+			),
 			'ownerType'         => get_post_meta( $post->ID, 'rc_owner_type', true ) ?: '',
 			'ownerUrl'          => self::owner_url( $post->ID ),
 		];
@@ -136,6 +140,16 @@ class EventExpander {
 		$step_days = 'biweekly' === $event['recurrenceType'] ? 14 : 7;
 		$excluded  = array_flip( $event['excludedDates'] ?? [] );
 
+		// Whether a recurrence rule applies at all. Without one the event still
+		// expands when it carries explicit extra dates — that is a group meeting
+		// on unpredictable days, which has a list and no rule.
+		$has_rule = ! empty( $event['isRecurring'] ) && ! empty( $event['recurrenceType'] );
+
+		// The raw window end, for filtering explicit dates. $series_end is
+		// already clamped to it for the rule's own stepping, but an extra date
+		// can sit anywhere, so it needs checking against the window directly.
+		$win_end_dt_filter = $window_end ? new \DateTime( $window_end, $tz ) : null;
+
 		// Series boundary: the explicit recurrence-end date when set; otherwise
 		// the query window end (an unbounded series only renders within the view).
 		$rec_end_raw = (string) ( $event['recurrenceEndDate'] ?? '' );
@@ -169,13 +183,57 @@ class EventExpander {
 			}
 		}
 
-		while ( $current <= $series_end ) {
-			$date_key  = $current->format( 'Y-m-d' );
-			$occ_start = clone $current;
-			$occ_end   = clone $current;
-			$occ_end->modify( "+{$duration_secs} seconds" );
+		// Build the occurrence set first, then emit, so the rule's dates and the
+		// explicit extra sessions cannot be produced in the wrong order or twice
+		// over. Follows RFC 5545: rule + RDATE - EXDATE, exclusion always wins.
+		//
+		// Keyed by date: an extra session naming a date the rule already covers
+		// replaces it, because naming a date explicitly is how you say it
+		// differs from the usual.
+		$occurrences = [];
+		if ( $has_rule ) {
+			while ( $current <= $series_end ) {
+				$occurrences[ $current->format( 'Y-m-d' ) ] = null;
+				$current->modify( "+{$step_days} days" );
+			}
+		} else {
+			$occurrences[ $start->format( 'Y-m-d' ) ] = null;
+		}
 
-			$in_window = ! $win_start_dt || $occ_end >= $win_start_dt;
+		foreach ( $event['includedDates'] ?? [] as $extra ) {
+			$extra_start = is_array( $extra ) ? ( $extra['start'] ?? '' ) : $extra;
+			if ( ! is_string( $extra_start ) || '' === $extra_start ) {
+				continue;
+			}
+
+			// Ignore anything that is not a date rather than letting it through
+			// to be rendered on a day that does not exist.
+			$extra_key = substr( $extra_start, 0, 10 );
+			if ( ! preg_match( '/^\d{4}-\d{2}-\d{2}$/', $extra_key ) ) {
+				continue;
+			}
+
+			$occurrences[ $extra_key ] = is_array( $extra ) ? $extra : null;
+		}
+
+		ksort( $occurrences );
+
+		foreach ( $occurrences as $date_key => $extra ) {
+			// An extra session states its own times; anything else takes the
+			// event's, and its duration when no end is given.
+			if ( is_array( $extra ) && ! empty( $extra['start'] ) ) {
+				$occ_start = new \DateTime( (string) $extra['start'], $tz );
+				$occ_end   = ! empty( $extra['end'] )
+					? new \DateTime( (string) $extra['end'], $tz )
+					: ( clone $occ_start )->modify( "+{$duration_secs} seconds" );
+			} else {
+				$occ_start = new \DateTime( $date_key . ' ' . $start->format( 'H:i:s' ), $tz );
+				$occ_end   = ( clone $occ_start )->modify( "+{$duration_secs} seconds" );
+			}
+
+			$in_window = ( ! $win_start_dt || $occ_end >= $win_start_dt )
+				&& ( ! $win_end_dt_filter || $occ_start <= $win_end_dt_filter );
+
 			if ( $in_window && ! isset( $excluded[ $date_key ] ) ) {
 				$result[] = [
 					'id'          => "{$id}-{$date_key}",
@@ -193,7 +251,6 @@ class EventExpander {
 					'ownerUrl'    => $event['ownerUrl'] ?? '',
 				];
 			}
-			$current->modify( "+{$step_days} days" );
 		}
 
 		return $result;

@@ -1,8 +1,10 @@
 import type { Language } from './types';
+import type { ExtraSession } from './recurrence';
 import {
 	extractDateKey,
 	extractTime,
 	keyToUtcMs,
+	occurrences,
 	seriesDateKeys,
 } from './recurrence';
 import type { Translations } from './translations';
@@ -22,6 +24,7 @@ export interface ScheduleSource {
 	recurrenceEndDate?: string;
 	// Occurrences the editor removed from the series (YYYY-MM-DD).
 	excludedDates?: string[];
+	includedDates?: ExtraSession[];
 }
 
 // Above this many occurrences an explicit date list stops being readable (a
@@ -41,8 +44,11 @@ export const MAX_LISTED_DATES_NARROW = 8;
  * @param source The event/schedule to expand.
  */
 export function occurrenceDates( source: ScheduleSource ): string[] {
-	const excluded = new Set( source.excludedDates ?? [] );
-	return seriesDates( source ).filter( ( key ) => ! excluded.has( key ) );
+	return occurrences(
+		seriesDates( source ),
+		source.includedDates,
+		source.excludedDates
+	).map( ( occ ) => occ.dateKey );
 }
 
 /**
@@ -59,6 +65,9 @@ function seriesDates( source: ScheduleSource ): string[] {
 		return [ startKey ];
 	}
 
+	// An open-ended series has no finite list to show; callers fall back to
+	// restating the rule. Any explicit extra dates are still listable, and are
+	// merged in by occurrenceDates() regardless of what this returns.
 	const endKey = extractDateKey( source.recurrenceEndDate ?? '' );
 	if ( ! endKey ) {
 		return [];

@@ -91,3 +91,81 @@ export function seriesDateKeys(
 	}
 	return keys;
 }
+
+/**
+ * One occurrence of an event.
+ *
+ * `start` and `end` are present only for an extra session that carries its own
+ * times; a date produced by the recurrence rule has neither, and the caller
+ * applies the event's own time to it.
+ */
+export interface Occurrence {
+	dateKey: string;
+	start?: string;
+	end?: string;
+}
+
+/**
+ * An extra session, as stored.
+ *
+ * A period carries its own start and end — RDATE's PERIOD value type. A bare
+ * string is the DATE form: the session happens on that day at the event's usual
+ * time. Both are the spec's, and the second is worth keeping because "same time
+ * as always" should not require filling in two pickers.
+ */
+export type ExtraSession = string | { start: string; end?: string };
+
+/**
+ * The complete set of occurrences an event has.
+ *
+ * Follows RFC 5545: the rule's dates plus the extra sessions, minus the
+ * excluded ones — so an exclusion always wins, and a date named by both the
+ * rule and an extra session is one occurrence, taking the session's own times.
+ *
+ * An event with extra sessions and no rule is the point of this: a group
+ * meeting on unpredictable days has a list and no rule to state.
+ *
+ * @param ruleKeys      Dates the recurrence rule generated (may be empty).
+ * @param extraSessions Extra sessions, as periods or bare dates.
+ * @param excludedDates Cancelled dates, YYYY-MM-DD.
+ * @return Occurrences, chronological and without duplicates.
+ */
+export function occurrences(
+	ruleKeys: string[],
+	extraSessions?: ExtraSession[] | null,
+	excludedDates?: string[] | null
+): Occurrence[] {
+	const excluded = new Set( excludedDates ?? [] );
+	const byKey = new Map< string, Occurrence >();
+
+	for ( const dateKey of ruleKeys ) {
+		if ( ! excluded.has( dateKey ) ) {
+			byKey.set( dateKey, { dateKey } );
+		}
+	}
+
+	for ( const entry of extraSessions ?? [] ) {
+		const start = typeof entry === 'string' ? entry : entry?.start;
+		if ( typeof start !== 'string' ) {
+			continue;
+		}
+		const dateKey = extractDateKey( start );
+		// Ignore anything that isn't a date rather than letting it through to be
+		// rendered as an occurrence on a day that doesn't exist.
+		if ( ! dateKey || excluded.has( dateKey ) ) {
+			continue;
+		}
+		// An extra session with its own times wins over the rule's plain date:
+		// naming a date explicitly is how you say it differs.
+		byKey.set(
+			dateKey,
+			typeof entry === 'string'
+				? { dateKey }
+				: { dateKey, start: entry.start, end: entry.end }
+		);
+	}
+
+	return [ ...byKey.values() ].sort( ( a, b ) =>
+		a.dateKey < b.dateKey ? -1 : 1
+	);
+}

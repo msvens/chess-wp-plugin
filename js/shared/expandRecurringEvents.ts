@@ -1,4 +1,10 @@
-import { extractDateKey, keyToUtcMs, seriesDateKeys } from './recurrence';
+import type { ExtraSession } from './recurrence';
+import {
+	extractDateKey,
+	keyToUtcMs,
+	occurrences,
+	seriesDateKeys,
+} from './recurrence';
 import type { CalendarEvent, EventCategory } from './types';
 
 export interface EventDoc {
@@ -15,6 +21,30 @@ export interface EventDoc {
 	recurrenceType?: 'weekly' | 'biweekly' | null;
 	recurrenceEndDate?: string | null;
 	excludedDates?: string[] | null;
+	// Extra sessions, each optionally carrying its own start and end.
+	includedDates?: ExtraSession[] | null;
+}
+
+// Parse a naive site-local datetime ("2026-10-12T18:00:00") into a Date using
+// local components, never through the string's own offset.
+function localDate( value: string ): Date {
+	const [ datePart, timePart = '00:00:00' ] = value.split( 'T' );
+	const [ y, m, d ] = datePart.split( '-' ).map( Number );
+	const [ hh, mm, ss ] = timePart.split( ':' ).map( Number );
+	return new Date( y, m - 1, d, hh || 0, mm || 0, ss || 0 );
+}
+
+// The given date at another date's wall-clock time.
+function atTimeOf( dateKey: string, source: Date ): Date {
+	const [ y, m, d ] = dateKey.split( '-' ).map( Number );
+	return new Date(
+		y,
+		m - 1,
+		d,
+		source.getHours(),
+		source.getMinutes(),
+		source.getSeconds()
+	);
 }
 
 export function expandRecurringEvents( docs: EventDoc[] ): CalendarEvent[] {
@@ -35,7 +65,12 @@ export function expandRecurringEvents( docs: EventDoc[] ): CalendarEvent[] {
 			linkLabel: doc.linkLabel ?? undefined,
 		};
 
-		if ( ! doc.isRecurring || ! doc.recurrenceType ) {
+		const hasRule = Boolean( doc.isRecurring && doc.recurrenceType );
+		const hasExtraDates = ( doc.includedDates ?? [] ).length > 0;
+
+		// A plain one-off event, with no rule and no extra dates, is emitted as
+		// itself — no expansion, and its own id rather than a dated one.
+		if ( ! hasRule && ! hasExtraDates ) {
 			result.push( {
 				...base,
 				id,
@@ -73,34 +108,34 @@ export function expandRecurringEvents( docs: EventDoc[] ): CalendarEvent[] {
 		}
 
 		const stepDays = doc.recurrenceType === 'biweekly' ? 14 : 7;
-		const excluded = new Set( doc.excludedDates ?? [] );
+		const ruleKeys = hasRule
+			? seriesDateKeys( startKey, stepDays, endKey )
+			: [ startKey ];
 
-		for ( const dateKey of seriesDateKeys( startKey, stepDays, endKey ) ) {
-			if ( excluded.has( dateKey ) ) {
-				continue;
-			}
-			// Build each occurrence at the event's wall-clock time on its own
-			// date. Constructing from local components is what keeps 18:00
-			// meaning 18:00 across a daylight-saving change — reattaching the
-			// event's stored UTC offset instead would carry a summer offset
-			// into winter and shift every later occurrence by an hour.
-			const [ y, m, d ] = dateKey.split( '-' ).map( Number );
-			const occurrenceStart = new Date(
-				y,
-				m - 1,
-				d,
-				start.getHours(),
-				start.getMinutes(),
-				start.getSeconds()
-			);
+		for ( const occ of occurrences(
+			ruleKeys,
+			doc.includedDates,
+			doc.excludedDates
+		) ) {
+			// An extra session states its own times; anything else takes the
+			// event's. Both are built from local date components, which is what
+			// keeps 18:00 meaning 18:00 across a daylight-saving change —
+			// reattaching a stored UTC offset instead would carry a summer
+			// offset into winter and shift every later occurrence by an hour.
+			const occurrenceStart = occ.start
+				? localDate( occ.start )
+				: atTimeOf( occ.dateKey, start );
+
+			const occurrenceEnd = occ.end
+				? localDate( occ.end )
+				: new Date( occurrenceStart.getTime() + durationMs );
+
 			result.push( {
 				...base,
-				id: `${ id }-${ dateKey }`,
+				id: `${ id }-${ occ.dateKey }`,
 				parentId: id,
 				startDate: occurrenceStart.toISOString(),
-				endDate: new Date(
-					occurrenceStart.getTime() + durationMs
-				).toISOString(),
+				endDate: occurrenceEnd.toISOString(),
 			} );
 		}
 	}

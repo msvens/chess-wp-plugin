@@ -153,7 +153,14 @@ class EventApi {
 		foreach ( $posts as $post ) {
 			$base = EventExpander::format_event_raw( $post );
 
-			if ( $base['isRecurring'] && $base['recurrenceType'] ) {
+			// Expand when a rule applies, and also when the event carries explicit
+			// extra dates but no rule — that is how a group meeting on
+			// unpredictable days is stored, and it would otherwise render only
+			// its first date.
+			$has_rule   = $base['isRecurring'] && $base['recurrenceType'];
+			$has_extras = ! empty( $base['includedDates'] );
+
+			if ( $has_rule || $has_extras ) {
 				$expanded = EventExpander::expand_recurring( $base, $month_start, $month_end );
 				array_push( $events, ...$expanded );
 			} else {
@@ -162,6 +169,45 @@ class EventApi {
 		}
 
 		return new WP_REST_Response( $events );
+	}
+
+	/**
+	 * Clean one extra-session entry, or null when it is unusable.
+	 *
+	 * Accepts both of RDATE's shapes: a period carrying its own start and end,
+	 * and a bare date meaning "at the event's usual time". Anything else is
+	 * dropped rather than stored, because these are rendered straight onto the
+	 * calendar.
+	 *
+	 * @param mixed $entry Raw entry from the request body.
+	 * @return array<string, string>|string|null
+	 */
+	private static function sanitize_extra_session( $entry ) {
+		if ( is_string( $entry ) ) {
+			return preg_match( '/^\d{4}-\d{2}-\d{2}$/', $entry ) ? $entry : null;
+		}
+
+		if ( ! is_array( $entry ) || empty( $entry['start'] ) || ! is_string( $entry['start'] ) ) {
+			return null;
+		}
+
+		$start = sanitize_text_field( $entry['start'] );
+		if ( ! preg_match( '/^\d{4}-\d{2}-\d{2}([T ]\d{2}:\d{2}(:\d{2})?)?$/', $start ) ) {
+			return null;
+		}
+
+		$clean = [ 'start' => $start ];
+
+		if ( ! empty( $entry['end'] ) && is_string( $entry['end'] ) ) {
+			$end = sanitize_text_field( $entry['end'] );
+			// An end before its own start would render as a negative-length
+			// occurrence; drop it and let the event's duration apply instead.
+			if ( preg_match( '/^\d{4}-\d{2}-\d{2}([T ]\d{2}:\d{2}(:\d{2})?)?$/', $end ) && $end > $start ) {
+				$clean['end'] = $end;
+			}
+		}
+
+		return $clean;
 	}
 
 	/**
@@ -297,6 +343,19 @@ class EventApi {
 		if ( isset( $body['excludedDates'] ) ) {
 			$excluded = is_array( $body['excludedDates'] ) ? $body['excludedDates'] : [];
 			update_post_meta( $post_id, 'rc_excluded_dates', wp_slash( wp_json_encode( $excluded ) ) );
+		}
+		if ( isset( $body['includedDates'] ) ) {
+			// Validated entry by entry rather than trusted wholesale: these are
+			// rendered directly as occurrences, and a malformed one would show
+			// up on the calendar as a day that does not exist.
+			$included = [];
+			foreach ( (array) $body['includedDates'] as $rc_entry ) {
+				$rc_clean = self::sanitize_extra_session( $rc_entry );
+				if ( null !== $rc_clean ) {
+					$included[] = $rc_clean;
+				}
+			}
+			update_post_meta( $post_id, 'rc_included_dates', wp_slash( wp_json_encode( $included ) ) );
 		}
 
 		if ( isset( $body['ssfGroupId'] ) ) {

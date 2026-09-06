@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Rockaden Chess\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/plugin\n"
-"POT-Creation-Date: 2026-09-05T05:32:26+00:00\n"
+"POT-Creation-Date: 2026-09-06T15:55:13+00:00\n"
 "PO-Revision-Date: 2026-05-26\n"
 "Language: sv_SE\n"
 "MIME-Version: 1.0\n"
@@ -41,102 +41,120 @@ msgstr "Inställningar"
 msgid "Help"
 msgstr "Hjälp"
 
-#: src/Admin/EventMetaBoxes.php:86 src/Admin/TrainingAdmin.php:20
+#: src/Admin/EventMetaBoxes.php:87 src/Admin/TrainingAdmin.php:20
 #: src/Admin/TrainingAdmin.php:21
 msgid "Training"
 msgstr "Träning"
 
-#: src/Admin/EventMetaBoxes.php:87 src/PostTypes/Tournament.php:26
+#: src/Admin/EventMetaBoxes.php:88 src/PostTypes/Tournament.php:26
 msgid "Tournament"
 msgstr "Turnering"
 
-#: src/Admin/EventMetaBoxes.php:88
+#: src/Admin/EventMetaBoxes.php:89
 msgid "Junior"
 msgstr "Junior"
 
-#: src/Admin/EventMetaBoxes.php:89
+#: src/Admin/EventMetaBoxes.php:90
 msgid "Allsvenskan"
 msgstr "Allsvenskan"
 
-#: src/Admin/EventMetaBoxes.php:90
+#: src/Admin/EventMetaBoxes.php:91
 msgid "School Chess"
 msgstr "Skolschack"
 
-#: src/Admin/EventMetaBoxes.php:91
+#: src/Admin/EventMetaBoxes.php:92
 msgid "Other"
 msgstr "Övrigt"
 
-#: src/Admin/EventMetaBoxes.php:100
+#: src/Admin/EventMetaBoxes.php:101
 msgid "Date & Time"
 msgstr "Datum och tid"
 
-#: src/Admin/EventMetaBoxes.php:103
+#: src/Admin/EventMetaBoxes.php:104
 msgid "Start"
 msgstr "Start"
 
-#: src/Admin/EventMetaBoxes.php:107
+#: src/Admin/EventMetaBoxes.php:108
 msgid "End"
 msgstr "Slut"
 
-#: src/Admin/EventMetaBoxes.php:114
+#: src/Admin/EventMetaBoxes.php:115
 msgid "Recurring"
 msgstr "Återkommande"
 
-#: src/Admin/EventMetaBoxes.php:118
+#: src/Admin/EventMetaBoxes.php:119
 msgid "Weekly"
 msgstr "Varje vecka"
 
-#: src/Admin/EventMetaBoxes.php:119
+#: src/Admin/EventMetaBoxes.php:120
 msgid "Biweekly"
 msgstr "Varannan vecka"
 
-#: src/Admin/EventMetaBoxes.php:122
+#: src/Admin/EventMetaBoxes.php:123
 msgid "Repeats until"
 msgstr "Upprepas till"
 
-#: src/Admin/EventMetaBoxes.php:123
+#: src/Admin/EventMetaBoxes.php:124
 msgid "No end date"
 msgstr "Inget slutdatum"
 
-#: src/Admin/EventMetaBoxes.php:124
+#: src/Admin/EventMetaBoxes.php:125
 msgid "Leave empty to repeat with no end date."
 msgstr "Lämna tomt för att upprepa utan slutdatum."
 
-#: src/Admin/EventMetaBoxes.php:129
+#: src/Admin/EventMetaBoxes.php:130
 msgid "Excluded Dates"
 msgstr "Uteslutna datum"
 
-#: src/Admin/EventMetaBoxes.php:131
+#: src/Admin/EventMetaBoxes.php:132
 msgid "Comma-separated YYYY-MM-DD dates to exclude from recurrence."
 msgstr ""
 "Kommaseparerade datum (ÅÅÅÅ-MM-DD) som ska uteslutas från återkommande "
 "evenemang."
 
-#: src/Admin/EventMetaBoxes.php:136
+#: src/Admin/EventMetaBoxes.php:135
+msgid "Extra Sessions"
+msgstr "Extra tillfällen"
+
+#: src/Admin/EventMetaBoxes.php:145
+msgid "Add session"
+msgstr "Lägg till tillfälle"
+
+#: src/Admin/EventMetaBoxes.php:148
+msgid ""
+"Individual sessions outside the usual schedule, each with its own time. Use "
+"these on their own, without a recurrence, for a group that meets on "
+"irregular dates."
+msgstr ""
+"Enskilda tillfällen utanför det vanliga schemat, vart och ett med sin egen "
+"tid. Använd enbart dem, utan upprepning, för en grupp som träffas på "
+"oregelbundna datum."
+
+#: src/Admin/EventMetaBoxes.php:153
 msgid "Details"
 msgstr "Detaljer"
 
-#: src/Admin/EventMetaBoxes.php:139
+#: src/Admin/EventMetaBoxes.php:156
 msgid "Location"
 msgstr "Plats"
 
-#: src/Admin/EventMetaBoxes.php:145
+#: src/Admin/EventMetaBoxes.php:162
 msgid "Category"
 msgstr "Kategori"
 
-#: src/Admin/EventMetaBoxes.php:156
+#: src/Admin/EventMetaBoxes.php:173
 msgid "Link"
 msgstr "Länk"
 
-#: src/Admin/EventMetaBoxes.php:159
+#: src/Admin/EventMetaBoxes.php:176
 msgid "URL"
 msgstr "URL"
 
-#: src/Admin/EventMetaBoxes.php:163
+#: src/Admin/EventMetaBoxes.php:180
 msgid "Link Text"
 msgstr "Länktext"
 
-#: src/Admin/EventMetaBoxes.php:170
+#: src/Admin/EventMetaBoxes.php:187
 msgid "Description"
 msgstr "Beskrivning"
 
@@ -1326,6 +1344,9 @@ msgstr "Lista"
 #: js/shared/translations.ts:650
 msgid "Fields"
 msgstr "Fält"
+
+#~ msgid "Extra Dates"
+#~ msgstr "Extra datum"
 
 #~ msgid "Fetch Group"
 #~ msgstr "Hämta grupp"

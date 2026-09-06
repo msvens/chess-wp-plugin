@@ -629,6 +629,7 @@ class TrainingApi {
 					// Lets the client list the schedule's real occurrence dates
 					// instead of restating the recurrence rule.
 					'excludedDates'     => json_decode( get_post_meta( $event_id, 'rc_excluded_dates', true ) ?: '[]', true ),
+					'includedDates'     => json_decode( get_post_meta( $event_id, 'rc_included_dates', true ) ?: '[]', true ),
 				];
 			}
 		}
@@ -643,8 +644,35 @@ class TrainingApi {
 			$effective_end = ! empty( $schedule['isRecurring'] ) && ! empty( $schedule['recurrenceEndDate'] )
 				? $schedule['recurrenceEndDate']
 				: ( $schedule['endDate'] ?? '' );
-			$status        = StatusDeriver::derive(
-				$schedule['startDate'] ?? '',
+
+			// Explicit extra dates extend the group past whatever the rule says
+			// — and for a group with no rule at all they are the only thing that
+			// does. Without this a group meeting on ad-hoc dates would read as
+			// "completed" the day after its first one, while still running.
+			$extra_dates = [];
+			foreach ( (array) ( $schedule['includedDates'] ?? [] ) as $rc_entry ) {
+				$rc_start = is_array( $rc_entry ) ? ( $rc_entry['start'] ?? '' ) : $rc_entry;
+				if ( ! is_string( $rc_start ) ) {
+					continue;
+				}
+				$rc_key = substr( $rc_start, 0, 10 );
+				if ( 1 === preg_match( '/^\d{4}-\d{2}-\d{2}$/', $rc_key ) ) {
+					$extra_dates[] = $rc_key;
+				}
+			}
+
+			$effective_start = $schedule['startDate'] ?? '';
+			if ( $extra_dates ) {
+				$effective_end   = max( substr( (string) $effective_end, 0, 10 ), max( $extra_dates ) );
+				$first_extra     = min( $extra_dates );
+				$start_key       = substr( (string) $effective_start, 0, 10 );
+				$effective_start = ( '' === $start_key || $first_extra < $start_key )
+					? $first_extra
+					: $effective_start;
+			}
+
+			$status = StatusDeriver::derive(
+				$effective_start,
 				$effective_end,
 				false
 			);

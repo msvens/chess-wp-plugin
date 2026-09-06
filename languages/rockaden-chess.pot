@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-09-06T09:53:29+00:00\n"
+"POT-Creation-Date: 2026-09-06T15:55:13+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: rockaden-chess\n"
@@ -42,100 +42,115 @@ msgstr ""
 msgid "Help"
 msgstr ""
 
-#: src/Admin/EventMetaBoxes.php:86 src/Admin/TrainingAdmin.php:20
+#: src/Admin/EventMetaBoxes.php:87 src/Admin/TrainingAdmin.php:20
 #: src/Admin/TrainingAdmin.php:21
 msgid "Training"
 msgstr ""
 
-#: src/Admin/EventMetaBoxes.php:87 src/PostTypes/Tournament.php:26
+#: src/Admin/EventMetaBoxes.php:88 src/PostTypes/Tournament.php:26
 msgid "Tournament"
 msgstr ""
 
-#: src/Admin/EventMetaBoxes.php:88
+#: src/Admin/EventMetaBoxes.php:89
 msgid "Junior"
 msgstr ""
 
-#: src/Admin/EventMetaBoxes.php:89
+#: src/Admin/EventMetaBoxes.php:90
 msgid "Allsvenskan"
 msgstr ""
 
-#: src/Admin/EventMetaBoxes.php:90
+#: src/Admin/EventMetaBoxes.php:91
 msgid "School Chess"
 msgstr ""
 
-#: src/Admin/EventMetaBoxes.php:91
+#: src/Admin/EventMetaBoxes.php:92
 msgid "Other"
 msgstr ""
 
-#: src/Admin/EventMetaBoxes.php:100
+#: src/Admin/EventMetaBoxes.php:101
 msgid "Date & Time"
 msgstr ""
 
-#: src/Admin/EventMetaBoxes.php:103
+#: src/Admin/EventMetaBoxes.php:104
 msgid "Start"
 msgstr ""
 
-#: src/Admin/EventMetaBoxes.php:107
+#: src/Admin/EventMetaBoxes.php:108
 msgid "End"
 msgstr ""
 
-#: src/Admin/EventMetaBoxes.php:114
+#: src/Admin/EventMetaBoxes.php:115
 msgid "Recurring"
 msgstr ""
 
-#: src/Admin/EventMetaBoxes.php:118
+#: src/Admin/EventMetaBoxes.php:119
 msgid "Weekly"
 msgstr ""
 
-#: src/Admin/EventMetaBoxes.php:119
+#: src/Admin/EventMetaBoxes.php:120
 msgid "Biweekly"
 msgstr ""
 
-#: src/Admin/EventMetaBoxes.php:122
+#: src/Admin/EventMetaBoxes.php:123
 msgid "Repeats until"
 msgstr ""
 
-#: src/Admin/EventMetaBoxes.php:123
+#: src/Admin/EventMetaBoxes.php:124
 msgid "No end date"
 msgstr ""
 
-#: src/Admin/EventMetaBoxes.php:124
+#: src/Admin/EventMetaBoxes.php:125
 msgid "Leave empty to repeat with no end date."
 msgstr ""
 
-#: src/Admin/EventMetaBoxes.php:129
+#: src/Admin/EventMetaBoxes.php:130
 msgid "Excluded Dates"
 msgstr ""
 
-#: src/Admin/EventMetaBoxes.php:131
+#: src/Admin/EventMetaBoxes.php:132
 msgid "Comma-separated YYYY-MM-DD dates to exclude from recurrence."
 msgstr ""
 
-#: src/Admin/EventMetaBoxes.php:136
-msgid "Details"
-msgstr ""
-
-#: src/Admin/EventMetaBoxes.php:139
-msgid "Location"
+#: src/Admin/EventMetaBoxes.php:135
+msgid "Extra Sessions"
 msgstr ""
 
 #: src/Admin/EventMetaBoxes.php:145
-msgid "Category"
+msgid "Add session"
+msgstr ""
+
+#: src/Admin/EventMetaBoxes.php:148
+msgid ""
+"Individual sessions outside the usual schedule, each with its own time. Use "
+"these on their own, without a recurrence, for a group that meets on "
+"irregular dates."
+msgstr ""
+
+#: src/Admin/EventMetaBoxes.php:153
+msgid "Details"
 msgstr ""
 
 #: src/Admin/EventMetaBoxes.php:156
+msgid "Location"
+msgstr ""
+
+#: src/Admin/EventMetaBoxes.php:162
+msgid "Category"
+msgstr ""
+
+#: src/Admin/EventMetaBoxes.php:173
 msgid "Link"
 msgstr ""
 
-#: src/Admin/EventMetaBoxes.php:159
+#: src/Admin/EventMetaBoxes.php:176
 msgid "URL"
 msgstr ""
 
-#: src/Admin/EventMetaBoxes.php:163
+#: src/Admin/EventMetaBoxes.php:180
 msgid "Link Text"
 msgstr ""
 
-#: src/Admin/EventMetaBoxes.php:170
+#: src/Admin/EventMetaBoxes.php:187
 msgid "Description"
 msgstr ""
 
