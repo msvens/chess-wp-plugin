@@ -85,6 +85,14 @@ class Event {
 				'type'    => 'string', // JSON string.
 				'default' => '[]',
 			],
+			// Extra one-off dates this event also happens on, beyond anything a
+			// recurrence rule generates — iCalendar's RDATE to the line above's
+			// EXDATE. An event with these and no rule is how a group meeting on
+			// unpredictable dates is represented.
+			'rc_included_dates'    => [
+				'type'    => 'string', // JSON string.
+				'default' => '[]',
+			],
 			'rc_link'              => [
 				'type'    => 'string',
 				'default' => '',

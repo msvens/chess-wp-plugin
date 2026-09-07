@@ -81,6 +81,7 @@ class EventMetaBoxes {
 		$rec_end_local   = $recurrence_end ? gmdate( 'Y-m-d', strtotime( $recurrence_end ) ) : '';
 		$excluded_dates  = get_post_meta( $post->ID, 'rc_excluded_dates', true ) ?: '[]';
 		$excluded_str    = implode( ', ', json_decode( $excluded_dates, true ) ?: [] );
+		$included_json   = get_post_meta( $post->ID, 'rc_included_dates', true ) ?: '[]';
 
 		$categories = [
 			'training'    => __( 'Training', 'rockaden-chess' ),
@@ -125,10 +126,26 @@ class EventMetaBoxes {
 						</div>
 					</div>
 				</div>
-				<div id="rc-excluded-dates-field" style="<?php echo $is_recurring ? '' : 'display:none;'; ?>">
+				<div class="rc-event-dates-field" id="rc-excluded-dates-field" style="<?php echo $is_recurring ? '' : 'display:none;'; ?>">
 					<label for="rc_excluded_dates"><?php esc_html_e( 'Excluded Dates', 'rockaden-chess' ); ?></label>
 					<textarea id="rc_excluded_dates" name="rc_excluded_dates" rows="2" placeholder="2026-03-15, 2026-04-01"><?php echo esc_textarea( $excluded_str ); ?></textarea>
 					<p class="description"><?php esc_html_e( 'Comma-separated YYYY-MM-DD dates to exclude from recurrence.', 'rockaden-chess' ); ?></p>
+				</div>
+				<div class="rc-event-dates-field" id="rc-included-dates-field">
+					<label><?php esc_html_e( 'Extra Sessions', 'rockaden-chess' ); ?></label>
+					<?php
+					// Rows are built by event-metabox.ts from the JSON below and
+					// written back to it on change, so the save path stays a
+					// single field. Deliberately never hidden, unlike excluded
+					// dates: extra sessions matter most on an event with no
+					// recurrence at all, which is how an irregular group works.
+					?>
+					<div id="rc-included-dates-rows"></div>
+					<button type="button" class="button" id="rc-included-dates-add">
+						<?php esc_html_e( 'Add session', 'rockaden-chess' ); ?>
+					</button>
+					<input type="hidden" id="rc_included_dates" name="rc_included_dates" value="<?php echo esc_attr( $included_json ); ?>" />
+					<p class="description"><?php esc_html_e( 'Individual sessions outside the usual schedule, each with its own time. Use these on their own, without a recurrence, for a group that meets on irregular dates.', 'rockaden-chess' ); ?></p>
 				</div>
 			</div>
 
@@ -260,6 +277,42 @@ class EventMetaBoxes {
 			update_post_meta( $post_id, 'rc_recurrence_end', '' );
 			update_post_meta( $post_id, 'rc_excluded_dates', '[]' );
 		}
+
+		// Saved whether or not the event recurs — clearing the recurrence must
+		// not throw away an irregular event's only sessions.
+		// The field carries JSON, but only ever dates and punctuation, so
+		// sanitize_text_field passes it through unchanged — no need to make this
+		// the first suppression in the file. Every entry is validated below in
+		// any case.
+		$included_raw = json_decode(
+			sanitize_text_field( wp_unslash( $_POST['rc_included_dates'] ?? '[]' ) ),
+			true
+		);
+		$included     = [];
+		foreach ( (array) $included_raw as $rc_entry ) {
+			$rc_start = is_array( $rc_entry ) ? ( $rc_entry['start'] ?? '' ) : $rc_entry;
+			if ( ! is_string( $rc_start ) ) {
+				continue;
+			}
+			$rc_start = sanitize_text_field( $rc_start );
+			if ( ! preg_match( '/^\d{4}-\d{2}-\d{2}([T ]\d{2}:\d{2}(:\d{2})?)?$/', $rc_start ) ) {
+				continue;
+			}
+
+			$rc_clean = [ 'start' => $rc_start ];
+			$rc_end   = is_array( $rc_entry ) ? ( $rc_entry['end'] ?? '' ) : '';
+			if ( is_string( $rc_end ) && '' !== $rc_end ) {
+				$rc_end = sanitize_text_field( $rc_end );
+				// An end before its own start would render as a
+				// negative-length occurrence; drop it and let the event's own
+				// duration apply instead.
+				if ( preg_match( '/^\d{4}-\d{2}-\d{2}([T ]\d{2}:\d{2}(:\d{2})?)?$/', $rc_end ) && $rc_end > $rc_start ) {
+					$rc_clean['end'] = $rc_end;
+				}
+			}
+			$included[] = $rc_clean;
+		}
+		update_post_meta( $post_id, 'rc_included_dates', wp_slash( wp_json_encode( $included ) ) );
 
 		// Save description to post_content.
 		$description = wp_kses_post( wp_unslash( $_POST['rc_description'] ?? '' ) );

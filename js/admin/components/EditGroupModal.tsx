@@ -11,7 +11,7 @@ import {
 import type { Translations } from '../../shared';
 import type { TrainingGroup, EventData, TrainingStatusChoice } from '../types';
 import { updateGroup } from '../api';
-import { deriveStatus } from '../../shared/deriveStatus';
+import { deriveStatus, widenForExtraDates } from '../../shared/deriveStatus';
 import {
 	EventSection,
 	emptyEventValue,
@@ -107,9 +107,18 @@ export function EditGroupModal( {
 			? eventValue.eventRecurrenceEnd
 			: eventValue.eventEnd
 		: '';
+	// Extra one-off dates are not editable here, but an existing group may have
+	// them — and they can extend it well past the event's own end date, so the
+	// preview has to account for them or it will contradict the status shown
+	// everywhere else.
+	const previewRange = widenForExtraDates(
+		previewStart,
+		previewEnd,
+		event?.includedDates
+	);
 	const previewStatus =
 		status === 'auto'
-			? deriveStatus( previewStart, previewEnd, false )
+			? deriveStatus( previewRange.start, previewRange.end, false )
 			: null;
 
 	return (

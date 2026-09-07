@@ -1,4 +1,12 @@
 import type { Language } from './types';
+import type { ExtraSession } from './recurrence';
+import {
+	extractDateKey,
+	extractTime,
+	keyToUtcMs,
+	occurrences,
+	seriesDateKeys,
+} from './recurrence';
 import type { Translations } from './translations';
 
 /**
@@ -16,6 +24,7 @@ export interface ScheduleSource {
 	recurrenceEndDate?: string;
 	// Occurrences the editor removed from the series (YYYY-MM-DD).
 	excludedDates?: string[];
+	includedDates?: ExtraSession[];
 }
 
 // Above this many occurrences an explicit date list stops being readable (a
@@ -26,31 +35,6 @@ export interface ScheduleSource {
 export const MAX_LISTED_DATES = 12;
 export const MAX_LISTED_DATES_NARROW = 8;
 
-// Runaway guard: a bounded series is inherently finite, but a misconfigured
-// recurrence-end decades out shouldn't spin.
-const SERIES_CAP = 500;
-
-// Extract a literal HH:mm from a naive site-local datetime string. We read the
-// digits directly (no `new Date()`) so a stored local time is never shifted by
-// the browser's timezone.
-function extractTime( dateStr: string ): string {
-	const match = dateStr.match( /(\d{2}):(\d{2})/ );
-	return match ? `${ match[ 1 ] }:${ match[ 2 ] }` : '';
-}
-
-// Same reasoning as extractTime: read the site-local date off the string rather
-// than through `new Date()`, which would resolve it in the visitor's timezone
-// and could shift every occurrence by a day.
-function extractDateKey( dateStr: string ): string {
-	const match = dateStr.match( /^(\d{4})-(\d{2})-(\d{2})/ );
-	return match ? `${ match[ 1 ] }-${ match[ 2 ] }-${ match[ 3 ] }` : '';
-}
-
-function keyToUtcMs( key: string ): number {
-	const [ y, m, d ] = key.split( '-' ).map( Number );
-	return Date.UTC( y, m - 1, d );
-}
-
 /**
  * The schedule's real occurrence dates (YYYY-MM-DD), with removed weeks left out.
  *
@@ -60,8 +44,11 @@ function keyToUtcMs( key: string ): number {
  * @param source The event/schedule to expand.
  */
 export function occurrenceDates( source: ScheduleSource ): string[] {
-	const excluded = new Set( source.excludedDates ?? [] );
-	return seriesDates( source ).filter( ( key ) => ! excluded.has( key ) );
+	return occurrences(
+		seriesDates( source ),
+		source.includedDates,
+		source.excludedDates
+	).map( ( occ ) => occ.dateKey );
 }
 
 /**
@@ -78,22 +65,16 @@ function seriesDates( source: ScheduleSource ): string[] {
 		return [ startKey ];
 	}
 
+	// An open-ended series has no finite list to show; callers fall back to
+	// restating the rule. Any explicit extra dates are still listable, and are
+	// merged in by occurrenceDates() regardless of what this returns.
 	const endKey = extractDateKey( source.recurrenceEndDate ?? '' );
 	if ( ! endKey ) {
 		return [];
 	}
 
-	const stepMs = ( source.recurrenceType === 'biweekly' ? 14 : 7 ) * 86400000;
-	const endMs = keyToUtcMs( endKey );
-	const dates: string[] = [];
-
-	// Step in UTC so a daylight-saving transition mid-series can't shift a date.
-	let cursor = keyToUtcMs( startKey );
-	while ( cursor <= endMs && dates.length < SERIES_CAP ) {
-		dates.push( new Date( cursor ).toISOString().substring( 0, 10 ) );
-		cursor += stepMs;
-	}
-	return dates;
+	const stepDays = source.recurrenceType === 'biweekly' ? 14 : 7;
+	return seriesDateKeys( startKey, stepDays, endKey );
 }
 
 /**
@@ -108,6 +89,27 @@ function seriesDates( source: ScheduleSource ): string[] {
 export function excludedOccurrences( source: ScheduleSource ): string[] {
 	const excluded = new Set( source.excludedDates ?? [] );
 	return seriesDates( source ).filter( ( key ) => excluded.has( key ) );
+}
+
+/**
+ * The extra sessions that fall outside the recurrence rule.
+ *
+ * The counterpart to excludedOccurrences(). A long series is summarised as its
+ * rule and a span, so an extra session sitting inside that span would otherwise
+ * never be named — the schedule would read "every Tuesday" with no sign of the
+ * one-off. Sessions on a date the rule already covers are left out: they change
+ * that occurrence's time rather than adding a date, and naming them here would
+ * read as an extra meeting that does not happen.
+ *
+ * @param source The event/schedule to expand.
+ */
+export function extraOccurrences( source: ScheduleSource ): string[] {
+	const ruleKeys = new Set( seriesDates( source ) );
+	const excluded = new Set( source.excludedDates ?? [] );
+
+	return occurrences( [], source.includedDates, source.excludedDates )
+		.map( ( occ ) => occ.dateKey )
+		.filter( ( key ) => ! ruleKeys.has( key ) && ! excluded.has( key ) );
 }
 
 // A single date key as "17/9" (sv) / "17/09" (en).
@@ -187,9 +189,22 @@ export function formatScheduleDetail(
 		return { primary: rule };
 	}
 
-	// Long series: span, plus the weeks actually removed from it.
-	const span = `${ formatDateKey( dates[ 0 ], lang ) }–${ formatDateKey(
-		dates[ dates.length - 1 ],
+	// Long series: the span of the rule, plus what was added to and removed
+	// from it.
+	//
+	// The span describes the recurrence, not the whole occurrence set, because
+	// the line above it states the rule. Including extra sessions here stretched
+	// the range past the series' own end — a training running to 30/6 with one
+	// session in September read as "7/4–8/9 (även 8/9)", which both misstates
+	// the series and says the same date twice.
+	const excluded = new Set( source.excludedDates ?? [] );
+	const ruleDates = seriesDates( source ).filter(
+		( key ) => ! excluded.has( key )
+	);
+	const spanDates = ruleDates.length >= 2 ? ruleDates : dates;
+
+	const span = `${ formatDateKey( spanDates[ 0 ], lang ) }–${ formatDateKey(
+		spanDates[ spanDates.length - 1 ],
 		lang
 	) }`;
 	const skipped = excludedOccurrences( source ).map( ( key ) =>
@@ -199,7 +214,15 @@ export function formatScheduleDetail(
 		? ` (${ t.except } ${ skipped.join( ', ' ) })`
 		: '';
 
-	return { primary: rule, secondary: `${ span }${ except }` };
+	// Extra sessions get the same treatment as removed weeks. Without this a
+	// long series shows only its rule and span, so a one-off inside that span
+	// is invisible and one outside it silently stretches the dates.
+	const added = extraOccurrences( source ).map( ( key ) =>
+		formatDateKey( key, lang )
+	);
+	const plus = added.length ? ` (${ t.plus } ${ added.join( ', ' ) })` : '';
+
+	return { primary: rule, secondary: `${ span }${ except }${ plus }` };
 }
 
 /**

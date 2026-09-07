@@ -1,3 +1,4 @@
+import type { ExtraSession } from '../shared/recurrence';
 import type { Language } from '../shared';
 import type { PlayerInfoDto } from '@msvens/schack-se-sdk';
 
@@ -96,6 +97,7 @@ export interface EventData {
 	recurrenceType: 'weekly' | 'biweekly' | null;
 	recurrenceEndDate: string;
 	excludedDates: string[];
+	includedDates: ExtraSession[];
 }
 
 export interface CreateEventData {
@@ -211,6 +213,10 @@ export interface CalendarEventPayload {
 	// the server returns them so the client can list the real schedule dates,
 	// but forms never write them (the calendar UI owns exclusions).
 	excludedDates?: string[];
+	// Extra one-off dates the event also happens on (YYYY-MM-DD). Read-only for
+	// the same reason, and owned by the same UI. An event carrying these and no
+	// recurrence is a group that meets on irregular dates.
+	includedDates?: ExtraSession[];
 }
 
 export type TournamentView =

@@ -68,6 +68,7 @@ export interface Translations {
 		schedule: string;
 		time: string;
 		except: string;
+		plus: string;
 		startDate: string;
 		endDate: string;
 		location: string;
@@ -209,6 +210,11 @@ export interface Translations {
 		deleteThisOnly: string;
 		deleteSeries: string;
 		createEvent: string;
+		addToExisting: string;
+		addSession: string;
+		chooseOne: string;
+		saving: string;
+		saveFailed: string;
 	};
 	carousel: {
 		addImages: string;
@@ -367,6 +373,7 @@ const translations: Translations = {
 		schedule: __( 'Schedule', 'rockaden-chess' ),
 		time: __( 'Time', 'rockaden-chess' ),
 		except: __( 'except', 'rockaden-chess' ),
+		plus: __( 'plus', 'rockaden-chess' ),
 		startDate: __( 'Start Date', 'rockaden-chess' ),
 		endDate: __( 'End Date', 'rockaden-chess' ),
 		location: __( 'Location', 'rockaden-chess' ),
@@ -550,6 +557,14 @@ const translations: Translations = {
 		deleteThisOnly: __( 'Just this one', 'rockaden-chess' ),
 		deleteSeries: __( 'Whole series', 'rockaden-chess' ),
 		createEvent: __( 'Create event', 'rockaden-chess' ),
+		addToExisting: __( 'Add to an existing event', 'rockaden-chess' ),
+		addSession: __( 'Add session', 'rockaden-chess' ),
+		chooseOne: __( 'Choose…', 'rockaden-chess' ),
+		saving: __( 'Saving…', 'rockaden-chess' ),
+		saveFailed: __(
+			'Could not add the session. Try again.',
+			'rockaden-chess'
+		),
 	},
 	carousel: {
 		addImages: __( 'Add images', 'rockaden-chess' ),

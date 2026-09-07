@@ -78,11 +78,14 @@
 	min-width: 120px;
 }
 
-#rc-excluded-dates-field {
+/* Shared by the excluded-dates and extra-sessions fields. These were styled by
+   ID, so a second field of the same kind inherited nothing and its label sat
+   beside a narrow box instead of above a full-width one. */
+.rc-event-dates-field {
 	margin-top: 12px;
 }
 
-#rc-excluded-dates-field label {
+.rc-event-dates-field label {
 	display: block;
 	font-size: 13px;
 	font-weight: 500;
@@ -90,12 +93,45 @@
 	margin-bottom: 4px;
 }
 
-#rc-excluded-dates-field textarea {
+.rc-event-dates-field textarea {
 	width: 100%;
 }
 
-#rc-excluded-dates-field .description {
+.rc-event-dates-field .description {
 	margin-top: 4px;
+}
+
+/* One extra session: start, end, and a control to drop the row. The columns are
+   sized rather than flexible so the pickers line up down the list. */
+.rc-extra-session {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	margin-bottom: 6px;
+}
+
+.rc-extra-session__start,
+.rc-extra-session__end {
+	flex: 0 1 190px;
+	min-width: 0;
+}
+
+.rc-extra-session__remove {
+	color: #b32d2e;
+	font-size: 18px;
+	line-height: 1;
+	text-decoration: none;
+	padding: 0 4px;
+	cursor: pointer;
+}
+
+.rc-extra-session__remove:hover,
+.rc-extra-session__remove:focus {
+	color: #8a2424;
+}
+
+#rc-included-dates-add {
+	margin-top: 2px;
 }
 
 /* wp_editor container */
