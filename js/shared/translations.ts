@@ -210,6 +210,10 @@ export interface Translations {
 		deleteThisOnly: string;
 		deleteSeries: string;
 		createEvent: string;
+		addToExisting: string;
+		addSession: string;
+		chooseOne: string;
+		saving: string;
 	};
 	carousel: {
 		addImages: string;
@@ -552,6 +556,10 @@ const translations: Translations = {
 		deleteThisOnly: __( 'Just this one', 'rockaden-chess' ),
 		deleteSeries: __( 'Whole series', 'rockaden-chess' ),
 		createEvent: __( 'Create event', 'rockaden-chess' ),
+		addToExisting: __( 'Add to an existing event', 'rockaden-chess' ),
+		addSession: __( 'Add session', 'rockaden-chess' ),
+		chooseOne: __( 'Choose…', 'rockaden-chess' ),
+		saving: __( 'Saving…', 'rockaden-chess' ),
 	},
 	carousel: {
 		addImages: __( 'Add images', 'rockaden-chess' ),

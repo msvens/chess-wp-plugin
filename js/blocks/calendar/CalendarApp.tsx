@@ -27,6 +27,8 @@ import CalendarDayView from './CalendarDayView';
 import EventPopover from './EventPopover';
 import DayEventsPopover from './DayEventsPopover';
 import CreateEventPopover from './CreateEventPopover';
+import type { AttachTarget } from './CreateEventPopover';
+import type { ExtraSession } from '../../shared/recurrence';
 
 const VIEW_MODE_KEY = 'rockaden-calendar-view';
 const DISMISS_GRACE_MS = 200;
@@ -130,12 +132,28 @@ export default function CalendarApp( {
 	const currentYear = viewDate.getFullYear();
 	const currentMonth = viewDate.getMonth();
 
+	// Training groups a dragged slot can be attached to, and whether a save is
+	// in flight. Only groups with an event can take one — there is nothing to
+	// add a session to otherwise.
+	const [ attachTargets, setAttachTargets ] = useState< AttachTarget[] >(
+		[]
+	);
+	const [ attachBusy, setAttachBusy ] = useState( false );
+
 	// Fetch training groups once to build eventId → group links map
 	useEffect( () => {
 		apiFetch< TrainingGroupSummary[] >( {
 			path: '/rockaden/v1/training-groups',
 		} )
 			.then( ( groups ) => {
+				setAttachTargets(
+					groups
+						.filter( ( g ) => g.eventId > 0 )
+						.map( ( g ) => ( {
+							eventId: g.eventId,
+							title: g.title,
+						} ) )
+				);
 				const map = new Map< number, EventGroupLink[] >();
 				for ( const g of groups ) {
 					if ( g.eventId > 0 ) {
@@ -389,6 +407,52 @@ export default function CalendarApp( {
 		window.location.assign( url );
 	}, [ adminBase, createPopover ] );
 
+	// Add the dragged slot to an existing event as an extra session.
+	//
+	// Mirrors how cancelling an occurrence works: read the parent, modify the
+	// list, PUT it back. The whole point is that this shows on the training
+	// group's page, which a standalone event created from here never would.
+	const handleAttach = useCallback(
+		async ( eventId: number ) => {
+			if ( ! createPopover || attachBusy ) {
+				return;
+			}
+			setAttachBusy( true );
+			try {
+				const parent = await apiFetch< {
+					includedDates?: ExtraSession[];
+				} >( { path: `/rockaden/v1/events/${ eventId }` } );
+
+				const current = Array.isArray( parent.includedDates )
+					? parent.includedDates
+					: [];
+
+				await apiFetch( {
+					path: `/rockaden/v1/events/${ eventId }`,
+					method: 'PUT',
+					data: {
+						includedDates: [
+							...current,
+							{
+								start: createPopover.startISO,
+								end: createPopover.endISO,
+							},
+						],
+					},
+				} );
+				dismissCreatePopover();
+				// Refetch rather than patch local state: the server decides the
+				// occurrence's final shape (a missing end picks up the event's
+				// duration), so guessing it here could disagree with what the
+				// calendar shows on its next load.
+				setRefetchKey( ( k ) => k + 1 );
+			} finally {
+				setAttachBusy( false );
+			}
+		},
+		[ createPopover, attachBusy, dismissCreatePopover ]
+	);
+
 	// Compute title based on view mode
 	const headerTitle = useMemo( () => {
 		if ( viewMode === 'month' ) {
@@ -512,6 +576,9 @@ export default function CalendarApp( {
 					t={ t.calendar }
 					onCancel={ dismissCreatePopover }
 					onCreate={ handleCreateConfirm }
+					attachTargets={ attachTargets }
+					onAttach={ handleAttach }
+					attachBusy={ attachBusy }
 				/>
 			) }
 		</div>

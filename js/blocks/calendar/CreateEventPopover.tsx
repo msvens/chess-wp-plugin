@@ -1,6 +1,11 @@
-import { useEffect, useRef } from '@wordpress/element';
+import { useEffect, useRef, useState } from '@wordpress/element';
 import type { Translations } from '../../shared/translations';
 import { formatTime, toLocaleTag } from './utils';
+
+export interface AttachTarget {
+	eventId: number;
+	title: string;
+}
 
 interface CreateEventPopoverProps {
 	anchorRect: { top: number; left: number; bottom: number; right: number };
@@ -10,6 +15,11 @@ interface CreateEventPopoverProps {
 	t: Translations[ 'calendar' ];
 	onCancel: () => void;
 	onCreate: () => void;
+	// Events this slot can be added to as an extra session. Empty hides the
+	// option entirely — there is nothing to attach to.
+	attachTargets: AttachTarget[];
+	onAttach: ( eventId: number ) => void;
+	attachBusy: boolean;
 }
 
 function formatDayShort( dateISO: string, locale: string ): string {
@@ -34,8 +44,16 @@ export default function CreateEventPopover( {
 	t,
 	onCancel,
 	onCreate,
+	attachTargets,
+	onAttach,
+	attachBusy,
 }: CreateEventPopoverProps ) {
 	const ref = useRef< HTMLDivElement >( null );
+	// Attaching is the second-choice action, so it stays folded away until
+	// asked for: creating a new event is what this popover has always done and
+	// what most drags mean.
+	const [ attaching, setAttaching ] = useState( false );
+	const [ target, setTarget ] = useState( 0 );
 
 	// Position near the anchor, keeping within viewport.
 	useEffect( () => {
@@ -132,6 +150,48 @@ export default function CreateEventPopover( {
 				</svg>
 				<span>{ t.createEvent }</span>
 			</button>
+			{ attachTargets.length > 0 && ! attaching && (
+				<button
+					type="button"
+					className="rc-cal__btn rc-cal__btn--secondary"
+					onClick={ () => setAttaching( true ) }
+				>
+					<span>{ t.addToExisting }</span>
+				</button>
+			) }
+			{ attaching && (
+				<div className="rc-cal__attach">
+					<label
+						className="rc-cal__attach-label"
+						htmlFor="rc-cal-attach-target"
+					>
+						{ t.addToExisting }
+					</label>
+					<select
+						id="rc-cal-attach-target"
+						className="rc-cal__attach-select"
+						value={ target }
+						onChange={ ( e ) =>
+							setTarget( Number( e.target.value ) )
+						}
+					>
+						<option value={ 0 }>{ t.chooseOne }</option>
+						{ attachTargets.map( ( item ) => (
+							<option key={ item.eventId } value={ item.eventId }>
+								{ item.title }
+							</option>
+						) ) }
+					</select>
+					<button
+						type="button"
+						className="rc-cal__btn rc-cal__btn--primary"
+						disabled={ target === 0 || attachBusy }
+						onClick={ () => onAttach( target ) }
+					>
+						<span>{ attachBusy ? t.saving : t.addSession }</span>
+					</button>
+				</div>
+			) }
 		</div>
 	);
 }

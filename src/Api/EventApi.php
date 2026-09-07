@@ -233,7 +233,10 @@ class EventApi {
 	 * @return WP_REST_Response|WP_Error
 	 */
 	public static function create_event( WP_REST_Request $request ): WP_REST_Response|WP_Error {
-		$body  = $request->get_json_params();
+		// Cast rather than trust the stub: get_json_params() is typed array, but
+		// returns null for a non-JSON body, which fatals on save_event_meta()'s
+		// array parameter instead of answering cleanly. (array) null is [].
+		$body  = (array) $request->get_json_params();
 		$title = sanitize_text_field( $body['title'] ?? '' );
 
 		if ( ! $title ) {
@@ -274,7 +277,7 @@ class EventApi {
 			return new WP_Error( 'not_found', 'Event not found', [ 'status' => 404 ] );
 		}
 
-		$body    = $request->get_json_params();
+		$body    = (array) $request->get_json_params();
 		$updates = [ 'ID' => $post->ID ];
 
 		if ( isset( $body['title'] ) ) {
