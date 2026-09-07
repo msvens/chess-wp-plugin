@@ -189,9 +189,22 @@ export function formatScheduleDetail(
 		return { primary: rule };
 	}
 
-	// Long series: span, plus the weeks actually removed from it.
-	const span = `${ formatDateKey( dates[ 0 ], lang ) }–${ formatDateKey(
-		dates[ dates.length - 1 ],
+	// Long series: the span of the rule, plus what was added to and removed
+	// from it.
+	//
+	// The span describes the recurrence, not the whole occurrence set, because
+	// the line above it states the rule. Including extra sessions here stretched
+	// the range past the series' own end — a training running to 30/6 with one
+	// session in September read as "7/4–8/9 (även 8/9)", which both misstates
+	// the series and says the same date twice.
+	const excluded = new Set( source.excludedDates ?? [] );
+	const ruleDates = seriesDates( source ).filter(
+		( key ) => ! excluded.has( key )
+	);
+	const spanDates = ruleDates.length >= 2 ? ruleDates : dates;
+
+	const span = `${ formatDateKey( spanDates[ 0 ], lang ) }–${ formatDateKey(
+		spanDates[ spanDates.length - 1 ],
 		lang
 	) }`;
 	const skipped = excludedOccurrences( source ).map( ( key ) =>
