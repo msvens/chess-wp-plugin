@@ -1271,6 +1271,12 @@ html.dark .rc-cal__confirm-error {
 	padding: 0.375rem 0.5rem;
 }
 
+.rc-cal__attach-error {
+	margin: 0;
+	font-size: 0.8125rem;
+	color: var(--wp--preset--color--error, #dc2626);
+}
+
 .rc-cal__btn--secondary {
 	margin-top: 0.375rem;
 	background: transparent;

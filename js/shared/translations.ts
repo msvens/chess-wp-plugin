@@ -214,6 +214,7 @@ export interface Translations {
 		addSession: string;
 		chooseOne: string;
 		saving: string;
+		saveFailed: string;
 	};
 	carousel: {
 		addImages: string;
@@ -560,6 +561,10 @@ const translations: Translations = {
 		addSession: __( 'Add session', 'rockaden-chess' ),
 		chooseOne: __( 'Choose…', 'rockaden-chess' ),
 		saving: __( 'Saving…', 'rockaden-chess' ),
+		saveFailed: __(
+			'Could not add the session. Try again.',
+			'rockaden-chess'
+		),
 	},
 	carousel: {
 		addImages: __( 'Add images', 'rockaden-chess' ),

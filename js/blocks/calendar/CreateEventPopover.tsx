@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from '@wordpress/element';
+import { useCallback, useEffect, useRef, useState } from '@wordpress/element';
 import type { Translations } from '../../shared/translations';
 import { formatTime, toLocaleTag } from './utils';
 
@@ -20,6 +20,7 @@ interface CreateEventPopoverProps {
 	attachTargets: AttachTarget[];
 	onAttach: ( eventId: number ) => void;
 	attachBusy: boolean;
+	attachError: string | null;
 }
 
 function formatDayShort( dateISO: string, locale: string ): string {
@@ -47,6 +48,7 @@ export default function CreateEventPopover( {
 	attachTargets,
 	onAttach,
 	attachBusy,
+	attachError,
 }: CreateEventPopoverProps ) {
 	const ref = useRef< HTMLDivElement >( null );
 	// Attaching is the second-choice action, so it stays folded away until
@@ -56,7 +58,11 @@ export default function CreateEventPopover( {
 	const [ target, setTarget ] = useState( 0 );
 
 	// Position near the anchor, keeping within viewport.
-	useEffect( () => {
+	//
+	// Re-run whenever the popover's own size changes, not only when the anchor
+	// does: revealing the "add to an existing event" picker makes it taller, and
+	// measuring once at mount left it hanging off the bottom of the screen.
+	const position = useCallback( () => {
 		const el = ref.current;
 		if ( ! el ) {
 			return;
@@ -87,6 +93,21 @@ export default function CreateEventPopover( {
 		el.style.top = `${ top }px`;
 		el.style.left = `${ left }px`;
 	}, [ anchorRect ] );
+
+	useEffect( () => {
+		position();
+
+		const el = ref.current;
+		if ( ! el || typeof ResizeObserver === 'undefined' ) {
+			return;
+		}
+
+		// Repositioning cannot itself change the size, so this settles rather
+		// than looping.
+		const observer = new ResizeObserver( () => position() );
+		observer.observe( el );
+		return () => observer.disconnect();
+	}, [ position ] );
 
 	// Outside-click dismiss.
 	useEffect( () => {
@@ -190,6 +211,11 @@ export default function CreateEventPopover( {
 					>
 						<span>{ attachBusy ? t.saving : t.addSession }</span>
 					</button>
+					{ attachError && (
+						<p className="rc-cal__attach-error" role="alert">
+							{ attachError }
+						</p>
+					) }
 				</div>
 			) }
 		</div>

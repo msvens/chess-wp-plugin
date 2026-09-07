@@ -139,6 +139,7 @@ export default function CalendarApp( {
 		[]
 	);
 	const [ attachBusy, setAttachBusy ] = useState( false );
+	const [ attachError, setAttachError ] = useState< string | null >( null );
 
 	// Fetch training groups once to build eventId → group links map
 	useEffect( () => {
@@ -418,6 +419,7 @@ export default function CalendarApp( {
 				return;
 			}
 			setAttachBusy( true );
+			setAttachError( null );
 			try {
 				const parent = await apiFetch< {
 					includedDates?: ExtraSession[];
@@ -426,6 +428,19 @@ export default function CalendarApp( {
 				const current = Array.isArray( parent.includedDates )
 					? parent.includedDates
 					: [];
+
+				// Dragging the same slot twice should not store it twice; the
+				// second attempt is a mistake, not a request for two identical
+				// sessions.
+				const already = current.some( ( entry ) => {
+					const start =
+						typeof entry === 'string' ? entry : entry?.start;
+					return start === createPopover.startISO;
+				} );
+				if ( already ) {
+					dismissCreatePopover();
+					return;
+				}
 
 				await apiFetch( {
 					path: `/rockaden/v1/events/${ eventId }`,
@@ -446,11 +461,17 @@ export default function CalendarApp( {
 				// duration), so guessing it here could disagree with what the
 				// calendar shows on its next load.
 				setRefetchKey( ( k ) => k + 1 );
+			} catch ( err ) {
+				// Same treatment the delete dialog gives a failed write: say so
+				// and leave the popover open, rather than appearing to succeed.
+				setAttachError(
+					err instanceof Error ? err.message : t.calendar.saveFailed
+				);
 			} finally {
 				setAttachBusy( false );
 			}
 		},
-		[ createPopover, attachBusy, dismissCreatePopover ]
+		[ createPopover, attachBusy, dismissCreatePopover, t ]
 	);
 
 	// Compute title based on view mode
@@ -579,6 +600,7 @@ export default function CalendarApp( {
 					attachTargets={ attachTargets }
 					onAttach={ handleAttach }
 					attachBusy={ attachBusy }
+					attachError={ attachError }
 				/>
 			) }
 		</div>
