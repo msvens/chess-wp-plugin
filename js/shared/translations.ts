@@ -68,6 +68,7 @@ export interface Translations {
 		schedule: string;
 		time: string;
 		except: string;
+		plus: string;
 		startDate: string;
 		endDate: string;
 		location: string;
@@ -367,6 +368,7 @@ const translations: Translations = {
 		schedule: __( 'Schedule', 'rockaden-chess' ),
 		time: __( 'Time', 'rockaden-chess' ),
 		except: __( 'except', 'rockaden-chess' ),
+		plus: __( 'plus', 'rockaden-chess' ),
 		startDate: __( 'Start Date', 'rockaden-chess' ),
 		endDate: __( 'End Date', 'rockaden-chess' ),
 		location: __( 'Location', 'rockaden-chess' ),

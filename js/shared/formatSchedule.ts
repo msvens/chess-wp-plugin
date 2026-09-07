@@ -91,6 +91,27 @@ export function excludedOccurrences( source: ScheduleSource ): string[] {
 	return seriesDates( source ).filter( ( key ) => excluded.has( key ) );
 }
 
+/**
+ * The extra sessions that fall outside the recurrence rule.
+ *
+ * The counterpart to excludedOccurrences(). A long series is summarised as its
+ * rule and a span, so an extra session sitting inside that span would otherwise
+ * never be named — the schedule would read "every Tuesday" with no sign of the
+ * one-off. Sessions on a date the rule already covers are left out: they change
+ * that occurrence's time rather than adding a date, and naming them here would
+ * read as an extra meeting that does not happen.
+ *
+ * @param source The event/schedule to expand.
+ */
+export function extraOccurrences( source: ScheduleSource ): string[] {
+	const ruleKeys = new Set( seriesDates( source ) );
+	const excluded = new Set( source.excludedDates ?? [] );
+
+	return occurrences( [], source.includedDates, source.excludedDates )
+		.map( ( occ ) => occ.dateKey )
+		.filter( ( key ) => ! ruleKeys.has( key ) && ! excluded.has( key ) );
+}
+
 // A single date key as "17/9" (sv) / "17/09" (en).
 function formatDateKey( key: string, lang: Language ): string {
 	const loc = lang === 'sv' ? 'sv-SE' : 'en-GB';
@@ -180,7 +201,15 @@ export function formatScheduleDetail(
 		? ` (${ t.except } ${ skipped.join( ', ' ) })`
 		: '';
 
-	return { primary: rule, secondary: `${ span }${ except }` };
+	// Extra sessions get the same treatment as removed weeks. Without this a
+	// long series shows only its rule and span, so a one-off inside that span
+	// is invisible and one outside it silently stretches the dates.
+	const added = extraOccurrences( source ).map( ( key ) =>
+		formatDateKey( key, lang )
+	);
+	const plus = added.length ? ` (${ t.plus } ${ added.join( ', ' ) })` : '';
+
+	return { primary: rule, secondary: `${ span }${ except }${ plus }` };
 }
 
 /**
