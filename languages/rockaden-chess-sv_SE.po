@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Rockaden Chess\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/plugin\n"
-"POT-Creation-Date: 2026-09-07T08:34:23+00:00\n"
+"POT-Creation-Date: 2026-09-09T12:17:06+00:00\n"
 "PO-Revision-Date: 2026-05-26\n"
 "Language: sv_SE\n"
 "MIME-Version: 1.0\n"
@@ -199,18 +199,6 @@ msgstr "Laddar kalender..."
 msgid "Loading carousel…"
 msgstr "Laddar karusell…"
 
-#: src/Blocks/latest-news/render.php:14
-msgid "More news"
-msgstr "Mer nyheter"
-
-#: src/Blocks/latest-news/render.php:28
-msgid "No news yet."
-msgstr "Inga nyheter än."
-
-#: src/Blocks/latest-news/render.php:55
-msgid "Read more"
-msgstr "Läs mer"
-
 #: src/Blocks/ranking-list/render.php:27
 msgid "Loading ranking list..."
 msgstr "Laddar ratinglista..."
@@ -324,17 +312,6 @@ msgstr "Dokumentation"
 msgctxt "block description"
 msgid "Renders bundled plugin and theme documentation."
 msgstr "Visar plugin- och temadokumentation."
-
-#: src/Blocks/latest-news/block.json
-msgctxt "block title"
-msgid "Latest News"
-msgstr "Senaste nytt"
-
-#: src/Blocks/latest-news/block.json
-msgctxt "block description"
-msgid ""
-"Displays the latest news posts as cards with a link to the full archive."
-msgstr "Visar de senaste nyheterna som kort med länk till hela arkivet."
 
 #: src/Blocks/ranking-list/block.json
 msgctxt "block title"
@@ -1364,6 +1341,24 @@ msgstr "Lista"
 #: js/shared/translations.ts:665
 msgid "Fields"
 msgstr "Fält"
+
+#~ msgid "More news"
+#~ msgstr "Mer nyheter"
+
+#~ msgid "No news yet."
+#~ msgstr "Inga nyheter än."
+
+#~ msgid "Read more"
+#~ msgstr "Läs mer"
+
+#~ msgctxt "block title"
+#~ msgid "Latest News"
+#~ msgstr "Senaste nytt"
+
+#~ msgctxt "block description"
+#~ msgid ""
+#~ "Displays the latest news posts as cards with a link to the full archive."
+#~ msgstr "Visar de senaste nyheterna som kort med länk till hela arkivet."
 
 #~ msgid "Extra Dates"
 #~ msgstr "Extra datum"
