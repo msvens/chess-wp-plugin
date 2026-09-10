@@ -1,9 +1,9 @@
 <?php
 /**
  * Plugin Name: Rockaden Chess
- * Plugin URI:  https://github.com/msvens/rockaden-wp
+ * Plugin URI:  https://github.com/msvens/chess-wp-plugin
  * Description: Training management, calendar, and SSF integration for SK Rockaden.
- * Version:     0.44.0
+ * Version:     0.45.0
  * Author:      SK Rockaden
  * Text Domain: rockaden-chess
  * Domain Path: /languages
@@ -18,16 +18,16 @@ defined( 'ABSPATH' ) || exit;
 
 define( 'RC_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'RC_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
-define( 'RC_VERSION', '0.44.0' );
+define( 'RC_VERSION', '0.45.0' );
 
-// GitHub-based update checker. Reads release assets from the rockaden-wp
+// GitHub-based update checker. Reads release assets from the chess-wp-plugin
 // repository and lets WordPress show the standard "update available" UI in
 // Plugins. Pre-releases on GitHub are skipped automatically.
 if ( file_exists( RC_PLUGIN_DIR . 'vendor/autoload.php' ) ) {
 	require_once RC_PLUGIN_DIR . 'vendor/autoload.php';
 
 	$rc_update_checker = YahnisElsts\PluginUpdateChecker\v5\PucFactory::buildUpdateChecker(
-		'https://github.com/msvens/rockaden-wp/',
+		'https://github.com/msvens/chess-wp-plugin/',
 		__FILE__,
 		'rockaden-chess'
 	);
@@ -35,9 +35,13 @@ if ( file_exists( RC_PLUGIN_DIR . 'vendor/autoload.php' ) ) {
 	// Vcs\Api that getVcsApi() is typed to return. Checked by method rather than
 	// by class: the library namespaces its classes by version (v5p6, v5p7, …),
 	// so naming one means a routine dependency bump silently stops matching.
+	// REQUIRE_RELEASE_ASSETS: a release without a matching asset must never be
+	// replaced by its auto-generated source zip, which lacks vendor/ and would
+	// install a broken copy. (The constant is inherited from Vcs\Api, so the
+	// versioned class name is still not spelled out).
 	$rc_vcs_api = $rc_update_checker->getVcsApi();
 	if ( method_exists( $rc_vcs_api, 'enableReleaseAssets' ) ) {
-		$rc_vcs_api->enableReleaseAssets( '/rockaden-chess\.zip$/' );
+		$rc_vcs_api->enableReleaseAssets( '/rockaden-chess\.zip$/', $rc_vcs_api::REQUIRE_RELEASE_ASSETS );
 	}
 }
 

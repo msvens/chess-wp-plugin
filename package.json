@@ -1,19 +1,18 @@
 {
-  "name": "@rockaden/plugin",
-  "version": "0.1.0",
+  "name": "rockaden-chess",
   "private": true,
+  "packageManager": "pnpm@10.29.3",
   "scripts": {
     "build": "wp-scripts build",
     "dev": "wp-scripts start",
     "typecheck": "tsc --noEmit",
-    "lint:js": "wp-scripts lint-js"
-  },
-  "devDependencies": {
-    "@types/react": "^19.0.0",
-    "@types/react-dom": "^19.0.0",
-    "@wordpress/browserslist-config": "^6.0.0",
-    "@wordpress/scripts": "^30.0.0",
-    "typescript": "^5.7.0"
+    "lint": "wp-scripts lint-js",
+    "lint:js": "wp-scripts lint-js",
+    "lint:php": "composer lint:php",
+    "i18n": "node scripts/i18n.mjs",
+    "i18n:check": "node scripts/i18n-check.mjs",
+    "check": "pnpm typecheck && pnpm lint && pnpm run lint:php && pnpm run i18n:check && pnpm build",
+    "package": "pnpm build && node scripts/package.mjs"
   },
   "dependencies": {
     "@msvens/schack-se-sdk": "github:msvens/schack-se-sdk#v0.17.0",
@@ -23,5 +22,12 @@
     "@wordpress/element": "^6.0.0",
     "@wordpress/i18n": "^5.0.0",
     "flatpickr": "^4.6.13"
+  },
+  "devDependencies": {
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "@wordpress/browserslist-config": "^6.0.0",
+    "@wordpress/scripts": "^30.0.0",
+    "typescript": "^5.7.0"
   }
 }

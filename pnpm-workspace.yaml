@@ -1,0 +1,9 @@
+# Not a workspace: pnpm 10 reads install settings from this file, and
+# onlyBuiltDependencies has no other home.
+onlyBuiltDependencies:
+  - '@msvens/schack-se-sdk'
+  - '@parcel/watcher'
+  - core-js
+  - core-js-pure
+  - esbuild
+  - unrs-resolver

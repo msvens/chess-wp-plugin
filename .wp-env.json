@@ -1,0 +1,11 @@
+{
+  "core": "WordPress/WordPress#6.7",
+  "plugins": ["."],
+  "themes": ["../rockaden-wp-theme"],
+  "port": 8889,
+  "testsEnvironment": false,
+  "config": {
+    "WP_DEBUG": true,
+    "SCRIPT_DEBUG": true
+  }
+}

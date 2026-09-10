@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Rockaden Chess\n"
-"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/plugin\n"
-"POT-Creation-Date: 2026-09-09T12:17:06+00:00\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/chess-wp-plugin\n"
+"POT-Creation-Date: 2026-09-10T13:12:31+00:00\n"
 "PO-Revision-Date: 2026-05-26\n"
 "Language: sv_SE\n"
 "MIME-Version: 1.0\n"
@@ -20,8 +20,8 @@ msgstr "Rockaden Chess"
 
 #. Plugin URI of the plugin
 #: rockaden-chess.php:4
-msgid "https://github.com/msvens/rockaden-wp"
-msgstr "https://github.com/msvens/rockaden-wp"
+msgid "https://github.com/msvens/chess-wp-plugin"
+msgstr "https://github.com/msvens/chess-wp-plugin"
 
 #. Description of the plugin
 #: rockaden-chess.php:5
@@ -33,11 +33,11 @@ msgstr "Träningshantering, kalender och SSF-integration för SK Rockaden."
 msgid "SK Rockaden"
 msgstr "SK Rockaden"
 
-#: rockaden-chess.php:105
+#: rockaden-chess.php:109
 msgid "Settings"
 msgstr "Inställningar"
 
-#: rockaden-chess.php:109 src/Admin/HelpPage.php:24
+#: rockaden-chess.php:113 src/Admin/HelpPage.php:24
 msgid "Help"
 msgstr "Hjälp"
 
