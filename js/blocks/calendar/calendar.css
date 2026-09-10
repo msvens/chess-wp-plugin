@@ -301,7 +301,10 @@ html.dark .rc-cal {
 /* --- Month grid --- */
 .rc-cal__daynames {
 	display: grid;
-	grid-template-columns: repeat(7, 1fr);
+	/* minmax(0, 1fr), not 1fr: a bare 1fr track is minmax(auto, 1fr) and grows
+	   to fit a pill's no-wrap title, so columns drifted out of line with each
+	   other and with this header. */
+	grid-template-columns: repeat(7, minmax(0, 1fr));
 	background: var(--rc-border);
 	gap: 1px;
 	border-bottom: 1px solid var(--rc-border);
@@ -329,12 +332,14 @@ html.dark .rc-cal {
 }
 
 /* A month week row: 7 day cells + an absolutely-positioned spanning-bar
-   overlay layered on top. */
+   overlay layered on top. Same background as the day-name row so the 1px
+   gaps read as vertical grid lines, like Google Calendar's month view. */
 .rc-cal__week-row {
 	position: relative;
 	display: grid;
-	grid-template-columns: repeat(7, 1fr);
+	grid-template-columns: repeat(7, minmax(0, 1fr));
 	gap: 1px;
+	background: var(--rc-border);
 }
 
 /* Spanning-bar overlay. pointer-events:none so empty-cell clicks pass through
@@ -421,7 +426,11 @@ html.dark .rc-cal {
 	display: flex;
 	flex-direction: column;
 	position: relative;
-	width: 100%;
+	/* Fill the grid track exactly. The old width:100% plus padding under
+	   content-box sizing made each cell 8px wider than its track, so it
+	   painted over the 1px gap and the vertical grid lines never showed. */
+	box-sizing: border-box;
+	min-width: 0; /* let the cell shrink to its track; pills ellipsise instead */
 }
 
 .rc-cal__day--other-month .rc-cal__day-number,
