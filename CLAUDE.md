@@ -2,7 +2,7 @@
 
 WordPress plugin `rockaden-chess` for Swedish chess clubs, built for SK Rockaden (Stockholm) and
 meant to be reusable by other clubs. This repository holds only the plugin; the club's block theme
-lives in `rockaden-wp-theme` (sibling checkout `../rockaden-wp-theme`). The plugin never depends on
+lives in `rockaden-wp` (sibling checkout `../rockaden-wp`). The plugin never depends on
 the theme. The theme places some plugin blocks by name and provides templates for the plugin's post
 types, so **block names, post-type slugs, meta keys and REST routes are public API — keep them stable.**
 
@@ -40,7 +40,7 @@ Ported from `/Users/msvens/projects/github.com/msvens/rockaden2` (PayloadCMS + N
 
 ```bash
 pnpm install && composer install
-npx wp-env start          # WordPress at http://localhost:8889 (admin/password); mounts ../rockaden-wp-theme
+npx wp-env start          # WordPress at http://localhost:8889 (admin/password); mounts ../rockaden-wp
 pnpm dev                  # wp-scripts watch
 # PHP changes are instant (mounted by wp-env)
 ```

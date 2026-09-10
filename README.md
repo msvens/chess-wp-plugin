@@ -6,7 +6,7 @@ Gutenberg blocks for all of it. Built for [SK Rockaden](https://rockaden.com) an
 reusable by other clubs.
 
 The club's website theme lives in its own repository:
-[rockaden-wp-theme](https://github.com/msvens/rockaden-wp-theme). The plugin does not depend on it.
+[rockaden-wp](https://github.com/msvens/rockaden-wp). The plugin does not depend on it.
 
 ## Requirements
 
@@ -43,7 +43,7 @@ npx wp-env start        # WordPress at http://localhost:8889 (admin/password)
 pnpm dev                # JS hot-reload (wp-scripts watch)
 ```
 
-`.wp-env.json` also mounts the theme from a sibling checkout at `../rockaden-wp-theme` so the local
+`.wp-env.json` also mounts the theme from a sibling checkout at `../rockaden-wp` so the local
 site looks like rockaden.com; clone it beside this repository, or remove the `themes` entry to develop
 against a stock theme. PHP changes are instant (the plugin directory is mounted).
 

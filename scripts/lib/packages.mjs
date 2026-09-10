@@ -7,7 +7,7 @@ export const root = join( dirname( fileURLToPath( import.meta.url ) ), '..', '..
  * The one translatable package: this repository, at its root.
  *
  * Kept as a list so the i18n scripts stay identical to the theme's copy
- * (rockaden-wp-theme/scripts) — only this file differs between the two.
+ * (rockaden-wp/scripts) — only this file differs between the two.
  */
 export const PACKAGES = [
 	{

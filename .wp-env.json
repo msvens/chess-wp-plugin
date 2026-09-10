@@ -1,7 +1,7 @@
 {
   "core": "WordPress/WordPress#6.7",
   "plugins": ["."],
-  "themes": ["../rockaden-wp-theme"],
+  "themes": ["../rockaden-wp"],
   "port": 8889,
   "testsEnvironment": false,
   "config": {

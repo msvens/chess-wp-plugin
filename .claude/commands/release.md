@@ -51,7 +51,7 @@ Create a new release tag and push it:
 - Tag format is always `vX.Y.Z` (semver with `v` prefix)
 - The `.github/workflows/release.yml` will automatically build and create a GitHub Release
 - **No Claude attribution** in the version bump commit
-- The theme is released separately from its own repository (`rockaden-wp-theme`); the two no longer
+- The theme is released separately from its own repository (`rockaden-wp`); the two no longer
   share versions.
 
 ## Example usage
