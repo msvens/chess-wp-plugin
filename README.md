@@ -43,9 +43,17 @@ npx wp-env start        # WordPress at http://localhost:8889 (admin/password)
 pnpm dev                # JS hot-reload (wp-scripts watch)
 ```
 
-`.wp-env.json` also mounts the theme from a sibling checkout at `../rockaden-wp` so the local
-site looks like rockaden.com; clone it beside this repository, or remove the `themes` entry to develop
-against a stock theme. PHP changes are instant (the plugin directory is mounted).
+`.wp-env.json` mounts this directory as `wp-content/plugins/rockaden-chess` and the theme from a
+sibling checkout at `../rockaden-wp` as `wp-content/themes/rockaden-theme`, the same names as on a
+real site, so the local site looks like rockaden.com. Clone the theme beside this repository, or drop
+the theme mapping to develop against a stock theme. On first start activate both once:
+
+```bash
+npx wp-env run cli wp plugin activate rockaden-chess
+npx wp-env run cli wp theme activate rockaden-theme
+```
+
+PHP changes are instant (the plugin directory is mounted).
 
 ### First-time setup
 
