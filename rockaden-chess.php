@@ -142,17 +142,6 @@ add_action(
 		);
 		Rockaden\Docs\DocsRegistry::register(
 			[
-				'slug'       => 'sidor-och-monster',
-				'title_sv'   => 'Sidor och mönster',
-				'title_en'   => 'Pages and patterns',
-				'section_sv' => 'Plugin',
-				'section_en' => 'Plugin',
-				'file'       => $docs_dir . 'sidor-och-monster.html',
-				'order'      => 15,
-			]
-		);
-		Rockaden\Docs\DocsRegistry::register(
-			[
 				'slug'       => 'kalender',
 				'title_sv'   => 'Kalender',
 				'title_en'   => 'Calendar',
