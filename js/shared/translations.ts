@@ -428,7 +428,7 @@ const translations: Translations = {
 	tournament: {
 		title: __( 'Tournaments', 'rockaden-chess' ),
 		subtitle: __(
-			'Tournaments at SK Rockaden — round-robin or SSF-backed.',
+			'Club tournaments — round-robin or SSF-backed.',
 			'rockaden-chess'
 		),
 		createTournament: __( 'Create Tournament', 'rockaden-chess' ),
@@ -515,7 +515,7 @@ const translations: Translations = {
 	calendar: {
 		title: __( 'Calendar', 'rockaden-chess' ),
 		subtitle: __(
-			'Upcoming events and activities at SK Rockaden.',
+			'Upcoming events and club activities.',
 			'rockaden-chess'
 		),
 		today: __( 'Today', 'rockaden-chess' ),

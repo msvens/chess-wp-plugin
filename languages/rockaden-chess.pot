@@ -2,21 +2,21 @@
 # This file is distributed under the MIT.
 msgid ""
 msgstr ""
-"Project-Id-Version: Rockaden Chess 0.46.0\n"
+"Project-Id-Version: Chess Club Manager for schack.se 0.46.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/chess-wp-plugin\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-09-10T13:32:52+00:00\n"
+"POT-Creation-Date: 2026-09-10T17:00:59+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: rockaden-chess\n"
 
 #. Plugin Name of the plugin
 #: rockaden-chess.php:3
-msgid "Rockaden Chess"
+msgid "Chess Club Manager for schack.se"
 msgstr ""
 
 #. Plugin URI of the plugin
@@ -26,7 +26,9 @@ msgstr ""
 
 #. Description of the plugin
 #: rockaden-chess.php:5
-msgid "Training management, calendar, and SSF integration for SK Rockaden."
+msgid ""
+"Training management, calendar, tournaments and schack.se (SSF) integration "
+"for Swedish chess clubs."
 msgstr ""
 
 #. Author of the plugin
@@ -155,15 +157,15 @@ msgid "Description"
 msgstr ""
 
 #: src/Admin/HelpPage.php:23
-msgid "Rockaden Help"
+msgid "Chess Club Help"
 msgstr ""
 
 #: src/Admin/SettingsPage.php:24
-msgid "Rockaden Settings"
+msgid "Chess Club Settings"
 msgstr ""
 
 #: src/Admin/SettingsPage.php:25
-msgid "Rockaden"
+msgid "Chess Club"
 msgstr ""
 
 #: src/Admin/SettingsPage.php:50
@@ -286,7 +288,7 @@ msgstr ""
 
 #: src/Blocks/calendar/block.json
 msgctxt "block description"
-msgid "Displays the SK Rockaden event calendar."
+msgid "Displays the club event calendar."
 msgstr ""
 
 #: src/Blocks/carousel/block.json
@@ -768,7 +770,7 @@ msgid "Full results"
 msgstr ""
 
 #: js/shared/translations.ts:431
-msgid "Tournaments at SK Rockaden — round-robin or SSF-backed."
+msgid "Club tournaments — round-robin or SSF-backed."
 msgstr ""
 
 #: js/shared/translations.ts:434
@@ -932,7 +934,7 @@ msgid "Calendar"
 msgstr ""
 
 #: js/shared/translations.ts:518
-msgid "Upcoming events and activities at SK Rockaden."
+msgid "Upcoming events and club activities."
 msgstr ""
 
 #: js/shared/translations.ts:521

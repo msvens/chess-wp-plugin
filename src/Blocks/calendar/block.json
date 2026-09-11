@@ -6,7 +6,7 @@
   "title": "Calendar",
   "category": "widgets",
   "icon": "calendar-alt",
-  "description": "Displays the SK Rockaden event calendar.",
+  "description": "Displays the club event calendar.",
   "textdomain": "rockaden-chess",
   "attributes": {
     "align": {

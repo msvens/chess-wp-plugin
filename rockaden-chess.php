@@ -1,8 +1,8 @@
 <?php
 /**
- * Plugin Name: Rockaden Chess
+ * Plugin Name: Chess Club Manager for schack.se
  * Plugin URI:  https://github.com/msvens/chess-wp-plugin
- * Description: Training management, calendar, and SSF integration for SK Rockaden.
+ * Description: Training management, calendar, tournaments and schack.se (SSF) integration for Swedish chess clubs.
  * Version:     0.46.0
  * Author:      SK Rockaden
  * Text Domain: rockaden-chess
