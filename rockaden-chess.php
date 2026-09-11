@@ -4,7 +4,8 @@
  * Plugin URI:  https://github.com/msvens/chess-wp-plugin
  * Description: Training management, calendar, tournaments and schack.se (SSF) integration for Swedish chess clubs.
  * Version:     0.47.0
- * Author:      SK Rockaden
+ * Author:      Martin Svensson
+ * Author URI:  https://github.com/msvens/chess-wp-plugin
  * Text Domain: rockaden-chess
  * Domain Path: /languages
  * Requires at least: 6.5

@@ -8,6 +8,27 @@ reusable by other clubs.
 The club's website theme lives in its own repository:
 [rockaden-wp](https://github.com/msvens/rockaden-wp). The plugin does not depend on it.
 
+## Features
+
+- **Training groups** — participants, trainers, a weekly or biweekly schedule with exceptions and
+  extra sessions, and per-session attendance.
+- **Tournaments** — round-robin with Berger pairings and automatic standings, or standings pulled
+  from the federation for an SSF-registered tournament.
+- **Calendar** — one-off and recurring events with categories, exclusions and month/week/day views.
+  Recurrence is expanded server-side.
+- **schack.se (SSF) integration** — club rating lists filtered by period, ELO type and member
+  category; tournament and result import. The club ID is the only setting.
+- **Nine Gutenberg blocks** — calendar, upcoming events, ranking list, tournament, tournaments,
+  standings, training group, training groups and image carousel. All server-rendered, and styled
+  from the active theme's palette.
+- **Bilingual documentation built in** — twelve guides in Swedish and English, readable inside
+  WP Admin, plus a Help page.
+
+The plugin creates a **Documentation** page at `/documentation/`, visible to editors, which renders
+those guides with a language toggle. That is the feature guide for site editors; this README is for
+developers. The guides' source lives in [`docs/`](docs) as bilingual HTML, which is where to edit
+them, not where to read them.
+
 ## Requirements
 
 - WordPress 6.5+

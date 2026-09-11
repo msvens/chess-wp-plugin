@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Chess Club Manager for schack.se\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/chess-wp-plugin\n"
-"POT-Creation-Date: 2026-09-10T17:00:59+00:00\n"
+"POT-Creation-Date: 2026-09-11T10:01:27+00:00\n"
 "PO-Revision-Date: 2026-05-26\n"
 "Language: sv_SE\n"
 "MIME-Version: 1.0\n"
@@ -19,7 +19,8 @@ msgid "Chess Club Manager for schack.se"
 msgstr "Chess Club Manager for schack.se"
 
 #. Plugin URI of the plugin
-#: rockaden-chess.php:4
+#. Author URI of the plugin
+#: rockaden-chess.php:4 rockaden-chess.php:8
 msgid "https://github.com/msvens/chess-wp-plugin"
 msgstr "https://github.com/msvens/chess-wp-plugin"
 
@@ -34,14 +35,14 @@ msgstr ""
 
 #. Author of the plugin
 #: rockaden-chess.php:7
-msgid "SK Rockaden"
-msgstr "SK Rockaden"
+msgid "Martin Svensson"
+msgstr "Martin Svensson"
 
-#: rockaden-chess.php:109
+#: rockaden-chess.php:110
 msgid "Settings"
 msgstr "Inställningar"
 
-#: rockaden-chess.php:113 src/Admin/HelpPage.php:24
+#: rockaden-chess.php:114 src/Admin/HelpPage.php:24
 msgid "Help"
 msgstr "Hjälp"
 
@@ -1345,6 +1346,9 @@ msgstr "Lista"
 #: js/shared/translations.ts:665
 msgid "Fields"
 msgstr "Fält"
+
+#~ msgid "SK Rockaden"
+#~ msgstr "SK Rockaden"
 
 #~ msgid "Rockaden Chess"
 #~ msgstr "Rockaden Chess"
