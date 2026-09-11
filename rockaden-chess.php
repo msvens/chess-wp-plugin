@@ -3,7 +3,7 @@
  * Plugin Name: Chess Club Manager for schack.se
  * Plugin URI:  https://github.com/msvens/chess-wp-plugin
  * Description: Training management, calendar, tournaments and schack.se (SSF) integration for Swedish chess clubs.
- * Version:     0.46.0
+ * Version:     0.47.0
  * Author:      SK Rockaden
  * Text Domain: rockaden-chess
  * Domain Path: /languages
@@ -18,7 +18,7 @@ defined( 'ABSPATH' ) || exit;
 
 define( 'RC_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'RC_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
-define( 'RC_VERSION', '0.46.0' );
+define( 'RC_VERSION', '0.47.0' );
 
 // GitHub-based update checker. Reads release assets from the chess-wp-plugin
 // repository and lets WordPress show the standard "update available" UI in
