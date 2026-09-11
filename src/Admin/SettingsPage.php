@@ -8,7 +8,7 @@
 namespace Rockaden\Admin;
 
 /**
- * Registers and renders the Rockaden settings admin page.
+ * Registers and renders the plugin's settings admin page.
  */
 class SettingsPage {
 
@@ -21,8 +21,8 @@ class SettingsPage {
 	public static function register_page(): void {
 		add_submenu_page(
 			'options-general.php',
-			__( 'Rockaden Settings', 'rockaden-chess' ),
-			__( 'Rockaden', 'rockaden-chess' ),
+			__( 'Chess Club Settings', 'rockaden-chess' ),
+			__( 'Chess Club', 'rockaden-chess' ),
 			'manage_options',
 			self::PAGE_SLUG,
 			[ self::class, 'render' ]

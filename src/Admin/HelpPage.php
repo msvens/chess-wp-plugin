@@ -8,7 +8,7 @@
 namespace Rockaden\Admin;
 
 /**
- * Registers and renders the Rockaden help admin page.
+ * Registers and renders the plugin's help admin page.
  */
 class HelpPage {
 
@@ -20,7 +20,7 @@ class HelpPage {
 	public static function register_page(): void {
 		add_submenu_page(
 			'',
-			__( 'Rockaden Help', 'rockaden-chess' ),
+			__( 'Chess Club Help', 'rockaden-chess' ),
 			__( 'Help', 'rockaden-chess' ),
 			'edit_posts',
 			self::PAGE_SLUG,
@@ -40,7 +40,7 @@ class HelpPage {
 			<h1><?php echo esc_html( get_admin_page_title() ); ?></h1>
 
 			<p>
-				This page describes the features provided by the <strong>Rockaden Chess</strong> plugin:
+				This page describes the features provided by the <strong>Chess Club Manager</strong> plugin:
 				training management, calendar events, SSF integration, and Gutenberg blocks.
 			</p>
 
@@ -64,7 +64,7 @@ class HelpPage {
 		?>
 		<h2>Overview</h2>
 		<p>
-			Rockaden Chess adds chess-club features to WordPress:
+			Chess Club Manager adds chess-club features to WordPress:
 		</p>
 		<ul>
 			<li><strong>Training system</strong> &mdash; manage groups, participants, sessions, round-robin tournaments, and attendance.</li>
@@ -82,7 +82,7 @@ class HelpPage {
 		?>
 		<h2>Training System</h2>
 		<p>
-			The training manager is accessible from <strong>Rockaden &rarr; Training</strong> in the admin sidebar.
+			The training manager is accessible from <strong>Training</strong> in the admin sidebar.
 			It provides a single-page interface for managing groups, participants, and sessions.
 		</p>
 
@@ -189,7 +189,7 @@ class HelpPage {
 		?>
 		<h2>Gutenberg Blocks</h2>
 		<p>
-			The plugin provides five blocks, all found under the <strong>Rockaden</strong> category
+			The plugin's blocks are found under the <strong>Widgets</strong> category
 			in the block inserter.
 		</p>
 
@@ -241,7 +241,7 @@ class HelpPage {
 		<h2>Settings</h2>
 		<p>
 			Plugin settings are located at
-			<a href="<?php echo esc_url( $settings_url ); ?>">Settings &rarr; Rockaden</a>.
+			<a href="<?php echo esc_url( $settings_url ); ?>">Settings &rarr; Chess Club</a>.
 		</p>
 
 		<table class="widefat striped">

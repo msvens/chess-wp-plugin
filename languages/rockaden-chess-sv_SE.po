@@ -1,11 +1,11 @@
-# Swedish (sv_SE) translations for the Rockaden Chess plugin.
+# Swedish (sv_SE) translations for the Chess Club Manager plugin.
 # The plugin's source language is English; this file provides Swedish.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Rockaden Chess\n"
+"Project-Id-Version: Chess Club Manager for schack.se\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/chess-wp-plugin\n"
-"POT-Creation-Date: 2026-09-10T13:12:31+00:00\n"
+"POT-Creation-Date: 2026-09-10T17:00:59+00:00\n"
 "PO-Revision-Date: 2026-05-26\n"
 "Language: sv_SE\n"
 "MIME-Version: 1.0\n"
@@ -15,8 +15,8 @@ msgstr ""
 
 #. Plugin Name of the plugin
 #: rockaden-chess.php:3
-msgid "Rockaden Chess"
-msgstr "Rockaden Chess"
+msgid "Chess Club Manager for schack.se"
+msgstr "Chess Club Manager for schack.se"
 
 #. Plugin URI of the plugin
 #: rockaden-chess.php:4
@@ -25,8 +25,12 @@ msgstr "https://github.com/msvens/chess-wp-plugin"
 
 #. Description of the plugin
 #: rockaden-chess.php:5
-msgid "Training management, calendar, and SSF integration for SK Rockaden."
-msgstr "Träningshantering, kalender och SSF-integration för SK Rockaden."
+msgid ""
+"Training management, calendar, tournaments and schack.se (SSF) integration "
+"for Swedish chess clubs."
+msgstr ""
+"Träningshantering, kalender, turneringar och integration med schack.se (SSF) "
+"för svenska schackklubbar."
 
 #. Author of the plugin
 #: rockaden-chess.php:7
@@ -159,16 +163,16 @@ msgid "Description"
 msgstr "Beskrivning"
 
 #: src/Admin/HelpPage.php:23
-msgid "Rockaden Help"
-msgstr "Rockaden Hjälp"
+msgid "Chess Club Help"
+msgstr "Hjälp för schackklubb"
 
 #: src/Admin/SettingsPage.php:24
-msgid "Rockaden Settings"
-msgstr "Rockaden Inställningar"
+msgid "Chess Club Settings"
+msgstr "Inställningar för schackklubb"
 
 #: src/Admin/SettingsPage.php:25
-msgid "Rockaden"
-msgstr "Rockaden"
+msgid "Chess Club"
+msgstr "Schackklubb"
 
 #: src/Admin/SettingsPage.php:50
 msgid "SSF Integration"
@@ -290,8 +294,8 @@ msgstr "Kalender"
 
 #: src/Blocks/calendar/block.json
 msgctxt "block description"
-msgid "Displays the SK Rockaden event calendar."
-msgstr "Visar SK Rockadens kalender."
+msgid "Displays the club event calendar."
+msgstr "Visar klubbens kalender."
 
 #: src/Blocks/carousel/block.json
 msgctxt "block title"
@@ -774,8 +778,8 @@ msgid "Full results"
 msgstr "Fullständiga resultat"
 
 #: js/shared/translations.ts:431
-msgid "Tournaments at SK Rockaden — round-robin or SSF-backed."
-msgstr "Tournaments at SK Rockaden — round-robin or SSF-backed."
+msgid "Club tournaments — round-robin or SSF-backed."
+msgstr "Klubbens turneringar — Berger eller från SSF."
 
 #: js/shared/translations.ts:434
 msgid "Create Tournament"
@@ -947,8 +951,8 @@ msgid "Calendar"
 msgstr "Kalender"
 
 #: js/shared/translations.ts:518
-msgid "Upcoming events and activities at SK Rockaden."
-msgstr "Kommande evenemang och aktiviteter på SK Rockaden."
+msgid "Upcoming events and club activities."
+msgstr "Kommande evenemang och klubbaktiviteter."
 
 #: js/shared/translations.ts:521
 msgid "Today"
@@ -1341,6 +1345,18 @@ msgstr "Lista"
 #: js/shared/translations.ts:665
 msgid "Fields"
 msgstr "Fält"
+
+#~ msgid "Rockaden Chess"
+#~ msgstr "Rockaden Chess"
+
+#~ msgid "Rockaden Help"
+#~ msgstr "Rockaden Hjälp"
+
+#~ msgid "Rockaden Settings"
+#~ msgstr "Rockaden Inställningar"
+
+#~ msgid "Rockaden"
+#~ msgstr "Rockaden"
 
 #~ msgid "More news"
 #~ msgstr "Mer nyheter"

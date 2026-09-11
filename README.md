@@ -1,4 +1,4 @@
-# Rockaden Chess (`rockaden-chess`)
+# Chess Club Manager for schack.se (`rockaden-chess`)
 
 WordPress plugin for Swedish chess clubs: training management, tournaments, a calendar with
 recurring events, integration with the Swedish Chess Federation's member system (SSF), and
@@ -17,7 +17,7 @@ The club's website theme lives in its own repository:
 
 1. Download `rockaden-chess.zip` from the [latest release](https://github.com/msvens/chess-wp-plugin/releases/latest)
 2. In WP Admin, go to **Plugins → Add New → Upload Plugin** and upload it
-3. Activate, then go to **Settings → Rockaden** to configure the SSF club ID
+3. Activate, then go to **Settings → Chess Club** to configure the SSF club ID
 
 Updates appear in WP Admin like any other plugin (the plugin checks this repository's releases).
 
