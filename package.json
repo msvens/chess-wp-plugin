@@ -1,6 +1,7 @@
 {
   "name": "rockaden-chess",
   "private": true,
+  "license": "GPL-2.0-or-later",
   "packageManager": "pnpm@10.29.3",
   "scripts": {
     "build": "wp-scripts build",

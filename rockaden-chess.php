@@ -10,7 +10,8 @@
  * Domain Path: /languages
  * Requires at least: 6.5
  * Requires PHP: 8.1
- * License:       MIT
+ * License:     GPL-2.0-or-later
+ * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  *
  * @package Rockaden
  */
