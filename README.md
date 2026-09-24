@@ -18,10 +18,13 @@ The club's website theme lives in its own repository:
   Recurrence is expanded server-side.
 - **schack.se (SSF) integration** — club rating lists filtered by period, ELO type and member
   category; tournament and result import. The club ID is the only setting.
-- **Nine Gutenberg blocks** — calendar, upcoming events, ranking list, tournament, tournaments,
-  standings, training group, training groups and image carousel. All server-rendered, and styled
-  from the active theme's palette.
-- **Bilingual documentation built in** — twelve guides in Swedish and English, readable inside
+- **Chess games** — a block that replays games from PGN with comments, variations and a
+  "find the move" puzzle mode, built on the Lichess viewer. It also renders Embed Chessboard's
+  `[pgn]` shortcode, so that plugin can be retired without editing old posts.
+- **Ten Gutenberg blocks** — calendar, upcoming events, ranking list, tournament, tournaments,
+  standings, training group, training groups, image carousel and chess game. All server-rendered,
+  and styled from the active theme's palette.
+- **Bilingual documentation built in** — thirteen guides in Swedish and English, readable inside
   WP Admin, plus a Help page.
 
 The plugin creates a **Documentation** page at `/documentation/`, visible to editors, which renders
@@ -153,3 +156,8 @@ Copyright (C) 2025 Martin Svensson
 This program is free software; you can redistribute it and/or modify it under the terms of the
 [GNU General Public License](LICENSE) as published by the Free Software Foundation; either version 2
 of the License, or (at your option) any later version.
+
+The chess game viewer bundles [@lichess-org/pgn-viewer](https://github.com/lichess-org/pgn-viewer),
+[chessground](https://github.com/lichess-org/chessground) and
+[chessops](https://github.com/niklasf/chessops) (GPL-3.0-or-later), which include the cburnett
+piece set by Colin M.L. Burnett.

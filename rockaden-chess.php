@@ -102,6 +102,7 @@ if ( defined( 'WP_CLI' ) && WP_CLI ) {
 }
 
 Rockaden\Admin\EventMetaBoxes::register();
+Rockaden\Blocks\ChessGameShortcode::register();
 
 // Add "Settings" link on the Plugins page.
 add_filter(
@@ -197,6 +198,17 @@ add_action(
 				'order'      => 45,
 			]
 		);
+		Rockaden\Docs\DocsRegistry::register(
+			[
+				'slug'       => 'schackparti',
+				'title_sv'   => 'Schackparti',
+				'title_en'   => 'Chess Game',
+				'section_sv' => 'Plugin',
+				'section_en' => 'Plugin',
+				'file'       => $docs_dir . 'schackparti.html',
+				'order'      => 47,
+			]
+		);
 
 		// How-Tos: task-oriented step guides.
 		Rockaden\Docs\DocsRegistry::register(
@@ -277,7 +289,7 @@ add_action(
 add_action(
 	'init',
 	function (): void {
-		$blocks    = [ 'calendar', 'carousel', 'documentation', 'ranking-list', 'standings', 'tournament', 'tournaments', 'training-group', 'training-groups', 'upcoming-events' ];
+		$blocks    = [ 'calendar', 'carousel', 'chess-game', 'documentation', 'ranking-list', 'standings', 'tournament', 'tournaments', 'training-group', 'training-groups', 'upcoming-events' ];
 		$lang_path = RC_PLUGIN_DIR . 'languages';
 		foreach ( $blocks as $block ) {
 			$block_dir = RC_PLUGIN_DIR . "src/Blocks/{$block}";

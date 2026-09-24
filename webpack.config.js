@@ -3,6 +3,34 @@ const path = require( 'path' );
 
 module.exports = {
 	...defaultConfig,
+	module: {
+		...defaultConfig.module,
+		rules: [
+			...defaultConfig.module.rules,
+			// The Lichess packages ship ES modules with extension-less relative
+			// imports, which webpack rejects for `"type": "module"` packages.
+			{
+				test: /\.js$/,
+				include: /node_modules[\\/](@lichess-org|chessops)[\\/]/,
+				resolve: { fullySpecified: false },
+			},
+		],
+	},
+	resolve: {
+		...defaultConfig.resolve,
+		alias: {
+			...defaultConfig.resolve?.alias,
+			// Both stylesheets are hidden by their package's `exports` map.
+			'lichess-pgn-viewer.css': path.resolve(
+				__dirname,
+				'node_modules/@lichess-org/pgn-viewer/dist/lichess-pgn-viewer.css'
+			),
+			'chessground.brown.css': path.resolve(
+				__dirname,
+				'node_modules/@lichess-org/chessground/assets/chessground.brown.css'
+			),
+		},
+	},
 	entry: {
 		'admin/training-manager': path.resolve(
 			__dirname,
@@ -83,6 +111,14 @@ module.exports = {
 		'blocks/ranking-list/view': path.resolve(
 			__dirname,
 			'js/blocks/ranking-list/view.tsx'
+		),
+		'blocks/chess-game/index': path.resolve(
+			__dirname,
+			'js/blocks/chess-game/index.tsx'
+		),
+		'blocks/chess-game/view': path.resolve(
+			__dirname,
+			'js/blocks/chess-game/view.ts'
 		),
 		'blocks/upcoming-events/index': path.resolve(
 			__dirname,

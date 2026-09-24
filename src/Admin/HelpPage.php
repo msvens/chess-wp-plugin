@@ -208,6 +208,11 @@ class HelpPage {
 					<td>Club calendar page</td>
 				</tr>
 				<tr>
+					<td><strong>Chess Game</strong></td>
+					<td>Replays one or more games from PGN with comments and variations, optionally as a "find the move" puzzle. Also renders the <code>[pgn]</code> shortcode from the Embed Chessboard plugin once that plugin is deactivated.</td>
+					<td>News posts, game analysis</td>
+				</tr>
+				<tr>
 					<td><strong>Ranking List</strong></td>
 					<td>Shows SSF player ratings for club members. Fetches data from the SSF API using the configured club ID.</td>
 					<td>Rankings or members page</td>
