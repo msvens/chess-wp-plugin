@@ -257,6 +257,41 @@ export interface Translations {
 		enterFullscreen: string;
 		exitFullscreen: string;
 	};
+	chessGame: {
+		title: string;
+		pgn: string;
+		pgnHelp: string;
+		empty: string;
+		readError: string;
+		noGames: string;
+		gamesFound: string;
+		illegalMove: string;
+		invalidStart: string;
+		game: string;
+		display: string;
+		orientation: string;
+		orientations: { auto: string; white: string; black: string };
+		moveList: string;
+		moveLists: {
+			auto: string;
+			right: string;
+			bottom: string;
+			none: string;
+		};
+		puzzle: string;
+		puzzleHelp: string;
+		startPly: string;
+		startPlyHelp: string;
+		startAtLast: string;
+		useCurrent: string;
+		useCurrentHelp: string;
+		showMoveList: string;
+		hideMoveList: string;
+		lichessLinks: string;
+		lichessLinksHelp: string;
+		// Strings of the Lichess viewer itself, keyed as in its translation.js.
+		viewer: Record< string, string >;
+	};
 	ranking: {
 		title: string;
 		ratingPeriod: string;
@@ -623,6 +658,135 @@ const translations: Translations = {
 		allowFullscreen: __( 'Allow fullscreen', 'rockaden-chess' ),
 		enterFullscreen: __( 'View fullscreen', 'rockaden-chess' ),
 		exitFullscreen: __( 'Close', 'rockaden-chess' ),
+	},
+	chessGame: {
+		title: __( 'Chess Game', 'rockaden-chess' ),
+		pgn: __( 'PGN', 'rockaden-chess' ),
+		pgnHelp: __(
+			'Paste one or more games in PGN format. Comments and variations are shown.',
+			'rockaden-chess'
+		),
+		empty: __( 'Paste a PGN to show the game.', 'rockaden-chess' ),
+		readError: __( 'The game could not be read.', 'rockaden-chess' ),
+		noGames: __( 'No moves found in the PGN.', 'rockaden-chess' ),
+		gamesFound: __( 'Games in this PGN: {n}', 'rockaden-chess' ),
+		illegalMove: __(
+			'Game {game}: move {move} is illegal or unreadable.',
+			'rockaden-chess'
+		),
+		invalidStart: __(
+			'Game {game}: the starting position (FEN) is invalid.',
+			'rockaden-chess'
+		),
+		game: __( 'Game', 'rockaden-chess' ),
+		display: __( 'Display', 'rockaden-chess' ),
+		orientation: __( 'Board orientation', 'rockaden-chess' ),
+		orientations: {
+			auto: __( 'From the PGN (white at the bottom)', 'rockaden-chess' ),
+			white: __( 'White at the bottom', 'rockaden-chess' ),
+			black: __( 'Black at the bottom', 'rockaden-chess' ),
+		},
+		moveList: __( 'Move list', 'rockaden-chess' ),
+		moveLists: {
+			auto: __( 'Automatic', 'rockaden-chess' ),
+			right: __( 'Right of the board', 'rockaden-chess' ),
+			bottom: __( 'Below the board', 'rockaden-chess' ),
+			none: __( 'Hidden', 'rockaden-chess' ),
+		},
+		puzzle: __( 'Puzzle', 'rockaden-chess' ),
+		puzzleHelp: __(
+			'Hides the move list and the players; readers start at the chosen position and find the continuation.',
+			'rockaden-chess'
+		),
+		startPly: __( 'Start position (half-moves played)', 'rockaden-chess' ),
+		startPlyHelp: __(
+			"0 is the initial position; 38 is the position after Black's 19th move.",
+			'rockaden-chess'
+		),
+		startAtLast: __( 'Start at the final position', 'rockaden-chess' ),
+		useCurrent: __( 'Use the position shown', 'rockaden-chess' ),
+		useCurrentHelp: __(
+			'Step through the preview, then click to start the game there.',
+			'rockaden-chess'
+		),
+		showMoveList: __( 'Show move list', 'rockaden-chess' ),
+		hideMoveList: __( 'Hide move list', 'rockaden-chess' ),
+		lichessLinks: __( 'Links to Lichess', 'rockaden-chess' ),
+		lichessLinksHelp: __(
+			'Adds "Analysis (lichess.org)" and "Practice (lichess.org)" to the menu. They open the game on lichess.org.',
+			'rockaden-chess'
+		),
+		viewer: {
+			flipTheBoard: __( 'Flip the board', 'rockaden-chess' ),
+			// Both open lichess.org; the label says so before the click.
+			analysisBoard: __( 'Analysis (lichess.org)', 'rockaden-chess' ),
+			practiceWithComputer: __(
+				'Practice (lichess.org)',
+				'rockaden-chess'
+			),
+			getPgn: __( 'Get PGN', 'rockaden-chess' ),
+			download: __( 'Download', 'rockaden-chess' ),
+			viewOnLichess: __( 'View on Lichess', 'rockaden-chess' ),
+			viewOnSite: __( 'View on site', 'rockaden-chess' ),
+			menu: __( 'Menu', 'rockaden-chess' ),
+			'aria.first': __( 'Go to first move', 'rockaden-chess' ),
+			'aria.prev': __( 'Go to previous move', 'rockaden-chess' ),
+			'aria.next': __( 'Go to next move', 'rockaden-chess' ),
+			'aria.last': __( 'Go to last move', 'rockaden-chess' ),
+			'aria.gameMoves': __( 'Game moves', 'rockaden-chess' ),
+			'aria.gameResult': __( 'Game result', 'rockaden-chess' ),
+			'aria.variation': __( 'Variation', 'rockaden-chess' ),
+			'aria.navigationControls': __(
+				'Game navigation controls',
+				'rockaden-chess'
+			),
+			// translators: %s is a Lichess username.
+			'aria.viewProfileOnLichess': __(
+				"View %s's profile on Lichess",
+				'rockaden-chess'
+			),
+			// translators: %1$s is the white player, %2$s the black player, %3$s the result.
+			'aria.chessGameBetween': __(
+				'Chess game between %1$s as white and %2$s as black. %3$s',
+				'rockaden-chess'
+			),
+			'aria.gameInProgress': __( 'Game in progress', 'rockaden-chess' ),
+			'aria.whiteWins': __( 'White wins', 'rockaden-chess' ),
+			'aria.blackWins': __( 'Black wins', 'rockaden-chess' ),
+			'aria.draw': __( 'Draw', 'rockaden-chess' ),
+			'aria.unknownPlayer': __( 'Unknown player', 'rockaden-chess' ),
+			// translators: %s is a rating number.
+			'aria.rated': __( 'rated %s', 'rockaden-chess' ),
+			// translators: %1$s is the move number, %2$s the side to move, %3$s the spoken move.
+			'aria.move': __( 'Move %1$s, %2$s, %3$s', 'rockaden-chess' ),
+			'aria.white': __( 'white', 'rockaden-chess' ),
+			'aria.black': __( 'black', 'rockaden-chess' ),
+			// translators: %s is the time left on a clock.
+			'aria.remaining': __( '%s remaining', 'rockaden-chess' ),
+			// translators: %s is a link text.
+			'aria.linkOpensInNewTab': __(
+				'%s, link, opens in new tab',
+				'rockaden-chess'
+			),
+			'aria.accessibleChessboard': __(
+				'Accessible chessboard',
+				'rockaden-chess'
+			),
+			'aria.piece.king': __( 'king', 'rockaden-chess' ),
+			'aria.piece.queen': __( 'queen', 'rockaden-chess' ),
+			'aria.piece.rook': __( 'rook', 'rockaden-chess' ),
+			'aria.piece.bishop': __( 'bishop', 'rockaden-chess' ),
+			'aria.piece.knight': __( 'knight', 'rockaden-chess' ),
+			'aria.piece.pawn': __( 'pawn', 'rockaden-chess' ),
+			'aria.empty': __( 'empty', 'rockaden-chess' ),
+			'san.takes': __( 'takes', 'rockaden-chess' ),
+			'san.check': __( 'check', 'rockaden-chess' ),
+			'san.checkmate': __( 'checkmate', 'rockaden-chess' ),
+			'san.promotesTo': __( 'promotes to', 'rockaden-chess' ),
+			'san.droppedOn': __( 'dropped on', 'rockaden-chess' ),
+			'san.longCastling': __( 'long castling', 'rockaden-chess' ),
+			'san.shortCastling': __( 'short castling', 'rockaden-chess' ),
+		},
 	},
 	ranking: {
 		title: __( 'Ranking List', 'rockaden-chess' ),

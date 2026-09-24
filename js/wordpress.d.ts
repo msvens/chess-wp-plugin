@@ -1,5 +1,23 @@
 declare module '@wordpress/blocks' {
 	export function registerBlockType( name: string, settings: any ): void;
+	export function createBlock( name: string, attributes?: any ): any;
+}
+
+declare module '@wordpress/shortcode' {
+	export function next(
+		tag: string,
+		text: string,
+		index?: number
+	):
+		| {
+				index: number;
+				content: string;
+				shortcode: {
+					attrs: { named: Record< string, string > };
+					content?: string;
+				};
+		  }
+		| undefined;
 }
 
 declare module '@wordpress/block-editor' {

@@ -1,0 +1,73 @@
+<p class="rc-doc-sv">
+	Blocket <strong>Schackparti</strong> spelar upp ett parti från PGN — det vanliga textformatet för schackpartier som alla schackprogram och sajter (Lichess, Chess.com, ChessBase) kan exportera. Läsaren stegar genom partiet med pilarna eller tangentbordet, ser kommentarer och varianter, och kan vända brädet eller ladda ner PGN:en.
+</p>
+<p class="rc-doc-en">
+	The <strong>Chess Game</strong> block replays a game from PGN — the plain-text format every chess program and site (Lichess, Chess.com, ChessBase) can export. Readers step through the game with the arrows or the keyboard, see comments and variations, and can flip the board or download the PGN.
+</p>
+
+<h2 class="rc-doc-sv">Lägga till ett parti</h2>
+<h2 class="rc-doc-en">Adding a game</h2>
+
+<ol>
+	<li class="rc-doc-sv">Lägg till blocket <strong>Schackparti</strong> (sök på ”schack” eller ”pgn” i blockinfogaren).</li>
+	<li class="rc-doc-en">Add the <strong>Chess Game</strong> block (search for “chess” or “pgn” in the inserter).</li>
+	<li class="rc-doc-sv">Klistra in PGN:en i textrutan. Förhandsvisningen uppdateras medan du skriver.</li>
+	<li class="rc-doc-en">Paste the PGN into the text box. The preview updates as you type.</li>
+	<li class="rc-doc-sv">Välj visning i sidopanelen (se nedan).</li>
+	<li class="rc-doc-en">Choose the display options in the sidebar (see below).</li>
+</ol>
+
+<p class="rc-doc-sv">
+	En PGN kan innehålla flera partier. Då visas en rullgardinslista ovanför brädet där läsaren väljer parti.
+</p>
+<p class="rc-doc-en">
+	A PGN can hold several games. A drop-down above the board then lets readers pick the game.
+</p>
+
+<div class="rc-docs-tip">
+	<span class="rc-doc-sv"><strong>Tips:</strong> Om ett drag inte går att läsa (felstavat eller otillåtet) visar editorn vilket parti och vilket drag det gäller, så att du kan rätta PGN:en innan du publicerar.</span>
+	<span class="rc-doc-en"><strong>Tip:</strong> If a move can't be read (misspelled or illegal), the editor names the game and the move, so you can fix the PGN before publishing.</span>
+</div>
+
+<h2 class="rc-doc-sv">Inställningar</h2>
+<h2 class="rc-doc-en">Settings</h2>
+
+<ul>
+	<li><strong class="rc-doc-sv">Brädets riktning</strong><strong class="rc-doc-en">Board orientation</strong> <span class="rc-doc-sv">— vit eller svart nederst. <em>Enligt PGN</em> använder PGN-taggen <code>Orientation</code> om den finns, annars vit nederst.</span><span class="rc-doc-en">— white or black at the bottom. <em>From the PGN</em> uses the PGN's <code>Orientation</code> tag if present, otherwise white at the bottom.</span></li>
+	<li><strong class="rc-doc-sv">Draglista</strong><strong class="rc-doc-en">Move list</strong> <span class="rc-doc-sv">— till höger om brädet, under brädet eller dold. <em>Automatiskt</em> lägger den bredvid brädet när det finns plats och annars under.</span><span class="rc-doc-en">— right of the board, below it, or hidden. <em>Automatic</em> puts it beside the board when there is room, otherwise below.</span></li>
+	<li><strong class="rc-doc-sv">Startställning</strong><strong class="rc-doc-en">Start position</strong> <span class="rc-doc-sv">— antal spelade halvdrag när sidan öppnas: 0 är utgångsställningen, 38 är ställningen efter svarts 19:e drag. Enklast är att stega fram i förhandsvisningen och klicka <em>Använd visad ställning</em>. <em>Börja i slutställningen</em> öppnar partiet efter sista draget.</span><span class="rc-doc-en">— the number of half-moves played when the page opens: 0 is the initial position, 38 the position after Black's 19th move. The easy way is to step through the preview and click <em>Use the position shown</em>. <em>Start at the final position</em> opens the game after the last move.</span></li>
+	<li><strong class="rc-doc-sv">Hitta draget</strong><strong class="rc-doc-en">Puzzle</strong> <span class="rc-doc-sv">— döljer draglistan och spelarnas namn. Läsaren ser bara ställningen vid startställningen och får själv leta efter fortsättningen, och stega fram för att se lösningen.</span><span class="rc-doc-en">— hides the move list and the players' names. Readers only see the board at the start position, look for the continuation themselves, and step forward to see the answer.</span></li>
+	<li><strong class="rc-doc-sv">Länkar till Lichess</strong><strong class="rc-doc-en">Links to Lichess</strong> <span class="rc-doc-sv">— lägger till <em>Analys (lichess.org)</em> och <em>Öva (lichess.org)</em> i brädets meny. De skickar partiet till lichess.org först när läsaren klickar. På som standard.</span><span class="rc-doc-en">— adds <em>Analysis (lichess.org)</em> and <em>Practice (lichess.org)</em> to the board's menu. They send the game to lichess.org only when a reader clicks. On by default.</span></li>
+</ul>
+
+<h2 class="rc-doc-sv">Menyn för läsaren</h2>
+<h2 class="rc-doc-en">The reader's menu</h2>
+
+<p class="rc-doc-sv">
+	Knappen <strong>⋮</strong> längst till höger under brädet öppnar en meny där läsaren kan vända brädet, visa eller dölja draglistan, öppna partiet på lichess.org för analys eller spel mot datorn, och hämta PGN:en. Inställningarna i blocket bestämmer bara hur partiet visas när sidan öppnas — en läsare som vill se lösningen på en kombination väljer <em>Visa draglistan</em>.
+</p>
+<p class="rc-doc-en">
+	The <strong>⋮</strong> button at the right end under the board opens a menu where readers can flip the board, show or hide the move list, open the game on lichess.org for analysis or to play against the computer, and get the PGN. The block settings only decide how the game looks when the page opens — a reader who wants the answer to a puzzle chooses <em>Show move list</em>.
+</p>
+
+<h2 class="rc-doc-sv">Äldre inlägg med &#91;pgn&#93;</h2>
+<h2 class="rc-doc-en">Older posts with &#91;pgn&#93;</h2>
+
+<p class="rc-doc-sv">
+	Inlägg skrivna för tillägget <em>Embed Chessboard</em> använder kortkoden <code>&#91;pgn&#93;…&#91;/pgn&#93;</code>. När Embed Chessboard är avaktiverat visar det här tillägget sådana partier med samma visare som blocket — inga inlägg behöver ändras. Inställningarna <code>initialHalfmove</code>, <code>showMoves</code> (inklusive <code>puzzle</code>) och <code>layout</code> följer med; övriga, som <code>height</code>, behövs inte längre och ignoreras.
+</p>
+<p class="rc-doc-en">
+	Posts written for the <em>Embed Chessboard</em> plugin use the <code>&#91;pgn&#93;…&#91;/pgn&#93;</code> shortcode. Once Embed Chessboard is deactivated, this plugin shows those games with the same viewer as the block — no post needs editing. The options <code>initialHalfmove</code>, <code>showMoves</code> (including <code>puzzle</code>) and <code>layout</code> carry over; the rest, such as <code>height</code>, are no longer needed and are ignored.
+</p>
+
+<p class="rc-doc-sv">
+	När du redigerar ett sådant inlägg kan du göra om kortkoden till ett riktigt block: välj <em>Konvertera till block</em> på ett klassiskt block, eller omvandla ett kortkodsblock till <strong>Schackparti</strong>.
+</p>
+<p class="rc-doc-en">
+	When you edit such a post you can turn the shortcode into a real block: choose <em>Convert to blocks</em> on a Classic block, or transform a Shortcode block into <strong>Chess Game</strong>.
+</p>
+
+<div class="rc-docs-tip">
+	<span class="rc-doc-sv"><strong>Obs:</strong> Medan Embed Chessboard är aktivt behåller det kortkoden <code>&#91;pgn&#93;</code> och visar partierna som förut. Blocket <strong>Schackparti</strong> fungerar oavsett.</span>
+	<span class="rc-doc-en"><strong>Note:</strong> While Embed Chessboard is active it keeps the <code>&#91;pgn&#93;</code> shortcode and shows those games as before. The <strong>Chess Game</strong> block works either way.</span>
+</div>

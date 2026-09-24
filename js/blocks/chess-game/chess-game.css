@@ -1,0 +1,219 @@
+/* =========================================================
+   Chess Game — chess-game.css
+   BEM naming: rc-chess-game*. The viewer's own markup is .lpv*;
+   its colours are driven by the --c-lpv-* variables mapped below
+   onto the theme palette, so dark mode follows the theme.
+   ========================================================= */
+
+.rc-chess-game {
+	--rc-cg-surface: var(--wp--preset--color--surface, #fff);
+	--rc-cg-surface-dim: var(--wp--preset--color--surface-dim, #f3f4f6);
+	--rc-cg-text: var(--wp--preset--color--on-surface, #111827);
+	--rc-cg-text-muted: var(--wp--preset--color--on-surface-muted, #4b5563);
+	--rc-cg-border: var(--wp--preset--color--border, #e5e7eb);
+	--rc-cg-accent: var(--wp--preset--color--primary, #2563eb);
+
+	--c-lpv-bg: var(--rc-cg-surface);
+	--c-lpv-bg-player: var(--rc-cg-surface);
+	--c-lpv-bg-controls: var(--rc-cg-surface);
+	--c-lpv-bg-movelist: var(--rc-cg-surface);
+	--c-lpv-bg-variation: var(--rc-cg-surface-dim);
+	--c-lpv-bg-pane: var(--rc-cg-surface-dim);
+	--c-lpv-pgn-text: var(--rc-cg-surface-dim);
+	--c-lpv-font: var(--rc-cg-text);
+	--c-lpv-past-moves: var(--rc-cg-text);
+	--c-lpv-font-shy: var(--rc-cg-text-muted);
+	--c-lpv-font-bg: var(--rc-cg-text-muted);
+	--c-lpv-accent: var(--rc-cg-accent);
+	--c-lpv-accent-over: #fff;
+	--c-lpv-current-move: var(--rc-cg-accent);
+	--rc-cg-hover: color-mix(in srgb, var(--rc-cg-accent) 12%, var(--rc-cg-surface));
+
+	/* The viewer puts white text on the move hover, so it needs a strong tint. */
+	--c-lpv-move-hover: color-mix(in srgb, var(--rc-cg-accent) 70%, var(--rc-cg-surface));
+	--c-lpv-fbt-hover: color-mix(in srgb, var(--rc-cg-accent) 75%, var(--rc-cg-surface));
+	--c-lpv-border: var(--rc-cg-border);
+	--c-lpv-side-border: var(--rc-cg-border);
+
+	/* Board edge: small enough that board, players and controls fit on a
+	   laptop screen without scrolling. */
+	--rc-cg-board: min(400px, 60vh);
+	--rc-cg-side: 16rem;
+
+	margin-block: 1.5rem;
+	color: var(--rc-cg-text);
+}
+
+.rc-chess-game.alignwide {
+	--rc-cg-board: min(520px, 70vh);
+}
+
+.rc-chess-game .lpv {
+	border: 1px solid var(--rc-cg-border);
+	box-shadow: none;
+	margin-inline: auto;
+	max-width: 100%;
+
+	/* The viewer sizes its text in em; theme body text is too large
+	   for a move list. */
+	font-size: 15px;
+
+	/* Default 4em: oversized arrows next to a compact board. */
+	--controls-height: 2.75em;
+}
+
+/* The viewer outlines itself on every click (it takes focus for arrow-key
+   navigation); keep the ring for keyboard users only. */
+.rc-chess-game .lpv:focus {
+	outline: none;
+}
+
+.rc-chess-game .lpv:focus-visible {
+	outline: 2px solid var(--rc-cg-accent);
+	outline-offset: 2px;
+}
+
+.rc-chess-game .lpv__controls .lpv__fbt {
+	font-size: 1.1em;
+	padding: 0.2em 0.5em;
+}
+
+/* Moves: the viewer's bold at full size outweighs the board. */
+.rc-chess-game .lpv__moves {
+	font-size: 0.9em;
+}
+
+.rc-chess-game .lpv__moves .move {
+	font-weight: 500;
+}
+
+/* ---- Size: the viewer fills its container by default ---- */
+
+.rc-chess-game .lpv--moves-right {
+	width: calc(var(--rc-cg-board) + var(--rc-cg-side));
+	grid-template-columns: minmax(200px, var(--rc-cg-board)) minmax(12rem, var(--rc-cg-side));
+}
+
+.rc-chess-game .lpv--moves-bottom,
+.rc-chess-game .lpv--moves-false {
+	width: var(--rc-cg-board);
+	grid-template-columns: minmax(0, 1fr);
+}
+
+/* Below the board the viewer gives the move list a fixed 6em row, about two
+   moves; give readers room for comments and variations. */
+.rc-chess-game .lpv--moves-bottom {
+	grid-template-rows: auto var(--controls-height) 14em;
+}
+
+.rc-chess-game .lpv--players.lpv--moves-bottom {
+	grid-template-rows: 2em auto 2em var(--controls-height) 14em;
+}
+
+/* ---- Menu: a ⋮ at the right end of the control bar ----
+   The viewer's button stays; clicks on it open our dropdown (gameMenu.ts). */
+
+.rc-chess-game .lpv__controls .lpv__controls__menu {
+	order: 1;
+
+	/* px, not em: the open state zeroes the font size to hide the "X". */
+	flex: 0 0 48px;
+	padding-inline: 0;
+}
+
+/* While the viewer's "Get PGN" panel is open its button closes the panel:
+   draw a cross instead of the viewer's letter X, and drop the first/last
+   buttons the viewer adds then. */
+.rc-chess-game .lpv--menu .lpv__controls__goto--first,
+.rc-chess-game .lpv--menu .lpv__controls__goto--last {
+	display: none;
+}
+
+.rc-chess-game .lpv__controls__menu.active {
+	font-size: 0;
+}
+
+.rc-chess-game .lpv__controls__menu.active::before {
+	content: "\2715";
+	font-family: inherit;
+	font-size: 15px;
+}
+
+/* The viewer writes its panel links (the PGN download) in capitals. */
+.rc-chess-game .lpv__pane .lpv__fbt {
+	text-transform: none;
+}
+
+.rc-chess-game__board {
+	position: relative;
+}
+
+.rc-chess-game__menu {
+	position: absolute;
+	z-index: 3;
+	display: flex;
+	flex-direction: column;
+	min-width: 14em;
+	padding: 0.3em 0;
+	font-size: 14px;
+	background: var(--rc-cg-surface);
+	border: 1px solid var(--rc-cg-border);
+	border-radius: 6px;
+	box-shadow: 0 6px 20px rgb(0 0 0 / 18%);
+}
+
+.rc-chess-game__menu-item {
+	display: block;
+	padding: 0.5em 1em;
+	font: inherit;
+	line-height: 1.4;
+	text-align: left;
+	text-decoration: none;
+	white-space: nowrap;
+	color: var(--rc-cg-text);
+	background: none;
+	border: 0;
+	cursor: pointer;
+}
+
+.rc-chess-game__menu-item:hover,
+.rc-chess-game__menu-item:focus-visible {
+	color: var(--rc-cg-text);
+	background: var(--rc-cg-hover);
+	outline: none;
+}
+
+/* ---- Game selector, as wide as the viewer ---- */
+
+.rc-chess-game__select {
+	display: block;
+	width: var(--rc-cg-board);
+	max-width: 100%;
+	margin: 0 auto 0.5rem;
+	padding: 0.4rem 0.5rem;
+	font: inherit;
+	color: var(--rc-cg-text);
+	background: var(--rc-cg-surface);
+	border: 1px solid var(--rc-cg-border);
+	border-radius: 4px;
+}
+
+[data-layout="right"] > .rc-chess-game__select {
+	width: calc(var(--rc-cg-board) + var(--rc-cg-side));
+}
+
+/* No-JS fallback and the text shown next to a read error. */
+.rc-chess-game__pgn {
+	max-height: 20rem;
+	overflow: auto;
+	white-space: pre-wrap;
+	font-size: 0.85rem;
+	background: var(--rc-cg-surface-dim);
+	padding: 0.75rem;
+	border-radius: 4px;
+}
+
+.rc-chess-game__error {
+	color: var(--wp--preset--color--error, #dc2626);
+	font-size: 0.9rem;
+}

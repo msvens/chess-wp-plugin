@@ -1,0 +1,48 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "rockaden/chess-game",
+  "version": "0.1.0",
+  "title": "Chess Game",
+  "category": "media",
+  "icon": "games",
+  "description": "Replays a chess game from PGN, with comments and variations.",
+  "keywords": ["chess", "pgn", "schack", "parti"],
+  "textdomain": "rockaden-chess",
+  "attributes": {
+    "pgn": {
+      "type": "string",
+      "default": ""
+    },
+    "orientation": {
+      "type": "string",
+      "enum": ["auto", "white", "black"],
+      "default": "auto"
+    },
+    "initialPly": {
+      "type": "string",
+      "default": "0"
+    },
+    "showMoves": {
+      "type": "string",
+      "enum": ["auto", "right", "bottom", "none"],
+      "default": "auto"
+    },
+    "puzzle": {
+      "type": "boolean",
+      "default": false
+    },
+    "lichessLinks": {
+      "type": "boolean",
+      "default": true
+    }
+  },
+  "supports": {
+    "html": false,
+    "align": ["wide"]
+  },
+  "editorScript": "file:../../../build/blocks/chess-game/index.js",
+  "viewScript": "file:../../../build/blocks/chess-game/view.js",
+  "style": "file:../../../build/blocks/chess-game/view.css",
+  "render": "file:./render.php"
+}
