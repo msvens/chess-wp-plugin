@@ -5,6 +5,8 @@ import {
 	isTeamTournament,
 	getOpponentKind,
 	findTournamentGroup,
+	getGroupTimeControl,
+	hasStandings,
 	type TournamentEndResultDto,
 	type TournamentRoundResultDto,
 	type PlayerInfoDto,
@@ -18,6 +20,7 @@ import {
 	fetchTournamentForGroup,
 	fetchTournamentResults,
 	fetchTournamentRoundResults,
+	groupRating,
 } from '../../shared/ssf';
 import RoundsDisplay from './RoundsDisplay';
 import type { DisplayRound } from './RoundsDisplay';
@@ -230,13 +233,21 @@ export default function SsfResultsView( {
 		playerMap.set( r.playerInfo.id, r.playerInfo );
 	}
 
-	// Not started yet (registration) → show the registered players, clearly
-	// labelled, instead of an empty/placeholder standings table.
-	if ( tournament && tournament.state === 1 ) {
+	// Not started yet (no real places — SSF puts every row at place 1000 until
+	// there are results) → show the registered players, clearly labelled and
+	// seeded by the group's rating type as schack.se does, instead of a
+	// placeholder standings table.
+	if ( ! hasStandings( endResults ) ) {
+		const seedGroup = tournament
+			? findTournamentGroup( tournament, ssfGroupId )?.group
+			: undefined;
+		const timeControl = seedGroup
+			? getGroupTimeControl( seedGroup ).primary
+			: 'unknown';
+		const seedRating = ( r: TournamentEndResultDto ) =>
+			groupRating( r.playerInfo.elo, timeControl );
 		const registered = [ ...endResults ].sort(
-			( a, b ) =>
-				( b.playerInfo.elo?.rating ?? 0 ) -
-				( a.playerInfo.elo?.rating ?? 0 )
+			( a, b ) => ( seedRating( b ) ?? 0 ) - ( seedRating( a ) ?? 0 )
 		);
 		return (
 			<div className="rc-td__panel">
@@ -261,8 +272,7 @@ export default function SsfResultsView( {
 									{ r.playerInfo.firstName }
 								</td>
 								<td className="rc-td__rating">
-									{ getElo( r.playerInfo ) ||
-										t.ratingUnavailable }
+									{ seedRating( r ) ?? t.ratingUnavailable }
 								</td>
 							</tr>
 						) ) }

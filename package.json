@@ -18,7 +18,7 @@
   "dependencies": {
     "@lichess-org/chessground": "^10.2.0",
     "@lichess-org/pgn-viewer": "2.6.4",
-    "@msvens/schack-se-sdk": "github:msvens/schack-se-sdk#v0.17.0",
+    "@msvens/schack-se-sdk": "github:msvens/schack-se-sdk#v0.25.0",
     "@wordpress/api-fetch": "^7.0.0",
     "@wordpress/blocks": "^13.0.0",
     "@wordpress/components": "^29.0.0",

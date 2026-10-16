@@ -17,7 +17,7 @@ import { fetchSsfTournamentForGroup, fetchSsfRoundResults } from '../../api';
 import {
 	findTournamentGroup,
 	isTeamTournament,
-	parseTimeControl,
+	getGroupTimeControl,
 } from '@msvens/schack-se-sdk';
 import { deriveStatus } from '../../../shared/deriveStatus';
 import {
@@ -186,11 +186,6 @@ export function TournamentForm( {
 
 	const [ ssfFetching, setSsfFetching ] = useState( false );
 	const [ ssfNote, setSsfNote ] = useState< string | null >( null );
-	// SSF lifecycle state (1=registration, 2=started, 3=finished) from the last
-	// fetch — drives the status preview for SSF tournaments.
-	const [ ssfState, setSsfState ] = useState< number | undefined >(
-		undefined
-	);
 	// Guards the auto-fetch effect from re-fetching an unchanged group id.
 	const lastFetchedRef = useRef( Number( init.ssfGroupId ) || 0 );
 
@@ -213,15 +208,14 @@ export function TournamentForm( {
 			: eventValue.eventEnd
 		: '';
 
-	// Live preview of what 'Automatic' resolves to. SSF tournaments preview from
-	// the fetched SSF state (mirrors the server); local ones from the dates.
+	// Live preview of what 'Automatic' resolves to (mirrors the server). SSF
+	// tournaments use their fetched dates and whether SSF has round results.
 	const previewStatus =
 		status === 'auto'
 			? deriveStatus(
 					effectiveStart,
 					effectiveEnd,
-					isSsfBacked ? ssfHasResults : !! initialHasResults,
-					isSsfBacked ? ssfState : undefined
+					isSsfBacked ? ssfHasResults : !! initialHasResults
 			  )
 			: null;
 
@@ -246,7 +240,7 @@ export function TournamentForm( {
 			] );
 			const group = findTournamentGroup( tournament, ssfId )?.group;
 			// Tournament-level dates: a group's own start can be a registration
-			// window weeks before play (status uses the SSF state, not these).
+			// window weeks before play.
 			const start = tournament.start || group?.start || '';
 			const end = tournament.end || group?.end || '';
 			const tname = tournament.name || '';
@@ -258,17 +252,19 @@ export function TournamentForm( {
 			setTitle( gname );
 			setSsfTournamentName( tname );
 			setSsfTournamentId( tournament.id );
-			setSsfState( tournament.state );
 			if ( start ) {
 				setStartDate( start );
 			}
 			if ( end ) {
 				setEndDate( end );
 			}
-			// The SDK buckets classical time controls as 'standard'; the plugin's
-			// own vocabulary calls that 'classical'.
-			const tc = parseTimeControl( tournament.thinkingTime );
-			setTimeControl( tc === 'standard' ? 'classical' : tc );
+			// From the group's rated rounds, else its ranking algorithm (never the
+			// free-text thinkingTime). 'unknown' (unrated group) keeps the current
+			// value. The SDK says 'standard' where the plugin says 'classical'.
+			const tc = group ? getGroupTimeControl( group ).primary : 'unknown';
+			if ( tc !== 'unknown' ) {
+				setTimeControl( tc === 'standard' ? 'classical' : tc );
+			}
 			if ( tournament.id ) {
 				setExternalLink(
 					`https://chess.msvens.com/results/${ tournament.id }/${ ssfId }`
