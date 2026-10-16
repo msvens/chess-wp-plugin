@@ -5,6 +5,7 @@ import {
 	SelectControl,
 	CheckboxControl,
 	Button,
+	Notice,
 	__experimentalText as Text,
 } from '@wordpress/components';
 import type { Translations } from '../../../shared';
@@ -13,7 +14,11 @@ import type {
 	TournamentStatusChoice,
 	CreateTournamentData,
 } from '../../types';
-import { fetchSsfTournamentForGroup, fetchSsfRoundResults } from '../../api';
+import {
+	fetchSsfTournamentForGroup,
+	fetchSsfRoundResults,
+	SsfRequestError,
+} from '../../api';
 import {
 	findTournamentGroup,
 	isTeamTournament,
@@ -186,11 +191,16 @@ export function TournamentForm( {
 
 	const [ ssfFetching, setSsfFetching ] = useState( false );
 	const [ ssfNote, setSsfNote ] = useState< string | null >( null );
+	// The group id whose last fetch got a 404 — SSF has no such group. Saving
+	// is blocked while the field still holds it; any other failure (network,
+	// SSF down) only shows a note, so an outage never stops a save.
+	const [ ssfMissingId, setSsfMissingId ] = useState< number | null >( null );
 	// Guards the auto-fetch effect from re-fetching an unchanged group id.
 	const lastFetchedRef = useRef( Number( init.ssfGroupId ) || 0 );
 
 	const ssfId = Number( ssfGroupId );
 	const isSsfBacked = ssfId > 0;
+	const ssfMissing = isSsfBacked && ssfMissingId === ssfId;
 
 	// A home-grown tournament has no own dates — its lifecycle dates come from
 	// the linked event (start; recurring → series end, else occurrence end). SSF
@@ -233,6 +243,7 @@ export function TournamentForm( {
 		lastFetchedRef.current = ssfId;
 		setSsfFetching( true );
 		setSsfNote( null );
+		setSsfMissingId( null );
 		try {
 			const [ tournament, rounds ] = await Promise.all( [
 				fetchSsfTournamentForGroup( ssfId ),
@@ -288,8 +299,12 @@ export function TournamentForm( {
 					`${ gname || tname } · ${ start } – ${ end }${ roundsPart }`
 				);
 			}
-		} catch {
-			setSsfNote( t.tournament.ssfFetchError );
+		} catch ( e ) {
+			if ( e instanceof SsfRequestError && e.status === 404 ) {
+				setSsfMissingId( ssfId );
+			} else {
+				setSsfNote( t.tournament.ssfFetchError );
+			}
 		} finally {
 			setSsfFetching( false );
 		}
@@ -384,6 +399,13 @@ export function TournamentForm( {
 						>
 							{ ssfNote }
 						</Text>
+					) }
+					{ ssfMissing && (
+						<div style={ { marginTop: 8 } }>
+							<Notice status="error" isDismissible={ false }>
+								{ t.tournament.ssfGroupNotFound }
+							</Notice>
+						</div>
 					) }
 				</div>
 			) }
@@ -642,7 +664,7 @@ export function TournamentForm( {
 					variant="primary"
 					onClick={ handleSubmit }
 					isBusy={ saving }
-					disabled={ ! title.trim() || saving }
+					disabled={ ! title.trim() || ssfMissing || saving }
 				>
 					{ submitLabel }
 				</Button>

@@ -279,12 +279,26 @@ export function saveTournamentRoundResult(
 // These wrappers throw on failure so the admin views' try/catch error states
 // still fire (the SDK itself returns { data?, error, status } rather than
 // throwing). Services are constructed lazily so they read the configured base.
+
+/** A failed SSF request, carrying the HTTP status (0 for a network failure). */
+export class SsfRequestError extends Error {
+	constructor(
+		message: string,
+		public readonly status: number
+	) {
+		super( message );
+	}
+}
+
 async function ssfData< T >(
-	res: { data?: T; error?: string },
+	res: { data?: T; error?: string; status: number },
 	what: string
 ): Promise< T > {
 	if ( res.data === undefined ) {
-		throw new Error( res.error || `SSF request failed: ${ what }` );
+		throw new SsfRequestError(
+			res.error || `SSF request failed: ${ what }`,
+			res.status
+		);
 	}
 	return res.data;
 }
