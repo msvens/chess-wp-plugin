@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Chess Club Manager for schack.se\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/chess-wp-plugin\n"
-"POT-Creation-Date: 2026-09-24T07:16:07+00:00\n"
+"POT-Creation-Date: 2026-10-16T12:44:38+00:00\n"
 "PO-Revision-Date: 2026-05-26\n"
 "Language: sv_SE\n"
 "MIME-Version: 1.0\n"
@@ -424,482 +424,482 @@ msgid ""
 "Displays the next N upcoming events (recurring expanded) as a strip of cards."
 msgstr "Visar kommande evenemang som kort (återkommande expanderade)."
 
-#: js/shared/translations.ts:342
+#: js/shared/translations.ts:343
 msgid "Training groups and round-robin tournaments."
 msgstr "Träningsgrupper och rundturneringar."
 
-#: js/shared/translations.ts:345
+#: js/shared/translations.ts:346
 msgid "Participants"
 msgstr "Deltagare"
 
-#: js/shared/translations.ts:346
+#: js/shared/translations.ts:347
 msgid "Participant count"
 msgstr "Antal deltagare"
 
-#: js/shared/translations.ts:347
+#: js/shared/translations.ts:348
 msgid "Sessions"
 msgstr "Tillfällen"
 
-#: js/shared/translations.ts:348
+#: js/shared/translations.ts:349
 msgid "Standings"
 msgstr "Ställning"
 
-#: js/shared/translations.ts:349
+#: js/shared/translations.ts:350
 msgid "Attendance"
 msgstr "Närvaro"
 
-#: js/shared/translations.ts:350
+#: js/shared/translations.ts:351
 msgid "Pairings"
 msgstr "Lottning"
 
-#: js/shared/translations.ts:351
+#: js/shared/translations.ts:352
 msgid "Round"
 msgstr "Rond"
 
-#: js/shared/translations.ts:352
+#: js/shared/translations.ts:353
 msgid "Result"
 msgstr "Resultat"
 
-#: js/shared/translations.ts:353
+#: js/shared/translations.ts:354
 msgid "Present"
 msgstr "Närvarande"
 
-#: js/shared/translations.ts:354
+#: js/shared/translations.ts:355
 msgid "Absent"
 msgstr "Frånvarande"
 
-#: js/shared/translations.ts:355
+#: js/shared/translations.ts:356
 msgid "Points"
 msgstr "Poäng"
 
-#: js/shared/translations.ts:356
+#: js/shared/translations.ts:357
 msgid "Played"
 msgstr "Spelade"
 
-#: js/shared/translations.ts:357
+#: js/shared/translations.ts:358
 msgid "W"
 msgstr "V"
 
-#: js/shared/translations.ts:358
+#: js/shared/translations.ts:359
 msgid "D"
 msgstr "R"
 
-#: js/shared/translations.ts:359
+#: js/shared/translations.ts:360
 msgid "L"
 msgstr "F"
 
-#: js/shared/translations.ts:360
+#: js/shared/translations.ts:361
 msgid "Elo"
 msgstr "Elo"
 
-#: js/shared/translations.ts:361
+#: js/shared/translations.ts:362
 msgid "Classical"
 msgstr "Klassiskt"
 
-#: js/shared/translations.ts:362 js/shared/translations.ts:797
+#: js/shared/translations.ts:363 js/shared/translations.ts:802
 msgid "Rapid"
 msgstr "Rapid"
 
-#: js/shared/translations.ts:363 js/shared/translations.ts:798
+#: js/shared/translations.ts:364 js/shared/translations.ts:803
 msgid "Blitz"
 msgstr "Blixt"
 
-#: js/shared/translations.ts:364
+#: js/shared/translations.ts:365
 msgid "Bye"
 msgstr "Bye"
 
-#: js/shared/translations.ts:365
+#: js/shared/translations.ts:366
 msgid "Postponed"
 msgstr "Uppskjutet"
 
-#: js/shared/translations.ts:367
+#: js/shared/translations.ts:368
 msgid "adj"
 msgstr "domslut"
 
-#: js/shared/translations.ts:368
+#: js/shared/translations.ts:369
 msgid "Semester"
 msgstr "Termin"
 
-#: js/shared/translations.ts:369
+#: js/shared/translations.ts:370
 msgid "Audience"
 msgstr "Målgrupp"
 
-#: js/shared/translations.ts:374
+#: js/shared/translations.ts:375
 msgid "All ages"
 msgstr "Alla åldrar"
 
-#: js/shared/translations.ts:376
+#: js/shared/translations.ts:377
 msgid "Start Session"
 msgstr "Starta tillfälle"
 
-#: js/shared/translations.ts:377
+#: js/shared/translations.ts:378
 msgid "Save Attendance"
 msgstr "Spara närvaro"
 
-#: js/shared/translations.ts:378
+#: js/shared/translations.ts:379
 msgid "Save Results"
 msgstr "Spara resultat"
 
-#: js/shared/translations.ts:379
+#: js/shared/translations.ts:380
 msgid "Add Participant"
 msgstr "Lägg till deltagare"
 
-#: js/shared/translations.ts:380 js/shared/translations.ts:607
+#: js/shared/translations.ts:381 js/shared/translations.ts:612
 msgid "Remove"
 msgstr "Ta bort"
 
-#: js/shared/translations.ts:381
+#: js/shared/translations.ts:382
 msgid "No training groups yet."
 msgstr "Inga träningsgrupper ännu."
 
-#: js/shared/translations.ts:382
+#: js/shared/translations.ts:383
 msgid "Past training groups"
 msgstr "Tidigare träningsgrupper"
 
-#: js/shared/translations.ts:383 js/shared/translations.ts:694
+#: js/shared/translations.ts:384 js/shared/translations.ts:699
 msgid "Hidden"
 msgstr "Dold"
 
-#: js/shared/translations.ts:384
+#: js/shared/translations.ts:385
 msgid "Copy training group"
 msgstr "Kopiera träningsgrupp"
 
-#: js/shared/translations.ts:385
+#: js/shared/translations.ts:386
 msgid "Copy participants"
 msgstr "Kopiera deltagare"
 
-#: js/shared/translations.ts:386
+#: js/shared/translations.ts:387
 msgid "copy"
 msgstr "kopia"
 
-#: js/shared/translations.ts:388 js/shared/translations.ts:482
+#: js/shared/translations.ts:389 js/shared/translations.ts:483
 msgid "Active"
 msgstr "Aktiv"
 
-#: js/shared/translations.ts:389
+#: js/shared/translations.ts:390
 msgid "Inactive"
 msgstr "Inaktiv"
 
-#: js/shared/translations.ts:390
+#: js/shared/translations.ts:391
 msgid "Notes"
 msgstr "Anteckningar"
 
-#: js/shared/translations.ts:391
+#: js/shared/translations.ts:392
 msgid "Save Notes"
 msgstr "Spara anteckningar"
 
-#: js/shared/translations.ts:392 js/shared/translations.ts:806
+#: js/shared/translations.ts:393 js/shared/translations.ts:811
 msgid "#"
 msgstr "#"
 
-#: js/shared/translations.ts:393
+#: js/shared/translations.ts:394
 msgid "Name"
 msgstr "Namn"
 
-#: js/shared/translations.ts:394
+#: js/shared/translations.ts:395
 msgid "Search…"
 msgstr "Sök…"
 
-#: js/shared/translations.ts:395
+#: js/shared/translations.ts:396
 msgid "Back to group"
 msgstr "Tillbaka till gruppen"
 
-#: js/shared/translations.ts:396
+#: js/shared/translations.ts:397
 msgid "Back to training"
 msgstr "Tillbaka till träning"
 
-#: js/shared/translations.ts:397
+#: js/shared/translations.ts:398
 msgid "-"
 msgstr "-"
 
-#: js/shared/translations.ts:398
+#: js/shared/translations.ts:399
 msgid "Not played"
 msgstr "Ej spelat"
 
-#: js/shared/translations.ts:399
+#: js/shared/translations.ts:400
 msgid "Create Group"
 msgstr "Skapa grupp"
 
-#: js/shared/translations.ts:400
+#: js/shared/translations.ts:401
 msgid "Group Name"
 msgstr "Gruppnamn"
 
-#: js/shared/translations.ts:402
+#: js/shared/translations.ts:403
 msgid "Time Control"
 msgstr "Tidskontroll"
 
-#: js/shared/translations.ts:403
+#: js/shared/translations.ts:404
 msgid "Has Tournament"
 msgstr "Har turnering"
 
-#: js/shared/translations.ts:404
+#: js/shared/translations.ts:405
 msgid "Group Type"
 msgstr "Grupptyp"
 
-#: js/shared/translations.ts:407
+#: js/shared/translations.ts:408
 msgid "Training & Tournament"
 msgstr "Träning & turnering"
 
-#: js/shared/translations.ts:408
+#: js/shared/translations.ts:409
 msgid "Schedule"
 msgstr "Schema"
 
-#: js/shared/translations.ts:409 js/shared/translations.ts:559
+#: js/shared/translations.ts:410 js/shared/translations.ts:564
 msgid "Time"
 msgstr "Tid"
 
-#: js/shared/translations.ts:410
+#: js/shared/translations.ts:411
 msgid "except"
 msgstr "utom"
 
-#: js/shared/translations.ts:411
+#: js/shared/translations.ts:412
 msgid "plus"
 msgstr "även"
 
-#: js/shared/translations.ts:412
+#: js/shared/translations.ts:413
 msgid "Start Date"
 msgstr "Startdatum"
 
-#: js/shared/translations.ts:413
+#: js/shared/translations.ts:414
 msgid "End Date"
 msgstr "Slutdatum"
 
-#: js/shared/translations.ts:416
+#: js/shared/translations.ts:417
 msgid "New Event"
 msgstr "Ny händelse"
 
-#: js/shared/translations.ts:417
+#: js/shared/translations.ts:418
 msgid "Select event…"
 msgstr "Välj händelse…"
 
-#: js/shared/translations.ts:418
+#: js/shared/translations.ts:419
 msgid "No schedule linked."
 msgstr "Inget schema kopplat."
 
-#: js/shared/translations.ts:420
+#: js/shared/translations.ts:421
 msgid "Exclude"
 msgstr "Undanta"
 
-#: js/shared/translations.ts:421
+#: js/shared/translations.ts:422
 msgid "Cancelled"
 msgstr "Inställd"
 
-#: js/shared/translations.ts:422
+#: js/shared/translations.ts:423
 msgid "Trainers"
 msgstr "Tränare"
 
-#: js/shared/translations.ts:423
+#: js/shared/translations.ts:424
 msgid "Role"
 msgstr "Roll"
 
-#: js/shared/translations.ts:424
+#: js/shared/translations.ts:425
 msgid "Leader"
 msgstr "Ledare"
 
-#: js/shared/translations.ts:425
+#: js/shared/translations.ts:426
 msgid "Participant"
 msgstr "Deltagare"
 
-#: js/shared/translations.ts:426 js/shared/translations.ts:508
+#: js/shared/translations.ts:427 js/shared/translations.ts:509
 msgid "Contact"
 msgstr "Kontakt"
 
-#: js/shared/translations.ts:427
+#: js/shared/translations.ts:428
 msgid "Tournament (schack.se)"
 msgstr "Turnering (schack.se)"
 
-#: js/shared/translations.ts:428
+#: js/shared/translations.ts:429
 msgid "Generate Rounds"
 msgstr "Generera ronder"
 
-#: js/shared/translations.ts:429
+#: js/shared/translations.ts:430
 msgid "Regenerate Rounds"
 msgstr "Generera om ronder"
 
-#: js/shared/translations.ts:431
+#: js/shared/translations.ts:432
 msgid "Regenerating rounds will erase existing results. Continue?"
 msgstr "Att generera om ronder raderar befintliga resultat. Fortsätta?"
 
-#: js/shared/translations.ts:434
+#: js/shared/translations.ts:435
 msgid "Board"
 msgstr "Bord"
 
-#: js/shared/translations.ts:435
+#: js/shared/translations.ts:436
 msgid "White"
 msgstr "Vit"
 
-#: js/shared/translations.ts:436
+#: js/shared/translations.ts:437
 msgid "Black"
 msgstr "Svart"
 
-#: js/shared/translations.ts:437
+#: js/shared/translations.ts:438
 msgid "—"
 msgstr "—"
 
-#: js/shared/translations.ts:438
+#: js/shared/translations.ts:439
 msgid "Every"
 msgstr "Varje"
 
-#: js/shared/translations.ts:439
+#: js/shared/translations.ts:440
 msgid "Every other"
 msgstr "Varannan"
 
-#: js/shared/translations.ts:440
+#: js/shared/translations.ts:441
 msgid "Show participants"
 msgstr "Visa deltagare"
 
-#: js/shared/translations.ts:441
+#: js/shared/translations.ts:442
 msgid "Show standings"
 msgstr "Visa ställning"
 
-#: js/shared/translations.ts:442 js/shared/translations.ts:526
+#: js/shared/translations.ts:443
 msgid "SSF Group ID"
 msgstr "SSF Grupp-ID"
 
-#: js/shared/translations.ts:443
+#: js/shared/translations.ts:444
 msgid "SSF Tournament Group ID"
 msgstr "SSF Turnerings-ID"
 
-#: js/shared/translations.ts:444
+#: js/shared/translations.ts:445
 msgid "Fetch from SSF"
 msgstr "Hämta från SSF"
 
-#: js/shared/translations.ts:445
+#: js/shared/translations.ts:446
 msgid "Fetching…"
 msgstr "Hämtar…"
 
-#: js/shared/translations.ts:446
+#: js/shared/translations.ts:447
 msgid "Could not fetch SSF data"
 msgstr "Kunde inte hämta SSF-data"
 
-#: js/shared/translations.ts:447
+#: js/shared/translations.ts:448
 msgid "Apply"
 msgstr "Applicera"
 
-#: js/shared/translations.ts:448
+#: js/shared/translations.ts:449
 msgid "Results"
 msgstr "Resultat"
 
-#: js/shared/translations.ts:449
+#: js/shared/translations.ts:450
 msgid "KP"
 msgstr "KP"
 
-#: js/shared/translations.ts:450
+#: js/shared/translations.ts:451
 msgid "Loading results…"
 msgstr "Laddar resultat…"
 
-#: js/shared/translations.ts:451
+#: js/shared/translations.ts:452
 msgid "Could not load results."
 msgstr "Kunde inte ladda resultat."
 
-#: js/shared/translations.ts:453 js/shared/translations.ts:538
+#: js/shared/translations.ts:454 js/shared/translations.ts:543
 msgid "This is a team tournament — its results are not shown here."
 msgstr "Det här är en lagturnering — resultaten visas inte här."
 
-#: js/shared/translations.ts:457 js/shared/translations.ts:542
+#: js/shared/translations.ts:458 js/shared/translations.ts:547
 msgid "This tournament hasn't started yet — showing the registered players."
 msgstr "Turneringen har inte börjat än — visar anmälda spelare."
 
-#: js/shared/translations.ts:460 js/shared/translations.ts:545
+#: js/shared/translations.ts:461 js/shared/translations.ts:550
 msgid "Registered players"
 msgstr "Anmälda spelare"
 
-#: js/shared/translations.ts:461 js/shared/translations.ts:493
+#: js/shared/translations.ts:462 js/shared/translations.ts:494
 msgid "Full results"
 msgstr "Fullständiga resultat"
 
-#: js/shared/translations.ts:466
+#: js/shared/translations.ts:467
 msgid "Club tournaments — round-robin or SSF-backed."
 msgstr "Klubbens turneringar — Berger eller från SSF."
 
-#: js/shared/translations.ts:469
+#: js/shared/translations.ts:470
 msgid "Create Tournament"
 msgstr "Skapa turnering"
 
-#: js/shared/translations.ts:470
+#: js/shared/translations.ts:471
 msgid "No tournaments yet."
 msgstr "Inga turneringar än."
 
-#: js/shared/translations.ts:471
+#: js/shared/translations.ts:472
 msgid "Tournament name"
 msgstr "Turneringsnamn"
 
-#: js/shared/translations.ts:475
+#: js/shared/translations.ts:476
 msgid "Youth"
 msgstr "Ungdom"
 
-#: js/shared/translations.ts:476
+#: js/shared/translations.ts:477
 msgid "Senior"
 msgstr "Senior"
 
-#: js/shared/translations.ts:477
+#: js/shared/translations.ts:478
 msgid "Mixed"
 msgstr "Blandad"
 
-#: js/shared/translations.ts:479
+#: js/shared/translations.ts:480
 msgid "Status"
 msgstr "Status"
 
-#: js/shared/translations.ts:481
+#: js/shared/translations.ts:482
 msgid "Planned"
 msgstr "Planerad"
 
-#: js/shared/translations.ts:483
+#: js/shared/translations.ts:484
 msgid "Completed"
 msgstr "Avslutad"
 
-#: js/shared/translations.ts:485 js/shared/translations.ts:691
+#: js/shared/translations.ts:486 js/shared/translations.ts:696
 msgid "Automatic"
 msgstr "Automatiskt"
 
-#: js/shared/translations.ts:487
+#: js/shared/translations.ts:488
 msgid ""
 "Derived from the start/end dates (and results). A manual choice overrides it."
 msgstr ""
 "Härleds från start-/slutdatum (och resultat). Ett manuellt val åsidosätter "
 "det."
 
-#: js/shared/translations.ts:490
+#: js/shared/translations.ts:491
 msgid "Edit tournament"
 msgstr "Redigera turnering"
 
-#: js/shared/translations.ts:491
+#: js/shared/translations.ts:492
 msgid "Fetch / Refresh from SSF"
 msgstr "Hämta / uppdatera från SSF"
 
-#: js/shared/translations.ts:492
+#: js/shared/translations.ts:493
 msgid "Could not fetch from SSF"
 msgstr "Kunde inte hämta från SSF"
 
-#: js/shared/translations.ts:494
+#: js/shared/translations.ts:495
 msgid "Ongoing"
 msgstr "Pågående"
 
-#: js/shared/translations.ts:495
+#: js/shared/translations.ts:496
 msgid "Past tournaments"
 msgstr "Tidigare turneringar"
 
-#: js/shared/translations.ts:496
+#: js/shared/translations.ts:497
 msgid "Format"
 msgstr "Format"
 
-#: js/shared/translations.ts:498
+#: js/shared/translations.ts:499
 msgid "Round-robin"
 msgstr "Berger"
 
-#: js/shared/translations.ts:500
+#: js/shared/translations.ts:501
 msgid "Start date"
 msgstr "Startdatum"
 
-#: js/shared/translations.ts:501
+#: js/shared/translations.ts:502
 msgid "End date"
 msgstr "Slutdatum"
 
-#: js/shared/translations.ts:502
+#: js/shared/translations.ts:503
 msgid "External link"
 msgstr "Extern länk"
 
-#: js/shared/translations.ts:504
+#: js/shared/translations.ts:505
 msgid ""
 "Leave a blank line between paragraphs to break the text up on the public "
 "page."
@@ -907,27 +907,27 @@ msgstr ""
 "Lämna en tom rad mellan styckena för att dela upp texten på den publika "
 "sidan."
 
-#: js/shared/translations.ts:507
+#: js/shared/translations.ts:508
 msgid "Registration"
 msgstr "Anmälan"
 
-#: js/shared/translations.ts:509
+#: js/shared/translations.ts:510
 msgid "Invitation"
 msgstr "Inbjudan"
 
-#: js/shared/translations.ts:511
+#: js/shared/translations.ts:512
 msgid "A link or a short note. Web addresses are shown as a link."
 msgstr "En länk eller en kort notering. Webbadresser visas som en länk."
 
-#: js/shared/translations.ts:514
+#: js/shared/translations.ts:515
 msgid "Read the invitation"
 msgstr "Läs inbjudan"
 
-#: js/shared/translations.ts:515
+#: js/shared/translations.ts:516
 msgid "Schedule (free text)"
 msgstr "Schema (fritext)"
 
-#: js/shared/translations.ts:517
+#: js/shared/translations.ts:518
 msgid ""
 "Optional. Leave empty to list the linked calendar event’s actual dates; fill "
 "it in to word the schedule yourself."
@@ -935,408 +935,420 @@ msgstr ""
 "Valfritt. Lämna tomt för att lista kalenderhändelsens faktiska datum, eller "
 "fyll i för att formulera schemat själv."
 
-#: js/shared/translations.ts:520
+#: js/shared/translations.ts:521
 msgid "Add to calendar"
 msgstr "Lägg till i kalender"
 
-#: js/shared/translations.ts:522
+#: js/shared/translations.ts:523
 msgid "Creates a calendar event from this tournament’s dates."
 msgstr "Skapar en kalenderhändelse från turneringens datum."
 
-#: js/shared/translations.ts:525
+#: js/shared/translations.ts:526
 msgid "Linked calendar event"
 msgstr "Kopplad kalenderhändelse"
 
-#: js/shared/translations.ts:528
-msgid ""
-"The GROUP id — a tournament can contain several groups, so enter the group "
-"id, not the tournament id. With it set, standings come from SSF. Leave empty "
-"for a Rockaden-managed tournament."
-msgstr ""
-"GRUPP-id:t — en turnering kan innehålla flera grupper, så ange grupp-id, "
-"inte turnerings-id. När det är satt hämtas ställningen från SSF. Lämna tomt "
-"för en Rockaden-styrd turnering."
+#: js/shared/translations.ts:527
+msgid "SSF group ID (optional)"
+msgstr "SSF grupp-ID (valfritt)"
 
-#: js/shared/translations.ts:532
+#: js/shared/translations.ts:529
+msgid ""
+"Only for tournaments registered on schack.se — leave empty for a tournament "
+"you run here. Enter the GROUP id, not the tournament id: a tournament can "
+"contain several groups. With it set, standings come from SSF."
+msgstr ""
+"Bara för turneringar som är registrerade på schack.se — lämna tomt för en "
+"turnering ni kör här. Ange GRUPP-id:t, inte turnerings-id:t: en turnering "
+"kan innehålla flera grupper. När det är satt hämtas ställningen från SSF."
+
+#: js/shared/translations.ts:533
+msgid ""
+"There is no group with this id on schack.se. Check the id, or clear the "
+"field for a tournament you run here."
+msgstr ""
+"Det finns ingen grupp med detta id på schack.se. Kontrollera id:t, eller "
+"töm fältet för en turnering ni kör här."
+
+#: js/shared/translations.ts:537
 msgid "Standings are pulled from SSF. Local pairings/results are not used."
 msgstr "Ställning hämtas från SSF. Lokala lottningar/resultat används inte."
 
-#: js/shared/translations.ts:535
+#: js/shared/translations.ts:540
 msgid "Group"
 msgstr "Grupp"
 
-#: js/shared/translations.ts:546
+#: js/shared/translations.ts:551
 msgid "Overview"
 msgstr "Översikt"
 
-#: js/shared/translations.ts:547 js/shared/translations.ts:557
+#: js/shared/translations.ts:552 js/shared/translations.ts:562
 msgid "View tournament"
 msgstr "Visa turnering"
 
-#: js/shared/translations.ts:548
+#: js/shared/translations.ts:553
 msgid "Back to tournaments"
 msgstr "Tillbaka till turneringar"
 
-#: js/shared/translations.ts:551
+#: js/shared/translations.ts:556
 msgid "Calendar"
 msgstr "Kalender"
 
-#: js/shared/translations.ts:553
+#: js/shared/translations.ts:558
 msgid "Upcoming events and club activities."
 msgstr "Kommande evenemang och klubbaktiviteter."
 
-#: js/shared/translations.ts:556
+#: js/shared/translations.ts:561
 msgid "Today"
 msgstr "Idag"
 
-#: js/shared/translations.ts:558
+#: js/shared/translations.ts:563
 msgid "No events this day."
 msgstr "Inga händelser denna dag."
 
-#: js/shared/translations.ts:561
+#: js/shared/translations.ts:566
 msgid "more"
 msgstr "till"
 
-#: js/shared/translations.ts:562
+#: js/shared/translations.ts:567
 msgid "All-day"
 msgstr "Heldag"
 
-#: js/shared/translations.ts:565
+#: js/shared/translations.ts:570
 msgid "Month"
 msgstr "Månad"
 
-#: js/shared/translations.ts:566
+#: js/shared/translations.ts:571
 msgid "Week"
 msgstr "Vecka"
 
-#: js/shared/translations.ts:567
+#: js/shared/translations.ts:572
 msgid "Day"
 msgstr "Dag"
 
-#: js/shared/translations.ts:569
+#: js/shared/translations.ts:574
 msgid "Mon"
 msgstr "Mån"
 
-#: js/shared/translations.ts:570
+#: js/shared/translations.ts:575
 msgid "Tue"
 msgstr "Tis"
 
-#: js/shared/translations.ts:571
+#: js/shared/translations.ts:576
 msgid "Wed"
 msgstr "Ons"
 
-#: js/shared/translations.ts:572
+#: js/shared/translations.ts:577
 msgid "Thu"
 msgstr "Tor"
 
-#: js/shared/translations.ts:573
+#: js/shared/translations.ts:578
 msgid "Fri"
 msgstr "Fre"
 
-#: js/shared/translations.ts:574
+#: js/shared/translations.ts:579
 msgid "Sat"
 msgstr "Lör"
 
-#: js/shared/translations.ts:575
+#: js/shared/translations.ts:580
 msgid "Sun"
 msgstr "Sön"
 
-#: js/shared/translations.ts:585 js/shared/translations.ts:799
+#: js/shared/translations.ts:590 js/shared/translations.ts:804
 msgid "All"
 msgstr "Alla"
 
-#: js/shared/translations.ts:589 js/shared/translations.ts:822
+#: js/shared/translations.ts:594 js/shared/translations.ts:827
 msgid "Edit"
 msgstr "Redigera"
 
-#: js/shared/translations.ts:590 js/shared/translations.ts:821
+#: js/shared/translations.ts:595 js/shared/translations.ts:826
 msgid "Delete"
 msgstr "Ta bort"
 
-#: js/shared/translations.ts:591
+#: js/shared/translations.ts:596
 msgid "Delete this event?"
 msgstr "Ta bort detta event?"
 
-#: js/shared/translations.ts:592
+#: js/shared/translations.ts:597
 msgid "Just this one"
 msgstr "Bara denna"
 
-#: js/shared/translations.ts:593
+#: js/shared/translations.ts:598
 msgid "Whole series"
 msgstr "Hela serien"
 
-#: js/shared/translations.ts:594
+#: js/shared/translations.ts:599
 msgid "Create event"
 msgstr "Skapa event"
 
-#: js/shared/translations.ts:595
+#: js/shared/translations.ts:600
 msgid "Add to an existing event"
 msgstr "Lägg till i en befintlig händelse"
 
-#: js/shared/translations.ts:597
+#: js/shared/translations.ts:602
 msgid "Choose…"
 msgstr "Välj…"
 
-#: js/shared/translations.ts:598
+#: js/shared/translations.ts:603
 msgid "Saving…"
 msgstr "Sparar…"
 
-#: js/shared/translations.ts:600
+#: js/shared/translations.ts:605
 msgid "Could not add the session. Try again."
 msgstr "Kunde inte lägga till tillfället. Försök igen."
 
-#: js/shared/translations.ts:605
+#: js/shared/translations.ts:610
 msgid "Add images"
 msgstr "Lägg till bilder"
 
-#: js/shared/translations.ts:606
+#: js/shared/translations.ts:611
 msgid "Edit images"
 msgstr "Redigera bilder"
 
-#: js/shared/translations.ts:608
+#: js/shared/translations.ts:613
 msgid "Move up"
 msgstr "Flytta upp"
 
-#: js/shared/translations.ts:609
+#: js/shared/translations.ts:614
 msgid "Move down"
 msgstr "Flytta ned"
 
-#: js/shared/translations.ts:610
+#: js/shared/translations.ts:615
 msgid "No images selected yet."
 msgstr "Inga bilder valda ännu."
 
-#: js/shared/translations.ts:611
+#: js/shared/translations.ts:616
 msgid "Display mode"
 msgstr "Visningsläge"
 
-#: js/shared/translations.ts:613
+#: js/shared/translations.ts:618
 msgid "Slider"
 msgstr "Bildspel"
 
-#: js/shared/translations.ts:614
+#: js/shared/translations.ts:619
 msgid "Carousel"
 msgstr "Karusell"
 
-#: js/shared/translations.ts:616
+#: js/shared/translations.ts:621
 msgid "Auto-advance"
 msgstr "Spela automatiskt"
 
-#: js/shared/translations.ts:617
+#: js/shared/translations.ts:622
 msgid "Interval (seconds)"
 msgstr "Intervall (sekunder)"
 
-#: js/shared/translations.ts:618
+#: js/shared/translations.ts:623
 msgid "Visible items"
 msgstr "Synliga bilder"
 
-#: js/shared/translations.ts:619
+#: js/shared/translations.ts:624
 msgid "Aspect ratio"
 msgstr "Bildformat"
 
-#: js/shared/translations.ts:620
+#: js/shared/translations.ts:625
 msgid "Cell sizing"
 msgstr "Cellstorlek"
 
-#: js/shared/translations.ts:621
+#: js/shared/translations.ts:626
 msgid "Exact height"
 msgstr "Exakt höjd"
 
-#: js/shared/translations.ts:622
+#: js/shared/translations.ts:627
 msgid "Height (px)"
 msgstr "Höjd (px)"
 
-#: js/shared/translations.ts:624
+#: js/shared/translations.ts:629
 msgid "16:9 (Landscape wide)"
 msgstr "16:9 (Bred landskap)"
 
-#: js/shared/translations.ts:625
+#: js/shared/translations.ts:630
 msgid "4:3 (Landscape)"
 msgstr "4:3 (Landskap)"
 
-#: js/shared/translations.ts:626
+#: js/shared/translations.ts:631
 msgid "1:1 (Square)"
 msgstr "1:1 (Kvadrat)"
 
-#: js/shared/translations.ts:627
+#: js/shared/translations.ts:632
 msgid "3:4 (Portrait)"
 msgstr "3:4 (Porträtt)"
 
-#: js/shared/translations.ts:628
+#: js/shared/translations.ts:633
 msgid "9:16 (Portrait tall)"
 msgstr "9:16 (Högt porträtt)"
 
-#: js/shared/translations.ts:629
+#: js/shared/translations.ts:634
 msgid "Auto"
 msgstr "Auto"
 
-#: js/shared/translations.ts:631
+#: js/shared/translations.ts:636
 msgid "Image fit"
 msgstr "Bildanpassning"
 
-#: js/shared/translations.ts:633
+#: js/shared/translations.ts:638
 msgid "Fill (crop edges)"
 msgstr "Fyll (beskär kanter)"
 
-#: js/shared/translations.ts:634
+#: js/shared/translations.ts:639
 msgid "Fit whole image"
 msgstr "Visa hela bilden"
 
-#: js/shared/translations.ts:636
+#: js/shared/translations.ts:641
 msgid "Backdrop"
 msgstr "Bakgrund"
 
-#: js/shared/translations.ts:638
+#: js/shared/translations.ts:643
 msgid "Blurred image"
 msgstr "Suddig bild"
 
-#: js/shared/translations.ts:639
+#: js/shared/translations.ts:644
 msgid "Black bars"
 msgstr "Svarta kanter"
 
-#: js/shared/translations.ts:641
+#: js/shared/translations.ts:646
 msgid "Constrain size"
 msgstr "Begränsa storlek"
 
-#: js/shared/translations.ts:643
+#: js/shared/translations.ts:648
 msgid "No limit (fill container)"
 msgstr "Ingen gräns (fyll behållaren)"
 
-#: js/shared/translations.ts:644
+#: js/shared/translations.ts:649
 msgid "By max width"
 msgstr "Med maxbredd"
 
-#: js/shared/translations.ts:645
+#: js/shared/translations.ts:650
 msgid "By max height"
 msgstr "Med maxhöjd"
 
-#: js/shared/translations.ts:647
+#: js/shared/translations.ts:652
 msgid "Max width (px)"
 msgstr "Maxbredd (px)"
 
-#: js/shared/translations.ts:648
+#: js/shared/translations.ts:653
 msgid "Max height (px)"
 msgstr "Maxhöjd (px)"
 
-#: js/shared/translations.ts:649
+#: js/shared/translations.ts:654
 msgid "Alignment"
 msgstr "Justering"
 
-#: js/shared/translations.ts:651
+#: js/shared/translations.ts:656
 msgid "Left"
 msgstr "Vänster"
 
-#: js/shared/translations.ts:652
+#: js/shared/translations.ts:657
 msgid "Center"
 msgstr "Centrerad"
 
-#: js/shared/translations.ts:653
+#: js/shared/translations.ts:658
 msgid "Right"
 msgstr "Höger"
 
-#: js/shared/translations.ts:655
+#: js/shared/translations.ts:660
 msgid "Previous"
 msgstr "Föregående"
 
-#: js/shared/translations.ts:656
+#: js/shared/translations.ts:661
 msgid "Next"
 msgstr "Nästa"
 
-#: js/shared/translations.ts:657
+#: js/shared/translations.ts:662
 msgid "Slide {n} of {total}"
 msgstr "Bild {n} av {total}"
 
-#: js/shared/translations.ts:658
+#: js/shared/translations.ts:663
 msgid "Allow fullscreen"
 msgstr "Tillåt helskärm"
 
-#: js/shared/translations.ts:659
+#: js/shared/translations.ts:664
 msgid "View fullscreen"
 msgstr "Visa i helskärm"
 
-#: js/shared/translations.ts:660
+#: js/shared/translations.ts:665
 msgid "Close"
 msgstr "Stäng"
 
-#: js/shared/translations.ts:663
+#: js/shared/translations.ts:668
 msgid "Chess Game"
 msgstr "Schackparti"
 
-#: js/shared/translations.ts:664
+#: js/shared/translations.ts:669
 msgid "PGN"
 msgstr "PGN"
 
-#: js/shared/translations.ts:666
+#: js/shared/translations.ts:671
 msgid ""
 "Paste one or more games in PGN format. Comments and variations are shown."
 msgstr ""
 "Klistra in ett eller flera partier i PGN-format. Kommentarer och varianter "
 "visas."
 
-#: js/shared/translations.ts:669
+#: js/shared/translations.ts:674
 msgid "Paste a PGN to show the game."
 msgstr "Klistra in en PGN för att visa partiet."
 
-#: js/shared/translations.ts:670
+#: js/shared/translations.ts:675
 msgid "The game could not be read."
 msgstr "Partiet kunde inte läsas."
 
-#: js/shared/translations.ts:671
+#: js/shared/translations.ts:676
 msgid "No moves found in the PGN."
 msgstr "Hittade inga drag i PGN:en."
 
-#: js/shared/translations.ts:672
+#: js/shared/translations.ts:677
 msgid "Games in this PGN: {n}"
 msgstr "Partier i denna PGN: {n}"
 
-#: js/shared/translations.ts:674
+#: js/shared/translations.ts:679
 msgid "Game {game}: move {move} is illegal or unreadable."
 msgstr "Parti {game}: draget {move} är otillåtet eller oläsligt."
 
-#: js/shared/translations.ts:678
+#: js/shared/translations.ts:683
 msgid "Game {game}: the starting position (FEN) is invalid."
 msgstr "Parti {game}: utgångsställningen (FEN) är ogiltig."
 
-#: js/shared/translations.ts:681
+#: js/shared/translations.ts:686
 msgid "Game"
 msgstr "Parti"
 
-#: js/shared/translations.ts:682
+#: js/shared/translations.ts:687
 msgid "Display"
 msgstr "Visning"
 
-#: js/shared/translations.ts:683
+#: js/shared/translations.ts:688
 msgid "Board orientation"
 msgstr "Brädets riktning"
 
-#: js/shared/translations.ts:685
+#: js/shared/translations.ts:690
 msgid "From the PGN (white at the bottom)"
 msgstr "Enligt PGN (vit nederst)"
 
-#: js/shared/translations.ts:686
+#: js/shared/translations.ts:691
 msgid "White at the bottom"
 msgstr "Vit nederst"
 
-#: js/shared/translations.ts:687
+#: js/shared/translations.ts:692
 msgid "Black at the bottom"
 msgstr "Svart nederst"
 
-#: js/shared/translations.ts:689
+#: js/shared/translations.ts:694
 msgid "Move list"
 msgstr "Draglista"
 
-#: js/shared/translations.ts:692
+#: js/shared/translations.ts:697
 msgid "Right of the board"
 msgstr "Till höger om brädet"
 
-#: js/shared/translations.ts:693
+#: js/shared/translations.ts:698
 msgid "Below the board"
 msgstr "Under brädet"
 
-#: js/shared/translations.ts:696
+#: js/shared/translations.ts:701
 msgid "Puzzle"
 msgstr "Hitta draget"
 
-#: js/shared/translations.ts:698
+#: js/shared/translations.ts:703
 msgid ""
 "Hides the move list and the players; readers start at the chosen position "
 "and find the continuation."
@@ -1344,41 +1356,41 @@ msgstr ""
 "Döljer draglistan och spelarna; läsaren börjar i den valda ställningen och "
 "letar själv efter fortsättningen."
 
-#: js/shared/translations.ts:701
+#: js/shared/translations.ts:706
 msgid "Start position (half-moves played)"
 msgstr "Startställning (spelade halvdrag)"
 
-#: js/shared/translations.ts:703
+#: js/shared/translations.ts:708
 msgid "0 is the initial position; 38 is the position after Black's 19th move."
 msgstr "0 är utgångsställningen; 38 är ställningen efter svarts 19:e drag."
 
-#: js/shared/translations.ts:706
+#: js/shared/translations.ts:711
 msgid "Start at the final position"
 msgstr "Börja i slutställningen"
 
-#: js/shared/translations.ts:707
+#: js/shared/translations.ts:712
 msgid "Use the position shown"
 msgstr "Använd visad ställning"
 
-#: js/shared/translations.ts:709
+#: js/shared/translations.ts:714
 msgid "Step through the preview, then click to start the game there."
 msgstr ""
 "Stega fram i förhandsvisningen och klicka sedan för att låta partiet börja "
 "där."
 
-#: js/shared/translations.ts:712
+#: js/shared/translations.ts:717
 msgid "Show move list"
 msgstr "Visa draglistan"
 
-#: js/shared/translations.ts:713
+#: js/shared/translations.ts:718
 msgid "Hide move list"
 msgstr "Dölj draglistan"
 
-#: js/shared/translations.ts:714
+#: js/shared/translations.ts:719
 msgid "Links to Lichess"
 msgstr "Länkar till Lichess"
 
-#: js/shared/translations.ts:716
+#: js/shared/translations.ts:721
 msgid ""
 "Adds \"Analysis (lichess.org)\" and \"Practice (lichess.org)\" to the menu. "
 "They open the game on lichess.org."
@@ -1386,310 +1398,319 @@ msgstr ""
 "Lägger till ”Analys (lichess.org)” och ”Öva (lichess.org)” i menyn. De "
 "öppnar partiet på lichess.org."
 
-#: js/shared/translations.ts:720
+#: js/shared/translations.ts:725
 msgid "Flip the board"
 msgstr "Vänd brädet"
 
-#: js/shared/translations.ts:722
+#: js/shared/translations.ts:727
 msgid "Analysis (lichess.org)"
 msgstr "Analys (lichess.org)"
 
-#: js/shared/translations.ts:724
+#: js/shared/translations.ts:729
 msgid "Practice (lichess.org)"
 msgstr "Öva (lichess.org)"
 
-#: js/shared/translations.ts:727
+#: js/shared/translations.ts:732
 msgid "Get PGN"
 msgstr "Hämta PGN"
 
-#: js/shared/translations.ts:728
+#: js/shared/translations.ts:733
 msgid "Download"
 msgstr "Ladda ner"
 
-#: js/shared/translations.ts:729
+#: js/shared/translations.ts:734
 msgid "View on Lichess"
 msgstr "Visa på Lichess"
 
-#: js/shared/translations.ts:730
+#: js/shared/translations.ts:735
 msgid "View on site"
 msgstr "Visa på källsidan"
 
-#: js/shared/translations.ts:731
+#: js/shared/translations.ts:736
 msgid "Menu"
 msgstr "Meny"
 
-#: js/shared/translations.ts:732
+#: js/shared/translations.ts:737
 msgid "Go to first move"
 msgstr "Gå till första draget"
 
-#: js/shared/translations.ts:733
+#: js/shared/translations.ts:738
 msgid "Go to previous move"
 msgstr "Gå till föregående drag"
 
-#: js/shared/translations.ts:734
+#: js/shared/translations.ts:739
 msgid "Go to next move"
 msgstr "Gå till nästa drag"
 
-#: js/shared/translations.ts:735
+#: js/shared/translations.ts:740
 msgid "Go to last move"
 msgstr "Gå till sista draget"
 
-#: js/shared/translations.ts:736
+#: js/shared/translations.ts:741
 msgid "Game moves"
 msgstr "Partiets drag"
 
-#: js/shared/translations.ts:737
+#: js/shared/translations.ts:742
 msgid "Game result"
 msgstr "Resultat"
 
-#: js/shared/translations.ts:738
+#: js/shared/translations.ts:743
 msgid "Variation"
 msgstr "Variant"
 
-#: js/shared/translations.ts:740
+#: js/shared/translations.ts:745
 msgid "Game navigation controls"
 msgstr "Navigering i partiet"
 
-#: js/shared/translations.ts:745
+#: js/shared/translations.ts:750
 #, javascript-format
 msgid "View %s's profile on Lichess"
 msgstr "Visa profilen för %s på Lichess"
 
-#: js/shared/translations.ts:750
+#: js/shared/translations.ts:755
 #, javascript-format
 msgid "Chess game between %1$s as white and %2$s as black. %3$s"
 msgstr "Schackparti mellan %1$s som vit och %2$s som svart. %3$s"
 
-#: js/shared/translations.ts:753
+#: js/shared/translations.ts:758
 msgid "Game in progress"
 msgstr "Partiet pågår"
 
-#: js/shared/translations.ts:754
+#: js/shared/translations.ts:759
 msgid "White wins"
 msgstr "Vit vinner"
 
-#: js/shared/translations.ts:755
+#: js/shared/translations.ts:760
 msgid "Black wins"
 msgstr "Svart vinner"
 
-#: js/shared/translations.ts:756
+#: js/shared/translations.ts:761
 msgid "Draw"
 msgstr "Remi"
 
-#: js/shared/translations.ts:757
+#: js/shared/translations.ts:762
 msgid "Unknown player"
 msgstr "Okänd spelare"
 
 #. translators: %s is a rating number.
-#: js/shared/translations.ts:759
+#: js/shared/translations.ts:764
 #, javascript-format
 msgid "rated %s"
 msgstr "rating %s"
 
 #. translators: %1$s is the move number, %2$s the side to move, %3$s the spoken move.
-#: js/shared/translations.ts:761
+#: js/shared/translations.ts:766
 #, javascript-format
 msgid "Move %1$s, %2$s, %3$s"
 msgstr "Drag %1$s, %2$s, %3$s"
 
-#: js/shared/translations.ts:762
+#: js/shared/translations.ts:767
 msgid "white"
 msgstr "vit"
 
-#: js/shared/translations.ts:763
+#: js/shared/translations.ts:768
 msgid "black"
 msgstr "svart"
 
 #. translators: %s is the time left on a clock.
-#: js/shared/translations.ts:765
+#: js/shared/translations.ts:770
 #, javascript-format
 msgid "%s remaining"
 msgstr "%s kvar"
 
-#: js/shared/translations.ts:768
+#: js/shared/translations.ts:773
 #, javascript-format
 msgid "%s, link, opens in new tab"
 msgstr "%s, länk, öppnas i ny flik"
 
-#: js/shared/translations.ts:772
+#: js/shared/translations.ts:777
 msgid "Accessible chessboard"
 msgstr "Tillgängligt schackbräde"
 
-#: js/shared/translations.ts:775
+#: js/shared/translations.ts:780
 msgid "king"
 msgstr "kung"
 
-#: js/shared/translations.ts:776
+#: js/shared/translations.ts:781
 msgid "queen"
 msgstr "dam"
 
-#: js/shared/translations.ts:777
+#: js/shared/translations.ts:782
 msgid "rook"
 msgstr "torn"
 
-#: js/shared/translations.ts:778
+#: js/shared/translations.ts:783
 msgid "bishop"
 msgstr "löpare"
 
-#: js/shared/translations.ts:779
+#: js/shared/translations.ts:784
 msgid "knight"
 msgstr "springare"
 
-#: js/shared/translations.ts:780
+#: js/shared/translations.ts:785
 msgid "pawn"
 msgstr "bonde"
 
-#: js/shared/translations.ts:781
+#: js/shared/translations.ts:786
 msgid "empty"
 msgstr "tom"
 
-#: js/shared/translations.ts:782
+#: js/shared/translations.ts:787
 msgid "takes"
 msgstr "slår"
 
-#: js/shared/translations.ts:783
+#: js/shared/translations.ts:788
 msgid "check"
 msgstr "schack"
 
-#: js/shared/translations.ts:784
+#: js/shared/translations.ts:789
 msgid "checkmate"
 msgstr "schack matt"
 
-#: js/shared/translations.ts:785
+#: js/shared/translations.ts:790
 msgid "promotes to"
 msgstr "förvandlas till"
 
-#: js/shared/translations.ts:786
+#: js/shared/translations.ts:791
 msgid "dropped on"
 msgstr "placeras på"
 
-#: js/shared/translations.ts:787
+#: js/shared/translations.ts:792
 msgid "long castling"
 msgstr "lång rockad"
 
-#: js/shared/translations.ts:788
+#: js/shared/translations.ts:793
 msgid "short castling"
 msgstr "kort rockad"
 
-#: js/shared/translations.ts:792
+#: js/shared/translations.ts:797
 msgid "Ranking List"
 msgstr "Ratinglista"
 
-#: js/shared/translations.ts:793
+#: js/shared/translations.ts:798
 msgid "Rating Period"
 msgstr "Rankingperiod"
 
-#: js/shared/translations.ts:794
+#: js/shared/translations.ts:799
 msgid "ELO Type"
 msgstr "Elo-typ"
 
-#: js/shared/translations.ts:795
+#: js/shared/translations.ts:800
 msgid "Member Type"
 msgstr "Medlemstyp"
 
-#: js/shared/translations.ts:796
+#: js/shared/translations.ts:801
 msgid "Standard"
 msgstr "Standard"
 
-#: js/shared/translations.ts:800
+#: js/shared/translations.ts:805
 msgid "Women"
 msgstr "Kvinnor"
 
-#: js/shared/translations.ts:801
+#: js/shared/translations.ts:806
 msgid "Juniors"
 msgstr "Juniorer"
 
-#: js/shared/translations.ts:802
+#: js/shared/translations.ts:807
 msgid "Cadets"
 msgstr "Kadetter"
 
-#: js/shared/translations.ts:803
+#: js/shared/translations.ts:808
 msgid "Veterans"
 msgstr "Veteraner"
 
-#: js/shared/translations.ts:804
+#: js/shared/translations.ts:809
 msgid "Minors"
 msgstr "Minorer"
 
-#: js/shared/translations.ts:805
+#: js/shared/translations.ts:810
 msgid "Kids"
 msgstr "Barn"
 
-#: js/shared/translations.ts:807
+#: js/shared/translations.ts:812
 msgid "Title"
 msgstr "Titel"
 
-#: js/shared/translations.ts:808
+#: js/shared/translations.ts:813
 msgid "First Name"
 msgstr "Förnamn"
 
-#: js/shared/translations.ts:809
+#: js/shared/translations.ts:814
 msgid "Last Name"
 msgstr "Efternamn"
 
-#: js/shared/translations.ts:810
+#: js/shared/translations.ts:815
 msgid "Rating"
 msgstr "Rating"
 
-#: js/shared/translations.ts:811
+#: js/shared/translations.ts:816
 msgid "Showing"
 msgstr "Visar"
 
-#: js/shared/translations.ts:812
+#: js/shared/translations.ts:817
 msgid "players"
 msgstr "spelare"
 
-#: js/shared/translations.ts:813
+#: js/shared/translations.ts:818
 msgid "No players found."
 msgstr "Inga spelare hittades."
 
-#: js/shared/translations.ts:814
+#: js/shared/translations.ts:819
 msgid "of"
 msgstr "av"
 
-#: js/shared/translations.ts:817
+#: js/shared/translations.ts:822
 msgid "Loading…"
 msgstr "Laddar…"
 
-#: js/shared/translations.ts:818
+#: js/shared/translations.ts:823
 msgid "Save"
 msgstr "Spara"
 
-#: js/shared/translations.ts:819
+#: js/shared/translations.ts:824
 msgid "Cancel"
 msgstr "Avbryt"
 
-#: js/shared/translations.ts:820
+#: js/shared/translations.ts:825
 msgid "Confirm"
 msgstr "Bekräfta"
 
-#: js/shared/translations.ts:823
+#: js/shared/translations.ts:828
 msgid "Copy"
 msgstr "Kopiera"
 
-#: js/shared/translations.ts:824
+#: js/shared/translations.ts:829
 msgid "here"
 msgstr "här"
 
-#: js/shared/translations.ts:825
+#: js/shared/translations.ts:830
 msgid "Add"
 msgstr "Lägg till"
 
-#: js/shared/translations.ts:826
+#: js/shared/translations.ts:831
 msgid "Layout"
 msgstr "Layout"
 
-#: js/shared/translations.ts:827
+#: js/shared/translations.ts:832
 msgid "Cards"
 msgstr "Kort"
 
-#: js/shared/translations.ts:828
+#: js/shared/translations.ts:833
 msgid "List"
 msgstr "Lista"
 
-#: js/shared/translations.ts:829
+#: js/shared/translations.ts:834
 msgid "Fields"
 msgstr "Fält"
+
+#~ msgid ""
+#~ "The GROUP id — a tournament can contain several groups, so enter the "
+#~ "group id, not the tournament id. With it set, standings come from SSF. "
+#~ "Leave empty for a Rockaden-managed tournament."
+#~ msgstr ""
+#~ "GRUPP-id:t — en turnering kan innehålla flera grupper, så ange grupp-id, "
+#~ "inte turnerings-id. När det är satt hämtas ställningen från SSF. Lämna "
+#~ "tomt för en Rockaden-styrd turnering."
 
 #~ msgid "Practice with computer"
 #~ msgstr "Öva mot datorn"

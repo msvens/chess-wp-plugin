@@ -158,6 +158,7 @@ export interface Translations {
 		linkedEvent: string;
 		ssfBacked: string;
 		ssfBackedHint: string;
+		ssfGroupNotFound: string;
 		ssfBackedNote: string;
 		ssfGroupName: string;
 		ssfParentTournament: string;
@@ -523,9 +524,13 @@ const translations: Translations = {
 			'rockaden-chess'
 		),
 		linkedEvent: __( 'Linked calendar event', 'rockaden-chess' ),
-		ssfBacked: __( 'SSF Group ID', 'rockaden-chess' ),
+		ssfBacked: __( 'SSF group ID (optional)', 'rockaden-chess' ),
 		ssfBackedHint: __(
-			'The GROUP id — a tournament can contain several groups, so enter the group id, not the tournament id. With it set, standings come from SSF. Leave empty for a Rockaden-managed tournament.',
+			'Only for tournaments registered on schack.se — leave empty for a tournament you run here. Enter the GROUP id, not the tournament id: a tournament can contain several groups. With it set, standings come from SSF.',
+			'rockaden-chess'
+		),
+		ssfGroupNotFound: __(
+			'There is no group with this id on schack.se. Check the id, or clear the field for a tournament you run here.',
 			'rockaden-chess'
 		),
 		ssfBackedNote: __(
