@@ -15,8 +15,8 @@ importers:
         specifier: 2.6.4
         version: 2.6.4
       '@msvens/schack-se-sdk':
-        specifier: github:msvens/schack-se-sdk#v0.17.0
-        version: https://codeload.github.com/msvens/schack-se-sdk/tar.gz/51f953673ba2f54d4ae7505f55eb1d7dc8f19a0b
+        specifier: github:msvens/schack-se-sdk#v0.25.0
+        version: https://codeload.github.com/msvens/schack-se-sdk/tar.gz/40d7141b84cef4e9e51c341f96da52199e5e1e77
       '@wordpress/api-fetch':
         specifier: ^7.0.0
         version: 7.55.0
@@ -1057,9 +1057,9 @@ packages:
   '@lichess-org/pgn-viewer@2.6.4':
     resolution: {integrity: sha512-fP/Kppo8tshABNI4WH1YnNQQsWZb7Lm5Qug8/Mpg1qCQIHeXM8AluctrTpjZHPg7sIFIc6J6pf+aAkYunUWrJQ==}
 
-  '@msvens/schack-se-sdk@https://codeload.github.com/msvens/schack-se-sdk/tar.gz/51f953673ba2f54d4ae7505f55eb1d7dc8f19a0b':
-    resolution: {tarball: https://codeload.github.com/msvens/schack-se-sdk/tar.gz/51f953673ba2f54d4ae7505f55eb1d7dc8f19a0b}
-    version: 0.17.0
+  '@msvens/schack-se-sdk@https://codeload.github.com/msvens/schack-se-sdk/tar.gz/40d7141b84cef4e9e51c341f96da52199e5e1e77':
+    resolution: {tarball: https://codeload.github.com/msvens/schack-se-sdk/tar.gz/40d7141b84cef4e9e51c341f96da52199e5e1e77}
+    version: 0.25.0
 
   '@napi-rs/wasm-runtime@1.2.3':
     resolution: {integrity: sha512-UMduMbqO5s5zF2NkNacMT/yK5Y5QiKvWr2+50bzIIxFDwVJ2h49b+oyjaCGPhJxd2/gC2x39EHv/gHVuu36x2Q==}
@@ -4670,8 +4670,8 @@ packages:
     resolution: {integrity: sha512-RE2g0b5VGZsOCFOCgP7omTRYFqydmZkBwl5oNnQ1lDYC57uyO9KqNnNVxT7COSHTxrRCWVcAVOcbjk+tvh/rgQ==}
     engines: {node: '>=0.10.0'}
 
-  legacy-javascript@0.0.1:
-    resolution: {integrity: sha512-lPyntS4/aS7jpuvOlitZDFifBCb4W8L/3QU0PLbUTUj+zYah8rfVjYic88yG7ZKTxhS5h9iz7duT8oUXKszLhg==}
+  legacy-javascript@0.0.3:
+    resolution: {integrity: sha512-1r6MT4dVaJyXt4G07Cm2cQ0AUaLJdefiEp4SmIAylA++gnEQ82YvmzE58RkM5EP0fk5hROLCslUPGnwIYdZQVA==}
 
   leven@3.1.0:
     resolution: {integrity: sha512-qsda+H8jTaUaN/x5vzW2rzc+8Rw4TAQ/4KjB46IwK5VH+IlVeeeje/EoZRpiXvIqjFgK84QffqPztGI3VBLG1A==}
@@ -8292,7 +8292,7 @@ snapshots:
       chessops: 0.15.1
       snabbdom: 3.5.1
 
-  '@msvens/schack-se-sdk@https://codeload.github.com/msvens/schack-se-sdk/tar.gz/51f953673ba2f54d4ae7505f55eb1d7dc8f19a0b': {}
+  '@msvens/schack-se-sdk@https://codeload.github.com/msvens/schack-se-sdk/tar.gz/40d7141b84cef4e9e51c341f96da52199e5e1e77': {}
 
   '@napi-rs/wasm-runtime@1.2.3(@emnapi/core@1.10.0)(@emnapi/runtime@1.10.0)':
     dependencies:
@@ -8618,7 +8618,7 @@ snapshots:
 
   '@paulirish/trace_engine@0.0.59':
     dependencies:
-      legacy-javascript: 0.0.1
+      legacy-javascript: 0.0.3
       third-party-web: 0.30.0
 
   '@pkgr/core@0.3.6': {}
@@ -12755,7 +12755,7 @@ snapshots:
 
   lazy-cache@1.0.4: {}
 
-  legacy-javascript@0.0.1: {}
+  legacy-javascript@0.0.3: {}
 
   leven@3.1.0: {}
 

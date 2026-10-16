@@ -8,11 +8,15 @@ import type { Translations } from '../../shared';
 import {
 	isTeamTournament,
 	getOpponentKind,
+	findTournamentGroup,
+	getGroupTimeControl,
+	hasStandings,
 	type TournamentEndResultDto,
 	type TournamentRoundResultDto,
 	type PlayerInfoDto,
 	type TournamentDto,
 } from '@msvens/schack-se-sdk';
+import { groupRating } from '../../shared/ssf';
 import {
 	formatIndividualRowResult,
 	getResultLabels,
@@ -195,12 +199,20 @@ export function SsfTournamentView( { ssfGroupId, t }: SsfTournamentViewProps ) {
 		);
 	}
 
-	// Not started yet (registration) → the "table" is the registration list.
-	if ( tournament && tournament.state === 1 ) {
+	// Not started yet (no real places — SSF puts every row at place 1000 until
+	// there are results) → the "table" is the registration list, seeded by the
+	// group's rating type as schack.se does.
+	if ( ! hasStandings( endResults ) ) {
+		const seedGroup = tournament
+			? findTournamentGroup( tournament, ssfGroupId )?.group
+			: undefined;
+		const timeControl = seedGroup
+			? getGroupTimeControl( seedGroup ).primary
+			: 'unknown';
+		const seedRating = ( r: TournamentEndResultDto ) =>
+			groupRating( r.playerInfo.elo, timeControl );
 		const registered = [ ...endResults ].sort(
-			( a, b ) =>
-				( b.playerInfo.elo?.rating ?? 0 ) -
-				( a.playerInfo.elo?.rating ?? 0 )
+			( a, b ) => ( seedRating( b ) ?? 0 ) - ( seedRating( a ) ?? 0 )
 		);
 		return (
 			<div>
@@ -226,7 +238,7 @@ export function SsfTournamentView( { ssfGroupId, t }: SsfTournamentViewProps ) {
 									{ r.playerInfo.lastName },{ ' ' }
 									{ r.playerInfo.firstName }
 								</td>
-								<td>{ getElo( r.playerInfo ) }</td>
+								<td>{ seedRating( r ) ?? '—' }</td>
 							</tr>
 						) ) }
 					</tbody>

@@ -18,11 +18,37 @@ import {
 	RatingType,
 	PlayerCategory,
 	parseLocalDate,
+	type GroupTimeControl,
 	type PlayerInfoDto,
 	type TournamentDto,
 	type TournamentEndResultDto,
 	type TournamentRoundResultDto,
 } from '@msvens/schack-se-sdk';
+
+/**
+ * A player's rating in the time control a group is played at — the rating
+ * schack.se seeds a not-yet-started group by. An `'unknown'` time control
+ * (unrated group) falls back to the standard rating.
+ *
+ * @param elo         The player's ratings.
+ * @param timeControl The group's primary time control (`getGroupTimeControl`).
+ * @return The rating, or null when the player has none in that time control.
+ */
+export function groupRating(
+	elo: PlayerInfoDto[ 'elo' ] | null | undefined,
+	timeControl: GroupTimeControl[ 'primary' ]
+): number | null {
+	if ( ! elo ) {
+		return null;
+	}
+	const rating =
+		timeControl === 'rapid'
+			? elo.rapidRating
+			: timeControl === 'blitz'
+			? elo.blitzRating
+			: elo.rating;
+	return rating || null;
+}
 
 // Match the proxy's own upstream timeout (SsfProxy::SSF_TIMEOUT, 15s). The SDK
 // defaults to 10s, which would abort in the browser while the server was still
