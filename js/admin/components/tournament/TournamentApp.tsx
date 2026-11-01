@@ -28,6 +28,7 @@ export function TournamentApp( { config }: TournamentAppProps ) {
 					tournamentId={ view.tournamentId }
 					clubId={ config.clubId }
 					t={ t }
+					lang={ config.language }
 					onBack={ () => setView( { screen: 'list' } ) }
 				/>
 			);

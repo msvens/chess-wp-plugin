@@ -44,6 +44,11 @@ export default function RoundsDisplay( { rounds, t }: Props ) {
 	}
 
 	const current = rounds[ activeRound ];
+	// Rating columns only when there is something to put in them, decided over
+	// all rounds so the table doesn't change shape between round tabs.
+	const showRatings = rounds.some( ( r ) =>
+		r.pairings.some( ( p ) => p.whiteRating || p.blackRating )
+	);
 
 	return (
 		<div className="rc-rounds">
@@ -76,7 +81,9 @@ export default function RoundsDisplay( { rounds, t }: Props ) {
 							<tr>
 								<th>{ t.board }</th>
 								<th>{ t.white }</th>
+								{ showRatings && <th>{ t.rating }</th> }
 								<th>{ t.black }</th>
+								{ showRatings && <th>{ t.rating }</th> }
 								<th>{ t.result }</th>
 							</tr>
 						</thead>
@@ -84,24 +91,20 @@ export default function RoundsDisplay( { rounds, t }: Props ) {
 							{ current.pairings.map( ( p ) => (
 								<tr key={ p.board }>
 									<td>{ p.board }</td>
-									<td>
-										{ p.whiteName }
-										{ p.whiteRating && (
-											<span className="rc-rounds__rating">
-												{ ' ' }
-												({ p.whiteRating })
-											</span>
-										) }
-									</td>
-									<td>
-										{ p.blackName }
-										{ p.blackRating && (
-											<span className="rc-rounds__rating">
-												{ ' ' }
-												({ p.blackRating })
-											</span>
-										) }
-									</td>
+									<td>{ p.whiteName }</td>
+									{ showRatings && (
+										<td className="rc-rounds__rating">
+											{ p.whiteRating ||
+												t.ratingUnavailable }
+										</td>
+									) }
+									<td>{ p.blackName }</td>
+									{ showRatings && (
+										<td className="rc-rounds__rating">
+											{ p.blackRating ||
+												t.ratingUnavailable }
+										</td>
+									) }
 									<td className="rc-rounds__result">
 										{ p.result }
 									</td>
@@ -109,7 +112,7 @@ export default function RoundsDisplay( { rounds, t }: Props ) {
 							) ) }
 							{ current.byeName && (
 								<tr className="rc-rounds__bye">
-									<td colSpan={ 4 }>
+									<td colSpan={ showRatings ? 6 : 4 }>
 										{ t.bye }: { current.byeName }
 									</td>
 								</tr>

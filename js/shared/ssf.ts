@@ -12,6 +12,7 @@
  */
 import {
 	configure,
+	formatRatingWithType,
 	RatingsService,
 	ResultsService,
 	TournamentService,
@@ -20,10 +21,12 @@ import {
 	parseLocalDate,
 	type GroupTimeControl,
 	type PlayerInfoDto,
+	type PlayerRating,
 	type TournamentDto,
 	type TournamentEndResultDto,
 	type TournamentRoundResultDto,
 } from '@msvens/schack-se-sdk';
+import type { Language } from './types';
 
 /**
  * A player's rating in the time control a group is played at — the rating
@@ -32,22 +35,45 @@ import {
  *
  * @param elo         The player's ratings.
  * @param timeControl The group's primary time control (`getGroupTimeControl`).
- * @return The rating, or null when the player has none in that time control.
+ * @return The rating (null when the player has none in that time control) and
+ *         its type.
  */
 export function groupRating(
 	elo: PlayerInfoDto[ 'elo' ] | null | undefined,
 	timeControl: GroupTimeControl[ 'primary' ]
-): number | null {
-	if ( ! elo ) {
-		return null;
-	}
+): PlayerRating {
+	const ratingType = timeControl === 'unknown' ? 'standard' : timeControl;
 	const rating =
-		timeControl === 'rapid'
-			? elo.rapidRating
-			: timeControl === 'blitz'
-			? elo.blitzRating
-			: elo.rating;
-	return rating || null;
+		ratingType === 'rapid'
+			? elo?.rapidRating
+			: ratingType === 'blitz'
+			? elo?.blitzRating
+			: elo?.rating;
+	return rating
+		? { rating, isFallback: false, ratingType }
+		: { rating: null, isFallback: false, ratingType: null };
+}
+
+/**
+ * A rating as schack.se and msvens-chess show it: the number plus the SDK's
+ * type suffix ("2009 R", "1840 B"; none for standard).
+ *
+ * @param playerRating A rating from the SDK's lookups or `groupRating`.
+ * @param lang         UI language (the rapid suffix is "S" in Swedish).
+ * @return The formatted rating, or null when there is none — callers pick
+ *         their own placeholder.
+ */
+export function formatRating(
+	playerRating: PlayerRating,
+	lang: Language
+): string | null {
+	return playerRating.rating === null
+		? null
+		: formatRatingWithType(
+				playerRating.rating,
+				playerRating.ratingType,
+				lang
+		  );
 }
 
 // Match the proxy's own upstream timeout (SsfProxy::SSF_TIMEOUT, 15s). The SDK
