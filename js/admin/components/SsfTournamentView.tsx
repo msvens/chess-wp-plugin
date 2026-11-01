@@ -107,7 +107,7 @@ function buildDisplayRounds(
 					fallback: true,
 				} ),
 				lang
-			) ?? '—';
+			) ?? t.training.ratingUnavailable;
 
 		return {
 			round: roundNr,
@@ -255,7 +255,7 @@ export function SsfTournamentView( {
 								</td>
 								<td>
 									{ formatRating( seedRating( r ), lang ) ??
-										'—' }
+										t.training.ratingUnavailable }
 								</td>
 							</tr>
 						) ) }
@@ -324,7 +324,7 @@ export function SsfTournamentView( {
 							</td>
 							<td>
 								{ formatRating( standingsRating( r ), lang ) ??
-									'—' }
+									t.training.ratingUnavailable }
 							</td>
 							<td>{ totalGames( r ) }</td>
 							<td>{ r.wonGames }</td>

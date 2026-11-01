@@ -94,13 +94,15 @@ export default function RoundsDisplay( { rounds, t }: Props ) {
 									<td>{ p.whiteName }</td>
 									{ showRatings && (
 										<td className="rc-rounds__rating">
-											{ p.whiteRating }
+											{ p.whiteRating ||
+												t.ratingUnavailable }
 										</td>
 									) }
 									<td>{ p.blackName }</td>
 									{ showRatings && (
 										<td className="rc-rounds__rating">
-											{ p.blackRating }
+											{ p.blackRating ||
+												t.ratingUnavailable }
 										</td>
 									) }
 									<td className="rc-rounds__result">
