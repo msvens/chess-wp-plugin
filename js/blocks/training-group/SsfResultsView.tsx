@@ -6,6 +6,8 @@ import {
 	getOpponentKind,
 	findTournamentGroup,
 	getGroupTimeControl,
+	getPlayerRatingByAlgorithm,
+	getPlayerRatingForRound,
 	hasStandings,
 	type TournamentEndResultDto,
 	type TournamentRoundResultDto,
@@ -20,6 +22,7 @@ import {
 	fetchTournamentForGroup,
 	fetchTournamentResults,
 	fetchTournamentRoundResults,
+	formatRating,
 	groupRating,
 } from '../../shared/ssf';
 import RoundsDisplay from './RoundsDisplay';
@@ -30,10 +33,6 @@ interface Props {
 	t: Translations[ 'training' ];
 	lang: Language;
 	showRounds?: boolean;
-}
-
-function getElo( playerInfo: PlayerInfoDto ): string {
-	return playerInfo.elo?.rating ? String( playerInfo.elo.rating ) : '';
 }
 
 /**
@@ -95,6 +94,8 @@ function buildSsfDisplayRounds(
 	roundResults: TournamentRoundResultDto[],
 	playerMap: Map< number, PlayerInfoDto >,
 	roundDates: Map< number, string >,
+	rankingAlgorithm: number | undefined,
+	roundRated: Map< number, number >,
 	t: Translations[ 'training' ],
 	lang: Language
 ): DisplayRound[] {
@@ -117,23 +118,30 @@ function buildSsfDisplayRounds(
 		// Prefer the actual game date; fall back to the scheduled round date.
 		const dateStr = games[ 0 ]?.date || roundDates.get( roundNr );
 
+		// The round's own rated type, falling back to the group's ranking
+		// chain as schack.se does (a standard 1447 in a rapid round).
+		const rated = roundRated.get( roundNr );
+		const pairingRating = ( player: PlayerInfoDto | undefined ) =>
+			formatRating(
+				getPlayerRatingForRound( player?.elo, rankingAlgorithm, rated, {
+					fallback: true,
+				} ),
+				lang
+			) ?? undefined;
+
 		return {
 			round: roundNr,
 			date: formatRoundDate( dateStr, lang ),
-			pairings: games.map( ( g ) => {
-				const home = playerMap.get( g.homeId );
-				const away = playerMap.get( g.awayId );
-				return {
-					board: g.board,
-					whiteName: opponentName( g.homeId, playerMap, t ),
-					whiteRating: home ? getElo( home ) || undefined : undefined,
-					blackName: opponentName( g.awayId, playerMap, t ),
-					blackRating: away ? getElo( away ) || undefined : undefined,
-					// The SDK owns the NOT_SET fallback, so a legitimate 0-0
-					// (double forfeit, adjudicated) is not read as "not played".
-					result: formatIndividualRowResult( g, labels ),
-				};
-			} ),
+			pairings: games.map( ( g ) => ( {
+				board: g.board,
+				whiteName: opponentName( g.homeId, playerMap, t ),
+				whiteRating: pairingRating( playerMap.get( g.homeId ) ),
+				blackName: opponentName( g.awayId, playerMap, t ),
+				blackRating: pairingRating( playerMap.get( g.awayId ) ),
+				// The SDK owns the NOT_SET fallback, so a legitimate 0-0
+				// (double forfeit, adjudicated) is not read as "not played".
+				result: formatIndividualRowResult( g, labels ),
+			} ) ),
 		};
 	} );
 }
@@ -247,7 +255,9 @@ export default function SsfResultsView( {
 		const seedRating = ( r: TournamentEndResultDto ) =>
 			groupRating( r.playerInfo.elo, timeControl );
 		const registered = [ ...endResults ].sort(
-			( a, b ) => ( seedRating( b ) ?? 0 ) - ( seedRating( a ) ?? 0 )
+			( a, b ) =>
+				( seedRating( b ).rating ?? 0 ) -
+				( seedRating( a ).rating ?? 0 )
 		);
 		return (
 			<div className="rc-td__panel">
@@ -272,7 +282,8 @@ export default function SsfResultsView( {
 									{ r.playerInfo.firstName }
 								</td>
 								<td className="rc-td__rating">
-									{ seedRating( r ) ?? t.ratingUnavailable }
+									{ formatRating( seedRating( r ), lang ) ??
+										t.ratingUnavailable }
 								</td>
 							</tr>
 						) ) }
@@ -288,15 +299,21 @@ export default function SsfResultsView( {
 	const totalGames = ( r: TournamentEndResultDto ) =>
 		r.wonGames + r.drawGames + r.lostGames;
 
-	// Scheduled round dates are already inside the tournament payload we fetch.
-	// SSF returns tournamentRounds unsorted, so key them by round number.
+	// Scheduled round dates and rated types are already inside the tournament
+	// payload we fetch. SSF returns tournamentRounds unsorted, so key them by
+	// round number.
 	const roundDates = new Map< number, string >();
+	const roundRated = new Map< number, number >();
 	const group = tournament
 		? findTournamentGroup( tournament, ssfGroupId )?.group
 		: null;
 	for ( const r of group?.tournamentRounds ?? [] ) {
 		roundDates.set( r.roundNumber, r.roundDate );
+		roundRated.set( r.roundNumber, r.rated );
 	}
+	// The rating schack.se's results table shows: the group's ranking chain.
+	const standingsRating = ( r: TournamentEndResultDto ) =>
+		getPlayerRatingByAlgorithm( r.playerInfo.elo, group?.rankingAlgorithm );
 
 	const displayRounds =
 		showRounds && roundResults
@@ -304,6 +321,8 @@ export default function SsfResultsView( {
 					roundResults,
 					playerMap,
 					roundDates,
+					group?.rankingAlgorithm,
+					roundRated,
 					t,
 					lang
 			  )
@@ -334,7 +353,7 @@ export default function SsfResultsView( {
 								{ r.playerInfo.firstName }
 							</td>
 							<td className="rc-td__rating">
-								{ getElo( r.playerInfo ) ||
+								{ formatRating( standingsRating( r ), lang ) ??
 									t.ratingUnavailable }
 							</td>
 							<td>{ totalGames( r ) }</td>

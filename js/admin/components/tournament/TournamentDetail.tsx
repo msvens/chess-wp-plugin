@@ -7,7 +7,7 @@ import {
 	__experimentalHeading as Heading,
 	__experimentalText as Text,
 } from '@wordpress/components';
-import type { Translations } from '../../../shared';
+import type { Language, Translations } from '../../../shared';
 import { useTournament } from '../../hooks/useTournament';
 import { useSsfRatings } from '../../hooks/useSsfRatings';
 import { ParticipantList } from './ParticipantList';
@@ -46,6 +46,7 @@ interface TournamentDetailProps {
 	tournamentId: number;
 	clubId: string;
 	t: Translations;
+	lang: Language;
 	onBack: () => void;
 }
 
@@ -53,6 +54,7 @@ export function TournamentDetail( {
 	tournamentId,
 	clubId,
 	t,
+	lang,
 	onBack,
 }: TournamentDetailProps ) {
 	const { tournament, loading, error, refetch } =
@@ -199,6 +201,7 @@ export function TournamentDetail( {
 				<SsfTournamentView
 					ssfGroupId={ tournament.ssfGroupId }
 					t={ t }
+					lang={ lang }
 				/>
 			) : (
 				<TabPanel tabs={ tabs } initialTabName="participants">
