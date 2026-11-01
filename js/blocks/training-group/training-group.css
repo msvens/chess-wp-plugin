@@ -423,7 +423,8 @@ html.dark .rc-td {
 .rc-rounds__rating {
 	font-variant-numeric: tabular-nums;
 	color: var(--rc-td-text-muted, #6b7280);
-	font-size: 0.8125rem;
+	/* Keep a type suffix ("2009 S") on the rating's line. */
+	white-space: nowrap;
 }
 
 .rc-rounds__result {
