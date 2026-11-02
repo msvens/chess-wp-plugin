@@ -74,43 +74,47 @@ export default function StandingsTab( { tournament, ratings, t }: Props ) {
 
 	return (
 		<div className="rc-td__panel">
-			<table className="rc-td__table">
-				<thead>
-					<tr>
-						<th>{ t.rank }</th>
-						<th>{ t.name }</th>
-						{ ratings.size > 0 && <th>{ t.rating }</th> }
-						<th>{ t.played }</th>
-						<th>{ t.wins }</th>
-						<th>{ t.draws }</th>
-						<th>{ t.losses }</th>
-						<th>{ t.points }</th>
-					</tr>
-				</thead>
-				<tbody>
-					{ standings.map( ( row, idx ) => {
-						const rating = getRating( row.participantId );
-						return (
-							<tr key={ row.participantId }>
-								<td>{ idx + 1 }</td>
-								<td>{ getName( row.participantId ) }</td>
-								{ ratings.size > 0 && (
-									<td className="rc-td__rating">
-										{ rating || t.ratingUnavailable }
+			<div className="rc-table-wrap">
+				<table className="rc-td__table rc-td__table--standings">
+					<thead>
+						<tr>
+							<th>{ t.rank }</th>
+							<th>{ t.name }</th>
+							{ ratings.size > 0 && <th>{ t.rating }</th> }
+							<th className="rc-td__col--played">{ t.played }</th>
+							<th>{ t.wins }</th>
+							<th>{ t.draws }</th>
+							<th>{ t.losses }</th>
+							<th>{ t.points }</th>
+						</tr>
+					</thead>
+					<tbody>
+						{ standings.map( ( row, idx ) => {
+							const rating = getRating( row.participantId );
+							return (
+								<tr key={ row.participantId }>
+									<td>{ idx + 1 }</td>
+									<td>{ getName( row.participantId ) }</td>
+									{ ratings.size > 0 && (
+										<td className="rc-td__rating">
+											{ rating || t.ratingUnavailable }
+										</td>
+									) }
+									<td className="rc-td__col--played">
+										{ row.played }
 									</td>
-								) }
-								<td>{ row.played }</td>
-								<td>{ row.wins }</td>
-								<td>{ row.draws }</td>
-								<td>{ row.losses }</td>
-								<td className="rc-td__points">
-									{ row.points }
-								</td>
-							</tr>
-						);
-					} ) }
-				</tbody>
-			</table>
+									<td>{ row.wins }</td>
+									<td>{ row.draws }</td>
+									<td>{ row.losses }</td>
+									<td className="rc-td__points">
+										{ row.points }
+									</td>
+								</tr>
+							);
+						} ) }
+					</tbody>
+				</table>
+			</div>
 
 			{ displayRounds.length > 0 && (
 				<RoundsDisplay rounds={ displayRounds } t={ t } />

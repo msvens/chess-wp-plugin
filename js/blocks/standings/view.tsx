@@ -4,6 +4,7 @@
 import { createRoot } from '@wordpress/element';
 import { configureSsf } from '../../shared/ssf';
 import StandingsApp from './StandingsApp';
+import '../../shared/results.css';
 import './standings.css';
 
 document

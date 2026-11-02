@@ -162,44 +162,52 @@ export default function StandingsApp( {
 			<h2 className="rc-st__title">
 				{ t.training.standings } — { tournament.title }
 			</h2>
-			<table className="rc-st__table">
-				<thead>
-					<tr>
-						<th>{ t.training.rank }</th>
-						<th>{ t.training.name }</th>
-						{ ratings.size > 0 && <th>{ t.training.rating }</th> }
-						<th>{ t.training.played }</th>
-						<th>{ t.training.wins }</th>
-						<th>{ t.training.draws }</th>
-						<th>{ t.training.losses }</th>
-						<th>{ t.training.points }</th>
-					</tr>
-				</thead>
-				<tbody>
-					{ standings.map( ( row, idx ) => {
-						const rating = getRating( row.participantId );
-						return (
-							<tr key={ row.participantId }>
-								<td>{ idx + 1 }</td>
-								<td>{ getName( row.participantId ) }</td>
-								{ ratings.size > 0 && (
-									<td className="rc-st__rating">
-										{ rating ||
-											t.training.ratingUnavailable }
+			<div className="rc-table-wrap">
+				<table className="rc-td__table rc-td__table--standings">
+					<thead>
+						<tr>
+							<th>{ t.training.rank }</th>
+							<th>{ t.training.name }</th>
+							{ ratings.size > 0 && (
+								<th>{ t.training.rating }</th>
+							) }
+							<th className="rc-td__col--played">
+								{ t.training.played }
+							</th>
+							<th>{ t.training.wins }</th>
+							<th>{ t.training.draws }</th>
+							<th>{ t.training.losses }</th>
+							<th>{ t.training.points }</th>
+						</tr>
+					</thead>
+					<tbody>
+						{ standings.map( ( row, idx ) => {
+							const rating = getRating( row.participantId );
+							return (
+								<tr key={ row.participantId }>
+									<td>{ idx + 1 }</td>
+									<td>{ getName( row.participantId ) }</td>
+									{ ratings.size > 0 && (
+										<td className="rc-td__rating">
+											{ rating ||
+												t.training.ratingUnavailable }
+										</td>
+									) }
+									<td className="rc-td__col--played">
+										{ row.played }
 									</td>
-								) }
-								<td>{ row.played }</td>
-								<td>{ row.wins }</td>
-								<td>{ row.draws }</td>
-								<td>{ row.losses }</td>
-								<td className="rc-st__points">
-									{ row.points }
-								</td>
-							</tr>
-						);
-					} ) }
-				</tbody>
-			</table>
+									<td>{ row.wins }</td>
+									<td>{ row.draws }</td>
+									<td>{ row.losses }</td>
+									<td className="rc-td__points">
+										{ row.points }
+									</td>
+								</tr>
+							);
+						} ) }
+					</tbody>
+				</table>
+			</div>
 
 			{ showRounds && displayRounds.length > 0 && (
 				<RoundsDisplay rounds={ displayRounds } t={ t.training } />
