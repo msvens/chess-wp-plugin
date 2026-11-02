@@ -48,7 +48,7 @@ function getRatingStr(
 		return '';
 	}
 	const player = ratings.get( participant.ssfId );
-	return player?.elo ? String( player.elo.rating ) : '';
+	return player?.elo?.rating ? String( player.elo.rating ) : '';
 }
 
 export default function StandingsApp( {
@@ -150,7 +150,7 @@ export default function StandingsApp( {
 			return '';
 		}
 		const player = ratings.get( p.ssfId );
-		return player?.elo ? String( player.elo.rating ) : '';
+		return player?.elo?.rating ? String( player.elo.rating ) : '';
 	};
 
 	const displayRounds = showRounds
