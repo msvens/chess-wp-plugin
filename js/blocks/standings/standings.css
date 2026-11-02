@@ -4,8 +4,6 @@
    ========================================================= */
 
 .rc-st {
-	--rc-st-border: #e5e7eb;
-	--rc-st-surface-alt: #f9fafb;
 	--rc-st-text-muted: #6b7280;
 
 	/* Shared component vars (used by RoundsDisplay, SsfResultsView) */
@@ -24,8 +22,6 @@
 }
 
 html.dark .rc-st {
-	--rc-st-border: #374151;
-	--rc-st-surface-alt: #263244;
 	--rc-st-text-muted: #9ca3af;
 
 	--rc-td-border: #374151;
@@ -51,57 +47,4 @@ html.dark .rc-st {
 	letter-spacing: 0.025em;
 }
 
-.rc-st__table {
-	width: 100%;
-	border-collapse: collapse;
-	font-size: 0.875rem;
-}
-
-.rc-st__table th,
-.rc-st__table td {
-	padding: 0.5rem 0.75rem;
-	text-align: left;
-	border-bottom: 1px solid var(--rc-st-border);
-}
-
-.rc-st__table th {
-	font-weight: 500;
-	color: var(--rc-st-text-muted);
-	font-size: 0.75rem;
-	text-transform: uppercase;
-	letter-spacing: 0.05em;
-}
-
-.rc-st__table tbody tr:hover {
-	background: var(--rc-st-surface-alt);
-}
-
-/* Compact numeric columns */
-.rc-st__table th:not(:nth-child(2)),
-.rc-st__table td:not(:nth-child(2)) {
-	text-align: center;
-	width: 3rem;
-}
-
-.rc-st__rating {
-	font-variant-numeric: tabular-nums;
-	color: var(--rc-st-text-muted);
-}
-
-.rc-st__points {
-	font-weight: 600;
-	font-variant-numeric: tabular-nums;
-}
-
-@media (max-width: 640px) {
-	.rc-st__table,
-	.rc-st .rc-rounds__table,
-	.rc-st .rc-td__table {
-		display: block;
-		overflow-x: auto;
-	}
-
-	.rc-st .rc-rounds__tabs {
-		overflow-x: auto;
-	}
-}
+/* Tables, round tabs and the SSF view: js/shared/results.css. */

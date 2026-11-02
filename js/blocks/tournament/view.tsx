@@ -4,6 +4,7 @@
 import { createRoot } from '@wordpress/element';
 import { configureSsf } from '../../shared/ssf';
 import TournamentApp from './TournamentApp';
+import '../../shared/results.css';
 import '../training-group/training-group.css';
 
 document

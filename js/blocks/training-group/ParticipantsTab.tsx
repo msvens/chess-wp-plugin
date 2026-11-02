@@ -40,37 +40,39 @@ export default function ParticipantsTab( { participants, ratings, t }: Props ) {
 
 	return (
 		<div className="rc-td__panel">
-			<table className="rc-td__table">
-				<thead>
-					<tr>
-						<th>{ t.name }</th>
-						{ ratings.size > 0 && <th>{ t.rating }</th> }
-						{ hasLeaders && <th>{ t.role }</th> }
-					</tr>
-				</thead>
-				<tbody>
-					{ active.map( ( p ) => {
-						const rating = getRating( p, ratings );
-						return (
-							<tr key={ p.id }>
-								<td>{ p.name }</td>
-								{ ratings.size > 0 && (
-									<td className="rc-td__rating">
-										{ rating || t.ratingUnavailable }
-									</td>
-								) }
-								{ hasLeaders && (
-									<td>
-										{ p.role === 'leader'
-											? t.roleLeader
-											: '' }
-									</td>
-								) }
-							</tr>
-						);
-					} ) }
-				</tbody>
-			</table>
+			<div className="rc-table-wrap">
+				<table className="rc-td__table">
+					<thead>
+						<tr>
+							<th>{ t.name }</th>
+							{ ratings.size > 0 && <th>{ t.rating }</th> }
+							{ hasLeaders && <th>{ t.role }</th> }
+						</tr>
+					</thead>
+					<tbody>
+						{ active.map( ( p ) => {
+							const rating = getRating( p, ratings );
+							return (
+								<tr key={ p.id }>
+									<td>{ p.name }</td>
+									{ ratings.size > 0 && (
+										<td className="rc-td__rating">
+											{ rating || t.ratingUnavailable }
+										</td>
+									) }
+									{ hasLeaders && (
+										<td>
+											{ p.role === 'leader'
+												? t.roleLeader
+												: '' }
+										</td>
+									) }
+								</tr>
+							);
+						} ) }
+					</tbody>
+				</table>
+			</div>
 		</div>
 	);
 }

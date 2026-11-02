@@ -75,16 +75,28 @@ export default function RoundsDisplay( { rounds, t }: Props ) {
 			</div>
 
 			{ current && (
-				<div className="rc-rounds__content">
+				<div className="rc-rounds__content rc-table-wrap">
 					<table className="rc-rounds__table">
 						<thead>
 							<tr>
-								<th>{ t.board }</th>
+								<th className="rc-rounds__col--board">
+									{ t.board }
+								</th>
 								<th>{ t.white }</th>
-								{ showRatings && <th>{ t.rating }</th> }
+								{ showRatings && (
+									<th className="rc-rounds__col--rating">
+										{ t.rating }
+									</th>
+								) }
 								<th>{ t.black }</th>
-								{ showRatings && <th>{ t.rating }</th> }
-								<th>{ t.result }</th>
+								{ showRatings && (
+									<th className="rc-rounds__col--rating">
+										{ t.rating }
+									</th>
+								) }
+								<th className="rc-rounds__col--result">
+									{ t.result }
+								</th>
 							</tr>
 						</thead>
 						<tbody>

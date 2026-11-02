@@ -265,30 +265,34 @@ export default function SsfResultsView( {
 				<h3 className="rc-ssf__subtitle">
 					{ t.registeredPlayers } ({ registered.length })
 				</h3>
-				<table className="rc-td__table rc-td__table--standings">
-					<thead>
-						<tr>
-							<th>#</th>
-							<th>{ t.name }</th>
-							<th>{ t.rating }</th>
-						</tr>
-					</thead>
-					<tbody>
-						{ registered.map( ( r, idx ) => (
-							<tr key={ r.playerInfo.id }>
-								<td>{ idx + 1 }</td>
-								<td>
-									{ r.playerInfo.lastName },{ ' ' }
-									{ r.playerInfo.firstName }
-								</td>
-								<td className="rc-td__rating">
-									{ formatRating( seedRating( r ), lang ) ??
-										t.ratingUnavailable }
-								</td>
+				<div className="rc-table-wrap">
+					<table className="rc-td__table rc-td__table--standings">
+						<thead>
+							<tr>
+								<th>#</th>
+								<th>{ t.name }</th>
+								<th>{ t.rating }</th>
 							</tr>
-						) ) }
-					</tbody>
-				</table>
+						</thead>
+						<tbody>
+							{ registered.map( ( r, idx ) => (
+								<tr key={ r.playerInfo.id }>
+									<td>{ idx + 1 }</td>
+									<td>
+										{ r.playerInfo.lastName },{ ' ' }
+										{ r.playerInfo.firstName }
+									</td>
+									<td className="rc-td__rating">
+										{ formatRating(
+											seedRating( r ),
+											lang
+										) ?? t.ratingUnavailable }
+									</td>
+								</tr>
+							) ) }
+						</tbody>
+					</table>
+				</div>
 			</div>
 		);
 	}
@@ -330,42 +334,48 @@ export default function SsfResultsView( {
 
 	return (
 		<div className="rc-td__panel">
-			<table className="rc-td__table rc-td__table--standings">
-				<thead>
-					<tr>
-						<th>{ t.rank }</th>
-						<th>{ t.name }</th>
-						<th>{ t.rating }</th>
-						<th>{ t.played }</th>
-						<th>+</th>
-						<th>=</th>
-						<th>-</th>
-						<th>{ t.points }</th>
-						<th>{ t.tiebreak }</th>
-					</tr>
-				</thead>
-				<tbody>
-					{ sorted.map( ( r ) => (
-						<tr key={ r.playerInfo.id }>
-							<td>{ r.place }</td>
-							<td>
-								{ r.playerInfo.lastName },{ ' ' }
-								{ r.playerInfo.firstName }
-							</td>
-							<td className="rc-td__rating">
-								{ formatRating( standingsRating( r ), lang ) ??
-									t.ratingUnavailable }
-							</td>
-							<td>{ totalGames( r ) }</td>
-							<td>{ r.wonGames }</td>
-							<td>{ r.drawGames }</td>
-							<td>{ r.lostGames }</td>
-							<td className="rc-td__points">{ r.points }</td>
-							<td>{ Math.round( r.secPoints * 10 ) / 10 }</td>
+			<div className="rc-table-wrap">
+				<table className="rc-td__table rc-td__table--standings">
+					<thead>
+						<tr>
+							<th>{ t.rank }</th>
+							<th>{ t.name }</th>
+							<th>{ t.rating }</th>
+							<th className="rc-td__col--played">{ t.played }</th>
+							<th>+</th>
+							<th>=</th>
+							<th>-</th>
+							<th>{ t.points }</th>
+							<th>{ t.tiebreak }</th>
 						</tr>
-					) ) }
-				</tbody>
-			</table>
+					</thead>
+					<tbody>
+						{ sorted.map( ( r ) => (
+							<tr key={ r.playerInfo.id }>
+								<td>{ r.place }</td>
+								<td>
+									{ r.playerInfo.lastName },{ ' ' }
+									{ r.playerInfo.firstName }
+								</td>
+								<td className="rc-td__rating">
+									{ formatRating(
+										standingsRating( r ),
+										lang
+									) ?? t.ratingUnavailable }
+								</td>
+								<td className="rc-td__col--played">
+									{ totalGames( r ) }
+								</td>
+								<td>{ r.wonGames }</td>
+								<td>{ r.drawGames }</td>
+								<td>{ r.lostGames }</td>
+								<td className="rc-td__points">{ r.points }</td>
+								<td>{ Math.round( r.secPoints * 10 ) / 10 }</td>
+							</tr>
+						) ) }
+					</tbody>
+				</table>
+			</div>
 
 			{ showRounds && displayRounds.length > 0 && (
 				<RoundsDisplay rounds={ displayRounds } t={ t } />

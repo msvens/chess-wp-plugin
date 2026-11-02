@@ -1,0 +1,275 @@
+/* =========================================================
+   Results tables — results.css
+   Standings, registration lists, round tabs and pairings, shared by the
+   training-group, tournament and standings blocks (each view.tsx imports
+   this file). Colours come from the --rc-td-* variables the block root
+   defines; the fallbacks cover a root that doesn't.
+   ========================================================= */
+
+/* --- Panel container --- */
+.rc-td__panel {
+	min-height: 200px;
+}
+
+/*
+ * Every results table sits in this wrapper: it scrolls sideways when a table
+ * is still too wide, and it is the container the micro rules below query, so
+ * they follow the block's own width (a sidebar column on desktop counts too).
+ */
+.rc-table-wrap {
+	overflow-x: auto;
+	container: rc-table / inline-size;
+}
+
+/* --- Tables --- */
+.rc-td__table,
+.rc-rounds__table {
+	width: 100%;
+	border-collapse: collapse;
+	font-size: 0.875rem;
+}
+
+.rc-td__table th,
+.rc-td__table td,
+.rc-rounds__table th,
+.rc-rounds__table td {
+	padding: 0.5rem 0.75rem;
+	text-align: left;
+	border-bottom: 1px solid var(--rc-td-border, #e5e7eb);
+}
+
+.rc-td__table th,
+.rc-rounds__table th {
+	font-weight: 500;
+	color: var(--rc-td-text-muted, #6b7280);
+	font-size: 0.75rem;
+	text-transform: uppercase;
+	letter-spacing: 0.05em;
+}
+
+.rc-td__table tbody tr:hover,
+.rc-rounds__table tbody tr:hover {
+	background: var(--rc-td-surface-alt, #f9fafb);
+}
+
+.rc-td__rating {
+	font-variant-numeric: tabular-nums;
+	color: var(--rc-td-text-muted, #6b7280);
+}
+
+.rc-td__points {
+	font-weight: 600;
+	font-variant-numeric: tabular-nums;
+}
+
+.rc-td__result {
+	font-variant-numeric: tabular-nums;
+}
+
+/* --- Standings table — compact columns --- */
+.rc-td__table--standings th:not(:nth-child(2)),
+.rc-td__table--standings td:not(:nth-child(2)) {
+	text-align: center;
+	width: 3rem;
+}
+
+/* --- Rounds display --- */
+.rc-rounds {
+	margin-top: 1.5rem;
+}
+
+/*
+ * One row of round tabs that scrolls sideways instead of wrapping. The line
+ * under the strip is an inset shadow rather than a border, so the active
+ * tab's own border can sit on it without a negative margin, which the
+ * scroll container would clip.
+ */
+.rc-rounds__tabs {
+	display: flex;
+	flex-wrap: nowrap;
+	overflow-x: auto;
+	scrollbar-width: thin;
+	box-shadow: inset 0 -2px 0 var(--rc-td-border, #e5e7eb);
+	margin-bottom: 1rem;
+}
+
+.rc-rounds__tab {
+	flex-shrink: 0;
+	white-space: nowrap;
+	padding: 0.5rem 1rem;
+	background: none;
+	border: none;
+	border-bottom: 2px solid transparent;
+	font-size: 0.8125rem;
+	font-weight: 500;
+	color: var(--rc-td-tab-inactive, #6b7280);
+	cursor: pointer;
+	transition:
+		color 0.15s,
+		border-color 0.15s;
+	font-family: inherit;
+}
+
+.rc-rounds__tab-label {
+	display: block;
+}
+
+/* Round date, under the round number — mirrors sthlmschack-reimagined. */
+.rc-rounds__tab-date {
+	display: block;
+	font-size: 0.75rem;
+	font-weight: 400;
+	color: var(--rc-td-text-muted, #6b7280);
+}
+
+.rc-rounds__tab--active .rc-rounds__tab-date {
+	color: inherit;
+	opacity: 0.8;
+}
+
+.rc-rounds__tab:hover {
+	color: var(--rc-td-tab-active, #2563eb);
+}
+
+.rc-rounds__tab--active {
+	color: var(--rc-td-tab-active, #2563eb);
+	border-bottom-color: var(--rc-td-tab-active, #2563eb);
+}
+
+.rc-rounds__table th:first-child,
+.rc-rounds__table td:first-child,
+.rc-rounds__table th:last-child,
+.rc-rounds__table td:last-child {
+	text-align: center;
+}
+
+/* Column widths sit on the header cells, which a fixed layout reads. */
+
+.rc-rounds__col--board {
+	width: 3rem;
+}
+
+.rc-rounds__col--result {
+	width: 4rem;
+}
+
+.rc-rounds__rating {
+	font-variant-numeric: tabular-nums;
+	color: var(--rc-td-text-muted, #6b7280);
+	/* Keep a type suffix ("2009 S") on the rating's line. */
+	white-space: nowrap;
+}
+
+.rc-rounds__result {
+	font-weight: 600;
+	font-variant-numeric: tabular-nums;
+}
+
+.rc-rounds__bye td {
+	font-style: italic;
+	color: var(--rc-td-text-muted, #6b7280);
+}
+
+/* --- SSF results view --- */
+.rc-ssf__loading,
+.rc-ssf__error {
+	text-align: center;
+	padding: 1.5rem;
+	color: var(--rc-td-text-muted, #6b7280);
+}
+
+.rc-ssf__error {
+	color: #dc2626;
+}
+
+html.dark .rc-ssf__error {
+	color: #f87171;
+}
+
+/* Informational notice (team tournament / not-started). */
+.rc-ssf__notice {
+	padding: 0.75rem 1rem;
+	margin: 0 0 1rem;
+	border-radius: 0.375rem;
+	background: var(--rc-td-surface-muted, #f3f4f6);
+	color: var(--rc-td-text, #374151);
+	font-size: 0.9375rem;
+}
+
+html.dark .rc-ssf__notice {
+	background: rgba(255, 255, 255, 0.06);
+	color: var(--rc-td-text, #d1d5db);
+}
+
+.rc-ssf__subtitle {
+	margin: 0 0 0.5rem;
+	font-size: 1rem;
+	font-weight: 600;
+}
+
+/*
+ * Micro density for a narrow block (a phone, or a narrow column): as many
+ * rows and columns on screen as possible, after the chess frontend's micro
+ * table density.
+ */
+@container rc-table (max-width: 640px) {
+	.rc-td__table,
+	.rc-rounds__table {
+		font-size: 10px;
+		line-height: 1.25;
+	}
+
+	.rc-td__table th,
+	.rc-td__table td,
+	.rc-rounds__table th,
+	.rc-rounds__table td {
+		padding: 2px 4px;
+	}
+
+	.rc-td__table th,
+	.rc-rounds__table th {
+		font-size: inherit;
+		letter-spacing: normal;
+	}
+
+	.rc-td__table--standings th:not(:nth-child(2)),
+	.rc-td__table--standings td:not(:nth-child(2)) {
+		width: auto;
+		white-space: nowrap;
+	}
+
+	/* Long names take two balanced lines instead of widening the table. */
+	.rc-td__table--standings td:nth-child(2) {
+		max-width: 6.5rem;
+		text-wrap: balance;
+	}
+
+	/* Games played follows from + = -, so it is the first column to go. */
+	.rc-td__col--played {
+		display: none;
+	}
+
+	/*
+	 * Fixed layout: board, ratings and result get em widths (they scale with
+	 * the font) and the two names share what is left.
+	 */
+	.rc-rounds__table {
+		table-layout: fixed;
+	}
+
+	.rc-rounds__col--board {
+		width: 3.2em;
+	}
+
+	.rc-rounds__col--rating {
+		width: 4em;
+	}
+
+	.rc-rounds__col--result {
+		width: 4.8em;
+	}
+
+	.rc-rounds__table td {
+		text-wrap: balance;
+	}
+}
