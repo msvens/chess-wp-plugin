@@ -19,7 +19,7 @@ function getRatingStr(
 		return '';
 	}
 	const player = ratings.get( participant.ssfId );
-	return player?.elo ? String( player.elo.rating ) : '';
+	return player?.elo?.rating ? String( player.elo.rating ) : '';
 }
 
 function buildDisplayRounds(

@@ -15,7 +15,7 @@ function getRating(
 		return '';
 	}
 	const player = ratings.get( participant.ssfId );
-	if ( ! player?.elo ) {
+	if ( ! player?.elo?.rating ) {
 		return '';
 	}
 	return String( player.elo.rating );
