@@ -120,6 +120,14 @@ module.exports = {
 			__dirname,
 			'js/blocks/chess-game/view.ts'
 		),
+		'blocks/today/index': path.resolve(
+			__dirname,
+			'js/blocks/today/index.tsx'
+		),
+		'blocks/today/view': path.resolve(
+			__dirname,
+			'js/blocks/today/view.tsx'
+		),
 		'blocks/upcoming-events/index': path.resolve(
 			__dirname,
 			'js/blocks/upcoming-events/index.tsx'

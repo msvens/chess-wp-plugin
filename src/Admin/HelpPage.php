@@ -223,6 +223,11 @@ class HelpPage {
 					<td>Training group detail page</td>
 				</tr>
 				<tr>
+					<td><strong>Today</strong></td>
+					<td>Lists the SSF tournaments being played today, in all of Sweden or one district picked in the block settings. Tournaments and groups link to chess.msvens.com.</td>
+					<td>Front page, results page</td>
+				</tr>
+				<tr>
 					<td><strong>Training Group</strong></td>
 					<td>Shows details for a single training group: schedule, participants, and upcoming sessions.</td>
 					<td>Dedicated group page</td>

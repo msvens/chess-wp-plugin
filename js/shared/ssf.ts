@@ -13,6 +13,8 @@
 import {
 	configure,
 	formatRatingWithType,
+	getTournamentsToday,
+	isGrandPrix,
 	RatingsService,
 	ResultsService,
 	TournamentService,
@@ -25,6 +27,7 @@ import {
 	type TournamentDto,
 	type TournamentEndResultDto,
 	type TournamentRoundResultDto,
+	type TournamentToday,
 } from '@msvens/schack-se-sdk';
 import type { Language } from './types';
 
@@ -173,4 +176,32 @@ export async function fetchTournamentRoundResults(
 ): Promise< TournamentRoundResultDto[] > {
 	const res = await new ResultsService().getTournamentRoundResults( groupId );
 	return res.data ?? [];
+}
+
+/**
+ * SSF tournaments played today (browser-local date) — backs the Today block.
+ * Grand Prix series are left out, as on msvens-chess: the SDK returns a series
+ * on its round dates, which don't reflect play, and with empty groups — the
+ * real games are in the stage tournaments, which are listed on their own.
+ *
+ * Unlike the other helpers this one reports failure (null), so the block can
+ * tell "nothing today" from "SSF did not answer".
+ *
+ * @param districtId SSF district ID, or 0 for all of Sweden.
+ * @return Today's tournaments, or null when either SSF search failed.
+ */
+export async function fetchTournamentsToday(
+	districtId: number
+): Promise< TournamentToday[] | null > {
+	try {
+		const res = await getTournamentsToday(
+			districtId ? { districtId } : {}
+		);
+		if ( res.status !== 200 || ! res.data ) {
+			return null;
+		}
+		return res.data.filter( ( t ) => ! isGrandPrix( t.type ) );
+	} catch {
+		return null;
+	}
 }

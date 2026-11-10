@@ -289,7 +289,7 @@ add_action(
 add_action(
 	'init',
 	function (): void {
-		$blocks    = [ 'calendar', 'carousel', 'chess-game', 'documentation', 'ranking-list', 'standings', 'tournament', 'tournaments', 'training-group', 'training-groups', 'upcoming-events' ];
+		$blocks    = [ 'calendar', 'carousel', 'chess-game', 'documentation', 'ranking-list', 'standings', 'today', 'tournament', 'tournaments', 'training-group', 'training-groups', 'upcoming-events' ];
 		$lang_path = RC_PLUGIN_DIR . 'languages';
 		foreach ( $blocks as $block ) {
 			$block_dir = RC_PLUGIN_DIR . "src/Blocks/{$block}";
