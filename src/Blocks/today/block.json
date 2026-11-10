@@ -1,0 +1,33 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "rockaden/today",
+  "version": "0.1.0",
+  "title": "Today",
+  "category": "widgets",
+  "icon": "clock",
+  "description": "Lists the SSF tournaments being played today, in all of Sweden or one district, with links to chess.msvens.com.",
+  "textdomain": "rockaden-chess",
+  "attributes": {
+    "districtId": {
+      "type": "number",
+      "default": 0
+    },
+    "showHeading": {
+      "type": "boolean",
+      "default": true
+    },
+    "showNote": {
+      "type": "boolean",
+      "default": true
+    }
+  },
+  "supports": {
+    "html": false,
+    "align": ["wide"]
+  },
+  "editorScript": "file:../../../build/blocks/today/index.js",
+  "viewScript": "file:../../../build/blocks/today/view.js",
+  "viewStyle": "file:../../../build/blocks/today/view.css",
+  "render": "file:./render.php"
+}

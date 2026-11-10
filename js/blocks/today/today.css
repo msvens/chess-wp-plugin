@@ -1,0 +1,81 @@
+/* =========================================================
+   Today — today.css
+   BEM naming: rc-today-*
+
+   Colors use WordPress preset variables with the Rockaden theme's values as
+   fallbacks, so any block theme's palette applies; dark mode comes from the
+   theme redefining the presets under html.dark.
+   ========================================================= */
+
+.rc-today {
+	font-family: var(--wp--preset--font-family--geist, sans-serif);
+	color: var(--wp--preset--color--on-surface, #111827);
+	max-width: 100%;
+}
+
+.rc-today__title {
+	margin: 0 0 1rem;
+	font-size: 1.25rem;
+	font-weight: 300;
+	letter-spacing: 0.025em;
+}
+
+.rc-today__note {
+	margin: 0 0 0.75rem;
+	font-size: 0.875rem;
+	color: var(--wp--preset--color--on-surface-muted, #6b7280);
+}
+
+.rc-today__state {
+	margin: 0;
+	padding: 2rem 0;
+	text-align: center;
+	color: var(--wp--preset--color--on-surface-muted, #6b7280);
+}
+
+.rc-today__list {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+.rc-today__item {
+	padding: 0.75rem 0;
+	border-bottom: 1px solid var(--wp--preset--color--border, #e5e7eb);
+}
+
+.rc-today__item:last-child {
+	border-bottom: none;
+}
+
+.rc-today__name {
+	font-size: 1rem;
+	font-weight: 500;
+	color: inherit;
+	text-decoration: none;
+}
+
+.rc-today__name:hover {
+	text-decoration: underline;
+}
+
+.rc-today__meta {
+	font-size: 0.875rem;
+	color: var(--wp--preset--color--on-surface-muted, #6b7280);
+}
+
+.rc-today__groups {
+	list-style: none;
+	margin: 0.25rem 0 0;
+	padding: 0;
+	font-size: 0.875rem;
+}
+
+.rc-today__groups a {
+	color: var(--wp--preset--color--primary, #2563eb);
+	text-decoration: none;
+}
+
+.rc-today__groups a:hover {
+	text-decoration: underline;
+}

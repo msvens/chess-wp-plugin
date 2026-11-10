@@ -293,6 +293,13 @@ export interface Translations {
 		// Strings of the Lichess viewer itself, keyed as in its translation.js.
 		viewer: Record< string, string >;
 	};
+	today: {
+		title: string;
+		note: string;
+		loading: string;
+		loadError: string;
+		empty: string;
+	};
 	ranking: {
 		title: string;
 		ratingPeriod: string;
@@ -792,6 +799,16 @@ const translations: Translations = {
 			'san.longCastling': __( 'long castling', 'rockaden-chess' ),
 			'san.shortCastling': __( 'short castling', 'rockaden-chess' ),
 		},
+	},
+	today: {
+		title: __( 'Today', 'rockaden-chess' ),
+		note: __(
+			'Tournaments being played today. One that ends today may be missing until results are reported.',
+			'rockaden-chess'
+		),
+		loading: __( 'Loading tournaments…', 'rockaden-chess' ),
+		loadError: __( 'Could not load tournaments.', 'rockaden-chess' ),
+		empty: __( 'No tournaments are being played today.', 'rockaden-chess' ),
 	},
 	ranking: {
 		title: __( 'Ranking List', 'rockaden-chess' ),
