@@ -13,6 +13,7 @@ document
 		configureSsf( el.dataset.ssfBase || '' );
 		const tournamentId = Number( el.dataset.tournamentId ) || 0;
 		const clubId = el.dataset.clubId || '';
+		const linkPlayers = el.dataset.linkPlayers !== 'false';
 		const locale =
 			document.documentElement.dataset.lang || el.dataset.locale || 'sv';
 		createRoot( el ).render(
@@ -20,6 +21,7 @@ document
 				tournamentId={ tournamentId }
 				clubId={ clubId }
 				locale={ locale }
+				linkPlayers={ linkPlayers }
 			/>
 		);
 	} );

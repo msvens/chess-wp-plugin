@@ -8,6 +8,16 @@
   "icon": "awards",
   "description": "Displays SSF club member ratings with filters for period, ELO type, and member category.",
   "textdomain": "rockaden-chess",
+  "attributes": {
+    "linkPlayers": {
+      "type": "boolean",
+      "default": true
+    },
+    "showHeading": {
+      "type": "boolean",
+      "default": true
+    }
+  },
   "supports": {
     "html": false,
     "align": ["wide"]

@@ -16,6 +16,10 @@
     "showRounds": {
       "type": "boolean",
       "default": true
+    },
+    "linkPlayers": {
+      "type": "boolean",
+      "default": true
     }
   },
   "supports": {

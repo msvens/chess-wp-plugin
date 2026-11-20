@@ -50,6 +50,14 @@ registerBlockType( 'rockaden/standings', {
 								setAttributes( { showRounds: val } )
 							}
 						/>
+						<ToggleControl
+							label="Link players to chess.msvens.com"
+							help="Player names open their page on chess.msvens.com in a new tab."
+							checked={ attributes.linkPlayers }
+							onChange={ ( val: boolean ) =>
+								setAttributes( { linkPlayers: val } )
+							}
+						/>
 					</PanelBody>
 				</InspectorControls>
 				<div { ...blockProps }>

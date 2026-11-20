@@ -12,6 +12,10 @@
     "tournamentId": {
       "type": "number",
       "default": 0
+    },
+    "linkPlayers": {
+      "type": "boolean",
+      "default": true
     }
   },
   "supports": {

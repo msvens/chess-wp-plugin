@@ -17,11 +17,18 @@ import Pagination from './Pagination';
 interface Props {
 	clubId: string;
 	locale: string;
+	linkPlayers: boolean;
+	showHeading: boolean;
 }
 
 const defaultDate = generateRatingPeriods()[ 0 ];
 
-export default function RankingListApp( { clubId, locale }: Props ) {
+export default function RankingListApp( {
+	clubId,
+	locale,
+	linkPlayers,
+	showHeading,
+}: Props ) {
 	const currentLocale = useLocale( locale );
 	const lang = toLanguage( currentLocale );
 	const t = getTranslation( lang );
@@ -84,7 +91,9 @@ export default function RankingListApp( { clubId, locale }: Props ) {
 
 	return (
 		<div className="rc-rl">
-			<h2 className="rc-rl__title">{ t.ranking.title }</h2>
+			{ showHeading && (
+				<h2 className="rc-rl__title">{ t.ranking.title }</h2>
+			) }
 			<RankingFilters
 				ratingDate={ ratingDate }
 				ratingType={ ratingType }
@@ -102,6 +111,7 @@ export default function RankingListApp( { clubId, locale }: Props ) {
 						players={ players }
 						ratingType={ ratingType }
 						page={ page }
+						linkPlayers={ linkPlayers }
 						t={ t }
 					/>
 					<Pagination

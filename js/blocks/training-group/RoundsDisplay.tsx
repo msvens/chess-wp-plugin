@@ -1,12 +1,16 @@
 import { useState } from '@wordpress/element';
 import type { Translations } from '../../shared/translations';
+import PlayerName from '../../shared/PlayerName';
 
 export interface DisplayPairing {
 	board: number;
 	whiteName: string;
 	whiteRating?: string;
+	// SSF member ids, for linking names; absent for local players and bye/W.O.
+	whiteSsfId?: number | null;
 	blackName: string;
 	blackRating?: string;
+	blackSsfId?: number | null;
 	result: string; // "1-0", "½-½", "0-1", "—"
 }
 
@@ -22,6 +26,7 @@ export interface DisplayRound {
 interface Props {
 	rounds: DisplayRound[];
 	t: Translations[ 'training' ];
+	linkPlayers?: boolean;
 }
 
 function formatResult( result: string | null ): string {
@@ -36,7 +41,11 @@ function formatResult( result: string | null ): string {
 
 export { formatResult };
 
-export default function RoundsDisplay( { rounds, t }: Props ) {
+export default function RoundsDisplay( {
+	rounds,
+	t,
+	linkPlayers = false,
+}: Props ) {
 	const [ activeRound, setActiveRound ] = useState( 0 );
 
 	if ( rounds.length === 0 ) {
@@ -103,14 +112,26 @@ export default function RoundsDisplay( { rounds, t }: Props ) {
 							{ current.pairings.map( ( p ) => (
 								<tr key={ p.board }>
 									<td>{ p.board }</td>
-									<td>{ p.whiteName }</td>
+									<td>
+										<PlayerName
+											name={ p.whiteName }
+											ssfId={ p.whiteSsfId }
+											link={ linkPlayers }
+										/>
+									</td>
 									{ showRatings && (
 										<td className="rc-rounds__rating">
 											{ p.whiteRating ||
 												t.ratingUnavailable }
 										</td>
 									) }
-									<td>{ p.blackName }</td>
+									<td>
+										<PlayerName
+											name={ p.blackName }
+											ssfId={ p.blackSsfId }
+											link={ linkPlayers }
+										/>
+									</td>
 									{ showRatings && (
 										<td className="rc-rounds__rating">
 											{ p.blackRating ||

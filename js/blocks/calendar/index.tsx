@@ -13,7 +13,7 @@ registerBlockType( 'rockaden/calendar', {
 						textAlign: 'center',
 					} }
 				>
-					[Rockaden Calendar — rendered on frontend]
+					[Calendar — rendered on frontend]
 				</p>
 			</div>
 		);
