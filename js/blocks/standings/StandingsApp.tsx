@@ -6,7 +6,7 @@ import { computeStandings } from '../../shared/roundRobin';
 import { getTranslation, toLanguage } from '../../shared/translations';
 import { useLocale } from '../../shared/useLocale';
 import { fetchClubPlayers } from '../../shared/ssf';
-import PlayerName from '../../shared/PlayerName';
+import PlayerRow from '../../shared/PlayerRow';
 import RoundsDisplay, { formatResult } from '../training-group/RoundsDisplay';
 import type { DisplayRound } from '../training-group/RoundsDisplay';
 import SsfResultsView from '../training-group/SsfResultsView';
@@ -190,22 +190,16 @@ export default function StandingsApp( {
 						{ standings.map( ( row, idx ) => {
 							const rating = getRating( row.participantId );
 							return (
-								<tr key={ row.participantId }>
+								<PlayerRow
+									key={ row.participantId }
+									ssfId={
+										participantMap.get( row.participantId )
+											?.ssfId
+									}
+									link={ linkPlayers }
+								>
 									<td>{ idx + 1 }</td>
-									<td>
-										<PlayerName
-											name={ getName(
-												row.participantId
-											) }
-											ssfId={
-												participantMap.get(
-													row.participantId
-												)?.ssfId
-											}
-											stretch
-											link={ linkPlayers }
-										/>
-									</td>
+									<td>{ getName( row.participantId ) }</td>
 									{ ratings.size > 0 && (
 										<td className="rc-td__rating">
 											{ rating ||
@@ -221,7 +215,7 @@ export default function StandingsApp( {
 									<td className="rc-td__points">
 										{ row.points }
 									</td>
-								</tr>
+								</PlayerRow>
 							);
 						} ) }
 					</tbody>

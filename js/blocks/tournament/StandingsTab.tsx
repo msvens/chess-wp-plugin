@@ -2,7 +2,7 @@ import type { Tournament, SsfPlayer, Participant } from '../../admin/types';
 import type { GameResult } from '../../shared/roundRobin';
 import { computeStandings } from '../../shared/roundRobin';
 import type { Translations } from '../../shared/translations';
-import PlayerName from '../../shared/PlayerName';
+import PlayerRow from '../../shared/PlayerRow';
 import RoundsDisplay, { formatResult } from '../training-group/RoundsDisplay';
 import type { DisplayRound } from '../training-group/RoundsDisplay';
 
@@ -101,22 +101,16 @@ export default function StandingsTab( {
 						{ standings.map( ( row, idx ) => {
 							const rating = getRating( row.participantId );
 							return (
-								<tr key={ row.participantId }>
+								<PlayerRow
+									key={ row.participantId }
+									ssfId={
+										participantMap.get( row.participantId )
+											?.ssfId
+									}
+									link={ linkPlayers }
+								>
 									<td>{ idx + 1 }</td>
-									<td>
-										<PlayerName
-											name={ getName(
-												row.participantId
-											) }
-											ssfId={
-												participantMap.get(
-													row.participantId
-												)?.ssfId
-											}
-											stretch
-											link={ linkPlayers }
-										/>
-									</td>
+									<td>{ getName( row.participantId ) }</td>
 									{ ratings.size > 0 && (
 										<td className="rc-td__rating">
 											{ rating || t.ratingUnavailable }
@@ -131,7 +125,7 @@ export default function StandingsTab( {
 									<td className="rc-td__points">
 										{ row.points }
 									</td>
-								</tr>
+								</PlayerRow>
 							);
 						} ) }
 					</tbody>

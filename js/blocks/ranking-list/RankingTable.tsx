@@ -1,6 +1,6 @@
 import type { SsfPlayer } from '../../admin/types';
 import type { Translations } from '../../shared/translations';
-import PlayerName from '../../shared/PlayerName';
+import PlayerRow from '../../shared/PlayerRow';
 import { getRatingValue, PAGE_SIZE } from './utils';
 import type { RatingType } from './utils';
 
@@ -40,25 +40,20 @@ export default function RankingTable( {
 				</thead>
 				<tbody>
 					{ pageItems.map( ( player, idx ) => (
-						<tr key={ player.id }>
+						<PlayerRow
+							key={ player.id }
+							ssfId={ player.id }
+							link={ linkPlayers }
+						>
 							<td>{ start + idx + 1 }</td>
 							<td>{ player.elo?.title || '' }</td>
-							<td>
-								{ /* One link per row, stretched over it. */ }
-								<PlayerName
-									name={ player.firstName }
-									label={ `${ player.firstName } ${ player.lastName }` }
-									ssfId={ player.id }
-									link={ linkPlayers }
-									stretch
-								/>
-							</td>
+							<td>{ player.firstName }</td>
 							<td>{ player.lastName }</td>
 							<td className="rc-rl__rating">
 								{ getRatingValue( player.elo, ratingType ) ||
 									'–' }
 							</td>
-						</tr>
+						</PlayerRow>
 					) ) }
 				</tbody>
 			</table>

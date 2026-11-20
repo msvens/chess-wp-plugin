@@ -26,7 +26,7 @@ import {
 	groupRating,
 } from '../../shared/ssf';
 import { resultsUrl } from '../../shared/chessMsvens';
-import PlayerName from '../../shared/PlayerName';
+import PlayerRow from '../../shared/PlayerRow';
 import RoundsDisplay from './RoundsDisplay';
 import type { DisplayRound } from './RoundsDisplay';
 
@@ -292,15 +292,15 @@ export default function SsfResultsView( {
 						</thead>
 						<tbody>
 							{ registered.map( ( r, idx ) => (
-								<tr key={ r.playerInfo.id }>
+								<PlayerRow
+									key={ r.playerInfo.id }
+									ssfId={ r.playerInfo.id }
+									link={ linkPlayers }
+								>
 									<td>{ idx + 1 }</td>
 									<td>
-										<PlayerName
-											name={ `${ r.playerInfo.lastName }, ${ r.playerInfo.firstName }` }
-											ssfId={ r.playerInfo.id }
-											stretch
-											link={ linkPlayers }
-										/>
+										{ r.playerInfo.lastName },{ ' ' }
+										{ r.playerInfo.firstName }
 									</td>
 									<td className="rc-td__rating">
 										{ formatRating(
@@ -308,7 +308,7 @@ export default function SsfResultsView( {
 											lang
 										) ?? t.ratingUnavailable }
 									</td>
-								</tr>
+								</PlayerRow>
 							) ) }
 						</tbody>
 					</table>
@@ -371,15 +371,15 @@ export default function SsfResultsView( {
 					</thead>
 					<tbody>
 						{ sorted.map( ( r ) => (
-							<tr key={ r.playerInfo.id }>
+							<PlayerRow
+								key={ r.playerInfo.id }
+								ssfId={ r.playerInfo.id }
+								link={ linkPlayers }
+							>
 								<td>{ r.place }</td>
 								<td>
-									<PlayerName
-										name={ `${ r.playerInfo.lastName }, ${ r.playerInfo.firstName }` }
-										ssfId={ r.playerInfo.id }
-										stretch
-										link={ linkPlayers }
-									/>
+									{ r.playerInfo.lastName },{ ' ' }
+									{ r.playerInfo.firstName }
 								</td>
 								<td className="rc-td__rating">
 									{ formatRating(
@@ -395,7 +395,7 @@ export default function SsfResultsView( {
 								<td>{ r.lostGames }</td>
 								<td className="rc-td__points">{ r.points }</td>
 								<td>{ Math.round( r.secPoints * 10 ) / 10 }</td>
-							</tr>
+							</PlayerRow>
 						) ) }
 					</tbody>
 				</table>
