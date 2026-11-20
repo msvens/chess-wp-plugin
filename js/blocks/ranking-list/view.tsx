@@ -11,9 +11,16 @@ document
 	.forEach( ( el ) => {
 		configureSsf( el.dataset.ssfBase || '' );
 		const clubId = el.dataset.clubId || '';
+		const linkPlayers = el.dataset.linkPlayers !== 'false';
+		const showHeading = el.dataset.showHeading !== 'false';
 		const locale =
 			document.documentElement.dataset.lang || el.dataset.locale || 'sv';
 		createRoot( el ).render(
-			<RankingListApp clubId={ clubId } locale={ locale } />
+			<RankingListApp
+				clubId={ clubId }
+				locale={ locale }
+				linkPlayers={ linkPlayers }
+				showHeading={ showHeading }
+			/>
 		);
 	} );

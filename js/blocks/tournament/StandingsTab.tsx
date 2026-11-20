@@ -2,6 +2,7 @@ import type { Tournament, SsfPlayer, Participant } from '../../admin/types';
 import type { GameResult } from '../../shared/roundRobin';
 import { computeStandings } from '../../shared/roundRobin';
 import type { Translations } from '../../shared/translations';
+import PlayerName from '../../shared/PlayerName';
 import RoundsDisplay, { formatResult } from '../training-group/RoundsDisplay';
 import type { DisplayRound } from '../training-group/RoundsDisplay';
 
@@ -9,6 +10,7 @@ interface Props {
 	tournament: Tournament;
 	ratings: Map< number, SsfPlayer >;
 	t: Translations[ 'training' ];
+	linkPlayers: boolean;
 }
 
 function getRatingStr(
@@ -36,8 +38,10 @@ function buildDisplayRounds(
 				board: idx + 1,
 				whiteName: white?.name || p.whiteId,
 				whiteRating: getRatingStr( white, ratings ),
+				whiteSsfId: white?.ssfId,
 				blackName: black?.name || p.blackId,
 				blackRating: getRatingStr( black, ratings ),
+				blackSsfId: black?.ssfId,
 				result: formatResult( p.result ),
 			};
 		} ),
@@ -45,7 +49,12 @@ function buildDisplayRounds(
 	} ) );
 }
 
-export default function StandingsTab( { tournament, ratings, t }: Props ) {
+export default function StandingsTab( {
+	tournament,
+	ratings,
+	t,
+	linkPlayers,
+}: Props ) {
 	const active = tournament.participants.filter( ( p ) => p.active );
 	const participantIds = active.map( ( p ) => p.id );
 	const participantMap = new Map( active.map( ( p ) => [ p.id, p ] ) );
@@ -94,7 +103,20 @@ export default function StandingsTab( { tournament, ratings, t }: Props ) {
 							return (
 								<tr key={ row.participantId }>
 									<td>{ idx + 1 }</td>
-									<td>{ getName( row.participantId ) }</td>
+									<td>
+										<PlayerName
+											name={ getName(
+												row.participantId
+											) }
+											ssfId={
+												participantMap.get(
+													row.participantId
+												)?.ssfId
+											}
+											stretch
+											link={ linkPlayers }
+										/>
+									</td>
 									{ ratings.size > 0 && (
 										<td className="rc-td__rating">
 											{ rating || t.ratingUnavailable }
@@ -117,7 +139,11 @@ export default function StandingsTab( { tournament, ratings, t }: Props ) {
 			</div>
 
 			{ displayRounds.length > 0 && (
-				<RoundsDisplay rounds={ displayRounds } t={ t } />
+				<RoundsDisplay
+					rounds={ displayRounds }
+					t={ t }
+					linkPlayers={ linkPlayers }
+				/>
 			) }
 		</div>
 	);

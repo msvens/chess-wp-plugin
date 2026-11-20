@@ -7,9 +7,7 @@ import {
 import { getTranslation, toLanguage } from '../../shared/translations';
 import { useLocale } from '../../shared/useLocale';
 import { fetchTournamentsToday } from '../../shared/ssf';
-
-/** Tournament and group pages live on msvens-chess; the plugin has none. */
-const RESULTS_BASE = 'https://chess.msvens.com/results';
+import { resultsUrl } from '../../shared/chessMsvens';
 
 interface Props {
 	districtId: number;
@@ -91,7 +89,7 @@ export default function TodayApp( {
 					<li key={ tournament.id } className="rc-today__item">
 						<a
 							className="rc-today__name"
-							href={ `${ RESULTS_BASE }/${ tournament.id }` }
+							href={ resultsUrl( tournament.id ) }
 						>
 							{ tournament.name }
 						</a>
@@ -105,7 +103,10 @@ export default function TodayApp( {
 								{ tournament.groupsToday.map( ( { group } ) => (
 									<li key={ group.id }>
 										<a
-											href={ `${ RESULTS_BASE }/${ tournament.id }/${ group.id }` }
+											href={ resultsUrl(
+												tournament.id,
+												group.id
+											) }
 										>
 											{ groupLabel( tournament, group ) }
 										</a>

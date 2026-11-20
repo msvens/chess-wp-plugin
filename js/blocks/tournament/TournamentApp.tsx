@@ -13,6 +13,7 @@ interface Props {
 	tournamentId: number;
 	clubId: string;
 	locale: string;
+	linkPlayers: boolean;
 }
 
 // The invitation field is free text — editors may paste a URL or write a note.
@@ -25,6 +26,7 @@ export default function TournamentApp( {
 	tournamentId,
 	clubId,
 	locale,
+	linkPlayers,
 }: Props ) {
 	const currentLocale = useLocale( locale );
 	const lang = toLanguage( currentLocale );
@@ -185,12 +187,14 @@ export default function TournamentApp( {
 					ssfGroupId={ tournament.ssfGroupId }
 					t={ t.training }
 					lang={ lang }
+					linkPlayers={ linkPlayers }
 				/>
 			) : (
 				<StandingsTab
 					tournament={ tournament }
 					ratings={ ratings }
 					t={ t.training }
+					linkPlayers={ linkPlayers }
 				/>
 			) }
 		</div>

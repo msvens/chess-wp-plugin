@@ -16,12 +16,14 @@ document
 		const locale =
 			document.documentElement.dataset.lang || el.dataset.locale || 'sv';
 		const showRounds = el.dataset.showRounds !== 'false';
+		const linkPlayers = el.dataset.linkPlayers !== 'false';
 		createRoot( el ).render(
 			<StandingsApp
 				tournamentId={ tournamentId }
 				clubId={ clubId }
 				locale={ locale }
 				showRounds={ showRounds }
+				linkPlayers={ linkPlayers }
 			/>
 		);
 	} );

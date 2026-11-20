@@ -25,6 +25,8 @@ import {
 	formatRating,
 	groupRating,
 } from '../../shared/ssf';
+import { resultsUrl } from '../../shared/chessMsvens';
+import PlayerName from '../../shared/PlayerName';
 import RoundsDisplay from './RoundsDisplay';
 import type { DisplayRound } from './RoundsDisplay';
 
@@ -33,6 +35,7 @@ interface Props {
 	t: Translations[ 'training' ];
 	lang: Language;
 	showRounds?: boolean;
+	linkPlayers?: boolean;
 }
 
 /**
@@ -90,6 +93,16 @@ function opponentName(
 		: String( id );
 }
 
+/**
+ * The SSF id to link for an opponent slot: only real players, never the
+ * negative bye/walkover markers.
+ *
+ * @param id Opponent id from the round result.
+ */
+function opponentSsfId( id: number ): number | null {
+	return getOpponentKind( id ) === 'paired' ? id : null;
+}
+
 function buildSsfDisplayRounds(
 	roundResults: TournamentRoundResultDto[],
 	playerMap: Map< number, PlayerInfoDto >,
@@ -135,8 +148,10 @@ function buildSsfDisplayRounds(
 			pairings: games.map( ( g ) => ( {
 				board: g.board,
 				whiteName: opponentName( g.homeId, playerMap, t ),
+				whiteSsfId: opponentSsfId( g.homeId ),
 				whiteRating: pairingRating( playerMap.get( g.homeId ) ),
 				blackName: opponentName( g.awayId, playerMap, t ),
+				blackSsfId: opponentSsfId( g.awayId ),
 				blackRating: pairingRating( playerMap.get( g.awayId ) ),
 				// The SDK owns the NOT_SET fallback, so a legitimate 0-0
 				// (double forfeit, adjudicated) is not read as "not played".
@@ -151,6 +166,7 @@ export default function SsfResultsView( {
 	t,
 	lang,
 	showRounds = true,
+	linkPlayers = false,
 }: Props ) {
 	const [ tournament, setTournament ] = useState< TournamentDto | null >(
 		null
@@ -220,7 +236,7 @@ export default function SsfResultsView( {
 
 	// Team tournament: link out — its results live on SSF.
 	if ( tournament && isTeamTournament( tournament.type ) ) {
-		const link = `https://chess.msvens.com/results/${ tournament.id }/${ ssfGroupId }`;
+		const link = resultsUrl( tournament.id, ssfGroupId );
 		return (
 			<p className="rc-ssf__notice">
 				{ t.ssfTeamNotice }{ ' ' }
@@ -279,8 +295,12 @@ export default function SsfResultsView( {
 								<tr key={ r.playerInfo.id }>
 									<td>{ idx + 1 }</td>
 									<td>
-										{ r.playerInfo.lastName },{ ' ' }
-										{ r.playerInfo.firstName }
+										<PlayerName
+											name={ `${ r.playerInfo.lastName }, ${ r.playerInfo.firstName }` }
+											ssfId={ r.playerInfo.id }
+											stretch
+											link={ linkPlayers }
+										/>
 									</td>
 									<td className="rc-td__rating">
 										{ formatRating(
@@ -354,8 +374,12 @@ export default function SsfResultsView( {
 							<tr key={ r.playerInfo.id }>
 								<td>{ r.place }</td>
 								<td>
-									{ r.playerInfo.lastName },{ ' ' }
-									{ r.playerInfo.firstName }
+									<PlayerName
+										name={ `${ r.playerInfo.lastName }, ${ r.playerInfo.firstName }` }
+										ssfId={ r.playerInfo.id }
+										stretch
+										link={ linkPlayers }
+									/>
 								</td>
 								<td className="rc-td__rating">
 									{ formatRating(
@@ -378,7 +402,11 @@ export default function SsfResultsView( {
 			</div>
 
 			{ showRounds && displayRounds.length > 0 && (
-				<RoundsDisplay rounds={ displayRounds } t={ t } />
+				<RoundsDisplay
+					rounds={ displayRounds }
+					t={ t }
+					linkPlayers={ linkPlayers }
+				/>
 			) }
 		</div>
 	);

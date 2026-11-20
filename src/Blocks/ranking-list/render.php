@@ -12,7 +12,9 @@
 
 defined( 'ABSPATH' ) || exit;
 
-$club_id = get_option( 'rockaden_ssf_club_id', '' );
+$club_id      = get_option( 'rockaden_ssf_club_id', '' );
+$link_players = ( $attributes['linkPlayers'] ?? true ) ? 'true' : 'false';
+$show_heading = ( $attributes['showHeading'] ?? true ) ? 'true' : 'false';
 
 $wrapper_attributes = get_block_wrapper_attributes(
 	[
@@ -22,6 +24,8 @@ $wrapper_attributes = get_block_wrapper_attributes(
 ?>
 <div <?php echo wp_kses_post( $wrapper_attributes ); ?>
 	data-club-id="<?php echo esc_attr( (string) $club_id ); ?>"
+	data-link-players="<?php echo esc_attr( $link_players ); ?>"
+	data-show-heading="<?php echo esc_attr( $show_heading ); ?>"
 	data-ssf-base="<?php echo esc_url( untrailingslashit( rest_url( 'rockaden/v1/ssf' ) ) ); ?>"
 	data-locale="<?php echo esc_attr( determine_locale() ); ?>">
 	<p><?php esc_html_e( 'Loading ranking list...', 'rockaden-chess' ); ?></p>

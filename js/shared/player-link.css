@@ -1,0 +1,44 @@
+/*
+ * Player names linked to chess.msvens.com. Names keep the table's text colour,
+ * also on hover: the theme colours every a:hover, hence the a-qualified
+ * selectors. Inline links (pairings) show an underline on hover.
+ */
+a.rc-player-link,
+a.rc-player-link:hover,
+a.rc-player-link:focus-visible {
+	color: inherit;
+	text-decoration: none;
+}
+
+a.rc-player-link:not(.rc-player-link--row):hover,
+a.rc-player-link:not(.rc-player-link--row):focus-visible {
+	text-decoration: underline;
+}
+
+/*
+ * Row links (one player per row): the <a> sits in the name cell and its
+ * ::after covers the whole row, so clicking anywhere on the row opens the
+ * player while it stays a real link (cmd-click, copy link, keyboard). The row
+ * is the overlay's containing block. The pointer and the tables' existing row
+ * hover background are the only hover cues.
+ */
+tr:has(> td > .rc-player-link--row) {
+	position: relative;
+	cursor: pointer;
+}
+
+.rc-player-link--row::after {
+	content: "";
+	position: absolute;
+	inset: 0;
+}
+
+/* Keyboard focus outlines the whole row instead of the name. */
+a.rc-player-link--row:focus-visible {
+	outline: none;
+}
+
+tr:has(> td > .rc-player-link--row:focus-visible) {
+	outline: 2px solid var(--wp--preset--color--primary, #2563eb);
+	outline-offset: -2px;
+}

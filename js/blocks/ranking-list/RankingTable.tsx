@@ -1,5 +1,6 @@
 import type { SsfPlayer } from '../../admin/types';
 import type { Translations } from '../../shared/translations';
+import PlayerName from '../../shared/PlayerName';
 import { getRatingValue, PAGE_SIZE } from './utils';
 import type { RatingType } from './utils';
 
@@ -7,6 +8,7 @@ interface Props {
 	players: SsfPlayer[];
 	ratingType: RatingType;
 	page: number;
+	linkPlayers: boolean;
 	t: Translations;
 }
 
@@ -14,6 +16,7 @@ export default function RankingTable( {
 	players,
 	ratingType,
 	page,
+	linkPlayers,
 	t,
 }: Props ) {
 	if ( players.length === 0 ) {
@@ -40,7 +43,16 @@ export default function RankingTable( {
 						<tr key={ player.id }>
 							<td>{ start + idx + 1 }</td>
 							<td>{ player.elo?.title || '' }</td>
-							<td>{ player.firstName }</td>
+							<td>
+								{ /* One link per row, stretched over it. */ }
+								<PlayerName
+									name={ player.firstName }
+									label={ `${ player.firstName } ${ player.lastName }` }
+									ssfId={ player.id }
+									link={ linkPlayers }
+									stretch
+								/>
+							</td>
 							<td>{ player.lastName }</td>
 							<td className="rc-rl__rating">
 								{ getRatingValue( player.elo, ratingType ) ||

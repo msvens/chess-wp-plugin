@@ -6,6 +6,7 @@ import { computeStandings } from '../../shared/roundRobin';
 import { getTranslation, toLanguage } from '../../shared/translations';
 import { useLocale } from '../../shared/useLocale';
 import { fetchClubPlayers } from '../../shared/ssf';
+import PlayerName from '../../shared/PlayerName';
 import RoundsDisplay, { formatResult } from '../training-group/RoundsDisplay';
 import type { DisplayRound } from '../training-group/RoundsDisplay';
 import SsfResultsView from '../training-group/SsfResultsView';
@@ -15,6 +16,7 @@ interface Props {
 	clubId: string;
 	locale: string;
 	showRounds: boolean;
+	linkPlayers: boolean;
 }
 
 function buildDisplayRounds(
@@ -31,8 +33,10 @@ function buildDisplayRounds(
 				board: idx + 1,
 				whiteName: white?.name || p.whiteId,
 				whiteRating: getRatingStr( white, ratings ),
+				whiteSsfId: white?.ssfId,
 				blackName: black?.name || p.blackId,
 				blackRating: getRatingStr( black, ratings ),
+				blackSsfId: black?.ssfId,
 				result: formatResult( p.result ),
 			};
 		} ),
@@ -56,6 +60,7 @@ export default function StandingsApp( {
 	clubId,
 	locale,
 	showRounds,
+	linkPlayers,
 }: Props ) {
 	const currentLocale = useLocale( locale );
 	const lang = toLanguage( currentLocale );
@@ -123,6 +128,7 @@ export default function StandingsApp( {
 					t={ t.training }
 					lang={ lang }
 					showRounds={ showRounds }
+					linkPlayers={ linkPlayers }
 				/>
 			</div>
 		);
@@ -186,7 +192,20 @@ export default function StandingsApp( {
 							return (
 								<tr key={ row.participantId }>
 									<td>{ idx + 1 }</td>
-									<td>{ getName( row.participantId ) }</td>
+									<td>
+										<PlayerName
+											name={ getName(
+												row.participantId
+											) }
+											ssfId={
+												participantMap.get(
+													row.participantId
+												)?.ssfId
+											}
+											stretch
+											link={ linkPlayers }
+										/>
+									</td>
 									{ ratings.size > 0 && (
 										<td className="rc-td__rating">
 											{ rating ||
@@ -210,7 +229,11 @@ export default function StandingsApp( {
 			</div>
 
 			{ showRounds && displayRounds.length > 0 && (
-				<RoundsDisplay rounds={ displayRounds } t={ t.training } />
+				<RoundsDisplay
+					rounds={ displayRounds }
+					t={ t.training }
+					linkPlayers={ linkPlayers }
+				/>
 			) }
 		</div>
 	);

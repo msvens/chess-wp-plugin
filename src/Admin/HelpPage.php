@@ -214,7 +214,7 @@ class HelpPage {
 				</tr>
 				<tr>
 					<td><strong>Ranking List</strong></td>
-					<td>Shows SSF player ratings for club members. Fetches data from the SSF API using the configured club ID.</td>
+					<td>Shows SSF player ratings for club members. Fetches data from the SSF API using the configured club ID. Player names link to chess.msvens.com (can be turned off in the block settings).</td>
 					<td>Rankings or members page</td>
 				</tr>
 				<tr>

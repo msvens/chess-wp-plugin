@@ -21,8 +21,9 @@ if ( 0 === $tournament_id && is_singular( 'rc_tournament' ) ) {
 	$tournament_id = get_the_ID();
 }
 
-$club_id     = get_option( 'rockaden_ssf_club_id', '' );
-$show_rounds = ! empty( $attributes['showRounds'] ) ? 'true' : 'false';
+$club_id      = get_option( 'rockaden_ssf_club_id', '' );
+$show_rounds  = ! empty( $attributes['showRounds'] ) ? 'true' : 'false';
+$link_players = ( $attributes['linkPlayers'] ?? true ) ? 'true' : 'false';
 
 $wrapper_attributes = get_block_wrapper_attributes(
 	[
@@ -35,6 +36,7 @@ $wrapper_attributes = get_block_wrapper_attributes(
 	data-club-id="<?php echo esc_attr( (string) $club_id ); ?>"
 	data-ssf-base="<?php echo esc_url( untrailingslashit( rest_url( 'rockaden/v1/ssf' ) ) ); ?>"
 	data-locale="<?php echo esc_attr( determine_locale() ); ?>"
-	data-show-rounds="<?php echo esc_attr( $show_rounds ); ?>">
+	data-show-rounds="<?php echo esc_attr( $show_rounds ); ?>"
+	data-link-players="<?php echo esc_attr( $link_players ); ?>">
 	<p><?php esc_html_e( 'Loading standings...', 'rockaden-chess' ); ?></p>
 </div>
