@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Chess Club Manager for schack.se\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/chess-wp-plugin\n"
-"POT-Creation-Date: 2026-11-10T12:40:17+00:00\n"
+"POT-Creation-Date: 2026-11-20T14:02:19+00:00\n"
 "PO-Revision-Date: 2026-05-26\n"
 "Language: sv_SE\n"
 "MIME-Version: 1.0\n"
@@ -204,11 +204,11 @@ msgstr "Laddar kalender..."
 msgid "Loading carousel…"
 msgstr "Laddar karusell…"
 
-#: src/Blocks/ranking-list/render.php:27
+#: src/Blocks/ranking-list/render.php:31
 msgid "Loading ranking list..."
 msgstr "Laddar ratinglista..."
 
-#: src/Blocks/standings/render.php:39
+#: src/Blocks/standings/render.php:41
 msgid "Loading standings..."
 msgstr "Laddar ställning..."
 
@@ -216,7 +216,7 @@ msgstr "Laddar ställning..."
 msgid "Loading tournaments..."
 msgstr "Laddar turneringar..."
 
-#: src/Blocks/tournament/render.php:35
+#: src/Blocks/tournament/render.php:37
 msgid "Loading tournament..."
 msgstr "Laddar turnering..."
 
