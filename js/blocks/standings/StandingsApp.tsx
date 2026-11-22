@@ -134,6 +134,11 @@ export default function StandingsApp( {
 		);
 	}
 
+	// Information-only tournament: no players or rounds to show.
+	if ( ! tournament.manageRounds ) {
+		return null;
+	}
+
 	// Local tournament standings.
 	const active = tournament.participants.filter( ( p ) => p.active );
 	const participantIds = active.map( ( p ) => p.id );

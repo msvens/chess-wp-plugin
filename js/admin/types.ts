@@ -147,6 +147,7 @@ export interface Tournament {
 	description: string;
 	category: TournamentCategory;
 	status: TournamentStatus;
+	// True when the status follows the dates (both a start and an end date).
 	statusIsAuto: boolean;
 	format: TournamentFormat;
 	timeControl: string;
@@ -163,9 +164,12 @@ export interface Tournament {
 	contact: string;
 	invitation: string;
 	// Overrides the schedule line derived from the linked calendar event.
+	// No longer edited or shown: the schedule comes from the calendar event.
 	scheduleText: string;
 	startDate: string;
 	endDate: string;
+	// Local tournaments: players, rounds and standings are managed here.
+	manageRounds: boolean;
 	showParticipants: boolean;
 	showStandings: boolean;
 	createdBy: number;
@@ -186,9 +190,10 @@ export interface CreateTournamentData {
 	registration?: string;
 	contact?: string;
 	invitation?: string;
-	scheduleText?: string;
 	startDate?: string;
 	endDate?: string;
+	// Local tournaments: players, rounds and standings are managed here.
+	manageRounds?: boolean;
 	showParticipants?: boolean;
 	showStandings?: boolean;
 	ssfHasResults?: boolean;

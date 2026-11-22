@@ -9,6 +9,7 @@ import { TOURNAMENT_FIELD_DEFAULTS } from '../../shared/overviewFields';
 import TournamentCard from './TournamentCard';
 import TournamentRow from './TournamentRow';
 import type { Language } from '../../shared/types';
+import { sortTournaments } from '../../shared/sortTournaments';
 
 interface Props {
 	locale: string;
@@ -17,12 +18,6 @@ interface Props {
 	// picks the visible one — so one set drives both.
 	fields?: TournamentFields;
 }
-
-const STATUS_ORDER: Record< Tournament[ 'status' ], number > = {
-	active: 0,
-	planned: 1,
-	completed: 2,
-};
 
 function Section( {
 	items,
@@ -82,15 +77,8 @@ export default function TournamentsApp( {
 	useEffect( () => {
 		apiFetch< Tournament[] >( { path: '/rockaden/v1/tournaments' } )
 			.then( ( data ) => {
-				const sorted = [ ...data ].sort( ( a, b ) => {
-					const diff =
-						STATUS_ORDER[ a.status ] - STATUS_ORDER[ b.status ];
-					if ( diff !== 0 ) {
-						return diff;
-					}
-					return a.title.localeCompare( b.title );
-				} );
-				setTournaments( sorted );
+				// Ongoing, then upcoming by start; completed most recent first.
+				setTournaments( sortTournaments( data ) );
 				setLoading( false );
 			} )
 			.catch( () => {

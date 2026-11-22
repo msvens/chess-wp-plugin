@@ -93,7 +93,8 @@ export default function TournamentApp( {
 	}
 
 	const isSsfBacked = tournament.ssfGroupId > 0;
-	const hasSchedule = !! ( tournament.scheduleText || event );
+	// The schedule comes from the linked calendar event only.
+	const hasSchedule = !! event;
 	const hasInfo =
 		hasSchedule ||
 		tournament.registration ||
@@ -128,7 +129,6 @@ export default function TournamentApp( {
 									source={ event }
 									lang={ lang }
 									t={ t.training }
-									override={ tournament.scheduleText }
 								/>
 							</dd>
 						</div>
@@ -190,12 +190,17 @@ export default function TournamentApp( {
 					linkPlayers={ linkPlayers }
 				/>
 			) : (
-				<StandingsTab
-					tournament={ tournament }
-					ratings={ ratings }
-					t={ t.training }
-					linkPlayers={ linkPlayers }
-				/>
+				// Information-only tournaments (players and rounds not managed
+				// here) and hidden standings get no standings section at all.
+				tournament.manageRounds &&
+				tournament.showStandings && (
+					<StandingsTab
+						tournament={ tournament }
+						ratings={ ratings }
+						t={ t.training }
+						linkPlayers={ linkPlayers }
+					/>
+				)
 			) }
 		</div>
 	);

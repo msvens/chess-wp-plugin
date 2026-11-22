@@ -50,6 +50,20 @@ export function widenForExtraDates(
 	};
 }
 
+/**
+ * Whether both a start and an end date are set: a complete date range, from
+ * which the status follows on its own. Mirrors StatusDeriver::has_date_range().
+ *
+ * @param start Start date, or ''.
+ * @param end   End date, or ''.
+ */
+export function hasDateRange( start: string, end: string ): boolean {
+	return (
+		parseLocalDate( start || '' ) !== null &&
+		parseLocalDate( end || '' ) !== null
+	);
+}
+
 export function deriveStatus(
 	start: string,
 	end: string,

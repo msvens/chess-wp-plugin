@@ -34,3 +34,63 @@
 	background: #f5f5f4;
 	color: #44403c;
 }
+
+/* Tournament list: sections of compact tables (TournamentList/TournamentTable). */
+#rockaden-tournament-root .rc-tn-section {
+	margin-top: 24px;
+}
+
+#rockaden-tournament-root .rc-tn-section__title {
+	margin: 0 0 8px;
+}
+
+#rockaden-tournament-root .rc-tn-section__toggle {
+	margin: 0 0 8px;
+	padding: 0;
+	border: 0;
+	background: none;
+	color: inherit;
+	font-size: 15px;
+	font-weight: 600;
+	cursor: pointer;
+}
+
+#rockaden-tournament-root .rc-tn-table {
+	table-layout: fixed;
+}
+
+#rockaden-tournament-root .rc-tn-table td {
+	vertical-align: middle;
+	overflow-wrap: anywhere;
+}
+
+#rockaden-tournament-root .rc-tn-table__col-status,
+#rockaden-tournament-root .rc-tn-table__col-category,
+#rockaden-tournament-root .rc-tn-table__col-players {
+	width: 11%;
+}
+
+#rockaden-tournament-root .rc-tn-table__col-dates {
+	width: 22%;
+}
+
+#rockaden-tournament-root .rc-tn-table__col-actions {
+	width: 110px;
+}
+
+#rockaden-tournament-root .rc-tn-table__row {
+	cursor: pointer;
+}
+
+#rockaden-tournament-root .rc-tn-table__row:hover td {
+	background: #f0f6fc;
+}
+
+#rockaden-tournament-root .rc-tn-table__sub {
+	color: #646970;
+	font-size: 12px;
+}
+
+#rockaden-tournament-root .rc-tn-table__actions {
+	text-align: right;
+}

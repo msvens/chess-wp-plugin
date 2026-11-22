@@ -49,6 +49,11 @@ export function participantCount(
 	tournament: Tournament,
 	ssfCount: number | undefined
 ): number | null {
+	// Information-only tournament: it has no players here to count.
+	if ( tournament.ssfGroupId <= 0 && ! tournament.manageRounds ) {
+		return null;
+	}
+
 	const count =
 		tournament.ssfGroupId > 0
 			? ssfCount

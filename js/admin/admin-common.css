@@ -39,3 +39,21 @@
 	font-size: 11px;
 	text-transform: uppercase;
 }
+
+/* Options that only apply when the checkbox above them is on. */
+.rc-form-indent {
+	margin-left: 28px;
+}
+
+/* Titled field groups in the create/edit forms (e.g. TournamentForm). */
+.rc-form-section {
+	margin-top: 20px;
+	padding-top: 12px;
+	border-top: 1px solid #e0e0e0;
+}
+
+.rc-form-section__title {
+	margin: 0 0 12px;
+	font-size: 13px;
+	font-weight: 600;
+}

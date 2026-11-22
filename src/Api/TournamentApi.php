@@ -136,7 +136,10 @@ class TournamentApi {
 	public static function list_tournaments( WP_REST_Request $request ): WP_REST_Response {
 		$query_args = [
 			'post_type'      => Tournament::POST_TYPE,
-			'posts_per_page' => 100,
+			// All of them: a club adds tens a year, and a cap would silently drop
+			// the oldest from the admin and the overview. Order is applied client
+			// side (js/shared/sortTournaments.ts).
+			'posts_per_page' => -1,
 			'post_status'    => 'publish',
 			'orderby'        => 'date',
 			'order'          => 'DESC',
@@ -311,6 +314,8 @@ class TournamentApi {
 		if ( isset( $body['invitation'] ) ) {
 			update_post_meta( $post_id, 'rc_invitation', sanitize_textarea_field( $body['invitation'] ) );
 		}
+		// No longer sent by the admin (the schedule comes from the calendar
+		// event); kept so existing data and API clients keep working.
 		if ( isset( $body['scheduleText'] ) ) {
 			update_post_meta( $post_id, 'rc_schedule_text', sanitize_textarea_field( $body['scheduleText'] ) );
 		}
@@ -319,6 +324,9 @@ class TournamentApi {
 		}
 		if ( isset( $body['endDate'] ) ) {
 			update_post_meta( $post_id, 'rc_end_date', sanitize_text_field( $body['endDate'] ) );
+		}
+		if ( isset( $body['manageRounds'] ) ) {
+			update_post_meta( $post_id, 'rc_manage_rounds', (bool) $body['manageRounds'] ? '1' : '0' );
 		}
 		if ( isset( $body['showParticipants'] ) ) {
 			update_post_meta( $post_id, 'rc_show_participants', (bool) $body['showParticipants'] ? '1' : '0' );
@@ -555,10 +563,12 @@ class TournamentApi {
 	private static function format_tournament( \WP_Post $post ): array {
 		$show_participants = get_post_meta( $post->ID, 'rc_show_participants', true );
 		$show_standings    = get_post_meta( $post->ID, 'rc_show_standings', true );
+		$manage_rounds     = get_post_meta( $post->ID, 'rc_manage_rounds', true );
 
 		// Unset meta returns '' — treat as true for backward compat.
 		$show_participants = ( '' === $show_participants ) ? true : (bool) $show_participants;
 		$show_standings    = ( '' === $show_standings ) ? true : (bool) $show_standings;
+		$manage_rounds     = ( '' === $manage_rounds ) ? true : (bool) $manage_rounds;
 
 		$is_editor    = current_user_can( 'edit_posts' );
 		$participants = json_decode( get_post_meta( $post->ID, 'rc_participants', true ) ?: '[]', true );
@@ -573,6 +583,10 @@ class TournamentApi {
 		$time_control        = get_post_meta( $post->ID, 'rc_time_control', true ) ?: 'classical';
 		$ssf_tournament_name = get_post_meta( $post->ID, 'rc_ssf_tournament_name', true ) ?: '';
 
+		// Players and rounds are only managed here for local tournaments that
+		// have the option on; SSF tournaments keep theirs in SSF.
+		$manage_rounds = $ssf_group_id > 0 ? false : $manage_rounds;
+
 		// Status is derived from the stored snapshot (dates + a "has started"
 		// flag): rc_ssf_has_results for SSF-backed tournaments (snapshotted when
 		// the editor fetches from SSF), or recorded local results otherwise. A
@@ -580,12 +594,22 @@ class TournamentApi {
 		// directly via the SDK; the server keeps no SSF knowledge.
 		$has_results = $ssf_group_id > 0
 			? (bool) get_post_meta( $post->ID, 'rc_ssf_has_results', true )
-			: self::rounds_have_results( is_array( $rounds ) ? $rounds : [] );
-		$status      = ( 'auto' === $raw_status )
+			: ( $manage_rounds && self::rounds_have_results( is_array( $rounds ) ? $rounds : [] ) );
+		// With a complete date range (from SSF, or a calendar event with an end
+		// date) the status always follows the dates and a stored manual status
+		// is ignored. Without one the status is set by hand; a stored 'auto'
+		// from before that rule still derives (planned, or active once results
+		// exist) until an editor picks one.
+		$status_from_dates = StatusDeriver::has_date_range( $start_date, $end_date );
+		$status            = ( $status_from_dates || 'auto' === $raw_status )
 			? StatusDeriver::derive( $start_date, $end_date, $has_results )
 			: $raw_status;
 
 		if ( ! $is_editor ) {
+			if ( $ssf_group_id <= 0 && ! $manage_rounds ) {
+				$participants = [];
+				$rounds       = [];
+			}
 			if ( ! $show_participants ) {
 				$participants = [];
 			}
@@ -601,7 +625,8 @@ class TournamentApi {
 			'description'       => $post->post_content,
 			'category'          => self::category( $post->ID ),
 			'status'            => $status,
-			'statusIsAuto'      => ( 'auto' === $raw_status ),
+			// True when the status follows the dates (complete date range).
+			'statusIsAuto'      => $status_from_dates,
 			'format'            => get_post_meta( $post->ID, 'rc_format', true ) ?: 'round-robin',
 			'timeControl'       => $time_control,
 			'participants'      => $participants,
@@ -618,6 +643,7 @@ class TournamentApi {
 			'scheduleText'      => get_post_meta( $post->ID, 'rc_schedule_text', true ) ?: '',
 			'startDate'         => $start_date,
 			'endDate'           => $end_date,
+			'manageRounds'      => $manage_rounds,
 			'showParticipants'  => $show_participants,
 			'showStandings'     => $show_standings,
 			'createdBy'         => $post->post_author,
