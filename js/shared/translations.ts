@@ -115,6 +115,11 @@ export interface Translations {
 		title: string;
 		subtitle: string;
 		createTournament: string;
+		manageRounds: string;
+		dates: string;
+		sectionUpcoming: string;
+		manageRoundsHelp: string;
+		notManagedNote: string;
 		noTournaments: string;
 		tournamentName: string;
 		category: string;
@@ -132,6 +137,12 @@ export interface Translations {
 		};
 		statusAuto: string;
 		statusAutoHint: string;
+		statusManualHint: string;
+		statusManualSsfHint: string;
+		addToCalendarLocalHint: string;
+		sectionInfo: string;
+		sectionDatesStatus: string;
+		sectionPlayers: string;
 		editTournament: string;
 		refreshFromSsf: string;
 		ssfFetchError: string;
@@ -151,8 +162,6 @@ export interface Translations {
 		invitation: string;
 		invitationHint: string;
 		invitationLink: string;
-		scheduleText: string;
-		scheduleTextHint: string;
 		addToCalendar: string;
 		addToCalendarHint: string;
 		linkedEvent: string;
@@ -498,6 +507,17 @@ const translations: Translations = {
 			'rockaden-chess'
 		),
 		createTournament: __( 'Create Tournament', 'rockaden-chess' ),
+		manageRounds: __( 'Manage players and rounds here', 'rockaden-chess' ),
+		dates: __( 'Dates', 'rockaden-chess' ),
+		sectionUpcoming: __( 'Upcoming', 'rockaden-chess' ),
+		manageRoundsHelp: __(
+			'Leave it off if you run the tournament in another program; the tournament page then shows only its information.',
+			'rockaden-chess'
+		),
+		notManagedNote: __(
+			'Players and rounds aren’t managed here. To add them, edit the tournament and turn on “Manage players and rounds here”.',
+			'rockaden-chess'
+		),
 		noTournaments: __( 'No tournaments yet.', 'rockaden-chess' ),
 		tournamentName: __( 'Tournament name', 'rockaden-chess' ),
 		category: __( 'Category', 'rockaden-chess' ),
@@ -518,6 +538,21 @@ const translations: Translations = {
 			'Derived from the start/end dates (and results). A manual choice overrides it.',
 			'rockaden-chess'
 		),
+		statusManualHint: __(
+			'No calendar event with an end date, so you choose the status.',
+			'rockaden-chess'
+		),
+		statusManualSsfHint: __(
+			'SSF gives no start and end date, so you choose the status.',
+			'rockaden-chess'
+		),
+		addToCalendarLocalHint: __(
+			'The tournament’s dates come from the calendar event.',
+			'rockaden-chess'
+		),
+		sectionInfo: __( 'Information', 'rockaden-chess' ),
+		sectionDatesStatus: __( 'Dates and status', 'rockaden-chess' ),
+		sectionPlayers: __( 'Players and rounds', 'rockaden-chess' ),
 		editTournament: __( 'Edit tournament', 'rockaden-chess' ),
 		refreshFromSsf: __( 'Fetch / Refresh from SSF', 'rockaden-chess' ),
 		ssfFetchError: __( 'Could not fetch from SSF', 'rockaden-chess' ),
@@ -543,11 +578,6 @@ const translations: Translations = {
 			'rockaden-chess'
 		),
 		invitationLink: __( 'Read the invitation', 'rockaden-chess' ),
-		scheduleText: __( 'Schedule (free text)', 'rockaden-chess' ),
-		scheduleTextHint: __(
-			'Optional. Leave empty to list the linked calendar event’s actual dates; fill it in to word the schedule yourself.',
-			'rockaden-chess'
-		),
 		addToCalendar: __( 'Add to calendar', 'rockaden-chess' ),
 		addToCalendarHint: __(
 			'Creates a calendar event from this tournament’s dates.',

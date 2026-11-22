@@ -22,8 +22,6 @@ interface Props {
 	source: ScheduleSource | null;
 	lang: Language;
 	t: Translations[ 'training' ];
-	// Editor-authored free text, which replaces the derived wording entirely.
-	override?: string;
 }
 
 function Lines( { display }: { display: ScheduleDisplay } ) {
@@ -39,10 +37,7 @@ function Lines( { display }: { display: ScheduleDisplay } ) {
 	);
 }
 
-export default function ScheduleValue( { source, lang, t, override }: Props ) {
-	if ( override ) {
-		return <>{ override }</>;
-	}
+export default function ScheduleValue( { source, lang, t }: Props ) {
 	if ( ! source ) {
 		return null;
 	}

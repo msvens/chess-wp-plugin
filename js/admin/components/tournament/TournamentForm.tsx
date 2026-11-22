@@ -24,7 +24,7 @@ import {
 	isTeamTournament,
 	getGroupTimeControl,
 } from '@msvens/schack-se-sdk';
-import { deriveStatus } from '../../../shared/deriveStatus';
+import { deriveStatus, hasDateRange } from '../../../shared/deriveStatus';
 import {
 	EventSection,
 	emptyEventValue,
@@ -48,6 +48,22 @@ function ReadOnlyField( { label, value }: { label: string; value: string } ) {
 			</div>
 			<div>{ value || '—' }</div>
 		</div>
+	);
+}
+
+// A titled group of fields in the form.
+function FormSection( {
+	title,
+	children,
+}: {
+	title: string;
+	children: React.ReactNode;
+} ) {
+	return (
+		<section className="rc-form-section">
+			<h3 className="rc-form-section__title">{ title }</h3>
+			{ children }
+		</section>
 	);
 }
 
@@ -79,7 +95,7 @@ export interface TournamentFormValues {
 	registration: string;
 	contact: string;
 	invitation: string;
-	scheduleText: string;
+	manageRounds: boolean;
 	showParticipants: boolean;
 	showStandings: boolean;
 	ssfHasResults: boolean;
@@ -121,7 +137,8 @@ const DEFAULTS: TournamentFormValues = {
 	registration: '',
 	contact: '',
 	invitation: '',
-	scheduleText: '',
+	// New tournaments are information only until this is turned on.
+	manageRounds: false,
 	showParticipants: true,
 	showStandings: true,
 	ssfHasResults: false,
@@ -170,7 +187,7 @@ export function TournamentForm( {
 	const [ registration, setRegistration ] = useState( init.registration );
 	const [ contact, setContact ] = useState( init.contact );
 	const [ invitation, setInvitation ] = useState( init.invitation );
-	const [ scheduleText, setScheduleText ] = useState( init.scheduleText );
+	const [ manageRounds, setManageRounds ] = useState( init.manageRounds );
 	const [ showParticipants, setShowParticipants ] = useState(
 		init.showParticipants
 	);
@@ -218,16 +235,16 @@ export function TournamentForm( {
 			: eventValue.eventEnd
 		: '';
 
-	// Live preview of what 'Automatic' resolves to (mirrors the server). SSF
-	// tournaments use their fetched dates and whether SSF has round results.
-	const previewStatus =
-		status === 'auto'
-			? deriveStatus(
-					effectiveStart,
-					effectiveEnd,
-					isSsfBacked ? ssfHasResults : !! initialHasResults
-			  )
-			: null;
+	// With a complete date range (SSF dates, or a calendar event with an end
+	// date) the status follows the dates and the form shows no status field;
+	// without one it is set by hand. Mirrors TournamentApi::format_tournament().
+	const hasResults = isSsfBacked
+		? ssfHasResults
+		: manageRounds && !! initialHasResults;
+	const statusFromDates = hasDateRange( effectiveStart, effectiveEnd );
+	// A stored 'auto' on an undated tournament shows as what it resolves to.
+	const manualStatus =
+		status === 'auto' ? deriveStatus( '', '', hasResults ) : status;
 
 	const timeControlLabel =
 		timeControl === 'rapid'
@@ -336,7 +353,7 @@ export function TournamentForm( {
 			title: title.trim(),
 			description: description.trim() || undefined,
 			category,
-			status,
+			status: statusFromDates ? 'auto' : manualStatus,
 			timeControl,
 			ssfGroupId: isSsfBacked ? ssfId : 0,
 			ssfTournamentId: isSsfBacked ? ssfTournamentId : 0,
@@ -347,7 +364,7 @@ export function TournamentForm( {
 			registration: registration.trim(),
 			contact: contact.trim(),
 			invitation: invitation.trim(),
-			scheduleText: scheduleText.trim(),
+			manageRounds: isSsfBacked ? undefined : manageRounds,
 			showParticipants,
 			showStandings,
 			ssfHasResults: isSsfBacked ? ssfHasResults : false,
@@ -439,25 +456,6 @@ export function TournamentForm( {
 				help={ t.tournament.descriptionHint }
 			/>
 
-			{ /* Info rows shown on the public page, mirroring the training
-			   group's Trainers/Contact fields. */ }
-			<TextareaControl
-				label={ t.tournament.registration }
-				value={ registration }
-				onChange={ setRegistration }
-			/>
-			<TextControl
-				label={ t.tournament.contact }
-				value={ contact }
-				onChange={ setContact }
-			/>
-			<TextControl
-				label={ t.tournament.invitation }
-				value={ invitation }
-				onChange={ setInvitation }
-				help={ t.tournament.invitationHint }
-			/>
-
 			<div style={ { display: 'flex', gap: 12 } }>
 				<div style={ { flex: 1 } }>
 					<SelectControl
@@ -487,16 +485,144 @@ export function TournamentForm( {
 					/>
 				</div>
 				<div style={ { flex: 1 } }>
+					{ isSsfBacked ? (
+						<ReadOnlyField
+							label={ t.training.timeControl }
+							value={ timeControlLabel }
+						/>
+					) : (
+						<SelectControl
+							label={ t.training.timeControl }
+							value={ timeControl }
+							options={ [
+								{
+									label: t.training.classical,
+									value: 'classical',
+								},
+								{ label: t.training.rapid, value: 'rapid' },
+								{ label: t.training.blitz, value: 'blitz' },
+							] }
+							onChange={ ( v ) =>
+								setTimeControl( v as typeof init.timeControl )
+							}
+						/>
+					) }
+				</div>
+			</div>
+
+			{ /* Info rows shown on the public page, mirroring the training
+			   group's Trainers/Contact fields. */ }
+			<FormSection title={ t.tournament.sectionInfo }>
+				<TextareaControl
+					label={ t.tournament.registration }
+					value={ registration }
+					onChange={ setRegistration }
+				/>
+				<TextControl
+					label={ t.tournament.contact }
+					value={ contact }
+					onChange={ setContact }
+				/>
+				<TextControl
+					label={ t.tournament.invitation }
+					value={ invitation }
+					onChange={ setInvitation }
+					help={ t.tournament.invitationHint }
+				/>
+				{ ! isSsfBacked && (
+					<TextControl
+						label={ t.tournament.externalLink }
+						value={ externalLink }
+						onChange={ setExternalLink }
+						type="url"
+					/>
+				) }
+			</FormSection>
+
+			{ /* Dates and status together: the status follows the dates when
+			   there is a complete range (SSF dates, or the calendar event for a
+			   home-grown tournament, which has no dates of its own); otherwise
+			   it is chosen here. */ }
+			<FormSection title={ t.tournament.sectionDatesStatus }>
+				{ isSsfBacked && (
+					<div className="rc-date-fields">
+						<ReadOnlyField
+							label={ t.tournament.startDate }
+							value={ startDate }
+						/>
+						<ReadOnlyField
+							label={ t.tournament.endDate }
+							value={ endDate }
+						/>
+					</div>
+				) }
+
+				<CheckboxControl
+					label={ t.tournament.addToCalendar }
+					checked={ addToCalendar }
+					onChange={ ( checked ) => {
+						setAddToCalendar( checked );
+						// Prefill the event when first enabling. For an SSF tournament
+						// we only know the day span: ≤ 7 days → one multi-day event;
+						// longer → a weekly-recurrence guess (SSF gives no time, so
+						// default 18:00–20:00) you then adjust. Home-grown starts blank.
+						if (
+							! checked ||
+							eventValue.eventStart ||
+							eventValue.eventEnd
+						) {
+							return;
+						}
+						const day = startDate.slice( 0, 10 );
+						if (
+							isSsfBacked &&
+							daysBetween( startDate, endDate ) > 7
+						) {
+							setEventValue( {
+								...eventValue,
+								eventStart: day ? `${ day }T18:00:00` : '',
+								eventEnd: day ? `${ day }T20:00:00` : '',
+								eventRecurring: true,
+								eventRecurrenceType: 'weekly',
+								eventRecurrenceEnd: endDate.slice( 0, 10 ),
+								eventCategory: 'tournament',
+							} );
+						} else {
+							setEventValue( {
+								...eventValue,
+								eventStart: startDate,
+								eventEnd: endDate,
+								eventCategory: 'tournament',
+							} );
+						}
+					} }
+					help={
+						isSsfBacked
+							? t.tournament.addToCalendarHint
+							: t.tournament.addToCalendarLocalHint
+					}
+				/>
+				{ addToCalendar && (
+					<EventSection
+						t={ t }
+						showRecurrence={ true }
+						value={ eventValue }
+						onChange={ setEventValue }
+					/>
+				) }
+
+				{ /* When the dates decide the status there is nothing to choose,
+				   so no status field at all. */ }
+				{ ! statusFromDates && (
 					<SelectControl
 						label={ t.tournament.status }
-						value={ status }
+						value={ manualStatus }
 						help={
-							previewStatus
-								? `${ t.tournament.statusAutoHint } → ${ t.tournament.statuses[ previewStatus ] }`
-								: t.tournament.statusAutoHint
+							isSsfBacked
+								? t.tournament.statusManualSsfHint
+								: t.tournament.statusManualHint
 						}
 						options={ [
-							{ label: t.tournament.statusAuto, value: 'auto' },
 							{
 								label: t.tournament.statuses.planned,
 								value: 'planned',
@@ -514,128 +640,33 @@ export function TournamentForm( {
 							setStatus( v as TournamentStatusChoice )
 						}
 					/>
-				</div>
-				{ ! isSsfBacked && (
-					<div style={ { flex: 1 } }>
-						<SelectControl
-							label={ t.training.timeControl }
-							value={ timeControl }
-							options={ [
-								{
-									label: t.training.classical,
-									value: 'classical',
-								},
-								{ label: t.training.rapid, value: 'rapid' },
-								{ label: t.training.blitz, value: 'blitz' },
-							] }
-							onChange={ ( v ) =>
-								setTimeControl( v as typeof init.timeControl )
-							}
-						/>
-					</div>
 				) }
-			</div>
+			</FormSection>
 
-			{ isSsfBacked ? (
-				<div className="rc-date-fields">
-					<ReadOnlyField
-						label={ t.training.timeControl }
-						value={ timeControlLabel }
-					/>
-					<ReadOnlyField
-						label={ t.tournament.startDate }
-						value={ startDate }
-					/>
-					<ReadOnlyField
-						label={ t.tournament.endDate }
-						value={ endDate }
-					/>
-				</div>
-			) : (
-				<>
-					{ /* Home-grown tournaments take their dates from the linked
-					   calendar event below (Add to calendar) — no separate date
-					   fields. Without an event the tournament has no dates and
-					   you set its status manually. */ }
-					<TextControl
-						label={ t.tournament.externalLink }
-						value={ externalLink }
-						onChange={ setExternalLink }
-						type="url"
-					/>
-
+			{ ! isSsfBacked && (
+				<FormSection title={ t.tournament.sectionPlayers }>
 					<CheckboxControl
-						label={ t.training.showParticipants }
-						checked={ showParticipants }
-						onChange={ setShowParticipants }
+						label={ t.tournament.manageRounds }
+						help={ t.tournament.manageRoundsHelp }
+						checked={ manageRounds }
+						onChange={ setManageRounds }
 					/>
-					<CheckboxControl
-						label={ t.training.showStandings }
-						checked={ showStandings }
-						onChange={ setShowStandings }
-					/>
-				</>
+					{ manageRounds && (
+						<div className="rc-form-indent">
+							<CheckboxControl
+								label={ t.training.showParticipants }
+								checked={ showParticipants }
+								onChange={ setShowParticipants }
+							/>
+							<CheckboxControl
+								label={ t.training.showStandings }
+								checked={ showStandings }
+								onChange={ setShowStandings }
+							/>
+						</div>
+					) }
+				</FormSection>
 			) }
-
-			<CheckboxControl
-				label={ t.tournament.addToCalendar }
-				checked={ addToCalendar }
-				onChange={ ( checked ) => {
-					setAddToCalendar( checked );
-					// Prefill the event when first enabling. For an SSF tournament
-					// we only know the day span: ≤ 7 days → one multi-day event;
-					// longer → a weekly-recurrence guess (SSF gives no time, so
-					// default 18:00–20:00) you then adjust. Home-grown starts blank.
-					if (
-						! checked ||
-						eventValue.eventStart ||
-						eventValue.eventEnd
-					) {
-						return;
-					}
-					const day = startDate.slice( 0, 10 );
-					if (
-						isSsfBacked &&
-						daysBetween( startDate, endDate ) > 7
-					) {
-						setEventValue( {
-							...eventValue,
-							eventStart: day ? `${ day }T18:00:00` : '',
-							eventEnd: day ? `${ day }T20:00:00` : '',
-							eventRecurring: true,
-							eventRecurrenceType: 'weekly',
-							eventRecurrenceEnd: endDate.slice( 0, 10 ),
-							eventCategory: 'tournament',
-						} );
-					} else {
-						setEventValue( {
-							...eventValue,
-							eventStart: startDate,
-							eventEnd: endDate,
-							eventCategory: 'tournament',
-						} );
-					}
-				} }
-				help={ t.tournament.addToCalendarHint }
-			/>
-			{ addToCalendar && (
-				<EventSection
-					t={ t }
-					showRecurrence={ true }
-					value={ eventValue }
-					onChange={ setEventValue }
-				/>
-			) }
-
-			{ /* Left empty, the public Schedule row lists the linked event's real
-			   occurrence dates. Fill this in to state the schedule in your own
-			   words instead (e.g. to annotate which rounds fall on which date). */ }
-			<TextareaControl
-				label={ t.tournament.scheduleText }
-				value={ scheduleText }
-				onChange={ setScheduleText }
-				help={ t.tournament.scheduleTextHint }
-			/>
 
 			{ error && (
 				<Text

@@ -68,7 +68,7 @@ export function EditTournamentModal( {
 					registration: tournament.registration,
 					contact: tournament.contact,
 					invitation: tournament.invitation,
-					scheduleText: tournament.scheduleText,
+					manageRounds: tournament.manageRounds,
 					showParticipants: tournament.showParticipants,
 					showStandings: tournament.showStandings,
 					addToCalendar: !! tournament.calendarEvent,

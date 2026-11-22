@@ -44,6 +44,18 @@ class StatusDeriver {
 	}
 
 	/**
+	 * Whether both a start and an end date are set and valid: a complete date
+	 * range, from which the status can be derived on its own.
+	 *
+	 * @param string $start Start date ('' if unset).
+	 * @param string $end   End date ('' if unset).
+	 */
+	public static function has_date_range( string $start, string $end ): bool {
+		$tz = wp_timezone();
+		return null !== self::parse_local_date( $start, $tz ) && null !== self::parse_local_date( $end, $tz );
+	}
+
+	/**
 	 * Parse a date string as local midnight in the given timezone. Accepts
 	 * 'YYYY-MM-DD' or a longer ISO string (the date part is used). Returns null
 	 * on empty/invalid input.

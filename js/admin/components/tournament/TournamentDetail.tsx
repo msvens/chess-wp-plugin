@@ -17,30 +17,7 @@ import { RoundsPanel } from './RoundsPanel';
 import { EditTournamentModal } from './EditTournamentModal';
 import { SsfTournamentView } from '../SsfTournamentView';
 import Description from '../../../shared/Description';
-
-function formatDate( value: string ): string {
-	if ( ! value ) {
-		return '';
-	}
-	const d = new Date( value );
-	if ( isNaN( d.getTime() ) ) {
-		return value;
-	}
-	return d.toLocaleDateString( 'sv-SE', {
-		year: 'numeric',
-		month: 'short',
-		day: 'numeric',
-	} );
-}
-
-function formatDateRange( start: string, end: string ): string {
-	const s = formatDate( start );
-	const e = formatDate( end );
-	if ( s && e ) {
-		return `${ s } – ${ e }`;
-	}
-	return s || e;
-}
+import { formatDateRange } from './dates';
 
 interface TournamentDetailProps {
 	tournamentId: number;
@@ -197,13 +174,25 @@ export function TournamentDetail( {
 				</Notice>
 			) }
 
-			{ isSsfBacked ? (
+			{ ! isSsfBacked && ! tournament.manageRounds && (
+				<Text
+					as="p"
+					variant="muted"
+					style={ { display: 'block', marginTop: 16 } }
+				>
+					{ t.tournament.notManagedNote }
+				</Text>
+			) }
+
+			{ isSsfBacked && (
 				<SsfTournamentView
 					ssfGroupId={ tournament.ssfGroupId }
 					t={ t }
 					lang={ lang }
 				/>
-			) : (
+			) }
+
+			{ ! isSsfBacked && tournament.manageRounds && (
 				<TabPanel tabs={ tabs } initialTabName="participants">
 					{ ( tab ) => {
 						if ( tab.name === 'participants' ) {

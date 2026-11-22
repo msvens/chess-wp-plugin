@@ -106,7 +106,8 @@ class Tournament {
 				'type'    => 'string',
 				'default' => '',
 			],
-			// Overrides the schedule line derived from the linked calendar event.
+			// No longer used by the plugin's UI (the schedule comes from the linked
+			// calendar event); kept registered so existing values stay readable.
 			'rc_schedule_text'       => [
 				'type'    => 'string',
 				'default' => '',
@@ -118,6 +119,13 @@ class Tournament {
 			'rc_end_date'            => [
 				'type'    => 'string',
 				'default' => '',
+			],
+			// Off: the tournament is information only (no players, rounds or
+			// standings). Unset counts as on, so tournaments saved before the
+			// option existed are unchanged; new ones are created with it off.
+			'rc_manage_rounds'       => [
+				'type'    => 'boolean',
+				'default' => true,
 			],
 			'rc_show_participants'   => [
 				'type'    => 'boolean',
