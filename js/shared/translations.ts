@@ -300,6 +300,29 @@ export interface Translations {
 		loadError: string;
 		empty: string;
 	};
+	qr: {
+		title: string;
+		subtitle: string;
+		create: string;
+		edit: string;
+		empty: string;
+		loadError: string;
+		saveError: string;
+		deleteError: string;
+		name: string;
+		nameHelp: string;
+		address: string;
+		addressHelp: string;
+		slugWarning: string;
+		invalidAddress: string;
+		missingTarget: string;
+		notFound: string;
+		downloadSvg: string;
+		downloadPng: string;
+		pngSize: string;
+		downloadHelp: string;
+		ownedByOther: string;
+	};
 	ranking: {
 		title: string;
 		ratingPeriod: string;
@@ -809,6 +832,53 @@ const translations: Translations = {
 		loading: __( 'Loading tournaments…', 'rockaden-chess' ),
 		loadError: __( 'Could not load tournaments.', 'rockaden-chess' ),
 		empty: __( 'No tournaments are being played today.', 'rockaden-chess' ),
+	},
+	qr: {
+		title: __( 'QR Codes', 'rockaden-chess' ),
+		subtitle: __(
+			'QR codes for handouts and posters. Download them for print, or show one on a page with the QR Code block.',
+			'rockaden-chess'
+		),
+		create: __( 'New QR code', 'rockaden-chess' ),
+		edit: __( 'Edit QR code', 'rockaden-chess' ),
+		empty: __( 'No QR codes yet.', 'rockaden-chess' ),
+		loadError: __( 'Could not load the QR codes.', 'rockaden-chess' ),
+		saveError: __( 'Could not save the QR code.', 'rockaden-chess' ),
+		deleteError: __( 'Could not delete the QR code.', 'rockaden-chess' ),
+		name: __( 'Name (optional)', 'rockaden-chess' ),
+		nameHelp: __(
+			'What the code is for, e.g. “Winter tournament 2027 – sign-up”. Shown on the card and used as the file name. Leave it empty to use the address.',
+			'rockaden-chess'
+		),
+		address: __( 'Target address', 'rockaden-chess' ),
+		addressHelp: __(
+			'A full address (https://…) or a path on this site, such as /bli-medlem/. The code contains this address directly.',
+			'rockaden-chess'
+		),
+		slugWarning: __(
+			'Keep the slug of the page it points to: renaming a page’s address breaks every printed code that points to it.',
+			'rockaden-chess'
+		),
+		invalidAddress: __(
+			'Enter a full http(s) address, or a path starting with /.',
+			'rockaden-chess'
+		),
+		missingTarget: __(
+			'Nothing found at this address (404). A printed code pointing here won’t work.',
+			'rockaden-chess'
+		),
+		notFound: __( 'Not found (404)', 'rockaden-chess' ),
+		downloadSvg: __( 'Download SVG', 'rockaden-chess' ),
+		downloadPng: __( 'Download PNG', 'rockaden-chess' ),
+		pngSize: __( 'PNG size', 'rockaden-chess' ),
+		downloadHelp: __(
+			'SVG is best for print: it stays sharp at any size. PNG is for Word, Canva and the like.',
+			'rockaden-chess'
+		),
+		ownedByOther: __(
+			'Created by someone else; only an editor can change it.',
+			'rockaden-chess'
+		),
 	},
 	ranking: {
 		title: __( 'Ranking List', 'rockaden-chess' ),

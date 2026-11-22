@@ -1,0 +1,46 @@
+/* =========================================================
+   QR Code block — qr-code.css
+   The code is always black on white, also under a dark theme: inverted codes
+   scan badly, and the white margin is the quiet zone scanners need.
+   ========================================================= */
+
+/*
+ * Full width by default so the theme's content layout (which centres its
+ * children with auto margins) doesn't centre a code that isn't aligned; the
+ * code sits at the start. Centre or float only when an alignment is chosen.
+ */
+.rockaden-qr-code-block {
+	margin-block: 1rem;
+}
+
+.rockaden-qr-code-block.aligncenter .rc-qr__code,
+.rockaden-qr-code-block.aligncenter .rc-qr__caption {
+	margin-inline: auto;
+}
+
+.rockaden-qr-code-block.alignleft,
+.rockaden-qr-code-block.alignright {
+	width: fit-content;
+	max-width: 100%;
+}
+
+.rc-qr__code {
+	width: var(--rc-qr-size, 200px);
+	max-width: 100%;
+	aspect-ratio: 1;
+	background: #fff;
+}
+
+.rc-qr__code svg {
+	display: block;
+	width: 100%;
+	height: 100%;
+}
+
+.rc-qr__caption {
+	max-width: var(--rc-qr-size, 200px);
+	margin-top: 0.4rem;
+	font-size: 0.875rem;
+	text-align: center;
+	overflow-wrap: anywhere;
+}

@@ -85,6 +85,7 @@ add_action( 'init', [ Rockaden\PostTypes\TrainingGroup::class, 'register' ] );
 add_action( 'init', [ Rockaden\PostTypes\TrainingSession::class, 'register' ] );
 add_action( 'init', [ Rockaden\PostTypes\Tournament::class, 'register' ] );
 add_action( 'init', [ Rockaden\PostTypes\Event::class, 'register' ] );
+add_action( 'init', [ Rockaden\PostTypes\QrCode::class, 'register' ] );
 
 add_action( 'rest_api_init', [ Rockaden\Api\SsfProxy::class, 'register_routes' ] );
 add_action( 'rest_api_init', [ Rockaden\Api\TrainingApi::class, 'register_routes' ] );
@@ -93,6 +94,7 @@ add_action( 'rest_api_init', [ Rockaden\Api\EventApi::class, 'register_routes' ]
 
 add_action( 'admin_menu', [ Rockaden\Admin\TrainingAdmin::class, 'register_page' ] );
 add_action( 'admin_menu', [ Rockaden\Admin\TournamentAdmin::class, 'register_page' ] );
+add_action( 'admin_menu', [ Rockaden\Admin\QrCodeAdmin::class, 'register_page' ] );
 add_action( 'admin_menu', [ Rockaden\Admin\SettingsPage::class, 'register_page' ] );
 add_action( 'admin_menu', [ Rockaden\Admin\HelpPage::class, 'register_page' ] );
 
@@ -209,6 +211,17 @@ add_action(
 				'order'      => 47,
 			]
 		);
+		Rockaden\Docs\DocsRegistry::register(
+			[
+				'slug'       => 'qr-koder',
+				'title_sv'   => 'QR-koder',
+				'title_en'   => 'QR Codes',
+				'section_sv' => 'Plugin',
+				'section_en' => 'Plugin',
+				'file'       => $docs_dir . 'qr-koder.html',
+				'order'      => 48,
+			]
+		);
 
 		// How-Tos: task-oriented step guides.
 		Rockaden\Docs\DocsRegistry::register(
@@ -289,7 +302,7 @@ add_action(
 add_action(
 	'init',
 	function (): void {
-		$blocks    = [ 'calendar', 'carousel', 'chess-game', 'documentation', 'ranking-list', 'standings', 'today', 'tournament', 'tournaments', 'training-group', 'training-groups', 'upcoming-events' ];
+		$blocks    = [ 'calendar', 'carousel', 'chess-game', 'documentation', 'qr-code', 'ranking-list', 'standings', 'today', 'tournament', 'tournaments', 'training-group', 'training-groups', 'upcoming-events' ];
 		$lang_path = RC_PLUGIN_DIR . 'languages';
 		foreach ( $blocks as $block ) {
 			$block_dir = RC_PLUGIN_DIR . "src/Blocks/{$block}";

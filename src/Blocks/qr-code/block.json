@@ -1,0 +1,35 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "rockaden/qr-code",
+  "version": "0.1.0",
+  "title": "QR Code",
+  "category": "widgets",
+  "icon": "screenoptions",
+  "description": "Shows one of the saved QR codes (QR Codes in the admin menu), optionally with its name or address underneath.",
+  "keywords": ["qr", "qr-kod", "code"],
+  "textdomain": "rockaden-chess",
+  "attributes": {
+    "qrCodeId": {
+      "type": "number",
+      "default": 0
+    },
+    "caption": {
+      "type": "string",
+      "enum": ["none", "name", "url"],
+      "default": "none"
+    },
+    "size": {
+      "type": "number",
+      "default": 200
+    }
+  },
+  "supports": {
+    "html": false,
+    "align": ["left", "center", "right"]
+  },
+  "editorScript": "file:../../../build/blocks/qr-code/index.js",
+  "viewScript": "file:../../../build/blocks/qr-code/view.js",
+  "style": "file:../../../build/blocks/qr-code/view.css",
+  "render": "file:./render.php"
+}

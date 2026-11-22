@@ -44,6 +44,10 @@ module.exports = {
 			__dirname,
 			'js/admin/event-metabox.ts'
 		),
+		'admin/qr-manager': path.resolve(
+			__dirname,
+			'js/admin/qr-manager.tsx'
+		),
 		'blocks/documentation/index': path.resolve(
 			__dirname,
 			'js/blocks/documentation/index.tsx'
@@ -127,6 +131,14 @@ module.exports = {
 		'blocks/today/view': path.resolve(
 			__dirname,
 			'js/blocks/today/view.tsx'
+		),
+		'blocks/qr-code/index': path.resolve(
+			__dirname,
+			'js/blocks/qr-code/index.tsx'
+		),
+		'blocks/qr-code/view': path.resolve(
+			__dirname,
+			'js/blocks/qr-code/view.ts'
 		),
 		'blocks/upcoming-events/index': path.resolve(
 			__dirname,
