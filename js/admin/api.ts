@@ -22,6 +22,7 @@ import type {
 	TournamentCategory,
 	TournamentStatus,
 	ParticipantRole,
+	QrCode,
 } from './types';
 
 const BASE = 'rockaden/v1';
@@ -339,4 +340,67 @@ export function fetchClubRatings( clubId: string ): Promise< PlayerInfoDto[] > {
 			PlayerCategory.ALL
 		)
 		.then( ( res ) => res.data ?? [] );
+}
+
+// QR codes (stored as rc_qr_code posts, read and written over wp/v2).
+interface QrCodeRecord {
+	id: number;
+	title: { raw?: string; rendered: string };
+	rc_qr_url: string;
+	rc_can_edit: boolean;
+}
+
+function toQrCode( r: QrCodeRecord ): QrCode {
+	return {
+		id: r.id,
+		name: r.title.raw ?? r.title.rendered,
+		url: r.rc_qr_url,
+		canEdit: r.rc_can_edit,
+	};
+}
+
+export async function fetchQrCodes(): Promise< QrCode[] > {
+	const records = await apiFetch< QrCodeRecord[] >( {
+		path: 'wp/v2/rc_qr_code?context=edit&status=publish&per_page=100&orderby=title&order=asc',
+	} );
+	return records.map( toQrCode );
+}
+
+/**
+ * Create a code (no id) or update one. Codes are always published: there is
+ * no draft state for a QR code.
+ *
+ * @param data      Name and address.
+ * @param data.name What the code is for; may be ''.
+ * @param data.url  Address as typed; the server expands a site path.
+ * @param id        Existing code to update.
+ */
+export async function saveQrCode(
+	data: { name: string; url: string },
+	id?: number
+): Promise< QrCode > {
+	const record = await apiFetch< QrCodeRecord >( {
+		path: id
+			? `wp/v2/rc_qr_code/${ id }?context=edit`
+			: 'wp/v2/rc_qr_code?context=edit',
+		method: 'POST',
+		data: {
+			title: data.name,
+			status: 'publish',
+			rc_qr_url: data.url,
+		},
+	} );
+	return toQrCode( record );
+}
+
+/**
+ * Delete a code permanently (there is no trash screen to restore it from).
+ *
+ * @param id Code to delete.
+ */
+export function deleteQrCode( id: number ): Promise< unknown > {
+	return apiFetch( {
+		path: `wp/v2/rc_qr_code/${ id }?force=true`,
+		method: 'DELETE',
+	} );
 }

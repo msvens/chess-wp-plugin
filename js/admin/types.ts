@@ -236,3 +236,13 @@ export interface AppConfig {
 	clubId: string;
 	language: Language;
 }
+
+/** A saved QR code as the QR Codes page uses it (from wp/v2/rc_qr_code). */
+export interface QrCode {
+	id: number;
+	// What the code is for; optional, may be ''.
+	name: string;
+	url: string;
+	// False for an author looking at someone else's code.
+	canEdit: boolean;
+}

@@ -1,0 +1,112 @@
+/* QR Codes manager (js/admin/components/qr/). Layout matches the tournaments page. */
+
+.rc-qr-app__header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 16px;
+}
+
+.rc-qr-app__grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+	gap: 16px;
+	margin-top: 16px;
+}
+
+.rc-qr-image {
+	flex: none;
+	background: #fff;
+}
+
+.rc-qr-image svg {
+	display: block;
+	width: 100%;
+	height: 100%;
+}
+
+/* Card */
+.rc-qr-card__header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 8px;
+	width: 100%;
+}
+
+.rc-qr-card__body {
+	display: flex;
+	gap: 12px;
+	align-items: flex-start;
+}
+
+.rc-qr-card__info {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: 6px;
+	min-width: 0;
+}
+
+.rc-qr-card__url {
+	overflow-wrap: anywhere;
+}
+
+.rc-qr-card__actions {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+}
+
+.rc-qr-flag {
+	padding: 0 6px;
+	border-radius: 3px;
+	background: #d63638;
+	color: #fff;
+	font-size: 12px;
+}
+
+/* Modal */
+.rc-qr-modal__preview {
+	display: grid;
+	grid-template-columns: 200px minmax(0, 1fr);
+	gap: 24px;
+	align-items: start;
+	margin-top: 20px;
+}
+
+@media (max-width: 600px) {
+	.rc-qr-modal__preview {
+		grid-template-columns: minmax(0, 1fr);
+	}
+}
+
+.rc-qr-modal__placeholder {
+	width: 200px;
+	height: 200px;
+	background: #f0f0f0;
+}
+
+.rc-qr-modal__downloads {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: 12px;
+}
+
+.rc-qr-modal__png {
+	display: flex;
+	align-items: flex-end;
+	gap: 8px;
+}
+
+.rc-qr-modal__footer {
+	display: flex;
+	justify-content: flex-end;
+	gap: 8px;
+	margin-top: 24px;
+}
+
+.components-modal__content .components-notice {
+	margin: 12px 0 0;
+}

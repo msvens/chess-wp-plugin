@@ -16,6 +16,7 @@ parameters:
                 - src/Admin/TrainingAdmin.php
                 - src/Admin/TournamentAdmin.php
                 - src/Admin/EventMetaBoxes.php
+                - src/Admin/QrCodeAdmin.php
         # WP-CLI is only available when running under wp-cli; stubs not installed
         -
             identifier: class.notFound

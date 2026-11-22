@@ -71,6 +71,7 @@ class HelpPage {
 			<li><strong>Calendar events</strong> &mdash; create one-off or recurring events with category filtering.</li>
 			<li><strong>SSF integration</strong> &mdash; proxy to the Swedish Chess Federation API for ratings, rankings, and event import.</li>
 			<li><strong>Gutenberg blocks</strong> &mdash; embed calendars, standings, and training info in any page or post.</li>
+			<li><strong>QR codes</strong> &mdash; save QR codes for handouts under <em>QR Codes</em>, download them as SVG or PNG, or show one on a page with the QR Code block.</li>
 		</ul>
 		<?php
 	}
@@ -211,6 +212,11 @@ class HelpPage {
 					<td><strong>Chess Game</strong></td>
 					<td>Replays one or more games from PGN with comments and variations, optionally as a "find the move" puzzle. Also renders the <code>[pgn]</code> shortcode from the Embed Chessboard plugin once that plugin is deactivated.</td>
 					<td>News posts, game analysis</td>
+				</tr>
+				<tr>
+					<td><strong>QR Code</strong></td>
+					<td>Shows one of the saved QR codes (QR Codes in the admin menu), optionally with its name or address underneath. Always black on white so it scans.</td>
+					<td>Posters, event pages meant for print or a screen</td>
 				</tr>
 				<tr>
 					<td><strong>Ranking List</strong></td>

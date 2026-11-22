@@ -1,0 +1,66 @@
+<p class="rc-doc-sv">
+	Under <strong>QR-koder</strong> i adminmenyn sparar du QR-koder till utskick och affischer: ”bli medlem”, ”anmäl dig till träningen”, ”anmälan till vinterturneringen”. Varje kod har ett namn och en måladress. Du laddar ner koden som bild för tryck, eller visar den på en sida med blocket <strong>QR-kod</strong>.
+</p>
+<p class="rc-doc-en">
+	Under <strong>QR Codes</strong> in the admin menu you save QR codes for handouts and posters: “become a member”, “join the training”, “sign up for the winter tournament”. Each code has a name and a target address. You download the code as an image for print, or show it on a page with the <strong>QR Code</strong> block.
+</p>
+
+<h2 class="rc-doc-sv">Skapa en QR-kod</h2>
+<h2 class="rc-doc-en">Creating a QR code</h2>
+
+<ol>
+	<li class="rc-doc-sv">Gå till <strong>QR-koder</strong> och klicka på <strong>Ny QR-kod</strong>.</li>
+	<li class="rc-doc-en">Go to <strong>QR Codes</strong> and click <strong>New QR code</strong>.</li>
+	<li class="rc-doc-sv">Ge gärna koden ett namn som säger vad den är till, t.ex. ”Vinterturnering 2027 – anmälan”. Namnet visas på kortet och blir filnamnet när du laddar ner. Det är valfritt: utan namn används adressen.</li>
+	<li class="rc-doc-en">Optionally give the code a name that says what it is for, e.g. “Winter tournament 2027 – sign-up”. The name shows on the card and becomes the file name when you download. Without a name, the address is used.</li>
+	<li class="rc-doc-sv">Skriv måladressen: en hel adress (<code>https://…</code>) eller en sökväg på den här sajten, t.ex. <code>/bli-medlem/</code>. En sökväg görs om till en hel adress. Förhandsvisningen uppdateras medan du skriver.</li>
+	<li class="rc-doc-en">Enter the target address: a full address (<code>https://…</code>) or a path on this site, e.g. <code>/bli-medlem/</code>. A path is turned into a full address. The preview updates as you type.</li>
+	<li class="rc-doc-sv">Klicka på <strong>Spara</strong>. Koden syns nu som ett kort i listan.</li>
+	<li class="rc-doc-en">Click <strong>Save</strong>. The code now shows up as a card in the list.</li>
+</ol>
+
+<p class="rc-doc-sv">
+	Klicka på ett kort för att ändra koden. <strong>Ta bort</strong> (och sedan <strong>Bekräfta</strong>) tar bort koden för gott. Koden innehåller måladressen direkt, utan omdirigering. Författare ser alla koder men kan bara ändra sina egna; redaktörer och administratörer kan ändra alla.
+</p>
+<p class="rc-doc-en">
+	Click a card to change the code. <strong>Delete</strong> (then <strong>Confirm</strong>) removes the code for good. The code contains the target address directly, with no redirect. Authors see every code but can only change their own; editors and administrators can change all of them.
+</p>
+
+<h2 class="rc-doc-sv">Ladda ner</h2>
+<h2 class="rc-doc-en">Downloading</h2>
+
+<ul>
+	<li><strong>SVG</strong> <span class="rc-doc-sv">— bäst för tryck: bilden blir skarp i alla storlekar.</span><span class="rc-doc-en">— best for print: the image stays sharp at any size.</span></li>
+	<li><strong>PNG</strong> <span class="rc-doc-sv">— för Word, Canva och liknande. I redigeringsfönstret väljer du 512, 1024 eller 2048 pixlar; knappen på kortet ger 1024 pixlar.</span><span class="rc-doc-en">— for Word, Canva and the like. In the edit window you pick 512, 1024 or 2048 pixels; the button on the card gives 1024 pixels.</span></li>
+</ul>
+
+<h2 class="rc-doc-sv">Behåll sidans adress</h2>
+<h2 class="rc-doc-en">Keep the page's address</h2>
+
+<p class="rc-doc-sv">
+	En tryckt kod går inte att ändra. Pekar den på en sida, t.ex. <code>/bli-medlem/</code>, ska den sidans adress (slug) ligga kvar. WordPress omdirigerar <em>inte</em> från en gammal adress när du byter slug på en <strong>sida</strong>, så alla tryckta koder dit slutar fungera. (Inlägg får en omdirigering från den gamla adressen, sidor gör det inte.)
+</p>
+<p class="rc-doc-en">
+	A printed code can't be changed. If it points to a page, e.g. <code>/bli-medlem/</code>, keep that page's address (slug). WordPress does <em>not</em> redirect from the old address when you change the slug of a <strong>page</strong>, so every printed code pointing there stops working. (Posts get a redirect from their old address; pages don't.)
+</p>
+<p class="rc-doc-sv">
+	Vill du byta innehåll: låt adressen vara och ändra sidan, eller ge den nya sidan den gamla adressen.
+</p>
+<p class="rc-doc-en">
+	To change the content: keep the address and edit the page, or give the new page the old address.
+</p>
+
+<div class="rc-docs-tip">
+	<span class="rc-doc-sv"><strong>Tips:</strong> Korten och redigeringsfönstret markerar koder vars adress på den här sajten inte längre finns (<em>Hittades inte (404)</em>). Kontrollen görs som en utloggad besökare, så ett utkast eller en privat sida räknas som saknad. Adresser till andra sajter kontrolleras inte.</span>
+	<span class="rc-doc-en"><strong>Tip:</strong> The cards and the edit window flag codes whose address on this site no longer exists (<em>Not found (404)</em>). The check is made as a logged-out visitor, so a draft or private page counts as missing. Addresses on other sites aren't checked.</span>
+</div>
+
+<h2 class="rc-doc-sv">Visa en kod på en sida</h2>
+<h2 class="rc-doc-en">Showing a code on a page</h2>
+
+<p class="rc-doc-sv">
+	Lägg till blocket <strong>QR-kod</strong> och välj en sparad kod i sidopanelen. Där väljer du också storlek och om namnet eller adressen ska stå under koden. Blocket hämtar adressen från den sparade koden, så ändrar du koden ändras alla sidor som visar den. Tas koden bort visas ingenting för besökarna.
+</p>
+<p class="rc-doc-en">
+	Add the <strong>QR Code</strong> block and pick a saved code in the sidebar. There you also choose the size and whether the name or the address shows under the code. The block reads the address from the saved code, so changing the code changes every page that shows it. If the code is deleted, visitors see nothing.
+</p>
