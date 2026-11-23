@@ -12,6 +12,9 @@
  *   - .mo / .l10n.php behind the .po   → the bug that shipped English to Swedish
  *                                        visitors when only the .po was edited
  *   - .json disagreeing with the .po   → the two drifted for months
+ *   - msgstr identical to msgid        → a string written in the wrong
+ *                                        language (sameInTranslation lists the
+ *                                        ones that really are identical)
  *
  * What it does NOT catch: a brand-new source string that was never extracted.
  * That needs `pnpm i18n`.
@@ -88,6 +91,24 @@ for ( const pkg of PACKAGES ) {
 		if ( untranslated.length ) {
 			fail( `${ locale }: ${ untranslated.length } untranslated entries` );
 			untranslated.slice( 0, 5 ).forEach( ( e ) => console.error( `      empty: ${ e.msgid.slice( 0, 60 ) }` ) );
+		}
+
+		// 1b. A translation identical to its source. Almost always a string
+		//     written in the catalogue's language instead of the source
+		//     language, which then never gets translated the other way: how
+		//     ~90 English-only strings reached Swedish visitors in the theme.
+		//     Strings that really are the same in both languages are listed
+		//     in the package's sameInTranslation.
+		const same = new Set( pkg.sameInTranslation ?? [] );
+		const copies = all.filter(
+			( e ) => isTranslated( e ) && ! e.plurals.length && e.msgstr === e.msgid && ! same.has( e.msgid )
+		);
+		if ( copies.length ) {
+			fail(
+				`${ locale }: ${ copies.length } entries translated to themselves — write the source ` +
+				`string in the source language, or add it to sameInTranslation in scripts/lib/packages.mjs`
+			);
+			copies.slice( 0, 10 ).forEach( ( e ) => console.error( `      same: ${ e.msgid.slice( 0, 60 ) }` ) );
 		}
 
 		// 2. Derived artifacts must agree with the .po.
