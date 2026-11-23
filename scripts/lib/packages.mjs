@@ -19,6 +19,41 @@ export const PACKAGES = [
 		// build/ holds compiled copies of every render.php — scanning it made the
 		// old POT list each block string twice.
 		exclude: 'build,node_modules,vendor,docs,dist,scripts',
+		// Strings that are spelled the same in English and Swedish. Anything
+		// else translated to itself fails i18n:check.
+		sameInTranslation: [
+			// Plugin header: product name, author, URL.
+			'Chess Club Manager for schack.se',
+			'Martin Svensson',
+			'https://github.com/msvens/chess-wp-plugin',
+			// Chess and club terms used as-is in Swedish.
+			'Allsvenskan',
+			'Elo',
+			'Junior',
+			'PGN',
+			'Rapid',
+			'Rating',
+			'Senior',
+			'Standard',
+			// Ordinary words that read the same.
+			'Auto',
+			'Format',
+			'Information',
+			'Layout',
+			'Start',
+			'Status',
+			'URL',
+			// Symbols used as labels or placeholders.
+			'#',
+			'-',
+			'—',
+			// Block keywords, already in Swedish or language-neutral.
+			'pgn',
+			'schack',
+			'parti',
+			'qr',
+			'qr-kod',
+		],
 		// wp-cli parses JavaScript but not TypeScript, and every __() call in the
 		// plugin lives in this one .ts file. xgettext handles it; the two POTs are
 		// then merged with msgcat.

@@ -486,7 +486,8 @@ const translations: Translations = {
 		ssfFetchError: __( 'Could not fetch SSF data', 'rockaden-chess' ),
 		ssfPreviewConfirm: __( 'Apply', 'rockaden-chess' ),
 		results: __( 'Results', 'rockaden-chess' ),
-		tiebreak: __( 'KP', 'rockaden-chess' ),
+		// Tie-break points; Swedish 'KP' (kvalitetspoäng).
+		tiebreak: __( 'TB', 'rockaden-chess' ),
 		loadingResults: __( 'Loading results…', 'rockaden-chess' ),
 		resultsFetchError: __( 'Could not load results.', 'rockaden-chess' ),
 		ssfTeamNotice: __(

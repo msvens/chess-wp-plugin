@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-11-22T14:23:12+00:00\n"
+"POT-Creation-Date: 2026-11-23T11:01:34+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: rockaden-chess\n"
@@ -570,11 +570,11 @@ msgstr ""
 msgid "Classical"
 msgstr ""
 
-#: js/shared/translations.ts:402 js/shared/translations.ts:919
+#: js/shared/translations.ts:402 js/shared/translations.ts:920
 msgid "Rapid"
 msgstr ""
 
-#: js/shared/translations.ts:403 js/shared/translations.ts:920
+#: js/shared/translations.ts:403 js/shared/translations.ts:921
 msgid "Blitz"
 msgstr ""
 
@@ -618,7 +618,7 @@ msgstr ""
 msgid "Add Participant"
 msgstr ""
 
-#: js/shared/translations.ts:420 js/shared/translations.ts:672
+#: js/shared/translations.ts:420 js/shared/translations.ts:673
 msgid "Remove"
 msgstr ""
 
@@ -630,7 +630,7 @@ msgstr ""
 msgid "Past training groups"
 msgstr ""
 
-#: js/shared/translations.ts:423 js/shared/translations.ts:759
+#: js/shared/translations.ts:423 js/shared/translations.ts:760
 msgid "Hidden"
 msgstr ""
 
@@ -646,7 +646,7 @@ msgstr ""
 msgid "copy"
 msgstr ""
 
-#: js/shared/translations.ts:428 js/shared/translations.ts:533
+#: js/shared/translations.ts:428 js/shared/translations.ts:534
 msgid "Active"
 msgstr ""
 
@@ -662,7 +662,7 @@ msgstr ""
 msgid "Save Notes"
 msgstr ""
 
-#: js/shared/translations.ts:432 js/shared/translations.ts:928
+#: js/shared/translations.ts:432 js/shared/translations.ts:929
 msgid "#"
 msgstr ""
 
@@ -718,7 +718,7 @@ msgstr ""
 msgid "Schedule"
 msgstr ""
 
-#: js/shared/translations.ts:449 js/shared/translations.ts:624
+#: js/shared/translations.ts:449 js/shared/translations.ts:625
 msgid "Time"
 msgstr ""
 
@@ -774,7 +774,7 @@ msgstr ""
 msgid "Participant"
 msgstr ""
 
-#: js/shared/translations.ts:466 js/shared/translations.ts:574
+#: js/shared/translations.ts:466 js/shared/translations.ts:575
 msgid "Contact"
 msgstr ""
 
@@ -854,1049 +854,1049 @@ msgstr ""
 msgid "Results"
 msgstr ""
 
-#: js/shared/translations.ts:489
-msgid "KP"
-msgstr ""
-
 #: js/shared/translations.ts:490
-msgid "Loading results…"
+msgid "TB"
 msgstr ""
 
 #: js/shared/translations.ts:491
+msgid "Loading results…"
+msgstr ""
+
+#: js/shared/translations.ts:492
 msgid "Could not load results."
 msgstr ""
 
-#: js/shared/translations.ts:493 js/shared/translations.ts:603
+#: js/shared/translations.ts:494 js/shared/translations.ts:604
 msgid "This is a team tournament — its results are not shown here."
 msgstr ""
 
-#: js/shared/translations.ts:497 js/shared/translations.ts:607
+#: js/shared/translations.ts:498 js/shared/translations.ts:608
 msgid "This tournament hasn't started yet — showing the registered players."
 msgstr ""
 
-#: js/shared/translations.ts:500 js/shared/translations.ts:610
+#: js/shared/translations.ts:501 js/shared/translations.ts:611
 msgid "Registered players"
 msgstr ""
 
-#: js/shared/translations.ts:501 js/shared/translations.ts:559
+#: js/shared/translations.ts:502 js/shared/translations.ts:560
 msgid "Full results"
 msgstr ""
 
-#: js/shared/translations.ts:506
+#: js/shared/translations.ts:507
 msgid "Club tournaments — round-robin or SSF-backed."
 msgstr ""
 
-#: js/shared/translations.ts:509
+#: js/shared/translations.ts:510
 msgid "Create Tournament"
 msgstr ""
 
-#: js/shared/translations.ts:510
+#: js/shared/translations.ts:511
 msgid "Manage players and rounds here"
 msgstr ""
 
-#: js/shared/translations.ts:511
+#: js/shared/translations.ts:512
 msgid "Dates"
 msgstr ""
 
-#: js/shared/translations.ts:512
+#: js/shared/translations.ts:513
 msgid "Upcoming"
 msgstr ""
 
-#: js/shared/translations.ts:514
+#: js/shared/translations.ts:515
 msgid ""
 "Leave it off if you run the tournament in another program; the tournament "
 "page then shows only its information."
 msgstr ""
 
-#: js/shared/translations.ts:518
+#: js/shared/translations.ts:519
 msgid ""
 "Players and rounds aren’t managed here. To add them, edit the tournament and "
 "turn on “Manage players and rounds here”."
 msgstr ""
 
-#: js/shared/translations.ts:521
+#: js/shared/translations.ts:522
 msgid "No tournaments yet."
 msgstr ""
 
-#: js/shared/translations.ts:522
+#: js/shared/translations.ts:523
 msgid "Tournament name"
 msgstr ""
 
-#: js/shared/translations.ts:526
+#: js/shared/translations.ts:527
 msgid "Youth"
 msgstr ""
 
-#: js/shared/translations.ts:527
+#: js/shared/translations.ts:528
 msgid "Senior"
 msgstr ""
 
-#: js/shared/translations.ts:528
+#: js/shared/translations.ts:529
 msgid "Mixed"
 msgstr ""
 
-#: js/shared/translations.ts:530
+#: js/shared/translations.ts:531
 msgid "Status"
 msgstr ""
 
-#: js/shared/translations.ts:532
+#: js/shared/translations.ts:533
 msgid "Planned"
 msgstr ""
 
-#: js/shared/translations.ts:534
+#: js/shared/translations.ts:535
 msgid "Completed"
 msgstr ""
 
-#: js/shared/translations.ts:536 js/shared/translations.ts:756
+#: js/shared/translations.ts:537 js/shared/translations.ts:757
 msgid "Automatic"
 msgstr ""
 
-#: js/shared/translations.ts:538
+#: js/shared/translations.ts:539
 msgid ""
 "Derived from the start/end dates (and results). A manual choice overrides it."
 msgstr ""
 
-#: js/shared/translations.ts:542
+#: js/shared/translations.ts:543
 msgid "No calendar event with an end date, so you choose the status."
 msgstr ""
 
-#: js/shared/translations.ts:546
+#: js/shared/translations.ts:547
 msgid "SSF gives no start and end date, so you choose the status."
 msgstr ""
 
-#: js/shared/translations.ts:550
+#: js/shared/translations.ts:551
 msgid "The tournament’s dates come from the calendar event."
 msgstr ""
 
-#: js/shared/translations.ts:553
+#: js/shared/translations.ts:554
 msgid "Information"
 msgstr ""
 
-#: js/shared/translations.ts:554
+#: js/shared/translations.ts:555
 msgid "Dates and status"
 msgstr ""
 
-#: js/shared/translations.ts:555
+#: js/shared/translations.ts:556
 msgid "Players and rounds"
 msgstr ""
 
-#: js/shared/translations.ts:556
+#: js/shared/translations.ts:557
 msgid "Edit tournament"
 msgstr ""
 
-#: js/shared/translations.ts:557
+#: js/shared/translations.ts:558
 msgid "Fetch / Refresh from SSF"
 msgstr ""
 
-#: js/shared/translations.ts:558
+#: js/shared/translations.ts:559
 msgid "Could not fetch from SSF"
 msgstr ""
 
-#: js/shared/translations.ts:560
+#: js/shared/translations.ts:561
 msgid "Ongoing"
 msgstr ""
 
-#: js/shared/translations.ts:561
+#: js/shared/translations.ts:562
 msgid "Past tournaments"
 msgstr ""
 
-#: js/shared/translations.ts:562
+#: js/shared/translations.ts:563
 msgid "Format"
 msgstr ""
 
-#: js/shared/translations.ts:564
+#: js/shared/translations.ts:565
 msgid "Round-robin"
 msgstr ""
 
-#: js/shared/translations.ts:566
+#: js/shared/translations.ts:567
 msgid "Start date"
 msgstr ""
 
-#: js/shared/translations.ts:567
+#: js/shared/translations.ts:568
 msgid "End date"
 msgstr ""
 
-#: js/shared/translations.ts:568
+#: js/shared/translations.ts:569
 msgid "External link"
 msgstr ""
 
-#: js/shared/translations.ts:570
+#: js/shared/translations.ts:571
 msgid ""
 "Leave a blank line between paragraphs to break the text up on the public "
 "page."
 msgstr ""
 
-#: js/shared/translations.ts:573
+#: js/shared/translations.ts:574
 msgid "Registration"
 msgstr ""
 
-#: js/shared/translations.ts:575
+#: js/shared/translations.ts:576
 msgid "Invitation"
 msgstr ""
 
-#: js/shared/translations.ts:577
+#: js/shared/translations.ts:578
 msgid "A link or a short note. Web addresses are shown as a link."
 msgstr ""
 
-#: js/shared/translations.ts:580
+#: js/shared/translations.ts:581
 msgid "Read the invitation"
 msgstr ""
 
-#: js/shared/translations.ts:581
+#: js/shared/translations.ts:582
 msgid "Add to calendar"
 msgstr ""
 
-#: js/shared/translations.ts:583
+#: js/shared/translations.ts:584
 msgid "Creates a calendar event from this tournament’s dates."
 msgstr ""
 
-#: js/shared/translations.ts:586
+#: js/shared/translations.ts:587
 msgid "Linked calendar event"
 msgstr ""
 
-#: js/shared/translations.ts:587
+#: js/shared/translations.ts:588
 msgid "SSF group ID (optional)"
 msgstr ""
 
-#: js/shared/translations.ts:589
+#: js/shared/translations.ts:590
 msgid ""
 "Only for tournaments registered on schack.se — leave empty for a tournament "
 "you run here. Enter the GROUP id, not the tournament id: a tournament can "
 "contain several groups. With it set, standings come from SSF."
 msgstr ""
 
-#: js/shared/translations.ts:593
+#: js/shared/translations.ts:594
 msgid ""
 "There is no group with this id on schack.se. Check the id, or clear the "
 "field for a tournament you run here."
 msgstr ""
 
-#: js/shared/translations.ts:597
+#: js/shared/translations.ts:598
 msgid "Standings are pulled from SSF. Local pairings/results are not used."
 msgstr ""
 
-#: js/shared/translations.ts:600
+#: js/shared/translations.ts:601
 msgid "Group"
 msgstr ""
 
-#: js/shared/translations.ts:611
+#: js/shared/translations.ts:612
 msgid "Overview"
 msgstr ""
 
-#: js/shared/translations.ts:612 js/shared/translations.ts:622
+#: js/shared/translations.ts:613 js/shared/translations.ts:623
 msgid "View tournament"
 msgstr ""
 
-#: js/shared/translations.ts:613
+#: js/shared/translations.ts:614
 msgid "Back to tournaments"
 msgstr ""
 
-#: js/shared/translations.ts:616
+#: js/shared/translations.ts:617
 msgid "Calendar"
 msgstr ""
 
-#: js/shared/translations.ts:618
+#: js/shared/translations.ts:619
 msgid "Upcoming events and club activities."
 msgstr ""
 
-#: js/shared/translations.ts:621 js/shared/translations.ts:857
+#: js/shared/translations.ts:622 js/shared/translations.ts:858
 msgid "Today"
 msgstr ""
 
-#: js/shared/translations.ts:623
+#: js/shared/translations.ts:624
 msgid "No events this day."
 msgstr ""
 
-#: js/shared/translations.ts:626
+#: js/shared/translations.ts:627
 msgid "more"
 msgstr ""
 
-#: js/shared/translations.ts:627
+#: js/shared/translations.ts:628
 msgid "All-day"
 msgstr ""
 
-#: js/shared/translations.ts:630
+#: js/shared/translations.ts:631
 msgid "Month"
 msgstr ""
 
-#: js/shared/translations.ts:631
+#: js/shared/translations.ts:632
 msgid "Week"
 msgstr ""
 
-#: js/shared/translations.ts:632
+#: js/shared/translations.ts:633
 msgid "Day"
 msgstr ""
 
-#: js/shared/translations.ts:634
+#: js/shared/translations.ts:635
 msgid "Mon"
 msgstr ""
 
-#: js/shared/translations.ts:635
+#: js/shared/translations.ts:636
 msgid "Tue"
 msgstr ""
 
-#: js/shared/translations.ts:636
+#: js/shared/translations.ts:637
 msgid "Wed"
 msgstr ""
 
-#: js/shared/translations.ts:637
+#: js/shared/translations.ts:638
 msgid "Thu"
 msgstr ""
 
-#: js/shared/translations.ts:638
+#: js/shared/translations.ts:639
 msgid "Fri"
 msgstr ""
 
-#: js/shared/translations.ts:639
+#: js/shared/translations.ts:640
 msgid "Sat"
 msgstr ""
 
-#: js/shared/translations.ts:640
+#: js/shared/translations.ts:641
 msgid "Sun"
 msgstr ""
 
-#: js/shared/translations.ts:650 js/shared/translations.ts:921
+#: js/shared/translations.ts:651 js/shared/translations.ts:922
 msgid "All"
 msgstr ""
 
-#: js/shared/translations.ts:654 js/shared/translations.ts:944
+#: js/shared/translations.ts:655 js/shared/translations.ts:945
 msgid "Edit"
 msgstr ""
 
-#: js/shared/translations.ts:655 js/shared/translations.ts:943
+#: js/shared/translations.ts:656 js/shared/translations.ts:944
 msgid "Delete"
 msgstr ""
 
-#: js/shared/translations.ts:656
+#: js/shared/translations.ts:657
 msgid "Delete this event?"
 msgstr ""
 
-#: js/shared/translations.ts:657
+#: js/shared/translations.ts:658
 msgid "Just this one"
 msgstr ""
 
-#: js/shared/translations.ts:658
+#: js/shared/translations.ts:659
 msgid "Whole series"
 msgstr ""
 
-#: js/shared/translations.ts:659
+#: js/shared/translations.ts:660
 msgid "Create event"
 msgstr ""
 
-#: js/shared/translations.ts:660
+#: js/shared/translations.ts:661
 msgid "Add to an existing event"
 msgstr ""
 
-#: js/shared/translations.ts:662
+#: js/shared/translations.ts:663
 msgid "Choose…"
 msgstr ""
 
-#: js/shared/translations.ts:663
+#: js/shared/translations.ts:664
 msgid "Saving…"
 msgstr ""
 
-#: js/shared/translations.ts:665
+#: js/shared/translations.ts:666
 msgid "Could not add the session. Try again."
 msgstr ""
 
-#: js/shared/translations.ts:670
+#: js/shared/translations.ts:671
 msgid "Add images"
 msgstr ""
 
-#: js/shared/translations.ts:671
+#: js/shared/translations.ts:672
 msgid "Edit images"
 msgstr ""
 
-#: js/shared/translations.ts:673
+#: js/shared/translations.ts:674
 msgid "Move up"
 msgstr ""
 
-#: js/shared/translations.ts:674
+#: js/shared/translations.ts:675
 msgid "Move down"
 msgstr ""
 
-#: js/shared/translations.ts:675
+#: js/shared/translations.ts:676
 msgid "No images selected yet."
 msgstr ""
 
-#: js/shared/translations.ts:676
+#: js/shared/translations.ts:677
 msgid "Display mode"
 msgstr ""
 
-#: js/shared/translations.ts:678
+#: js/shared/translations.ts:679
 msgid "Slider"
 msgstr ""
 
-#: js/shared/translations.ts:679
+#: js/shared/translations.ts:680
 msgid "Carousel"
 msgstr ""
 
-#: js/shared/translations.ts:681
+#: js/shared/translations.ts:682
 msgid "Auto-advance"
 msgstr ""
 
-#: js/shared/translations.ts:682
+#: js/shared/translations.ts:683
 msgid "Interval (seconds)"
 msgstr ""
 
-#: js/shared/translations.ts:683
+#: js/shared/translations.ts:684
 msgid "Visible items"
 msgstr ""
 
-#: js/shared/translations.ts:684
+#: js/shared/translations.ts:685
 msgid "Aspect ratio"
 msgstr ""
 
-#: js/shared/translations.ts:685
+#: js/shared/translations.ts:686
 msgid "Cell sizing"
 msgstr ""
 
-#: js/shared/translations.ts:686
+#: js/shared/translations.ts:687
 msgid "Exact height"
 msgstr ""
 
-#: js/shared/translations.ts:687
+#: js/shared/translations.ts:688
 msgid "Height (px)"
 msgstr ""
 
-#: js/shared/translations.ts:689
+#: js/shared/translations.ts:690
 msgid "16:9 (Landscape wide)"
 msgstr ""
 
-#: js/shared/translations.ts:690
+#: js/shared/translations.ts:691
 msgid "4:3 (Landscape)"
 msgstr ""
 
-#: js/shared/translations.ts:691
+#: js/shared/translations.ts:692
 msgid "1:1 (Square)"
 msgstr ""
 
-#: js/shared/translations.ts:692
+#: js/shared/translations.ts:693
 msgid "3:4 (Portrait)"
 msgstr ""
 
-#: js/shared/translations.ts:693
+#: js/shared/translations.ts:694
 msgid "9:16 (Portrait tall)"
 msgstr ""
 
-#: js/shared/translations.ts:694
+#: js/shared/translations.ts:695
 msgid "Auto"
 msgstr ""
 
-#: js/shared/translations.ts:696
+#: js/shared/translations.ts:697
 msgid "Image fit"
 msgstr ""
 
-#: js/shared/translations.ts:698
+#: js/shared/translations.ts:699
 msgid "Fill (crop edges)"
 msgstr ""
 
-#: js/shared/translations.ts:699
+#: js/shared/translations.ts:700
 msgid "Fit whole image"
 msgstr ""
 
-#: js/shared/translations.ts:701
+#: js/shared/translations.ts:702
 msgid "Backdrop"
 msgstr ""
 
-#: js/shared/translations.ts:703
+#: js/shared/translations.ts:704
 msgid "Blurred image"
 msgstr ""
 
-#: js/shared/translations.ts:704
+#: js/shared/translations.ts:705
 msgid "Black bars"
 msgstr ""
 
-#: js/shared/translations.ts:706
+#: js/shared/translations.ts:707
 msgid "Constrain size"
 msgstr ""
 
-#: js/shared/translations.ts:708
+#: js/shared/translations.ts:709
 msgid "No limit (fill container)"
 msgstr ""
 
-#: js/shared/translations.ts:709
+#: js/shared/translations.ts:710
 msgid "By max width"
 msgstr ""
 
-#: js/shared/translations.ts:710
+#: js/shared/translations.ts:711
 msgid "By max height"
 msgstr ""
 
-#: js/shared/translations.ts:712
+#: js/shared/translations.ts:713
 msgid "Max width (px)"
 msgstr ""
 
-#: js/shared/translations.ts:713
+#: js/shared/translations.ts:714
 msgid "Max height (px)"
 msgstr ""
 
-#: js/shared/translations.ts:714
+#: js/shared/translations.ts:715
 msgid "Alignment"
 msgstr ""
 
-#: js/shared/translations.ts:716
+#: js/shared/translations.ts:717
 msgid "Left"
 msgstr ""
 
-#: js/shared/translations.ts:717
+#: js/shared/translations.ts:718
 msgid "Center"
 msgstr ""
 
-#: js/shared/translations.ts:718
+#: js/shared/translations.ts:719
 msgid "Right"
 msgstr ""
 
-#: js/shared/translations.ts:720
+#: js/shared/translations.ts:721
 msgid "Previous"
 msgstr ""
 
-#: js/shared/translations.ts:721
+#: js/shared/translations.ts:722
 msgid "Next"
 msgstr ""
 
-#: js/shared/translations.ts:722
+#: js/shared/translations.ts:723
 msgid "Slide {n} of {total}"
 msgstr ""
 
-#: js/shared/translations.ts:723
+#: js/shared/translations.ts:724
 msgid "Allow fullscreen"
 msgstr ""
 
-#: js/shared/translations.ts:724
+#: js/shared/translations.ts:725
 msgid "View fullscreen"
 msgstr ""
 
-#: js/shared/translations.ts:725
+#: js/shared/translations.ts:726
 msgid "Close"
 msgstr ""
 
-#: js/shared/translations.ts:728
+#: js/shared/translations.ts:729
 msgid "Chess Game"
 msgstr ""
 
-#: js/shared/translations.ts:729
+#: js/shared/translations.ts:730
 msgid "PGN"
 msgstr ""
 
-#: js/shared/translations.ts:731
+#: js/shared/translations.ts:732
 msgid ""
 "Paste one or more games in PGN format. Comments and variations are shown."
 msgstr ""
 
-#: js/shared/translations.ts:734
+#: js/shared/translations.ts:735
 msgid "Paste a PGN to show the game."
 msgstr ""
 
-#: js/shared/translations.ts:735
+#: js/shared/translations.ts:736
 msgid "The game could not be read."
 msgstr ""
 
-#: js/shared/translations.ts:736
+#: js/shared/translations.ts:737
 msgid "No moves found in the PGN."
 msgstr ""
 
-#: js/shared/translations.ts:737
+#: js/shared/translations.ts:738
 msgid "Games in this PGN: {n}"
 msgstr ""
 
-#: js/shared/translations.ts:739
+#: js/shared/translations.ts:740
 msgid "Game {game}: move {move} is illegal or unreadable."
 msgstr ""
 
-#: js/shared/translations.ts:743
+#: js/shared/translations.ts:744
 msgid "Game {game}: the starting position (FEN) is invalid."
 msgstr ""
 
-#: js/shared/translations.ts:746
+#: js/shared/translations.ts:747
 msgid "Game"
 msgstr ""
 
-#: js/shared/translations.ts:747
+#: js/shared/translations.ts:748
 msgid "Display"
 msgstr ""
 
-#: js/shared/translations.ts:748
+#: js/shared/translations.ts:749
 msgid "Board orientation"
 msgstr ""
 
-#: js/shared/translations.ts:750
+#: js/shared/translations.ts:751
 msgid "From the PGN (white at the bottom)"
 msgstr ""
 
-#: js/shared/translations.ts:751
+#: js/shared/translations.ts:752
 msgid "White at the bottom"
 msgstr ""
 
-#: js/shared/translations.ts:752
+#: js/shared/translations.ts:753
 msgid "Black at the bottom"
 msgstr ""
 
-#: js/shared/translations.ts:754
+#: js/shared/translations.ts:755
 msgid "Move list"
 msgstr ""
 
-#: js/shared/translations.ts:757
+#: js/shared/translations.ts:758
 msgid "Right of the board"
 msgstr ""
 
-#: js/shared/translations.ts:758
+#: js/shared/translations.ts:759
 msgid "Below the board"
 msgstr ""
 
-#: js/shared/translations.ts:761
+#: js/shared/translations.ts:762
 msgid "Puzzle"
 msgstr ""
 
-#: js/shared/translations.ts:763
+#: js/shared/translations.ts:764
 msgid ""
 "Hides the move list and the players; readers start at the chosen position "
 "and find the continuation."
 msgstr ""
 
-#: js/shared/translations.ts:766
+#: js/shared/translations.ts:767
 msgid "Start position (half-moves played)"
 msgstr ""
 
-#: js/shared/translations.ts:768
+#: js/shared/translations.ts:769
 msgid "0 is the initial position; 38 is the position after Black's 19th move."
 msgstr ""
 
-#: js/shared/translations.ts:771
+#: js/shared/translations.ts:772
 msgid "Start at the final position"
 msgstr ""
 
-#: js/shared/translations.ts:772
+#: js/shared/translations.ts:773
 msgid "Use the position shown"
 msgstr ""
 
-#: js/shared/translations.ts:774
+#: js/shared/translations.ts:775
 msgid "Step through the preview, then click to start the game there."
 msgstr ""
 
-#: js/shared/translations.ts:777
+#: js/shared/translations.ts:778
 msgid "Show move list"
 msgstr ""
 
-#: js/shared/translations.ts:778
+#: js/shared/translations.ts:779
 msgid "Hide move list"
 msgstr ""
 
-#: js/shared/translations.ts:779
+#: js/shared/translations.ts:780
 msgid "Links to Lichess"
 msgstr ""
 
-#: js/shared/translations.ts:781
+#: js/shared/translations.ts:782
 msgid ""
 "Adds \"Analysis (lichess.org)\" and \"Practice (lichess.org)\" to the menu. "
 "They open the game on lichess.org."
 msgstr ""
 
-#: js/shared/translations.ts:785
+#: js/shared/translations.ts:786
 msgid "Flip the board"
 msgstr ""
 
-#: js/shared/translations.ts:787
+#: js/shared/translations.ts:788
 msgid "Analysis (lichess.org)"
 msgstr ""
 
-#: js/shared/translations.ts:789
+#: js/shared/translations.ts:790
 msgid "Practice (lichess.org)"
 msgstr ""
 
-#: js/shared/translations.ts:792
+#: js/shared/translations.ts:793
 msgid "Get PGN"
 msgstr ""
 
-#: js/shared/translations.ts:793
+#: js/shared/translations.ts:794
 msgid "Download"
 msgstr ""
 
-#: js/shared/translations.ts:794
+#: js/shared/translations.ts:795
 msgid "View on Lichess"
 msgstr ""
 
-#: js/shared/translations.ts:795
+#: js/shared/translations.ts:796
 msgid "View on site"
 msgstr ""
 
-#: js/shared/translations.ts:796
+#: js/shared/translations.ts:797
 msgid "Menu"
 msgstr ""
 
-#: js/shared/translations.ts:797
+#: js/shared/translations.ts:798
 msgid "Go to first move"
 msgstr ""
 
-#: js/shared/translations.ts:798
+#: js/shared/translations.ts:799
 msgid "Go to previous move"
 msgstr ""
 
-#: js/shared/translations.ts:799
+#: js/shared/translations.ts:800
 msgid "Go to next move"
 msgstr ""
 
-#: js/shared/translations.ts:800
+#: js/shared/translations.ts:801
 msgid "Go to last move"
 msgstr ""
 
-#: js/shared/translations.ts:801
+#: js/shared/translations.ts:802
 msgid "Game moves"
 msgstr ""
 
-#: js/shared/translations.ts:802
+#: js/shared/translations.ts:803
 msgid "Game result"
 msgstr ""
 
-#: js/shared/translations.ts:803
+#: js/shared/translations.ts:804
 msgid "Variation"
 msgstr ""
 
-#: js/shared/translations.ts:805
+#: js/shared/translations.ts:806
 msgid "Game navigation controls"
 msgstr ""
 
-#: js/shared/translations.ts:810
+#: js/shared/translations.ts:811
 #, javascript-format
 msgid "View %s's profile on Lichess"
 msgstr ""
 
-#: js/shared/translations.ts:815
+#: js/shared/translations.ts:816
 #, javascript-format
 msgid "Chess game between %1$s as white and %2$s as black. %3$s"
 msgstr ""
 
-#: js/shared/translations.ts:818
+#: js/shared/translations.ts:819
 msgid "Game in progress"
 msgstr ""
 
-#: js/shared/translations.ts:819
+#: js/shared/translations.ts:820
 msgid "White wins"
 msgstr ""
 
-#: js/shared/translations.ts:820
+#: js/shared/translations.ts:821
 msgid "Black wins"
 msgstr ""
 
-#: js/shared/translations.ts:821
+#: js/shared/translations.ts:822
 msgid "Draw"
 msgstr ""
 
-#: js/shared/translations.ts:822
+#: js/shared/translations.ts:823
 msgid "Unknown player"
 msgstr ""
 
 #. translators: %s is a rating number.
-#: js/shared/translations.ts:824
+#: js/shared/translations.ts:825
 #, javascript-format
 msgid "rated %s"
 msgstr ""
 
 #. translators: %1$s is the move number, %2$s the side to move, %3$s the spoken move.
-#: js/shared/translations.ts:826
+#: js/shared/translations.ts:827
 #, javascript-format
 msgid "Move %1$s, %2$s, %3$s"
 msgstr ""
 
-#: js/shared/translations.ts:827
+#: js/shared/translations.ts:828
 msgid "white"
 msgstr ""
 
-#: js/shared/translations.ts:828
+#: js/shared/translations.ts:829
 msgid "black"
 msgstr ""
 
 #. translators: %s is the time left on a clock.
-#: js/shared/translations.ts:830
+#: js/shared/translations.ts:831
 #, javascript-format
 msgid "%s remaining"
 msgstr ""
 
-#: js/shared/translations.ts:833
+#: js/shared/translations.ts:834
 #, javascript-format
 msgid "%s, link, opens in new tab"
 msgstr ""
 
-#: js/shared/translations.ts:837
+#: js/shared/translations.ts:838
 msgid "Accessible chessboard"
 msgstr ""
 
-#: js/shared/translations.ts:840
+#: js/shared/translations.ts:841
 msgid "king"
 msgstr ""
 
-#: js/shared/translations.ts:841
+#: js/shared/translations.ts:842
 msgid "queen"
 msgstr ""
 
-#: js/shared/translations.ts:842
+#: js/shared/translations.ts:843
 msgid "rook"
 msgstr ""
 
-#: js/shared/translations.ts:843
+#: js/shared/translations.ts:844
 msgid "bishop"
 msgstr ""
 
-#: js/shared/translations.ts:844
+#: js/shared/translations.ts:845
 msgid "knight"
 msgstr ""
 
-#: js/shared/translations.ts:845
+#: js/shared/translations.ts:846
 msgid "pawn"
 msgstr ""
 
-#: js/shared/translations.ts:846
+#: js/shared/translations.ts:847
 msgid "empty"
 msgstr ""
 
-#: js/shared/translations.ts:847
+#: js/shared/translations.ts:848
 msgid "takes"
 msgstr ""
 
-#: js/shared/translations.ts:848
+#: js/shared/translations.ts:849
 msgid "check"
 msgstr ""
 
-#: js/shared/translations.ts:849
+#: js/shared/translations.ts:850
 msgid "checkmate"
 msgstr ""
 
-#: js/shared/translations.ts:850
+#: js/shared/translations.ts:851
 msgid "promotes to"
 msgstr ""
 
-#: js/shared/translations.ts:851
+#: js/shared/translations.ts:852
 msgid "dropped on"
 msgstr ""
 
-#: js/shared/translations.ts:852
+#: js/shared/translations.ts:853
 msgid "long castling"
 msgstr ""
 
-#: js/shared/translations.ts:853
+#: js/shared/translations.ts:854
 msgid "short castling"
 msgstr ""
 
-#: js/shared/translations.ts:859
+#: js/shared/translations.ts:860
 msgid ""
 "Tournaments being played today. One that ends today may be missing until "
 "results are reported."
 msgstr ""
 
-#: js/shared/translations.ts:862
+#: js/shared/translations.ts:863
 msgid "Loading tournaments…"
 msgstr ""
 
-#: js/shared/translations.ts:863
+#: js/shared/translations.ts:864
 msgid "Could not load tournaments."
 msgstr ""
 
-#: js/shared/translations.ts:864
+#: js/shared/translations.ts:865
 msgid "No tournaments are being played today."
 msgstr ""
 
-#: js/shared/translations.ts:869
+#: js/shared/translations.ts:870
 msgid ""
 "QR codes for handouts and posters. Download them for print, or show one on a "
 "page with the QR Code block."
 msgstr ""
 
-#: js/shared/translations.ts:872
+#: js/shared/translations.ts:873
 msgid "New QR code"
 msgstr ""
 
-#: js/shared/translations.ts:873
+#: js/shared/translations.ts:874
 msgid "Edit QR code"
 msgstr ""
 
-#: js/shared/translations.ts:874
+#: js/shared/translations.ts:875
 msgid "No QR codes yet."
 msgstr ""
 
-#: js/shared/translations.ts:875
+#: js/shared/translations.ts:876
 msgid "Could not load the QR codes."
 msgstr ""
 
-#: js/shared/translations.ts:876
+#: js/shared/translations.ts:877
 msgid "Could not save the QR code."
 msgstr ""
 
-#: js/shared/translations.ts:877
+#: js/shared/translations.ts:878
 msgid "Could not delete the QR code."
 msgstr ""
 
-#: js/shared/translations.ts:878
+#: js/shared/translations.ts:879
 msgid "Name (optional)"
 msgstr ""
 
-#: js/shared/translations.ts:880
+#: js/shared/translations.ts:881
 msgid ""
 "What the code is for, e.g. “Winter tournament 2027 – sign-up”. Shown on the "
 "card and used as the file name. Leave it empty to use the address."
 msgstr ""
 
-#: js/shared/translations.ts:883
+#: js/shared/translations.ts:884
 msgid "Target address"
 msgstr ""
 
-#: js/shared/translations.ts:885
+#: js/shared/translations.ts:886
 msgid ""
 "A full address (https://…) or a path on this site, such as /bli-medlem/. The "
 "code contains this address directly."
 msgstr ""
 
-#: js/shared/translations.ts:889
+#: js/shared/translations.ts:890
 msgid ""
 "Keep the slug of the page it points to: renaming a page’s address breaks "
 "every printed code that points to it."
 msgstr ""
 
-#: js/shared/translations.ts:897
+#: js/shared/translations.ts:898
 msgid ""
 "Nothing found at this address (404). A printed code pointing here won’t work."
 msgstr ""
 
-#: js/shared/translations.ts:900
+#: js/shared/translations.ts:901
 msgid "Not found (404)"
 msgstr ""
 
-#: js/shared/translations.ts:901
+#: js/shared/translations.ts:902
 msgid "Download SVG"
 msgstr ""
 
-#: js/shared/translations.ts:902
+#: js/shared/translations.ts:903
 msgid "Download PNG"
 msgstr ""
 
-#: js/shared/translations.ts:903
+#: js/shared/translations.ts:904
 msgid "PNG size"
 msgstr ""
 
-#: js/shared/translations.ts:905
+#: js/shared/translations.ts:906
 msgid ""
 "SVG is best for print: it stays sharp at any size. PNG is for Word, Canva "
 "and the like."
 msgstr ""
 
-#: js/shared/translations.ts:909
+#: js/shared/translations.ts:910
 msgid "Created by someone else; only an editor can change it."
 msgstr ""
 
-#: js/shared/translations.ts:914
+#: js/shared/translations.ts:915
 msgid "Ranking List"
 msgstr ""
 
-#: js/shared/translations.ts:915
+#: js/shared/translations.ts:916
 msgid "Rating Period"
 msgstr ""
 
-#: js/shared/translations.ts:916
+#: js/shared/translations.ts:917
 msgid "ELO Type"
 msgstr ""
 
-#: js/shared/translations.ts:917
+#: js/shared/translations.ts:918
 msgid "Member Type"
 msgstr ""
 
-#: js/shared/translations.ts:918
+#: js/shared/translations.ts:919
 msgid "Standard"
 msgstr ""
 
-#: js/shared/translations.ts:922
+#: js/shared/translations.ts:923
 msgid "Women"
 msgstr ""
 
-#: js/shared/translations.ts:923
+#: js/shared/translations.ts:924
 msgid "Juniors"
 msgstr ""
 
-#: js/shared/translations.ts:924
+#: js/shared/translations.ts:925
 msgid "Cadets"
 msgstr ""
 
-#: js/shared/translations.ts:925
+#: js/shared/translations.ts:926
 msgid "Veterans"
 msgstr ""
 
-#: js/shared/translations.ts:926
+#: js/shared/translations.ts:927
 msgid "Minors"
 msgstr ""
 
-#: js/shared/translations.ts:927
+#: js/shared/translations.ts:928
 msgid "Kids"
 msgstr ""
 
-#: js/shared/translations.ts:929
+#: js/shared/translations.ts:930
 msgid "Title"
 msgstr ""
 
-#: js/shared/translations.ts:930
+#: js/shared/translations.ts:931
 msgid "First Name"
 msgstr ""
 
-#: js/shared/translations.ts:931
+#: js/shared/translations.ts:932
 msgid "Last Name"
 msgstr ""
 
-#: js/shared/translations.ts:932
+#: js/shared/translations.ts:933
 msgid "Rating"
 msgstr ""
 
-#: js/shared/translations.ts:933
+#: js/shared/translations.ts:934
 msgid "Showing"
 msgstr ""
 
-#: js/shared/translations.ts:934
+#: js/shared/translations.ts:935
 msgid "players"
 msgstr ""
 
-#: js/shared/translations.ts:935
+#: js/shared/translations.ts:936
 msgid "No players found."
 msgstr ""
 
-#: js/shared/translations.ts:936
+#: js/shared/translations.ts:937
 msgid "of"
 msgstr ""
 
-#: js/shared/translations.ts:939
+#: js/shared/translations.ts:940
 msgid "Loading…"
 msgstr ""
 
-#: js/shared/translations.ts:940
+#: js/shared/translations.ts:941
 msgid "Save"
 msgstr ""
 
-#: js/shared/translations.ts:941
+#: js/shared/translations.ts:942
 msgid "Cancel"
 msgstr ""
 
-#: js/shared/translations.ts:942
+#: js/shared/translations.ts:943
 msgid "Confirm"
 msgstr ""
 
-#: js/shared/translations.ts:945
+#: js/shared/translations.ts:946
 msgid "Copy"
 msgstr ""
 
-#: js/shared/translations.ts:946
+#: js/shared/translations.ts:947
 msgid "here"
 msgstr ""
 
-#: js/shared/translations.ts:947
+#: js/shared/translations.ts:948
 msgid "Add"
 msgstr ""
 
-#: js/shared/translations.ts:948
+#: js/shared/translations.ts:949
 msgid "Layout"
 msgstr ""
 
-#: js/shared/translations.ts:949
+#: js/shared/translations.ts:950
 msgid "Cards"
 msgstr ""
 
-#: js/shared/translations.ts:950
+#: js/shared/translations.ts:951
 msgid "List"
 msgstr ""
 
-#: js/shared/translations.ts:951
+#: js/shared/translations.ts:952
 msgid "Fields"
 msgstr ""
